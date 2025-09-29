@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:workorder_company_app/core/constants/app_config.dart';
 import 'package:workorder_company_app/core/theme/app_theme.dart';
+import 'package:workorder_company_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/routes/route_generator.dart';
+import 'package:workorder_company_app/core/di/injection.dart' as di;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
 
-  // Initial Depedencies Injection
-  // await di.init();
+  await di.init();
 
   runApp(const MyApp());
 }
@@ -19,13 +20,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
-        title: "Work Order Company App",
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthBloc>(
+          create: (_) => di.sl<AuthBloc>(),
+        ),
+        // Tambahkan bloc lain jika ada
+      ],
+      child: MaterialApp(
+        title: AppConfig.appName,
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,
         onGenerateRoute: RouteGenerator.generateRoute,
         initialRoute: AppRoutes.login,
-      );
+      ),
+    );
   }
 }

@@ -20,6 +20,7 @@ enum UserRole {
   }
 
   String toSnakeCase() {
-    return name; 
+    final regex = RegExp(r'(?<=[a-z])[A-Z]');
+    return name.replaceAllMapped(regex, (match) => '_${match.group(0)!.toLowerCase()}');
   }
 }

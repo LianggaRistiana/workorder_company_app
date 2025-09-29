@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:workorder_company_app/features/auth/presentation/pages/login_page.dart';
+import 'package:workorder_company_app/features/home/presentation/pages/home_page.dart';
 import 'app_routes.dart';
 
 class RouteGenerator {
@@ -7,8 +8,8 @@ class RouteGenerator {
     switch (settings.name) {
       case AppRoutes.login:
         return MaterialPageRoute(builder: (_) => const LoginPage());
-      // case AppRoutes.home:
-      //   return MaterialPageRoute(builder: (_) => const HomePage());
+      case AppRoutes.home:
+        return MaterialPageRoute(builder: (_) => const HomePage());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
