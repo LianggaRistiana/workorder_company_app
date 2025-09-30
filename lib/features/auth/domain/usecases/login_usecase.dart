@@ -1,31 +1,41 @@
 import 'package:dartz/dartz.dart';
 import 'package:workorder_company_app/core/error/failures.dart';
+import 'package:workorder_company_app/core/storage/token_storage.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 import 'package:workorder_company_app/features/auth/domain/repositories/auth_repository.dart';
 
-class LoginUseCase{
+class LoginUseCase {
   final AuthRepository repository;
+  final TokenStorage tokenStorage = TokenStorage();
 
   LoginUseCase(this.repository);
 
   Future<Either<Failure, UserEntity>> call(LoginParams params) async {
-    // Step 1: (Opsional) Validasi input di sini
     if (params.email.isEmpty || params.password.isEmpty) {
-      return const Left(ServerFailure(message: "Email dan password wajib diisi"));
+      return const Left(
+          ServerFailure(message: "Email dan password wajib diisi"));
     }
 
-    // Step 2: Panggil repository
     final result = await repository.login(params.email, params.password);
 
-    // Step 3: Tambahkan logic business di sini (sebelum kembalikan hasil)
     return result.fold(
-      (failure) => Left(failure), // kalau gagal, langsung kembalikan
+      (failure) => Left(failure),
       (data) async {
-        // TODO: simpan token di SecureStorage/SharedPref
-      
-        // await _tokenStorage.saveToken(userEntity.token);
+        await tokenStorage
+            .saveToken(data.token); // Belum ada kondisi jika gagal
+        // await repository.saveUser(data.user);
 
-        return Right(data.user);
+        // return Right(data.user);
+        try {
+          final saveUserResult = await repository.saveUser(data.user);
+          saveUserResult;
+          return saveUserResult.fold(
+            (failure) => Left(failure), 
+            (_) => Right(data.user), // sukses
+          );
+        } catch (e) {
+          return Left(CacheFailure(message: 'Failed to save user: $e'));
+        }
       },
     );
   }

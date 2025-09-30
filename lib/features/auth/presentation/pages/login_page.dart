@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/theme/app_radius.dart';
 import 'package:workorder_company_app/features/auth/presentation/bloc/auth_bloc.dart';
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -24,7 +26,8 @@ class _LoginPageState extends State<LoginPage> {
             debugPrint("Logging in...");
           } else if (state is Authenticated) {
             // Kalau login sukses, navigate ke halaman utama
-            Navigator.pushReplacementNamed(context, '/home');
+            context.go("/home");
+
           } else if (state is AuthError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.message)),

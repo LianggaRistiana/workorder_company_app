@@ -2,6 +2,7 @@
 class ApiException implements Exception {
   final int statusCode;
   final String message;
+  //TODO : Add TError in this;
 
   ApiException(this.statusCode, this.message);
 
