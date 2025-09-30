@@ -1,88 +1,128 @@
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/features/auth/domain/repositories/auth_repository.dart';
+import 'package:workorder_company_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:workorder_company_app/features/auth/presentation/pages/login_page.dart';
+import 'package:workorder_company_app/features/auth/presentation/pages/profile_page.dart';
+import 'package:workorder_company_app/features/company/presentation/pages/company_page.dart';
+import 'package:workorder_company_app/features/employees/presentation/page/employees_page.dart';
 import 'package:workorder_company_app/features/home/presentation/pages/homepage/manager_company_homepage.dart';
 import 'package:workorder_company_app/features/home/presentation/pages/homepage/owner_company_homepage.dart';
-import 'package:workorder_company_app/features/home/presentation/pages/homepage/staff_company_homepage.dart';
+import 'package:workorder_company_app/shared/layout/manager_company_layout.dart';
 import 'package:workorder_company_app/features/splash/splash_page.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
+import 'package:workorder_company_app/shared/layout/owner_company_layout.dart';
+
+final authBloc = sl<AuthBloc>();
 
 final GoRouter appRouter = GoRouter(
     initialLocation: AppRoutes.home,
+    // refreshListenable: StreamRefreshNotifier(authBloc.stream),
+    // redirect: (context, state) {
+    //   final authState = context.read<AuthBloc>().state;
+    //   // final authState = authBloc.state;
+
+    //   // Hapus redirect dan refresh jika ingin menggunakan dari main
+    //   Logger().i(authState);
+    //   final location = state.uri.toString();
+
+    //   if (authState is Unauthenticated) {
+    //     return location == '/login' ? null : '/login';
+    //   }
+
+    //   if (authState is Authenticated) {
+    //     if (location.startsWith('/home')) return null;
+    //     return '/home';
+    //   }
+    //   return null;
+    // },
     routes: [
       GoRoute(
-        path: '/login',
+        path: AppRoutes.login,
         builder: (_, __) => const LoginPage(),
       ),
       GoRoute(
-        path: '/splash',
+        path: AppRoutes.splash,
         builder: (_, __) => const SplashPage(),
       ),
       GoRoute(
-        path: '/home',
+        path: AppRoutes.home,
         redirect: (_, __) {
           final authRepo = sl<AuthRepository>();
           final user = authRepo.currentUser;
 
-          if (user == null) return '/login';
+          if (user == null) return AppRoutes.login;
 
           switch (user.role) {
             case UserRole.ownerCompany:
-              return '/home/owner';
+              return AppRoutes.ownerHome;
             case UserRole.managerCompany:
-              return '/home/manager';
+              return AppRoutes.login;
             case UserRole.staffCompany:
               return '/home/staff-company';
             case UserRole.staffUnssigned:
               return '/home/staff-unssigned';
           }
         },
+      ),
+      // Owner nested route
+      ShellRoute(
+        builder: (context, state, child) => OwnerCompanyLayout(child: child),
         routes: [
-          // Owner nested route
           GoRoute(
-            path: 'owner',
+            path: '/owner',
+            redirect: (_, __) => AppRoutes.home,
+          ),
+          GoRoute(
+            path: AppRoutes.ownerHome,
             builder: (_, __) => const OwnerCompanyHomepage(),
-            // routes: [
-            // Contoh nested route untuk owner
-            // GoRoute(path: 'employee', builder: (_, __) => EmployeePage()),
-            // ],
           ),
-          // Manager nested route
           GoRoute(
-            path: 'manager',
-            builder: (_, __) => const ManagerCompanyHomePage(),
+            path: AppRoutes.ownerCompany,
+            builder: (_, __) => const CompanyPage(),
           ),
-          // Staff company nested route
           GoRoute(
-            path: 'staff-company',
-            builder: (_, __) => const StaffCompanyHomepage(),
+            path: AppRoutes.ownerEmployee,
+            builder: (_, __) => const EmployeesPage(),
           ),
-          // Staff unassigned nested route
           GoRoute(
-            path: 'staff-unssigned',
-            builder: (_, __) => const StaffCompanyHomepage(),
+            path: AppRoutes.ownerProfile,
+            builder: (_, __) => const ProfilePage(),
+          ),
+        ],
+      ),
+      // Manager nested route
+      ShellRoute(
+        builder: (context, state, child) => ManagerCompanyLayout(child: child),
+        routes: [
+          GoRoute(
+            path: '/manager',
+            redirect: (_, __) => '/manager/home',
+          ),
+          GoRoute(
+            path: '/manager/home',
+            builder: (_, __) => const ManagerCompanyHomepage(),
+          ),
+          GoRoute(
+            path: '/manager/profile',
+            builder: (_, __) => const ProfilePage(),
           ),
         ],
       ),
     ]);
 
+// class StreamRefreshNotifier extends ChangeNotifier {
+//   StreamRefreshNotifier(Stream<dynamic> stream) {
+//     // pastikan stream broadcast kalau perlu, agar listen banyak kali aman
+//     _subscription = stream.listen((_) => notifyListeners());
+//   }
 
+//   late final StreamSubscription<dynamic> _subscription;
 
- // Owner nested route
-    // ShellRoute(
-    //   builder: (context, state, child) {
-    //     return OwnerLayout(child: child); // Scaffold selalu ada, child isi berubah
-    //   },
-    //   routes: [
-    //     GoRoute(
-    //       path: 'owner',
-    //       builder: (_, __) => const OwnerDashboardPage(),
-    //     ),
-    //     GoRoute(
-    //       path: 'owner/employee',
-    //       builder: (_, __) => const EmployeePage(),
-    //     ),
-    //   ],
-    // ),
+//   @override
+//   void dispose() {
+//     _subscription.cancel();
+//     super.dispose();
+//   }
+// }

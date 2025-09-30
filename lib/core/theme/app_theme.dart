@@ -19,6 +19,9 @@ class AppTheme {
       foregroundColor: Colors.white,
       elevation: 2,
     ),
+    // bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    //   backgroundColor: Colors.black
+    // ),
     textTheme: TextTheme(
       titleLarge: AppTextStyles.titleLarge.copyWith(color: AppColors.lightTextPrimary),
       titleMedium: AppTextStyles.titleMedium.copyWith(color: AppColors.lightTextSecondary),

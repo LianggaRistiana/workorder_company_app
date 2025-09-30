@@ -7,8 +7,6 @@ import 'package:workorder_company_app/core/theme/app_theme.dart';
 import 'package:workorder_company_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:workorder_company_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:workorder_company_app/routes/app_router.dart';
-// import 'package:workorder_company_app/routes/app_routes.dart';
-// import 'package:workorder_company_app/routes/route_generator.dart';
 import 'package:workorder_company_app/core/di/injection.dart' as di;
 
 // void main() async {
@@ -44,9 +42,6 @@ void main() {
   });
 }
 
-
-
-
 // class MyApp extends StatelessWidget {
 //   const MyApp({super.key});
 
@@ -55,31 +50,20 @@ void main() {
 //     return MultiBlocProvider(
 //       providers: [
 //         BlocProvider<AuthBloc>(
-//           create: (_) => di.sl<AuthBloc>()..add(AuthCheckStatus()),
+//           create: (_) => di.sl<AuthBloc>(),
 //         ),
 //         // Tambahkan bloc lain jika ada
 //       ],
-//       child: BlocListener<AuthBloc, AuthState>(
-//         listener: (context, state) {
-//           // Handle navigasi sesuai state
-//           if (state is Authenticated) {
-//             context.go('/home');
-//           } else if (state is Unauthenticated) {
-//             context.go('/login');
-//           }
-//         },
-//         child: MaterialApp.router(
+//       child: MaterialApp.router(
 //           title: AppConfig.appName,
 //           debugShowCheckedModeBanner: false,
 //           theme: AppTheme.lightTheme,
 //           darkTheme: AppTheme.darkTheme,
 //           routerConfig: appRouter,
-//         ),
-//       ),
+//           ),
 //     );
 //   }
 // }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -88,7 +72,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(
-          create: (_) => di.sl<AuthBloc>(),
+          create: (_) => di.sl<AuthBloc>()..add(AuthCheckStatus()),
         ),
         // Tambahkan bloc lain jika ada
       ],
@@ -97,7 +81,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
-          routerConfig: appRouter
+          routerConfig: appRouter,
           ),
     );
   }

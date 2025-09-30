@@ -21,7 +21,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthCheckStatus event,
     Emitter<AuthState> emit,
   ) async {
-    emit(AuthLoading()); // kasih tau UI kalau lagi ngecek
+    emit(AuthLoading());
 
     // try {
     final user = await getCurrentUserUsecase();

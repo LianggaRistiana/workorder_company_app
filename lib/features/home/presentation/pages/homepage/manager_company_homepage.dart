@@ -1,20 +1,13 @@
 import 'package:flutter/material.dart';
 
-class ManagerCompanyHomePage extends StatelessWidget {
-  const ManagerCompanyHomePage({super.key});
+
+class ManagerCompanyHomepage extends StatelessWidget {
+  const ManagerCompanyHomepage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('ManagerCompanyHomePage'),
-      ),
-      body: const Center(
-        child: Text(
-          'Hi',
-          style: TextStyle(fontSize: 24),
-        ),
-      ),
+    return Center(
+      child: Text("ManagerCompany Home"),
     );
   }
 }
