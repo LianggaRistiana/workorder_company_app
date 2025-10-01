@@ -6,9 +6,9 @@ import 'package:workorder_company_app/features/auth/domain/repositories/auth_rep
 
 class LoginUseCase {
   final AuthRepository repository;
-  final TokenStorage tokenStorage = TokenStorage();
+  final TokenStorage tokenStorage;
 
-  LoginUseCase(this.repository);
+  LoginUseCase(this.repository, this.tokenStorage);
 
   Future<Either<Failure, UserEntity>> call(LoginParams params) async {
     if (params.email.isEmpty || params.password.isEmpty) {

@@ -10,5 +10,6 @@ abstract class AuthRepository {
   Future<Either<Failure, UserEntity>> register(String name, String email, String password);
   Future<Either<Failure, UserEntity?>> getCurrentUser();
   Future<Either<Failure, void>> saveUser(UserEntity user);
+  Future<Either<Failure, void>> logOut();
 }
 

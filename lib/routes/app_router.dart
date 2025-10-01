@@ -60,7 +60,7 @@ final GoRouter appRouter = GoRouter(
             case UserRole.managerCompany:
               return AppRoutes.login;
             case UserRole.staffCompany:
-              return '/home/staff-company';
+              return '/staff-company';
             case UserRole.staffUnssigned:
               return '/home/staff-unssigned';
           }
@@ -92,17 +92,17 @@ final GoRouter appRouter = GoRouter(
           ),
         ],
       ),
-      // Manager nested route
+      // Staff Company nested route
       ShellRoute(
         builder: (context, state, child) => ManagerCompanyLayout(child: child),
         routes: [
           GoRoute(
-            path: '/manager',
-            redirect: (_, __) => '/manager/home',
+            path: '/staff-company',
+            redirect: (_, __) => '/staff-company/home',
           ),
           GoRoute(
-            path: '/manager/home',
-            builder: (_, __) => const ManagerCompanyHomepage(),
+            path: '/staff-company/home',
+            builder: (_, __) => const ProfilePage(),
           ),
           GoRoute(
             path: '/manager/profile',
