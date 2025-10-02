@@ -6,6 +6,7 @@ class AppConfig {
   // network
   static const Map<String, String> baseApiUrls = {
     'development': 'http://10.0.2.2:3000',
+    'development.device': 'http://172.30.1.214:3000',
     'staging': 'https://staging.api.example.com/v1',
     'production': 'https://api.example.com/v1',
   };

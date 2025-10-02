@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/di/injection.dart';
+import 'package:workorder_company_app/features/employees/presentation/block/employees_bloc.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 
 class OwnerCompanyLayout extends StatefulWidget {
@@ -31,13 +34,51 @@ class _OwnerCompanyLayout extends State<OwnerCompanyLayout> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Sinkronisasi currentIndex dengan route aktif
     final loc = GoRouterState.of(context).uri.toString();
     final newIndex = _routes.indexWhere((r) => loc.startsWith(r));
     if (newIndex != -1) {
       _currentIndex = newIndex;
     }
   }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   return MultiBlocProvider(
+  //     providers: [
+  //       BlocProvider(
+  //         create: (context) =>
+  //             sl<EmployeesBloc>()..add(GetEmployeesRequested()),
+  //       ),
+  //       // kalau nanti ada bloc lain untuk Company/Profile, taruh di sini juga
+  //     ],
+  //     child: Scaffold(
+  //       body: widget.child,
+  //       bottomNavigationBar: BottomNavigationBar(
+  //         type: BottomNavigationBarType.fixed,
+  //         currentIndex: _currentIndex,
+  //         onTap: _onItemTapped,
+  //         items: const [
+  //           BottomNavigationBarItem(
+  //             icon: Icon(Icons.home_rounded),
+  //             label: 'Home',
+  //           ),
+  //           BottomNavigationBarItem(
+  //             icon: Icon(Icons.home_work_rounded),
+  //             label: 'Company',
+  //           ),
+  //           BottomNavigationBarItem(
+  //             icon: Icon(Icons.people_alt_rounded),
+  //             label: 'Employees',
+  //           ),
+  //           BottomNavigationBarItem(
+  //             icon: Icon(Icons.account_circle_rounded),
+  //             label: 'Profile',
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {

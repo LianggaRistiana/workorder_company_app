@@ -26,33 +26,3 @@ class ApiResponse<T> {
   }
 }
 
-// class ApiResponse<TData, TError> {
-//   final String message;
-//   final TData? data;
-//   final TError? errors;
-//   final String? errorCode;
-
-//   ApiResponse({
-//     required this.message,
-//     this.data,
-//     this.errors,
-//     this.errorCode,
-//   });
-
-//   factory ApiResponse.fromJson(
-//     Map<String, dynamic> json, {
-//     TData Function(dynamic json)? fromJsonT,
-//     TError Function(dynamic json)? fromJsonE,
-//   }) {
-//     return ApiResponse<TData, TError>(
-//       message: json['message'] ?? '',
-//       data: (fromJsonT != null && json['data'] != null)
-//           ? fromJsonT(json['data'])
-//           : null,
-//       errors: (fromJsonE != null && json['errors'] != null)
-//           ? fromJsonE(json['errors'])
-//           : (json['errors'] as TError?),
-//       errorCode: json['error_code'] as String?,
-//     );
-//   }
-// }
