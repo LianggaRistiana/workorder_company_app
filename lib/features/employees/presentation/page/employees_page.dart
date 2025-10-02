@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
-import 'package:workorder_company_app/features/employees/presentation/block/employees_bloc.dart';
+import 'package:workorder_company_app/features/employees/presentation/bloc/employees_bloc.dart';
 
 class EmployeesPage extends StatelessWidget {
   const EmployeesPage({super.key});

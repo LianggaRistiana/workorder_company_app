@@ -6,7 +6,7 @@ import 'package:workorder_company_app/core/constants/app_config.dart';
 import 'package:workorder_company_app/core/theme/app_theme.dart';
 import 'package:workorder_company_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:workorder_company_app/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:workorder_company_app/features/employees/presentation/block/employees_bloc.dart';
+import 'package:workorder_company_app/features/employees/presentation/bloc/employees_bloc.dart';
 import 'package:workorder_company_app/routes/app_router.dart';
 import 'package:workorder_company_app/core/di/injection.dart' as di;
 

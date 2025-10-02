@@ -8,6 +8,7 @@ import 'package:workorder_company_app/features/company/presentation/pages/compan
 import 'package:workorder_company_app/features/employees/presentation/page/employees_page.dart';
 import 'package:workorder_company_app/features/home/presentation/pages/homepage/manager_company_homepage.dart';
 import 'package:workorder_company_app/features/home/presentation/pages/homepage/owner_company_homepage.dart';
+import 'package:workorder_company_app/features/positions/presentation/pages/position_page.dart';
 import 'package:workorder_company_app/shared/layout/manager_company_layout.dart';
 import 'package:workorder_company_app/features/splash/splash_page.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
@@ -89,6 +90,10 @@ final GoRouter appRouter = GoRouter(
           GoRoute(
             path: AppRoutes.ownerProfile,
             builder: (_, __) => const ProfilePage(),
+          ),
+          GoRoute(
+            path: AppRoutes.ownerPositions,
+            builder: (_, __) => const PositionsPage(),
           ),
         ],
       ),
