@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:logger/logger.dart';
 import 'package:workorder_company_app/core/error/error.dart';
 import 'package:workorder_company_app/features/auth/domain/repositories/auth_repository.dart';
 

@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 import 'package:workorder_company_app/features/auth/domain/usecases/get_current_user_usecase.dart';
 import 'package:workorder_company_app/features/auth/domain/usecases/login_usecase.dart';

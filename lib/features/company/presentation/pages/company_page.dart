@@ -9,7 +9,6 @@ class CompanyPage extends StatelessWidget {
     // Dummy data
     final companyName = "PT Maju Jaya";
     final companyAddress = "Jl. Contoh No.123, Bali";
-    final isActive = true; // status aktif / tidak
 
     // Menu items
     final menuItems = [
@@ -53,10 +52,10 @@ class CompanyPage extends StatelessWidget {
                     // Status
                     Chip(
                       label: Text(
-                        isActive ? 'Active' : 'Inactive',
+                        'Active',
                         style: const TextStyle(color: Colors.white),
                       ),
-                      backgroundColor: isActive ? Colors.green : Colors.red,
+                      backgroundColor: Colors.green 
                     ),
                   ],
                 ),

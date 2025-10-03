@@ -1,13 +1,11 @@
 class ApiResponse<T> {
   final String message;
   final T? data;
-  final T? errors;
   final String? errorCode;
 
   ApiResponse({
     required this.message,
     this.data,
-    this.errors,
     this.errorCode,
   });
 
@@ -20,9 +18,7 @@ class ApiResponse<T> {
       data: fromJsonT != null && json['data'] != null
           ? fromJsonT(json['data'])
           : null,
-      errors: json['errors'] as T?,
       errorCode: json['error_code'],
     );
   }
 }
-
