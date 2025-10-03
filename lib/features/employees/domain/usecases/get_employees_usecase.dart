@@ -8,7 +8,7 @@ class GetEmployeesUsecase {
 
   GetEmployeesUsecase({required this.repository});
 
-  Future<Either<Failure, List<UserEntity>>> call() {
+  Future<Either<Failure, List<UserEntity>>> call() async {
     return repository.getEmployees();
   }
 }

@@ -14,9 +14,7 @@ class EmployeesRepositoryImpl implements EmployeesRepository {
   Future<Either<Failure, List<UserEntity>>> getEmployees() {
     return safeCall(() async {
       final response = await _remoteDatasource.getEmployees();
-      final employees =
-          response.data?.map((e) => e as UserEntity).toList() ?? [];
-      return employees;
+      return response.data ?? [];
     });
   }
 }

@@ -15,7 +15,7 @@ class EmployeesBloc extends Bloc<EmployeesEvent, EmployeesState> {
   }
 
   Future<void> _onGetEmployeesRequested(
-    GetEmployeesRequested event,
+    GetEmployeesRequested event,  
     Emitter<EmployeesState> emit,
   ) async {
     emit(EmployeesLoading());

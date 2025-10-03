@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:logger/logger.dart';
 import 'package:workorder_company_app/core/error/error.dart';
 
 Future<Either<Failure, T>> safeCall<T>(Future<T> Function() action) async {
@@ -11,6 +12,7 @@ Future<Either<Failure, T>> safeCall<T>(Future<T> Function() action) async {
 }
 
 Failure _mapExceptionToFailure(dynamic error) {
+  Logger().e(error);
   if (error is ApiException) {
     return ServerFailure(message: error.message);
     //  TODO: Refactore all repo in data layer using this utils
@@ -28,7 +30,6 @@ Failure _mapExceptionToFailure(dynamic error) {
     //     return ServerFailure(error.message ?? "Unexpected server error");
     // }
   }
-
   if (error is FormatException) {
     return ParsingFailure(message: "Invalid data format");
   }

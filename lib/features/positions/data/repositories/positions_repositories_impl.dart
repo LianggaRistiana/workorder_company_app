@@ -19,9 +19,7 @@ class PositionsRepositoryImpl implements PositionsRepository {
   Future<Either<Failure, List<PositionEntity>>> getPositions() {
     return safeCall(() async {
       final response = await _remoteDatasource.getPositions();
-      final positions =
-          response.data?.map((p) => p as PositionEntity).toList() ?? [];
-      return positions;
+      return response.data ?? [];
     });
   }
 

@@ -16,4 +16,7 @@ class Endpoints {
 
   // Positions
   static const String positions = "/positions"; // GET all, Post, 
+
+  // Forms
+  static const String forms = "/forms";
 }

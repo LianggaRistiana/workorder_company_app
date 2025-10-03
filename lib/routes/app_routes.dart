@@ -9,4 +9,5 @@ class AppRoutes {
   static const  ownerEmployee = '/owner/employee';
   static const  ownerCompany = '/owner/company';
   static const  ownerPositions = '/owner/positions';
+  static const  ownerForms = '/owner/forms';
 }

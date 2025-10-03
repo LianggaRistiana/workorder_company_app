@@ -8,12 +8,7 @@ class LogoutUsecase {
 
   LogoutUsecase(this.repository);
 
-  Future<Either<Failure,void>> call() async{
+  Future<Either<Failure, void>> call() async {
     return repository.logOut();
   }
 }
-
-
-
-
-
