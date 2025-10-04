@@ -19,4 +19,5 @@ class Endpoints {
 
   // Forms
   static const String forms = "/forms";
+  static form(String id) => "/forms/$id";
 }

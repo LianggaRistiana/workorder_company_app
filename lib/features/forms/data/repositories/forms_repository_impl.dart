@@ -17,4 +17,12 @@ class FormsRepositoryImpl implements FormsRepository {
       return forms.data ?? []; 
     });
   }
+  
+  @override
+  Future<Either<Failure, FormEntity>> getForm(String id) {
+    return safeCall(() async {
+      final form = await _remoteDatasource.getFormById(id);
+      return form.data!;
+    });
+  }
 }

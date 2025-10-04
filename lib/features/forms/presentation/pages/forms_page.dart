@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
+import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/forms_bloc.dart';
+import 'package:workorder_company_app/routes/app_routes.dart';
 
 class FormsPage extends StatefulWidget {
   const FormsPage({super.key});
@@ -12,7 +13,7 @@ class FormsPage extends StatefulWidget {
 }
 
 class _FormsPageState extends State<FormsPage> {
-  late FormsBloc _formBloc;
+  late final FormsBloc _formBloc;
 
   @override
   void initState() {
@@ -21,37 +22,58 @@ class _FormsPageState extends State<FormsPage> {
   }
 
   @override
+  void dispose() {
+    _formBloc.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Forms"),
-      ),
+      appBar: AppBar(title: const Text("Forms")),
       body: BlocBuilder<FormsBloc, FormsState>(
         bloc: _formBloc,
         builder: (context, state) {
-          if (state is FormsLoading) {
+          if (state is FormsInitial || state is FormsLoading) {
             return const Center(child: CircularProgressIndicator());
-          } else if (state is FormsLoaded) {
-            final List<FormEntity> forms = state.forms;
+          }
+
+          if (state is FormsLoaded) {
+            final forms = state.forms;
             if (forms.isEmpty) {
               return const Center(child: Text("Belum ada form"));
             }
-            return ListView.separated(
-              itemCount: forms.length,
-              separatorBuilder: (_, __) => const Divider(height: 1),
-              itemBuilder: (context, index) {
-                final form = forms[index];
-                return ListTile(
-                  title: Text(form.title),
-                  subtitle: Text(form.description),
-                  trailing: Text(form.accessType),
-                  onTap: () {
-                    // TODO: navigate ke detail form kalau perlu
+
+            return Stack(
+              children: [
+                ListView.separated(
+                  itemCount: forms.length,
+                  separatorBuilder: (_, __) => const Divider(height: 1),
+                  itemBuilder: (context, index) {
+                    final form = forms[index];
+                    return ListTile(
+                      title: Text(form.title),
+                      subtitle: Text(form.description),
+                      trailing: Text(form.accessType),
+                      onTap: () {
+                        // Navigasi ke halaman detail form
+                        context.push(AppRoutes.ownerFormDetail(form.id));
+                      },
+                    );
                   },
-                );
-              },
+                ),
+
+                // overlay loading kecil saat fetch by id
+                if (state.isSubLoading)
+                  Container(
+                    color: Colors.black38,
+                    child: const Center(child: CircularProgressIndicator()),
+                  ),
+              ],
             );
-          } else if (state is FormsError) {
+          }
+
+          if (state is FormsError) {
             return Center(
               child: Text(
                 state.message,
@@ -59,6 +81,7 @@ class _FormsPageState extends State<FormsPage> {
               ),
             );
           }
+
           return const SizedBox.shrink();
         },
       ),

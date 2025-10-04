@@ -5,6 +5,7 @@ import 'package:workorder_company_app/features/forms/data/model/form_model.dart'
 
 abstract class FormsRemoteDatasource {
   Future<ApiResponse<List<FormModel>>> getForms();
+  Future<ApiResponse<FormModel>> getFormById(String id);
 }
 
 class FormsRemoteDatasourceImpl implements FormsRemoteDatasource {
@@ -14,17 +15,22 @@ class FormsRemoteDatasourceImpl implements FormsRemoteDatasource {
 
   @override
   Future<ApiResponse<List<FormModel>>> getForms() async {
-    return _apiClient.get<ApiResponse<List<FormModel>>>(
-      Endpoints.forms,
-      fromJson: (json) {
-        return ApiResponse.fromJson(
-          json,
-          (data) {
-            final formsJson = (data as Map<String, dynamic>?)?['forms'] as List? ?? [];
-            return formsJson.map((e) => FormModel.fromJson(e)).toList();
-          },
-        );
-      },
+    final response = await _apiClient.get(Endpoints.forms);
+
+    return ApiResponse.fromJson(
+      response,
+      (data) => ((data as Map<String, dynamic>?)?['forms'] as List? ?? [])
+          .map((e) => FormModel.fromJson(e))
+          .toList(),
+    );
+  }
+
+  @override
+  Future<ApiResponse<FormModel>> getFormById(String id) async {
+    final response = await _apiClient.get(Endpoints.form(id));
+    return ApiResponse<FormModel>.fromJson(
+      response,
+      (data) => FormModel.fromJson(data['form']),
     );
   }
 }

@@ -4,4 +4,5 @@ import 'package:workorder_company_app/features/forms/domain/entities/form_entity
 
 abstract class FormsRepository {
   Future<Either<Failure, List<FormEntity>>> getForms();
+  Future<Either<Failure, FormEntity>> getForm(String id);
 }
