@@ -85,6 +85,10 @@ class _FormsPageState extends State<FormsPage> {
           return const SizedBox.shrink();
         },
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => context.go(AppRoutes.ownerNewForm),
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }

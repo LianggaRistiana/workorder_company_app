@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
+import 'package:workorder_company_app/features/forms/domain/usecases/create_form_usecase.dart';
 import 'package:workorder_company_app/features/forms/domain/usecases/get_form_byid_usecase.dart';
 import 'package:workorder_company_app/features/forms/domain/usecases/get_forms_usecase.dart';
 
@@ -11,13 +12,16 @@ part 'forms_state.dart';
 class FormsBloc extends Bloc<FormsEvent, FormsState> {
   final GetFormsUsecase getFormsUsecase;
   final GetFormByIdUsecase getFormByIdUsecase;
+  final CreateFormUsecase createFormUsecase;
 
   FormsBloc({
     required this.getFormsUsecase,
     required this.getFormByIdUsecase,
+    required this.createFormUsecase,
   }) : super(FormsInitial()) {
     on<GetFormsRequested>(_onFormsRequested);
     on<GetFormByIdRequested>(_onFormByIdRequested);
+    on<CreateFormRequested>(_onCreateFormRequested);
   }
 
   Future<void> _onFormsRequested(
@@ -34,12 +38,44 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> {
     );
   }
 
+Future<void> _onCreateFormRequested(
+  CreateFormRequested event,
+  Emitter<FormsState> emit,
+) async {
+  if (state is FormsLoaded) {
+    final current = state as FormsLoaded;
+    emit(current.copyWith(isSubLoading: true, errorMessage: null));
+
+    final result = await createFormUsecase(event.form);
+    result.fold(
+      (failure) => emit(
+        current.copyWith(
+          isSubLoading: false,
+          errorMessage: failure.message,
+        ),
+      ),
+      (_) => emit(
+        current.copyWith(
+          isSubLoading: false,
+        ),
+      ),
+    );
+  } else {
+    emit(FormsLoading());
+
+    final result = await createFormUsecase(event.form);
+    result.fold(
+      (failure) => emit(FormsError(failure.message)),
+      (_) => emit(const FormsLoaded(forms: [])),
+    );
+  }
+}
+
+
   Future<void> _onFormByIdRequested(
     GetFormByIdRequested event,
     Emitter<FormsState> emit,
   ) async {
-    // kalau sebelumnya sudah FormsLoaded, kita pertahankan datanya
-    Logger().i("Fetch in bloc");
     if (state is FormsLoaded) {
       final current = state as FormsLoaded;
       emit(current.copyWith(isSubLoading: true, errorMessage: null));

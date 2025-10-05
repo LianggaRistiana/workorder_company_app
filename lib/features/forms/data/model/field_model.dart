@@ -23,15 +23,13 @@ class FieldModel extends FieldEntity {
       min: json["min"],
       max: json["max"],
       options: json["options"] != null
-          ? (json["options"] as List)
-              .map((e) {
-                if (e is String) {
-                  return OptionModel(key: e, value: e);
-                } else {
-                  return OptionModel.fromJson(e);
-                }
-              })
-              .toList()
+          ? (json["options"] as List).map((e) {
+              if (e is String) {
+                return OptionModel(key: e, value: e);
+              } else {
+                return OptionModel.fromJson(e);
+              }
+            }).toList()
           : null,
     );
   }
@@ -47,5 +45,18 @@ class FieldModel extends FieldEntity {
       "max": max,
       "options": options?.map((e) => (e as OptionModel).toJson()).toList(),
     };
+  }
+
+  factory FieldModel.fromEntity(FieldEntity entity) {
+    return FieldModel(
+      order: entity.order,
+      label: entity.label,
+      type: entity.type,
+      required: entity.required,
+      placeholder: entity.placeholder,
+      min: entity.min,
+      max: entity.max,
+      options: entity.options?.map((e) => OptionModel.fromEntity(e)).toList(),
+    );
   }
 }

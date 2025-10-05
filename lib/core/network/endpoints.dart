@@ -18,6 +18,6 @@ class Endpoints {
   static const String positions = "/positions"; // GET all, Post, 
 
   // Forms
-  static const String forms = "/forms";
-  static form(String id) => "/forms/$id";
+  static const String forms = "/forms"; //GET all, POST
+  static form(String id) => "/forms/$id"; // GET by id, PUT
 }

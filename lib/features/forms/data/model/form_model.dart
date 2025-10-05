@@ -9,7 +9,7 @@ class FormModel extends FormEntity {
     required super.description,
     required super.accessType,
     required super.accessibleBy,
-    super.allowedPositions,
+    super.allowedPositions = const [],
     super.fields = const [],
   });
 
@@ -42,8 +42,23 @@ class FormModel extends FormEntity {
       "accessType": accessType,
       "accessibleBy": accessibleBy,
       "allowedPositions":
-          allowedPositions?.map((e) => (e as PositionModel).toJson()).toList(),
+          // allowedPositions?.map((e) => (e as PositionModel).toJson()).toList(),
+          allowedPositions?.map((e) => e.id).toList(),
       "fields": fields?.map((e) => (e as FieldModel).toJson()).toList(),
     };
+  }
+
+  factory FormModel.fromEntity(FormEntity entity) {
+    return FormModel(
+      id: entity.id,
+      title: entity.title,
+      description: entity.description,
+      accessType: entity.accessType,
+      accessibleBy: entity.accessibleBy,
+      allowedPositions: entity.allowedPositions
+          ?.map((e) => PositionModel.fromEntity(e))
+          .toList(),
+      fields: entity.fields?.map((e) => FieldModel.fromEntity(e)).toList(),
+    );
   }
 }

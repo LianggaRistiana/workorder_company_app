@@ -19,4 +19,11 @@ class OptionModel extends OptionEntity {
       "value": value,
     };
   }
+
+  factory OptionModel.fromEntity(OptionEntity entity) {
+    return OptionModel(
+      key: entity.key,
+      value: entity.value,
+    );
+  }
 }

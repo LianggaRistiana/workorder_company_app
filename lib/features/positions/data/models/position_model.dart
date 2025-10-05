@@ -19,4 +19,11 @@ class PositionModel extends PositionEntity {
       'name': name,
     };
   }
+
+  factory PositionModel.fromEntity(PositionEntity entity) {
+    return PositionModel(
+      id: entity.id,
+      name: entity.name,
+    );
+  }
 }

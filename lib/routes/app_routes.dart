@@ -10,5 +10,6 @@ class AppRoutes {
   static const ownerCompany = '/owner/company';
   static const ownerPositions = '/owner/positions';
   static const ownerForms = '/owner/forms';
+  static const ownerNewForm = '/owner/new-forms';
   static ownerFormDetail(String id) => '/owner/forms/$id';
 }
