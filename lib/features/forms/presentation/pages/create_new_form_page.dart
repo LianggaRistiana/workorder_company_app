@@ -138,59 +138,87 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
 
   Widget _buildOptionEditor(int fieldIndex) {
     final field = _fields[fieldIndex];
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text('Opsi Pilihan:'),
-        const SizedBox(height: 4),
-        ...List.generate(field.options.length, (i) {
-          final option = field.options[i];
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    decoration: InputDecoration(
-                      labelText: 'Opsi ${i + 1}',
-                      border: const OutlineInputBorder(),
+    return Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Opsi Pilihan',
+            style: TextStyle(fontWeight: FontWeight.w600),
+          ),
+          const SizedBox(height: 8),
+          ...List.generate(field.options.length, (i) {
+            final option = field.options[i];
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      decoration: InputDecoration(
+                        labelText: 'Opsi ${i + 1}',
+                        border: const OutlineInputBorder(),
+                        isDense: true,
+                      ),
+                      onChanged: (val) {
+                        setState(() {
+                          field.options[i] = OptionEntity(
+                            key: option.key,
+                            value: val,
+                          );
+                        });
+                      },
                     ),
-                    onChanged: (val) {
-                      setState(() {
-                        field.options[i] = OptionEntity(
-                          key: option.key,
-                          value: val,
-                        );
-                      });
-                    },
                   ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.remove_circle, color: Colors.red),
-                  onPressed: () => _removeOption(fieldIndex, i),
-                ),
-              ],
+                  IconButton(
+                    icon: const Icon(Icons.remove_circle, color: Colors.red),
+                    onPressed: () => _removeOption(fieldIndex, i),
+                  ),
+                ],
+              ),
+            );
+          }),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: TextButton.icon(
+              onPressed: () => _addOption(fieldIndex),
+              icon: const Icon(Icons.add),
+              label: const Text('Tambah Opsi'),
             ),
-          );
-        }),
-        TextButton.icon(
-          onPressed: () => _addOption(fieldIndex),
-          icon: const Icon(Icons.add),
-          label: const Text('Tambah Opsi'),
-        ),
-      ],
+          ),
+        ],
+      ),
     );
   }
 
   Widget _buildFieldCard(int index) {
     final field = _fields[index];
     return Card(
+      elevation: 2,
       margin: const EdgeInsets.symmetric(vertical: 8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(16),
         child: Column(
           children: [
+            Row(
+              children: [
+                Text(
+                  "Field ${index + 1}",
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                  ),
+                ),
+                const Spacer(),
+                IconButton(
+                  icon: const Icon(Icons.delete_outline, color: Colors.red),
+                  onPressed: () => _removeField(index),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
             TextField(
               decoration: const InputDecoration(
                 labelText: 'Label Field',
@@ -198,7 +226,7 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
               ),
               onChanged: (val) => setState(() => field.label = val),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 12),
             DropdownButtonFormField<String>(
               value: field.type,
               decoration: const InputDecoration(
@@ -209,16 +237,14 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
                 DropdownMenuItem(value: 'text', child: Text('Text')),
                 DropdownMenuItem(value: 'number', child: Text('Number')),
                 DropdownMenuItem(value: 'textarea', child: Text('Textarea')),
-                DropdownMenuItem(
-                    value: 'single-select', child: Text('Single Select')),
-                DropdownMenuItem(
-                    value: 'multi-select', child: Text('Multi Select')),
+                DropdownMenuItem(value: 'single-select', child: Text('Single Select')),
+                DropdownMenuItem(value: 'multi-select', child: Text('Multi Select')),
               ],
               onChanged: (val) {
                 if (val != null) setState(() => field.type = val);
               },
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 12),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -262,13 +288,6 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
               ),
             ],
             if (field.type.contains('select')) _buildOptionEditor(index),
-            Align(
-              alignment: Alignment.centerRight,
-              child: IconButton(
-                icon: const Icon(Icons.delete, color: Colors.red),
-                onPressed: () => _removeField(index),
-              ),
-            ),
           ],
         ),
       ),
@@ -276,60 +295,74 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
   }
 
   Widget _buildAccessControls() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        DropdownButtonFormField<String>(
-          value: _accessType,
-          decoration: const InputDecoration(
-            labelText: 'Tipe Akses',
-            border: OutlineInputBorder(),
-          ),
-          items: const [
-            DropdownMenuItem(value: 'public', child: Text('Public')),
-            DropdownMenuItem(value: 'member-only', child: Text('Member Only')),
-            DropdownMenuItem(value: 'internal', child: Text('Internal')),
-          ],
-          onChanged: (val) {
-            if (val != null) setState(() => _accessType = val);
-          },
-        ),
-        const SizedBox(height: 16),
-        const Text('Dapat Diakses Oleh:',
-            style: TextStyle(fontWeight: FontWeight.bold)),
-        Wrap(
-          spacing: 8,
+    return Card(
+      elevation: 2,
+      margin: const EdgeInsets.only(bottom: 16),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            FilterChip(
-              label: const Text('Manager'),
-              selected: _accessibleBy.contains('manager'),
-              onSelected: (_) => _toggleAccessibleBy('manager'),
+            const Text(
+              'Pengaturan Akses',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
-            FilterChip(
-              label: const Text('Staff'),
-              selected: _accessibleBy.contains('staff'),
-              onSelected: (_) => _toggleAccessibleBy('staff'),
+            const SizedBox(height: 12),
+            DropdownButtonFormField<String>(
+              value: _accessType,
+              decoration: const InputDecoration(
+                labelText: 'Tipe Akses',
+                border: OutlineInputBorder(),
+              ),
+              items: const [
+                DropdownMenuItem(value: 'public', child: Text('Public')),
+                DropdownMenuItem(value: 'member-only', child: Text('Member Only')),
+                DropdownMenuItem(value: 'internal', child: Text('Internal')),
+              ],
+              onChanged: (val) {
+                if (val != null) setState(() => _accessType = val);
+              },
             ),
+            const SizedBox(height: 16),
+            const Text('Dapat Diakses Oleh:',
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            Wrap(
+              spacing: 8,
+              children: [
+                FilterChip(
+                  label: const Text('Manager'),
+                  selected: _accessibleBy.contains('manager'),
+                  onSelected: (_) => _toggleAccessibleBy('manager'),
+                ),
+                FilterChip(
+                  label: const Text('Staff'),
+                  selected: _accessibleBy.contains('staff'),
+                  onSelected: (_) => _toggleAccessibleBy('staff'),
+                ),
+              ],
+            ),
+            if (_accessibleBy.contains('staff')) ...[
+              const SizedBox(height: 16),
+              const Text('Posisi yang Diizinkan:',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+              const SizedBox(height: 8),
+              Wrap(
+                spacing: 8,
+                children: _positionOptions.map((pos) {
+                  final selected = _allowedPositions.any((p) => p.id == pos.id);
+                  return FilterChip(
+                    label: Text(pos.name),
+                    selected: selected,
+                    onSelected: (_) => _toggleAllowedPosition(pos),
+                  );
+                }).toList(),
+              ),
+            ],
           ],
         ),
-        const SizedBox(height: 12),
-        if (_accessibleBy.contains('staff')) ...[
-          const Text('Posisi yang Diizinkan untuk Staff:',
-              style: TextStyle(fontWeight: FontWeight.bold)),
-          const SizedBox(height: 8),
-          Wrap(
-            spacing: 8,
-            children: _positionOptions.map((pos) {
-              final selected = _allowedPositions.any((p) => p.id == pos.id);
-              return FilterChip(
-                label: Text(pos.name),
-                selected: selected,
-                onSelected: (_) => _toggleAllowedPosition(pos),
-              );
-            }).toList(),
-          ),
-        ],
-      ],
+      ),
     );
   }
 
@@ -343,7 +376,6 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Form berhasil dibuat!')),
             );
-            // Navigator.pop(context);
           } else if (state is FormsError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.message)),
@@ -368,7 +400,7 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
                         border: OutlineInputBorder(),
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 12),
                     TextField(
                       controller: _descController,
                       decoration: const InputDecoration(
@@ -379,23 +411,28 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
                     ),
                     const SizedBox(height: 16),
                     _buildAccessControls(),
-                    const SizedBox(height: 16),
                     ...List.generate(_fields.length, _buildFieldCard),
                     const SizedBox(height: 8),
-                    ElevatedButton.icon(
+                    OutlinedButton.icon(
                       onPressed: _addField,
                       icon: const Icon(Icons.add),
                       label: const Text('Tambah Field'),
                     ),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 24),
                     ElevatedButton(
                       onPressed: isLoading ? null : _submitForm,
                       style: ElevatedButton.styleFrom(
                         minimumSize: const Size(double.infinity, 48),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
                       child: isLoading
                           ? const CircularProgressIndicator()
-                          : const Text('Simpan Form'),
+                          : const Text(
+                              'Simpan Form',
+                              style: TextStyle(fontSize: 16),
+                            ),
                     ),
                   ],
                 ),

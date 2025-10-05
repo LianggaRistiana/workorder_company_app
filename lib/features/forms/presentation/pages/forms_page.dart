@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -27,10 +28,17 @@ class _FormsPageState extends State<FormsPage> {
     super.dispose();
   }
 
+  Future<void> _onRefresh() async {
+    _formBloc.add(GetFormsRequested());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Forms")),
+      appBar: AppBar(
+        title: const Text("Forms"),
+        centerTitle: true,
+      ),
       body: BlocBuilder<FormsBloc, FormsState>(
         bloc: _formBloc,
         builder: (context, state) {
@@ -41,33 +49,116 @@ class _FormsPageState extends State<FormsPage> {
           if (state is FormsLoaded) {
             final forms = state.forms;
             if (forms.isEmpty) {
-              return const Center(child: Text("Belum ada form"));
+              return const Center(
+                child: Text(
+                  "Belum ada form",
+                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                ),
+              );
             }
 
             return Stack(
               children: [
-                ListView.separated(
-                  itemCount: forms.length,
-                  separatorBuilder: (_, __) => const Divider(height: 1),
-                  itemBuilder: (context, index) {
-                    final form = forms[index];
-                    return ListTile(
-                      title: Text(form.title),
-                      subtitle: Text(form.description),
-                      trailing: Text(form.accessType),
-                      onTap: () {
-                        // Navigasi ke halaman detail form
-                        context.push(AppRoutes.ownerFormDetail(form.id));
-                      },
-                    );
-                  },
+                RefreshIndicator(
+                  onRefresh: _onRefresh,
+                  child: ListView.separated(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 8,
+                      horizontal: 12,
+                    ),
+                    itemCount: forms.length,
+                    separatorBuilder: (_, __) => const SizedBox(height: 8),
+                    itemBuilder: (context, index) {
+                      final form = forms[index];
+                      return AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeOut,
+                        child: Card(
+                          elevation: 2,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(12),
+                            onTap: () {
+                              context.push(AppRoutes.ownerFormDetail(form.id));
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          form.title,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleMedium
+                                              ?.copyWith(
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                        ),
+                                      ),
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 8,
+                                          vertical: 4,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color:
+                                              form.accessType == "internal"
+                                                  ? Colors.blue.shade100
+                                                  : Colors.green.shade100,
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        child: Text(
+                                          form.accessType.toUpperCase(),
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color:
+                                                form.accessType == "internal"
+                                                    ? Colors.blue.shade800
+                                                    : Colors.green.shade800,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    form.description,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(color: Colors.grey[700]),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 ),
 
                 // overlay loading kecil saat fetch by id
                 if (state.isSubLoading)
-                  Container(
-                    color: Colors.black38,
-                    child: const Center(child: CircularProgressIndicator()),
+                  Positioned.fill(
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+                      child: Container(
+                        color: Colors.black26,
+                        child: const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      ),
+                    ),
                   ),
               ],
             );
@@ -77,7 +168,7 @@ class _FormsPageState extends State<FormsPage> {
             return Center(
               child: Text(
                 state.message,
-                style: const TextStyle(color: Colors.red),
+                style: const TextStyle(color: Colors.red, fontSize: 16),
               ),
             );
           }
@@ -85,9 +176,10 @@ class _FormsPageState extends State<FormsPage> {
           return const SizedBox.shrink();
         },
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () => context.go(AppRoutes.ownerNewForm),
-        child: const Icon(Icons.add),
+        label: const Text("Tambah Form"),
+        icon: const Icon(Icons.add),
       ),
     );
   }
