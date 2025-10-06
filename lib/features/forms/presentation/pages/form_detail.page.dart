@@ -18,8 +18,7 @@ class _FormDetailPageState extends State<FormDetailPage> {
   @override
   void initState() {
     super.initState();
-    _formsBloc = GetIt.I<FormsBloc>()
-      ..add(GetFormByIdRequested(widget.formId));
+    _formsBloc = GetIt.I<FormsBloc>()..add(GetFormByIdRequested(widget.formId));
   }
 
   IconData _getAccessIcon(String type) {
@@ -265,6 +264,29 @@ class _FormDetailPageState extends State<FormDetailPage> {
                                                 color: Colors.grey),
                                           ),
                                         ),
+                                      // if ((field.options ?? []).isNotEmpty) ...[
+                                      //   const Divider(height: 20),
+                                      //   const Text(
+                                      //     'Opsi:',
+                                      //     style: TextStyle(
+                                      //         fontWeight: FontWeight.bold),
+                                      //   ),
+                                      //   const SizedBox(height: 4),
+                                      //   Column(
+                                      //     children:
+                                      //         field.options!.map((option) {
+                                      //       return ListTile(
+                                      //         dense: true,
+                                      //         leading: const Icon(
+                                      //           Icons.circle,
+                                      //           size: 8,
+                                      //           color: Colors.grey,
+                                      //         ),
+                                      //         title: Text(option.value),
+                                      //       );
+                                      //     }).toList(),
+                                      //   ),
+                                      // ],
                                       if ((field.options ?? []).isNotEmpty) ...[
                                         const Divider(height: 20),
                                         const Text(
@@ -272,20 +294,46 @@ class _FormDetailPageState extends State<FormDetailPage> {
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold),
                                         ),
-                                        const SizedBox(height: 4),
-                                        Column(
-                                          children:
-                                              field.options!.map((option) {
-                                            return ListTile(
-                                              dense: true,
-                                              leading: const Icon(
-                                                Icons.circle,
-                                                size: 8,
-                                                color: Colors.grey,
+                                        const SizedBox(height: 8),
+
+                                        // Gunakan ListView.separated untuk opsi vertikal dengan divider
+                                        ListView.separated(
+                                          shrinkWrap:
+                                              true, // agar tidak mengambil seluruh tinggi
+                                          physics:
+                                              const NeverScrollableScrollPhysics(), // scroll tetap di SingleChildScrollView utama
+                                          itemCount: field.options!.length,
+                                          separatorBuilder: (_, __) =>
+                                              const SizedBox(height: 4),
+                                          itemBuilder: (context, index) {
+                                            final option =
+                                                field.options![index];
+                                            return Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 12,
+                                                      vertical: 8),
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color:
+                                                        Colors.grey.shade300),
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                color: Colors.grey.shade50,
                                               ),
-                                              title: Text(option.value),
+                                              child: Row(
+                                                children: [
+                                                  const Icon(Icons.circle,
+                                                      size: 8,
+                                                      color: Colors.grey),
+                                                  const SizedBox(width: 8),
+                                                  Expanded(
+                                                      child:
+                                                          Text(option.value)),
+                                                ],
+                                              ),
                                             );
-                                          }).toList(),
+                                          },
                                         ),
                                       ],
                                     ],
