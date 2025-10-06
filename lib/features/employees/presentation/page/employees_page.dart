@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 import 'package:workorder_company_app/features/employees/presentation/bloc/employees_bloc.dart';
+import 'package:workorder_company_app/routes/app_routes.dart';
 
 class EmployeesPage extends StatelessWidget {
   const EmployeesPage({super.key});
@@ -119,6 +121,7 @@ class EmployeesPage extends StatelessWidget {
       // Tombol Invite Employee
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
+          context.push(AppRoutes.ownerInviteEmployees);
           // Arahkan ke halaman invite employee
         },
         label: const Text('Tambah Karyawan'),
