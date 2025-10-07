@@ -12,6 +12,7 @@ import 'package:workorder_company_app/features/forms/presentation/pages/form_det
 import 'package:workorder_company_app/features/forms/presentation/pages/forms_page.dart';
 import 'package:workorder_company_app/features/home/presentation/pages/homepage/owner_company_homepage.dart';
 import 'package:workorder_company_app/features/positions/presentation/pages/position_page.dart';
+import 'package:workorder_company_app/features/services/presentation/pages/services_page.dart';
 import 'package:workorder_company_app/shared/layout/manager_company_layout.dart';
 import 'package:workorder_company_app/features/splash/splash_page.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
@@ -116,6 +117,10 @@ final GoRouter appRouter = GoRouter(
               final id = state.pathParameters['id']!;
               return FormDetailPage(formId: id);
             },
+          ),
+          GoRoute(
+            path: AppRoutes.ownerServices,
+            builder: (_, __) => const ServicesPage(),
           ),
         ],
       ),

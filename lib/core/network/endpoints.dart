@@ -20,4 +20,8 @@ class Endpoints {
   // Forms
   static const String forms = "/forms"; //GET all, POST
   static form(String id) => "/forms/$id"; // GET by id, PUT
+
+  // Service
+  static const String services = "/services"; // Get all, get by id, Post
+  static service(String id) => "/services/$id"; // GET by id, PUT
 }

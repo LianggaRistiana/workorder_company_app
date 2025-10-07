@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/routes/app_routes.dart';
 
 class CompanyPage extends StatelessWidget {
   const CompanyPage({super.key});
@@ -14,9 +15,9 @@ class CompanyPage extends StatelessWidget {
 
     // Menu items
     final menuItems = [
-      {'icon': Icons.badge_rounded, 'label': 'Positions', 'route': '/owner/positions'},
-      {'icon': Icons.home_repair_service_rounded, 'label': 'Services', 'route': '/owner/services'},
-      {'icon': Icons.article_rounded, 'label': 'Forms', 'route': '/owner/forms'},
+      {'icon': Icons.badge_rounded, 'label': 'Positions', 'route': AppRoutes.ownerPositions},
+      {'icon': Icons.home_repair_service_rounded, 'label': 'Services', 'route': AppRoutes.ownerServices},
+      {'icon': Icons.article_rounded, 'label': 'Forms', 'route': AppRoutes.ownerForms},
     ];
 
     return Scaffold(
