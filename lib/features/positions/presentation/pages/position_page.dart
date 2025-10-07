@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/positions_bloc.dart';
+import 'package:workorder_company_app/features/positions/presentation/widget/add_position_widget.dart';
 
 class PositionsPage extends StatelessWidget {
   const PositionsPage({super.key});
@@ -86,7 +87,6 @@ class _PositionsView extends StatelessWidget {
                     );
                   },
                 ),
-
                 if (state is PositionsLoading)
                   Container(
                     color: Colors.black26,
@@ -111,12 +111,32 @@ class _PositionsView extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          // nanti arahkan ke halaman tambah posisi
+        onPressed: () async {
+          final result = await showModalBottomSheet<String>(
+            context: context,
+            isScrollControlled: true,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+            ),
+            builder: (_) => const AddPositionBottomSheet(),
+          );
+
+          if (result != null) {
+            // TODO: handle hasilnya
+            // context.read<PositionsBloc>().add(AddPositionRequested(result));
+          }
         },
-        label: const Text('Tambah Posisi'),
         icon: const Icon(Icons.add),
+        label:  const Text('Tambah Posisi'),
       ),
+
+      // FloatingActionButton.extended(
+      //   onPressed: () {
+      //     // nanti arahkan ke halaman tambah posisi
+      //   },
+      //   label: const Text('Tambah Posisi'),
+      //   icon: const Icon(Icons.add),
+      // ),
     );
   }
 }

@@ -12,7 +12,17 @@ class AppTheme {
     colorScheme: ColorScheme.fromSeed(
       seedColor: _seedLight,
       brightness: Brightness.light,
+    ).copyWith(
+      surfaceContainerLow: const Color.fromARGB(255, 255, 255, 255), // dipakai card
     ),
+    // colorScheme: const ColorScheme.light(
+    //   primary: Color(0xFF3F51B5), // warna utama
+    //   onPrimary: Colors.white,
+    //   surface: Color(0xFFF8F9FB), // 🎯 warna permukaan (card, sheet, dialog)
+    //   onSurface: Color(0xFF1A1C1E),
+    //   secondary: Color(0xFF7986CB),
+    //   onSecondary: Colors.white,
+    // ),
     scaffoldBackgroundColor: AppColors.lightBackground,
     appBarTheme: AppBarTheme(
       backgroundColor: _seedLight,
@@ -23,9 +33,12 @@ class AppTheme {
     //   backgroundColor: Colors.black
     // ),
     textTheme: TextTheme(
-      titleLarge: AppTextStyles.titleLarge.copyWith(color: AppColors.lightTextPrimary),
-      titleMedium: AppTextStyles.titleMedium.copyWith(color: AppColors.lightTextSecondary),
-      bodyMedium: AppTextStyles.body.copyWith(color: AppColors.lightTextPrimary),
+      titleLarge:
+          AppTextStyles.titleLarge.copyWith(color: AppColors.lightTextPrimary),
+      titleMedium: AppTextStyles.titleMedium
+          .copyWith(color: AppColors.lightTextSecondary),
+      bodyMedium:
+          AppTextStyles.body.copyWith(color: AppColors.lightTextPrimary),
     ),
     inputDecorationTheme: const InputDecorationTheme(
       border: OutlineInputBorder(),
@@ -51,8 +64,10 @@ class AppTheme {
       elevation: 2,
     ),
     textTheme: TextTheme(
-      titleLarge: AppTextStyles.titleLarge.copyWith(color: AppColors.darkTextPrimary),
-      titleMedium: AppTextStyles.titleMedium.copyWith(color: AppColors.darkTextSecondary),
+      titleLarge:
+          AppTextStyles.titleLarge.copyWith(color: AppColors.darkTextPrimary),
+      titleMedium: AppTextStyles.titleMedium
+          .copyWith(color: AppColors.darkTextSecondary),
       bodyMedium: AppTextStyles.body.copyWith(color: AppColors.darkTextPrimary),
     ),
     inputDecorationTheme: const InputDecorationTheme(

@@ -14,7 +14,6 @@ class CreateNewFormPage extends StatefulWidget {
   State<CreateNewFormPage> createState() => _CreateNewFormPageState();
 }
 
-/// Wrapper UI — bukan domain entity
 class EditableField {
   String label;
   String type;
@@ -22,6 +21,7 @@ class EditableField {
   int? min;
   int? max;
   List<OptionEntity> options;
+  int order;
 
   EditableField({
     this.label = '',
@@ -29,6 +29,7 @@ class EditableField {
     this.required = false,
     this.min,
     this.max,
+    this.order = 1,
     List<OptionEntity>? options,
   }) : options = options ?? [];
 
@@ -39,6 +40,7 @@ class EditableField {
         min: min,
         max: max,
         options: options,
+        order: order,
       );
 }
 
@@ -73,8 +75,20 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
     super.dispose();
   }
 
-  void _addField() => setState(() => _fields.add(EditableField()));
-  void _removeField(int index) => setState(() => _fields.removeAt(index));
+  void _addField() {
+    setState(() {
+      _fields.add(EditableField(order: _fields.length + 1));
+    });
+  }
+
+  void _removeField(int index) {
+    setState(() {
+      _fields.removeAt(index);
+      for (int i = 0; i < _fields.length; i++) {
+        _fields[i].order = i + 1;
+      }
+    });
+  }
 
   void _addOption(int fieldIndex) {
     setState(() {
@@ -133,52 +147,69 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
       fields: _fields.map((e) => e.toEntity()).toList(),
     );
 
+    // Tambahkan aksi Bloc di sini
     _formsBloc.add(CreateFormRequested(form));
   }
 
   Widget _buildOptionEditor(int fieldIndex) {
     final field = _fields[fieldIndex];
+
     return Padding(
       padding: const EdgeInsets.only(top: 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Opsi Pilihan',
-            style: TextStyle(fontWeight: FontWeight.w600),
-          ),
+          const Text('Opsi Pilihan', style: TextStyle(fontWeight: FontWeight.w600)),
           const SizedBox(height: 8),
-          ...List.generate(field.options.length, (i) {
-            final option = field.options[i];
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Opsi ${i + 1}',
-                        border: const OutlineInputBorder(),
-                        isDense: true,
+
+          // --- Reorderable List untuk options ---
+          ReorderableListView(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            onReorder: (oldIndex, newIndex) {
+              setState(() {
+                if (newIndex > oldIndex) newIndex--;
+                final item = field.options.removeAt(oldIndex);
+                field.options.insert(newIndex, item);
+              });
+            },
+            children: List.generate(field.options.length, (i) {
+              final option = field.options[i];
+              final controller = TextEditingController(text: option.value);
+              controller.selection = TextSelection.fromPosition(
+                  TextPosition(offset: controller.text.length));
+
+              return Padding(
+                key: ValueKey(option.key),
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: Row(
+                  children: [
+                    const Icon(Icons.drag_handle),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: TextField(
+                        controller: controller,
+                        decoration: InputDecoration(
+                          labelText: 'Opsi ${i + 1}',
+                          border: const OutlineInputBorder(),
+                          isDense: true,
+                        ),
+                        onChanged: (val) {
+                          field.options[i] =
+                              OptionEntity(key: option.key, value: val);
+                        },
                       ),
-                      onChanged: (val) {
-                        setState(() {
-                          field.options[i] = OptionEntity(
-                            key: option.key,
-                            value: val,
-                          );
-                        });
-                      },
                     ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.remove_circle, color: Colors.red),
-                    onPressed: () => _removeOption(fieldIndex, i),
-                  ),
-                ],
-              ),
-            );
-          }),
+                    IconButton(
+                      icon: const Icon(Icons.remove_circle, color: Colors.red),
+                      onPressed: () => _removeOption(fieldIndex, i),
+                    ),
+                  ],
+                ),
+              );
+            }),
+          ),
+
           Align(
             alignment: Alignment.centerLeft,
             child: TextButton.icon(
@@ -194,7 +225,9 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
 
   Widget _buildFieldCard(int index) {
     final field = _fields[index];
+
     return Card(
+      key: ValueKey(field.order),
       elevation: 2,
       margin: const EdgeInsets.symmetric(vertical: 8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -204,14 +237,11 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
           children: [
             Row(
               children: [
-                Text(
-                  "Field ${index + 1}",
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
-                  ),
-                ),
+                Text("Field ${field.order}",
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w600, fontSize: 16)),
                 const Spacer(),
+                const Icon(Icons.drag_handle),
                 IconButton(
                   icon: const Icon(Icons.delete_outline, color: Colors.red),
                   onPressed: () => _removeField(index),
@@ -224,7 +254,8 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
                 labelText: 'Label Field',
                 border: OutlineInputBorder(),
               ),
-              onChanged: (val) => setState(() => field.label = val),
+              onChanged: (val) => field.label = val,
+              controller: TextEditingController(text: field.label),
             ),
             const SizedBox(height: 12),
             DropdownButtonFormField<String>(
@@ -266,9 +297,9 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
                         border: OutlineInputBorder(),
                       ),
                       keyboardType: TextInputType.number,
-                      onChanged: (val) {
-                        setState(() => field.min = int.tryParse(val));
-                      },
+                      onChanged: (val) => field.min = int.tryParse(val),
+                      controller: TextEditingController(
+                          text: field.min?.toString() ?? ''),
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -279,9 +310,9 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
                         border: OutlineInputBorder(),
                       ),
                       keyboardType: TextInputType.number,
-                      onChanged: (val) {
-                        setState(() => field.max = int.tryParse(val));
-                      },
+                      onChanged: (val) => field.max = int.tryParse(val),
+                      controller: TextEditingController(
+                          text: field.max?.toString() ?? ''),
                     ),
                   ),
                 ],
@@ -304,10 +335,8 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Pengaturan Akses',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            ),
+            const Text('Pengaturan Akses',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             const SizedBox(height: 12),
             DropdownButtonFormField<String>(
               value: _accessType,
@@ -373,21 +402,18 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
       child: BlocListener<FormsBloc, FormsState>(
         listener: (context, state) {
           if (state is FormsLoaded && !state.isSubLoading) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Form berhasil dibuat!')),
-            );
+            ScaffoldMessenger.of(context)
+                .showSnackBar(const SnackBar(content: Text('Form berhasil dibuat!')));
           } else if (state is FormsError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
-            );
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(state.message)));
           }
         },
         child: Scaffold(
           appBar: AppBar(title: const Text('Buat Form Baru')),
           body: BlocBuilder<FormsBloc, FormsState>(
             builder: (context, state) {
-              final isLoading =
-                  state is FormsLoaded ? state.isSubLoading : false;
+              final isLoading = state is FormsLoaded ? state.isSubLoading : false;
 
               return SingleChildScrollView(
                 padding: const EdgeInsets.all(16),
@@ -411,7 +437,27 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
                     ),
                     const SizedBox(height: 16),
                     _buildAccessControls(),
-                    ...List.generate(_fields.length, _buildFieldCard),
+
+                    // --- Reorderable List untuk fields ---
+                    ReorderableListView(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      onReorder: (oldIndex, newIndex) {
+                        setState(() {
+                          if (newIndex > oldIndex) newIndex--;
+                          final item = _fields.removeAt(oldIndex);
+                          _fields.insert(newIndex, item);
+                          for (int i = 0; i < _fields.length; i++) {
+                            _fields[i].order = i + 1;
+                          }
+                        });
+                      },
+                      children: List.generate(
+                        _fields.length,
+                        (index) => _buildFieldCard(index),
+                      ),
+                    ),
+
                     const SizedBox(height: 8),
                     OutlinedButton.icon(
                       onPressed: _addField,
@@ -429,10 +475,7 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
                       ),
                       child: isLoading
                           ? const CircularProgressIndicator()
-                          : const Text(
-                              'Simpan Form',
-                              style: TextStyle(fontSize: 16),
-                            ),
+                          : const Text('Simpan Form', style: TextStyle(fontSize: 16)),
                     ),
                   ],
                 ),
