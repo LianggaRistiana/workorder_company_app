@@ -13,8 +13,9 @@ class AppTheme {
       seedColor: _seedLight,
       brightness: Brightness.light,
     ).copyWith(
-      surfaceContainerLow: const Color.fromARGB(255, 255, 255, 255), // dipakai card
-    ),
+        surfaceContainerLow:
+            const Color.fromARGB(255, 255, 255, 255), // dipakai card
+        surface: AppColors.lightBackground),
     // colorScheme: const ColorScheme.light(
     //   primary: Color(0xFF3F51B5), // warna utama
     //   onPrimary: Colors.white,
@@ -25,9 +26,10 @@ class AppTheme {
     // ),
     scaffoldBackgroundColor: AppColors.lightBackground,
     appBarTheme: AppBarTheme(
-      backgroundColor: _seedLight,
-      foregroundColor: Colors.white,
-      elevation: 2,
+      backgroundColor: AppColors.lightBackground,
+      surfaceTintColor: AppColors.lightBackground,
+      foregroundColor: Colors.black,
+      elevation: 0,
     ),
     // bottomNavigationBarTheme: BottomNavigationBarThemeData(
     //   backgroundColor: Colors.black

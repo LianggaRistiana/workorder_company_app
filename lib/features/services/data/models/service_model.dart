@@ -1,4 +1,4 @@
-import 'package:workorder_company_app/features/forms/data/model/form_model.dart';
+import 'package:workorder_company_app/features/services/data/models/form_order_model.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
 import 'package:workorder_company_app/features/services/data/models/required_staff_model.dart';
 
@@ -25,11 +25,13 @@ class ServiceModel extends ServiceEntity {
               .toList() ??
           [],
       workOrderForms: (json['workOrderForms'] as List<dynamic>?)
-          ?.map((e) => FormModel.fromJson(e))
-          .toList(),
+              ?.map((e) => FormOrderModel.fromJson(e))
+              .toList() ??
+          [],
       reportForms: (json['reportForms'] as List<dynamic>?)
-          ?.map((e) => FormModel.fromJson(e))
-          .toList(),
+              ?.map((e) => FormOrderModel.fromJson(e))
+              .toList() ??
+          [],
       accessType: json['accessType'] ?? '',
       isActive: json['isActive'] ?? false,
     );
@@ -44,12 +46,10 @@ class ServiceModel extends ServiceEntity {
       'requiredStaff': requiredStaff
           .map((e) => (e as RequiredStaffModel).toJson())
           .toList(),
-      'workOrderForms': workOrderForms
-          ?.map((e) => (e as FormModel).toJson())
-          .toList(),
-      'reportForms': reportForms
-          ?.map((e) => (e as FormModel).toJson())
-          .toList(),
+      'workOrderForms':
+          workOrderForms?.map((e) => (e as FormOrderModel).toJson()).toList(),
+      'reportForms':
+          reportForms?.map((e) => (e as FormOrderModel).toJson()).toList(),
       'accessType': accessType,
       'isActive': isActive,
     };

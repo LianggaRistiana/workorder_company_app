@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
-import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
+import 'package:workorder_company_app/features/services/domain/entities/form_order_entity.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/services_bloc.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/widgets/modern_app_bar.dart';
 
 class ServiceDetailPage extends StatefulWidget {
   final String serviceId;
@@ -76,25 +77,56 @@ class _ServiceDetailPageState extends State<ServiceDetailPage> {
           }
 
           // ✅ Perbaikan utama: DefaultTabController melingkupi seluruh Scaffold
+          // return DefaultTabController(
+          //   length: 3,
+          //   child: Scaffold(
+          //     appBar: AppBar(
+          //       title: const Text('Service Detail'),
+          //       bottom: const TabBar(
+          //         tabs: [
+          //           Tab(text: "Overview"),
+          //           Tab(text: "Work Order Forms"),
+          //           Tab(text: "Report Forms"),
+          //         ],
+          //       ),
+          //     ),
+          //     body: TabBarView(
+          //       children: [
+          //         _buildOverviewTab(service),
+          //         _buildFormsTab(service.workOrderForms, "Work Order Forms"),
+          //         _buildFormsTab(service.reportForms, "Report Forms"),
+          //       ],
+          //     ),
+          //   ),
+          // );
           return DefaultTabController(
             length: 3,
             child: Scaffold(
-              appBar: AppBar(
-                title: const Text('Service Detail'),
-                bottom: const TabBar(
-                  tabs: [
-                    Tab(text: "Overview"),
-                    Tab(text: "Work Order Forms"),
-                    Tab(text: "Report Forms"),
+              body: NestedScrollView(
+                headerSliverBuilder: (context, innerBoxIsScrolled) {
+                  return [
+                    ModernAppBar(
+                      title: service.title,
+                      tabBar: const TabBar(
+                        labelColor: Colors.black,
+                        indicatorColor: Colors.blue,
+                        dividerColor: Colors.transparent,
+                        tabs: [
+                          Tab(text: "Overview"),
+                          Tab(text: "WorkOrder Forms"),
+                          Tab(text: "Report Forms"),
+                        ],
+                      ),
+                    ),
+                  ];
+                },
+                body: TabBarView(
+                  children: [
+                    _buildOverviewTab(service),
+                    _buildFormsTab(service.workOrderForms, "Work Order Forms"),
+                    _buildFormsTab(service.reportForms, "Report Forms"),
                   ],
                 ),
-              ),
-              body: TabBarView(
-                children: [
-                  _buildOverviewTab(service),
-                  _buildFormsTab(service.workOrderForms, "Work Order Forms"),
-                  _buildFormsTab(service.reportForms, "Report Forms"),
-                ],
               ),
             ),
           );
@@ -115,7 +147,6 @@ class _ServiceDetailPageState extends State<ServiceDetailPage> {
         children: [
           // 🟦 Card utama: Informasi umum
           Card(
-            elevation: 3,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             child: Padding(
@@ -124,35 +155,12 @@ class _ServiceDetailPageState extends State<ServiceDetailPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Title
-                  Text(
-                    service.title,
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                  const SizedBox(height: 12),
-
-                  // Access type & status
-                  Row(
-                    children: [
-                      _buildAccessTypeChip(service.accessType),
-                      const SizedBox(width: 8),
-                      Chip(
-                        label: Text(service.isActive ? "Active" : "Inactive"),
-                        backgroundColor: service.isActive
-                            ? Colors.green.shade50
-                            : Colors.grey.shade200,
-                        avatar: Icon(
-                          service.isActive ? Icons.check_circle : Icons.cancel,
-                          color: service.isActive
-                              ? Colors.green
-                              : Colors.grey.shade600,
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 16),
+                  // Text(
+                  //   service.title,
+                  //   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  //         fontWeight: FontWeight.bold,
+                  //       ),
+                  // ),
 
                   // Description
                   Text(
@@ -165,6 +173,23 @@ class _ServiceDetailPageState extends State<ServiceDetailPage> {
                 ],
               ),
             ),
+          ),
+          // Access type & status
+          Row(
+            children: [
+              _buildAccessTypeChip(service.accessType),
+              const SizedBox(width: 8),
+              Chip(
+                label: Text(service.isActive ? "Active" : "Inactive"),
+                backgroundColor: service.isActive
+                    ? Colors.green.shade50
+                    : Colors.grey.shade200,
+                avatar: Icon(
+                  service.isActive ? Icons.check_circle : Icons.cancel,
+                  color: service.isActive ? Colors.green : Colors.grey.shade600,
+                ),
+              ),
+            ],
           ),
 
           const SizedBox(height: 24),
@@ -182,7 +207,6 @@ class _ServiceDetailPageState extends State<ServiceDetailPage> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  elevation: 2,
                   child: ListTile(
                     leading: const CircleAvatar(
                       child:
@@ -204,17 +228,22 @@ class _ServiceDetailPageState extends State<ServiceDetailPage> {
     );
   }
 
-  Widget _buildFormsTab(List<FormEntity>? forms, String title) {
-    if (forms == null || forms.isEmpty) {
+  Widget _buildFormsTab(List<FormOrderEntity>? formOrders, String title) {
+    if (formOrders == null || formOrders.isEmpty) {
       return Center(child: Text("No $title available."));
     }
 
+    final sortedForms = [...formOrders]
+      ..sort((a, b) => a.order.compareTo(b.order));
+
     return ListView.builder(
       padding: const EdgeInsets.all(16),
-      itemCount: forms.length,
+      itemCount: sortedForms.length,
       itemBuilder: (context, index) => _buildFormCard(
-        forms[index],
-        onTap: () => context.push(AppRoutes.ownerFormDetail(forms[index].id)),
+        sortedForms[index].form,
+        onTap: () => context.push(
+          AppRoutes.ownerFormDetail(sortedForms[index].form.id),
+        ),
       ),
     );
   }
@@ -227,7 +256,6 @@ class _ServiceDetailPageState extends State<ServiceDetailPage> {
       highlightColor: Colors.transparent,
       child: Card(
         margin: const EdgeInsets.only(bottom: 16),
-        elevation: 3,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         child: Padding(
           padding: const EdgeInsets.all(20),
