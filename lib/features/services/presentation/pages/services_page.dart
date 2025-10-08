@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/services_bloc.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
+import 'package:workorder_company_app/routes/app_routes.dart';
 
 class ServicesPage extends StatefulWidget {
   const ServicesPage({super.key});
@@ -96,8 +98,7 @@ class _ServicesPageState extends State<ServicesPage> {
           label: Text(service.accessType),
         ),
         onTap: () {
-          // TODO: Aksi ketika service ditekan (misal ke halaman detail)
-          // context.read<ServicesBloc>().add(GetServiceByIdRequested(service.id));
+          context.push(AppRoutes.ownerServiceDetail(service.id));
         },
       ),
     );

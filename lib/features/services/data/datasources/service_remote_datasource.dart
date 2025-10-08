@@ -14,9 +14,10 @@ class ServiceRemoteDatasourceImpl implements ServiceRemoteDatasource {
   ServiceRemoteDatasourceImpl(this._apiClient);
 
   @override
-  Future<ApiResponse<ServiceModel>> getService(String id) {
-    // TODO: implement getService
-    throw UnimplementedError();
+  Future<ApiResponse<ServiceModel>> getService(String id) async {
+    final response = await _apiClient.get(Endpoints.service(id));
+    return ApiResponse.fromJson(
+        response, (data) => ServiceModel.fromJson(data));
   }
 
   @override

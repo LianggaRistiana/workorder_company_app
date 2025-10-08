@@ -2,6 +2,7 @@ import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features/services/data/datasources/service_remote_datasource.dart';
 import 'package:workorder_company_app/features/services/data/repositories/service_repository_impl.dart';
 import 'package:workorder_company_app/features/services/domain/repositories/service_repository.dart';
+import 'package:workorder_company_app/features/services/domain/usecases/get_service_by_id_usecase.dart';
 import 'package:workorder_company_app/features/services/domain/usecases/get_services_usecase.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/services_bloc.dart';
 
@@ -13,7 +14,8 @@ Future<void> initServicesFeature() async {
       () => ServiceRepositoryImpl(sl()));
 
   sl.registerLazySingleton<GetServicesUsecase>(() => GetServicesUsecase(sl()));
+  sl.registerLazySingleton<GetServiceByIdUsecase>(() => GetServiceByIdUsecase(sl()));
 
   sl.registerFactory<ServicesBloc>(
-      () => ServicesBloc(getServicesUsecase: sl()));
+      () => ServicesBloc(getServicesUsecase: sl(), getServiceByIdUsecase: sl()));
 }

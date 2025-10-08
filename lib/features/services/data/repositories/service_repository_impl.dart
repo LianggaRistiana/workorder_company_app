@@ -11,16 +11,18 @@ class ServiceRepositoryImpl implements ServiceRepository {
   ServiceRepositoryImpl(this._remoteDatasource);
 
   @override
-  Future<Either<Failure, List<ServiceEntity>>> getService(String id) {
-    // TODO: implement getService
-    throw UnimplementedError();
-  }
-
-  @override
   Future<Either<Failure, List<ServiceEntity>>> getServices() {
     return safeCall(() async {
       final services = await _remoteDatasource.getServices();
       return services.data ?? [];
+    });
+  }
+
+  @override
+  Future<Either<Failure, ServiceEntity>> getService(String id) async {
+    return safeCall(() async {
+      final service = await _remoteDatasource.getService(id);
+      return service.data!;
     });
   }
 }
