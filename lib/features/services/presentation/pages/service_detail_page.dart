@@ -77,59 +77,60 @@ class _ServiceDetailPageState extends State<ServiceDetailPage> {
           }
 
           // ✅ Perbaikan utama: DefaultTabController melingkupi seluruh Scaffold
-          // return DefaultTabController(
-          //   length: 3,
-          //   child: Scaffold(
-          //     appBar: AppBar(
-          //       title: const Text('Service Detail'),
-          //       bottom: const TabBar(
-          //         tabs: [
-          //           Tab(text: "Overview"),
-          //           Tab(text: "Work Order Forms"),
-          //           Tab(text: "Report Forms"),
-          //         ],
-          //       ),
-          //     ),
-          //     body: TabBarView(
-          //       children: [
-          //         _buildOverviewTab(service),
-          //         _buildFormsTab(service.workOrderForms, "Work Order Forms"),
-          //         _buildFormsTab(service.reportForms, "Report Forms"),
-          //       ],
-          //     ),
-          //   ),
-          // );
           return DefaultTabController(
             length: 3,
             child: Scaffold(
-              body: NestedScrollView(
-                headerSliverBuilder: (context, innerBoxIsScrolled) {
-                  return [
-                    ModernAppBar(
-                      title: service.title,
-                      tabBar: const TabBar(
-                        labelColor: Colors.black,
-                        indicatorColor: Colors.blue,
-                        dividerColor: Colors.transparent,
-                        tabs: [
-                          Tab(text: "Overview"),
-                          Tab(text: "WorkOrder Forms"),
-                          Tab(text: "Report Forms"),
-                        ],
-                      ),
-                    ),
-                  ];
-                },
-                body: TabBarView(
-                  children: [
-                    _buildOverviewTab(service),
-                    _buildFormsTab(service.workOrderForms, "Work Order Forms"),
-                    _buildFormsTab(service.reportForms, "Report Forms"),
+              appBar: AppBar(
+                title: Text(service.title),
+                bottom: const TabBar(
+                  dividerColor: Colors.transparent,
+                  tabs: [
+                    Tab(text: "Overview"),
+                    Tab(text: "Work Order Forms"),
+                    Tab(text: "Report Forms"),
                   ],
                 ),
               ),
+              body: TabBarView(
+                children: [
+                  _buildOverviewTab(service),
+                  _buildFormsTab(service.workOrderForms, "Work Order Forms"),
+                  _buildFormsTab(service.reportForms, "Report Forms"),
+                ],
+              ),
             ),
           );
+          // return DefaultTabController(
+          //   length: 3,
+          //   child: Scaffold(
+          //     body: NestedScrollView(
+          //       headerSliverBuilder: (context, innerBoxIsScrolled) {
+          //         return [
+          //           ModernAppBar(
+          //             title: service.title,
+          //             tabBar: const TabBar(
+          //               labelColor: Colors.black,
+          //               indicatorColor: Colors.blue,
+          //               dividerColor: Colors.transparent,
+          //               tabs: [
+          //                 Tab(text: "Overview"),
+          //                 Tab(text: "WorkOrder Forms"),
+          //                 Tab(text: "Report Forms"),
+          //               ],
+          //             ),
+          //           ),
+          //         ];
+          //       },
+          //       body: TabBarView(
+          //         children: [
+          //           _buildOverviewTab(service),
+          //           _buildFormsTab(service.workOrderForms, "Work Order Forms"),
+          //           _buildFormsTab(service.reportForms, "Report Forms"),
+          //         ],
+          //       ),
+          //     ),
+          //   ),
+          // );
         }
 
         return const Scaffold(
@@ -146,6 +147,23 @@ class _ServiceDetailPageState extends State<ServiceDetailPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // 🟦 Card utama: Informasi umum
+          Row(
+            children: [
+              _buildAccessTypeChip(service.accessType),
+              const SizedBox(width: 8),
+              Chip(
+                label: Text(service.isActive ? "Active" : "Inactive"),
+                backgroundColor: service.isActive
+                    ? Colors.green.shade50
+                    : Colors.grey.shade200,
+                avatar: Icon(
+                  service.isActive ? Icons.check_circle : Icons.cancel,
+                  color: service.isActive ? Colors.green : Colors.grey.shade600,
+                ),
+              ),
+            ],
+          ),
+          _buildSectionTitle("Description"),
           Card(
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -173,23 +191,6 @@ class _ServiceDetailPageState extends State<ServiceDetailPage> {
                 ],
               ),
             ),
-          ),
-          // Access type & status
-          Row(
-            children: [
-              _buildAccessTypeChip(service.accessType),
-              const SizedBox(width: 8),
-              Chip(
-                label: Text(service.isActive ? "Active" : "Inactive"),
-                backgroundColor: service.isActive
-                    ? Colors.green.shade50
-                    : Colors.grey.shade200,
-                avatar: Icon(
-                  service.isActive ? Icons.check_circle : Icons.cancel,
-                  color: service.isActive ? Colors.green : Colors.grey.shade600,
-                ),
-              ),
-            ],
           ),
 
           const SizedBox(height: 24),
@@ -239,6 +240,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage> {
     return ListView.builder(
       padding: const EdgeInsets.all(16),
       itemCount: sortedForms.length,
+      physics: ClampingScrollPhysics(),
       itemBuilder: (context, index) => _buildFormCard(
         sortedForms[index].form,
         onTap: () => context.push(
