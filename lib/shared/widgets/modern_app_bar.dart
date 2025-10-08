@@ -13,12 +13,13 @@ class ModernAppBar extends StatelessWidget {
     this.expandedHeight = 160, // tambah sedikit tinggi
     this.onBack,
     this.backgroundColor = Colors.transparent,
-    this.tabBar,
+    this.tabBar
   });
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final canPop = Navigator.of(context).canPop();
 
     return SliverAppBar(
       // surfaceTintColor: AppBarTheme().surfaceTintColor ?? Theme.of(context).colorScheme.primary,
@@ -26,11 +27,16 @@ class ModernAppBar extends StatelessWidget {
       elevation: 0,
       pinned: true,
       expandedHeight: expandedHeight,
-      leading: IconButton(
-        icon:
-            Icon(Icons.arrow_back, color: isDark ? Colors.white : Colors.black),
-        onPressed: onBack ?? () => Navigator.pop(context),
-      ),
+      // actions: widget != null ? [widget!] : [],
+      leading: canPop
+          ? IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                color: isDark ? Colors.white : Colors.black,
+              ),
+              onPressed: onBack ?? () => Navigator.pop(context),
+            )
+          : null,
       flexibleSpace: LayoutBuilder(
         builder: (context, constraints) {
           final t = ((constraints.maxHeight - kToolbarHeight) /
@@ -40,16 +46,14 @@ class ModernAppBar extends StatelessWidget {
           return FlexibleSpaceBar(
             centerTitle: false,
             titlePadding: EdgeInsets.only(
-              left: 72,
+              left: canPop ? 72 : 0,
               bottom: tabBar != null ? 60 : 16,
             ),
             background: Container(
-              // color: isDark
-              //     ? Colors.grey.shade900
-              //     : Colors.white, // solid background
-            ),
+                // color: isDark ? Colors.grey.shade900 : Colors.white,
+                ),
             title: Transform.translate(
-              offset: Offset(-24, 8 * t - 8),
+              offset: Offset(canPop ? -24 : 16, 8 * t - 12),
               child: Text(
                 title,
                 style: TextStyle(
