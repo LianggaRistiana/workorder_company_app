@@ -5,7 +5,7 @@ import 'package:workorder_company_app/features/positions/data/models/position_mo
 
 abstract class PositionsRemoteDatasource {
   Future<ApiResponse<List<PositionModel>>> getPositions();
-  Future<ApiResponse<PositionModel>> createPosition();
+  Future<ApiResponse<PositionModel>> createPosition(String name);
   Future<ApiResponse<PositionModel>> updatePosition();
 }
 
@@ -13,12 +13,6 @@ class PositionsRemoteDatasourceImpl implements PositionsRemoteDatasource {
   final ApiClient _apiClient;
 
   PositionsRemoteDatasourceImpl(this._apiClient);
-
-  @override
-  Future<ApiResponse<PositionModel>> createPosition() {
-    // TODO: implement createPosition
-    throw UnimplementedError();
-  }
 
   @override
   Future<ApiResponse<List<PositionModel>>> getPositions() async {
@@ -34,5 +28,12 @@ class PositionsRemoteDatasourceImpl implements PositionsRemoteDatasource {
   Future<ApiResponse<PositionModel>> updatePosition() {
     // TODO: implement updatePosition
     throw UnimplementedError();
+  }
+
+  @override
+  Future<ApiResponse<PositionModel>> createPosition(String name) async {
+    final response = await _apiClient.post(Endpoints.positions, data: name);
+    return ApiResponse.fromJson(
+        response, (data) => PositionModel.fromJson(data));
   }
 }

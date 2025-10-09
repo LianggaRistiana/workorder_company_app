@@ -11,8 +11,9 @@ class PositionsRepositoryImpl implements PositionsRepository {
   PositionsRepositoryImpl(this._remoteDatasource);
   @override
   Future<Either<Failure, void>> createPostion(String name) {
-    // TODO: implement createPostion
-    throw UnimplementedError();
+    return safeCall(() async {
+      await _remoteDatasource.createPosition(name);
+    });
   }
 
   @override
