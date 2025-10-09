@@ -12,6 +12,18 @@ class RequiredStaffEntity extends Equatable {
     required this.maximumStaff,
   });
 
+  RequiredStaffEntity copyWith({
+    PositionEntity? position,
+    int? minimumStaff,
+    int? maximumStaff
+  }) {
+    return RequiredStaffEntity(
+      position: position ?? this.position,
+      minimumStaff: minimumStaff ?? this.minimumStaff,
+      maximumStaff: maximumStaff ?? this.maximumStaff,
+    );
+  }
+
   @override
   List<Object?> get props => [position, minimumStaff, maximumStaff];
 }

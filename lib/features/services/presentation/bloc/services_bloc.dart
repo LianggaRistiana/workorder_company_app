@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
+import 'package:workorder_company_app/features/services/domain/usecases/create_service_usecase.dart';
 import 'package:workorder_company_app/features/services/domain/usecases/get_service_by_id_usecase.dart';
 import 'package:workorder_company_app/features/services/domain/usecases/get_services_usecase.dart';
 
@@ -9,13 +10,16 @@ part 'services_state.dart';
 class ServicesBloc extends Bloc<ServicesEvent, ServicesState> {
   final GetServicesUsecase getServicesUsecase;
   final GetServiceByIdUsecase getServiceByIdUsecase;
+  final CreateServiceUsecase createServiceUsecase;
 
   ServicesBloc({
     required this.getServicesUsecase,
     required this.getServiceByIdUsecase,
+    required this.createServiceUsecase,
   }) : super(ServicesInitial()) {
     on<GetServicesRequested>(_onServicesRequested);
     on<GetServiceByIdRequested>(_onServiceByIdRequested);
+    on<CreateServiceRequested>(_onCreateService);
   }
 
   /// 🔹 Ambil semua services
@@ -64,6 +68,39 @@ class ServicesBloc extends Bloc<ServicesEvent, ServicesState> {
         (service) {
           emit(ServicesLoaded(services: const [], selectedService: service));
         },
+      );
+    }
+  }
+
+  Future<void> _onCreateService(
+    CreateServiceRequested event,
+    Emitter<ServicesState> emit,
+  ) async {
+    if (state is ServicesLoaded) {
+      final current = state as ServicesLoaded;
+      emit(current.copyWith(isSubLoading: true, errorMessage: null));
+
+      final result = await createServiceUsecase(event.service);
+      result.fold(
+        (failure) => emit(
+          current.copyWith(
+            isSubLoading: false,
+            errorMessage: failure.message,
+          ),
+        ),
+        (_) => emit(
+          current.copyWith(
+            isSubLoading: false,
+          ),
+        ),
+      );
+    } else {
+      emit(ServicesLoading());
+
+      final result = await createServiceUsecase(event.service);
+      result.fold(
+        (failure) => emit(ServicesError(failure.message)),
+        (_) => emit(ServicesLoaded(services: [])),
       );
     }
   }

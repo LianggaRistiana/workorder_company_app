@@ -20,9 +20,19 @@ class RequiredStaffModel extends RequiredStaffEntity {
   /// Convert Model → JSON
   Map<String, dynamic> toJson() {
     return {
-      'position': (position as PositionModel).toJson(),
+      'positionId': (position as PositionModel).id,
       'minimumStaff': minimumStaff,
       'maximumStaff': maximumStaff,
     };
+  }
+
+  factory RequiredStaffModel.fromEntity(RequiredStaffEntity entity) {
+    return RequiredStaffModel(
+      position: entity.position is PositionModel
+          ? entity.position as PositionModel
+          : PositionModel.fromEntity(entity.position),
+      minimumStaff: entity.minimumStaff,
+      maximumStaff: entity.maximumStaff,
+    );
   }
 }

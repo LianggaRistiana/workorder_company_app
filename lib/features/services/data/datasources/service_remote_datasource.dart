@@ -2,10 +2,12 @@ import 'package:workorder_company_app/core/network/api_client.dart';
 import 'package:workorder_company_app/core/network/api_response.dart';
 import 'package:workorder_company_app/core/network/endpoints.dart';
 import 'package:workorder_company_app/features/services/data/models/service_model.dart';
+import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
 
 abstract class ServiceRemoteDatasource {
   Future<ApiResponse<List<ServiceModel>>> getServices();
   Future<ApiResponse<ServiceModel>> getService(String id);
+  Future<ApiResponse<ServiceModel>> createService(ServiceModel service);
 }
 
 class ServiceRemoteDatasourceImpl implements ServiceRemoteDatasource {
@@ -30,5 +32,13 @@ class ServiceRemoteDatasourceImpl implements ServiceRemoteDatasource {
           .map((e) => ServiceModel.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
+  }
+
+  @override
+  Future<ApiResponse<ServiceModel>> createService(ServiceModel service) async {
+    final response =
+        await _apiClient.post(Endpoints.services, data: service.toJson());
+    return ApiResponse<ServiceModel>.fromJson(
+        response, (data) => ServiceModel.fromJson(data));
   }
 }

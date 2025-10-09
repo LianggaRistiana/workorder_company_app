@@ -37,6 +37,17 @@ class _ServicesPageState extends State<ServicesPage> {
         appBar: AppBar(
           title: const Text('Services'),
         ),
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () async {
+            final result = await context.push(AppRoutes.ownerNewService);
+            if (result == true && context.mounted) {
+              // TODO: pindahkan bloc ke multi prov global agar bisa auto refresh
+              // context.read<ServicesBloc>().add(GetServicesRequested());
+            }
+          },
+          label: const Text("Tambah Layanan"),
+          icon: const Icon(Icons.add),
+        ),
         body: BlocBuilder<ServicesBloc, ServicesState>(
           builder: (context, state) {
             if (state is ServicesLoading) {

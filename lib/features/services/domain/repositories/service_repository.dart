@@ -5,4 +5,5 @@ import 'package:workorder_company_app/features/services/domain/entities/service_
 abstract class ServiceRepository {
   Future<Either<Failure, List<ServiceEntity>>> getServices();
   Future<Either<Failure, ServiceEntity>> getService(String id);
+  Future<Either<Failure, void>> createService(ServiceEntity service);
 }

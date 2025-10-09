@@ -54,4 +54,27 @@ class ServiceModel extends ServiceEntity {
       'isActive': isActive,
     };
   }
+    /// Convert from Entity → Model
+  factory ServiceModel.fromEntity(ServiceEntity entity) {
+    return ServiceModel(
+      id: entity.id,
+      title: entity.title,
+      description: entity.description,
+      requiredStaff: entity.requiredStaff
+          .map((e) => e is RequiredStaffModel
+              ? e
+              : RequiredStaffModel.fromEntity(e))
+          .toList(),
+      workOrderForms: entity.workOrderForms
+          ?.map((e) =>
+              e is FormOrderModel ? e : FormOrderModel.fromEntity(e))
+          .toList(),
+      reportForms: entity.reportForms
+          ?.map((e) =>
+              e is FormOrderModel ? e : FormOrderModel.fromEntity(e))
+          .toList(),
+      accessType: entity.accessType,
+      isActive: entity.isActive,
+    );
+  }
 }

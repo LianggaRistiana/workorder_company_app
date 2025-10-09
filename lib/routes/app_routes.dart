@@ -14,5 +14,6 @@ class AppRoutes {
   static const ownerNewForm = '/owner/new-forms';
   static ownerFormDetail(String id) => '/owner/forms/$id';
   static const ownerServices = '/owner/services';
+  static const ownerNewService = '/owner/new-service';
   static ownerServiceDetail(String id) => '/owner/services/$id';
 }
