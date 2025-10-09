@@ -6,7 +6,6 @@ import 'package:workorder_company_app/features/services/domain/entities/form_ord
 import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/services_bloc.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
-import 'package:workorder_company_app/shared/widgets/modern_app_bar.dart';
 
 class ServiceDetailPage extends StatefulWidget {
   final String serviceId;
@@ -23,8 +22,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage> {
   @override
   void initState() {
     super.initState();
-    _servicesBloc = sl<ServicesBloc>()
-      ..add(GetServiceByIdRequested(widget.serviceId));
+    _servicesBloc = sl<ServicesBloc>()..add(GetServiceByIdRequested(widget.serviceId));
   }
 
   @override
@@ -80,59 +78,38 @@ class _ServiceDetailPageState extends State<ServiceDetailPage> {
           return DefaultTabController(
             length: 3,
             child: Scaffold(
-              appBar: AppBar(
-                title: Text(service.title),
-                bottom: const TabBar(
-                  dividerColor: Colors.transparent,
-                  tabs: [
-                    Tab(text: "Overview"),
-                    Tab(text: "Work Order Forms"),
-                    Tab(text: "Report Forms"),
+              body: NestedScrollView(
+                headerSliverBuilder: (context, innerBoxIsScrolled) => [
+                  SliverAppBar(
+                    expandedHeight: 160,
+                    pinned: true,
+                    flexibleSpace: FlexibleSpaceBar(
+                      centerTitle: true,
+                      expandedTitleScale: 1.5,
+                      titlePadding: EdgeInsets.only(bottom: 64),
+                      title: Text(service.title),
+                    ),
+                    bottom: const TabBar(
+                      dividerColor: Colors.transparent,
+                      tabs: [
+                        Tab(text: "Overview"),
+                        Tab(text: "Work Forms"),
+                        Tab(text: "Report Forms"),
+                      ],
+                    ),
+                  ),
+                ],
+                body: TabBarView(
+                  children: [
+                    _buildOverviewTab(service),
+                    _buildFormsTab(service.workOrderForms, "WorkOrder Forms"),
+                    _buildFormsTab(service.reportForms, "Report Forms"),
                   ],
                 ),
               ),
-              body: TabBarView(
-                children: [
-                  _buildOverviewTab(service),
-                  _buildFormsTab(service.workOrderForms, "Work Order Forms"),
-                  _buildFormsTab(service.reportForms, "Report Forms"),
-                ],
-              ),
             ),
           );
-          // return DefaultTabController(
-          //   length: 3,
-          //   child: Scaffold(
-          //     body: NestedScrollView(
-          //       headerSliverBuilder: (context, innerBoxIsScrolled) {
-          //         return [
-          //           ModernAppBar(
-          //             title: service.title,
-          //             tabBar: const TabBar(
-          //               labelColor: Colors.black,
-          //               indicatorColor: Colors.blue,
-          //               dividerColor: Colors.transparent,
-          //               tabs: [
-          //                 Tab(text: "Overview"),
-          //                 Tab(text: "WorkOrder Forms"),
-          //                 Tab(text: "Report Forms"),
-          //               ],
-          //             ),
-          //           ),
-          //         ];
-          //       },
-          //       body: TabBarView(
-          //         children: [
-          //           _buildOverviewTab(service),
-          //           _buildFormsTab(service.workOrderForms, "Work Order Forms"),
-          //           _buildFormsTab(service.reportForms, "Report Forms"),
-          //         ],
-          //       ),
-          //     ),
-          //   ),
-          // );
         }
-
         return const Scaffold(
           body: SizedBox(),
         );
@@ -141,91 +118,68 @@ class _ServiceDetailPageState extends State<ServiceDetailPage> {
   }
 
   Widget _buildOverviewTab(ServiceEntity service) {
-    return SingleChildScrollView(
+    return ListView(
       padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // 🟦 Card utama: Informasi umum
-          Row(
-            children: [
-              _buildAccessTypeChip(service.accessType),
-              const SizedBox(width: 8),
-              Chip(
-                label: Text(service.isActive ? "Active" : "Inactive"),
-                backgroundColor: service.isActive
-                    ? Colors.green.shade50
-                    : Colors.grey.shade200,
-                avatar: Icon(
-                  service.isActive ? Icons.check_circle : Icons.cancel,
-                  color: service.isActive ? Colors.green : Colors.grey.shade600,
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      children: [
+        Row(
+          children: [
+            _buildAccessTypeChip(service.accessType),
+            const SizedBox(width: 8),
+            Chip(
+              label: Text(service.isActive ? "Active" : "Inactive"),
+              backgroundColor: service.isActive
+                  ? Colors.green.shade50
+                  : Colors.grey.shade200,
+              avatar: Icon(
+                service.isActive ? Icons.check_circle : Icons.cancel,
+                color: service.isActive ? Colors.green : Colors.grey.shade600,
+              ),
+            ),
+          ],
+        ),
+        _buildSectionTitle("Description"),
+        Card(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Text(
+              service.description,
+              style:
+                  Theme.of(context).textTheme.bodyLarge?.copyWith(height: 1.5),
+            ),
+          ),
+        ),
+        const SizedBox(height: 24),
+        _buildSectionTitle("Required Staff"),
+        if (service.requiredStaff.isEmpty)
+          const Text("No required staff specified.")
+        else
+          Column(
+            children: service.requiredStaff.map((staff) {
+              return Card(
+                margin: const EdgeInsets.symmetric(vertical: 8),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
                 ),
-              ),
-            ],
+                child: ListTile(
+                  leading: const CircleAvatar(
+                    child: Icon(Icons.person_outline, color: Colors.blueAccent),
+                  ),
+                  title: Text(
+                    staff.position.name,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Text(
+                    'Min: ${staff.minimumStaff}, Max: ${staff.maximumStaff}',
+                  ),
+                ),
+              );
+            }).toList(),
           ),
-          _buildSectionTitle("Description"),
-          Card(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Title
-                  // Text(
-                  //   service.title,
-                  //   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  //         fontWeight: FontWeight.bold,
-                  //       ),
-                  // ),
-
-                  // Description
-                  Text(
-                    service.description,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyLarge
-                        ?.copyWith(height: 1.5),
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 24),
-
-          // 🟩 Section: Required Staff
-          _buildSectionTitle("Required Staff"),
-
-          if (service.requiredStaff.isEmpty)
-            const Text("No required staff specified.")
-          else
-            Column(
-              children: service.requiredStaff.map((staff) {
-                return Card(
-                  margin: const EdgeInsets.symmetric(vertical: 8),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: ListTile(
-                    leading: const CircleAvatar(
-                      child:
-                          Icon(Icons.person_outline, color: Colors.blueAccent),
-                    ),
-                    title: Text(
-                      staff.position.name,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: Text(
-                      'Min: ${staff.minimumStaff}, Max: ${staff.maximumStaff}',
-                    ),
-                  ),
-                );
-              }).toList(),
-            ),
-        ],
-      ),
+      ],
     );
   }
 
@@ -239,8 +193,9 @@ class _ServiceDetailPageState extends State<ServiceDetailPage> {
 
     return ListView.builder(
       padding: const EdgeInsets.all(16),
+      shrinkWrap: true,
       itemCount: sortedForms.length,
-      physics: ClampingScrollPhysics(),
+      physics: NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) => _buildFormCard(
         sortedForms[index].form,
         onTap: () => context.push(
@@ -254,7 +209,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage> {
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(20),
-      splashColor: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+      splashColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
       highlightColor: Colors.transparent,
       child: Card(
         margin: const EdgeInsets.only(bottom: 16),
