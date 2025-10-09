@@ -6,6 +6,7 @@ import 'package:workorder_company_app/features/forms/domain/entities/form_entity
 import 'package:workorder_company_app/features/forms/domain/entities/option_entity.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/forms_bloc.dart';
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
+import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 
 class CreateNewFormPage extends StatefulWidget {
   const CreateNewFormPage({super.key});
@@ -159,7 +160,8 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Opsi Pilihan', style: TextStyle(fontWeight: FontWeight.w600)),
+          const Text('Opsi Pilihan',
+              style: TextStyle(fontWeight: FontWeight.w600)),
           const SizedBox(height: 8),
 
           // --- Reorderable List untuk options ---
@@ -249,12 +251,23 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
               ],
             ),
             const SizedBox(height: 8),
-            TextField(
-              decoration: const InputDecoration(
-                labelText: 'Label Field',
-                border: OutlineInputBorder(),
-              ),
-              onChanged: (val) => field.label = val,
+            // TextField(
+            //   decoration: const InputDecoration(
+            //     labelText: 'Label Field',
+            //     border: OutlineInputBorder(),
+            //   ),
+            //   onChanged: (val) => field.label = val,
+            //   controller: TextEditingController(text: field.label),
+            // ),
+            CustomInputField(
+              label: "Label Field",
+              onChanged: (value) => field.label = value,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "Label wajib diisi";
+                }
+                return null;
+              },
               controller: TextEditingController(text: field.label),
             ),
             const SizedBox(height: 12),
@@ -268,8 +281,10 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
                 DropdownMenuItem(value: 'text', child: Text('Text')),
                 DropdownMenuItem(value: 'number', child: Text('Number')),
                 DropdownMenuItem(value: 'textarea', child: Text('Textarea')),
-                DropdownMenuItem(value: 'single-select', child: Text('Single Select')),
-                DropdownMenuItem(value: 'multi-select', child: Text('Multi Select')),
+                DropdownMenuItem(
+                    value: 'single-select', child: Text('Single Select')),
+                DropdownMenuItem(
+                    value: 'multi-select', child: Text('Multi Select')),
               ],
               onChanged: (val) {
                 if (val != null) setState(() => field.type = val);
@@ -346,7 +361,8 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
               ),
               items: const [
                 DropdownMenuItem(value: 'public', child: Text('Public')),
-                DropdownMenuItem(value: 'member-only', child: Text('Member Only')),
+                DropdownMenuItem(
+                    value: 'member-only', child: Text('Member Only')),
                 DropdownMenuItem(value: 'internal', child: Text('Internal')),
               ],
               onChanged: (val) {
@@ -402,8 +418,8 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
       child: BlocListener<FormsBloc, FormsState>(
         listener: (context, state) {
           if (state is FormsLoaded && !state.isSubLoading) {
-            ScaffoldMessenger.of(context)
-                .showSnackBar(const SnackBar(content: Text('Form berhasil dibuat!')));
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Form berhasil dibuat!')));
           } else if (state is FormsError) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text(state.message)));
@@ -413,26 +429,30 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
           appBar: AppBar(title: const Text('Buat Form Baru')),
           body: BlocBuilder<FormsBloc, FormsState>(
             builder: (context, state) {
-              final isLoading = state is FormsLoaded ? state.isSubLoading : false;
+              final isLoading =
+                  state is FormsLoaded ? state.isSubLoading : false;
 
               return SingleChildScrollView(
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   children: [
-                    TextField(
+                    CustomInputField(
+                      label: "Judul Form",
                       controller: _titleController,
-                      decoration: const InputDecoration(
-                        labelText: 'Judul Form',
-                        border: OutlineInputBorder(),
-                      ),
+                      hint: "Masukan nama lengkap",
+                      description:
+                          "Judul Form akan digunakan sebagai judul step di dalam report",
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Judul wajib diisi';
+                        }
+                        return null;
+                      },
                     ),
-                    const SizedBox(height: 12),
-                    TextField(
+                    const SizedBox(height: 18),
+                    CustomInputField(
+                      label: "Deskripsi Form",
                       controller: _descController,
-                      decoration: const InputDecoration(
-                        labelText: 'Deskripsi',
-                        border: OutlineInputBorder(),
-                      ),
                       maxLines: 3,
                     ),
                     const SizedBox(height: 16),
@@ -475,7 +495,8 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
                       ),
                       child: isLoading
                           ? const CircularProgressIndicator()
-                          : const Text('Simpan Form', style: TextStyle(fontSize: 16)),
+                          : const Text('Simpan Form',
+                              style: TextStyle(fontSize: 16)),
                     ),
                   ],
                 ),

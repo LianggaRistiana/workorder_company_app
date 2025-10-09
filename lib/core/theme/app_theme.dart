@@ -13,6 +13,7 @@ class AppTheme {
       seedColor: _seedLight,
       brightness: Brightness.light,
     ).copyWith(
+        primary: AppColors.lightPrimary,
         surfaceContainerLow:
             const Color.fromARGB(255, 255, 255, 255), // dipakai card
         surface: AppColors.lightBackground),
