@@ -2,7 +2,6 @@ import 'package:workorder_company_app/core/network/api_client.dart';
 import 'package:workorder_company_app/core/network/api_response.dart';
 import 'package:workorder_company_app/core/network/endpoints.dart';
 import 'package:workorder_company_app/features/services/data/models/service_model.dart';
-import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
 
 abstract class ServiceRemoteDatasource {
   Future<ApiResponse<List<ServiceModel>>> getServices();

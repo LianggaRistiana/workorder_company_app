@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/forms_bloc.dart';
 import 'package:workorder_company_app/features/forms/presentation/widgets/forms_selector.dart';
-import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
+import 'package:workorder_company_app/features/positions/presentation/bloc/positions_bloc.dart';
+import 'package:workorder_company_app/features/positions/presentation/widget/positions_selector.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 import '../../domain/entities/service_entity.dart';
 import '../../domain/entities/form_order_entity.dart';
@@ -17,7 +18,8 @@ class CreateServicePage extends StatefulWidget {
   State<CreateServicePage> createState() => _CreateServicePageState();
 }
 
-class _CreateServicePageState extends State<CreateServicePage> {
+class _CreateServicePageState extends State<CreateServicePage>
+    with TickerProviderStateMixin {
   final _serviceKey = GlobalKey<FormState>();
   final _woKey = GlobalKey<FormState>();
   final _reportKey = GlobalKey<FormState>();
@@ -25,8 +27,10 @@ class _CreateServicePageState extends State<CreateServicePage> {
   final _titleController = TextEditingController();
   final _descController = TextEditingController();
 
+  late final TabController _tabController;
   late final ServicesBloc _servicesBloc;
   late final FormsBloc _formsBloc;
+  late final PositionsBloc _positionsBloc;
 
   List<RequiredStaffEntity> requiredStaff = [];
   List<FormOrderEntity> selectedWorkOrderForms = [];
@@ -34,18 +38,16 @@ class _CreateServicePageState extends State<CreateServicePage> {
   String accessType = 'public';
   bool isActive = true;
 
-  // Dummy positions
-  final dummyPositions = const [
-    PositionEntity(id: '650f1d3c2f1b2c7f2d555555', name: 'HR'),
-    PositionEntity(id: '650f1d3c2f1b2c7f2d444444', name: 'Supervisor'),
-    PositionEntity(id: '650f1d3c2f1b2c7f2d777777', name: 'sales'),
-  ];
-
   @override
   void initState() {
     super.initState();
     _servicesBloc = sl<ServicesBloc>();
     _formsBloc = sl<FormsBloc>()..add(GetFormsRequested());
+    _positionsBloc = sl<PositionsBloc>()..add(GetPositionsRequested());
+    _tabController = TabController(length: 3, vsync: this);
+    // _tabController.addListener(() {
+    //   setState(() {});
+    // });
   }
 
   @override
@@ -54,52 +56,36 @@ class _CreateServicePageState extends State<CreateServicePage> {
     _descController.dispose();
     _servicesBloc.close();
     _formsBloc.close();
+    _positionsBloc.close();
     super.dispose();
   }
 
-  /// Bottom sheet untuk memilih posisi
-  void _showPositionBottomSheet() {
-    showModalBottomSheet(
-      context: context,
-      showDragHandle: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (sheetContext) => ListView(
-        shrinkWrap: true,
-        padding: const EdgeInsets.all(16),
-        children: [
-          Text('Choose Position',
-              style: Theme.of(context).textTheme.titleMedium),
-          const SizedBox(height: 8),
-          ...dummyPositions.map((pos) {
-            final alreadyAdded =
-                requiredStaff.any((r) => r.position.id == pos.id);
+  void _onNext() {
+    final currentIndex = _tabController.index;
+    bool isValid = false;
 
-            return ListTile(
-              title: Text(pos.name),
-              trailing: alreadyAdded
-                  ? const Icon(Icons.check_circle, color: Colors.green)
-                  : null,
-              onTap: () {
-                if (!alreadyAdded) {
-                  setState(() {
-                    requiredStaff.add(
-                      RequiredStaffEntity(
-                        position: pos,
-                        minimumStaff: 1,
-                        maximumStaff: 1,
-                      ),
-                    );
-                  });
-                }
-                Navigator.pop(sheetContext);
-              },
-            );
-          }),
-        ],
-      ),
-    );
+    // Jalankan validator berdasarkan tab aktif
+    switch (currentIndex) {
+      case 0:
+        isValid = _serviceKey.currentState?.validate() ?? false;
+        break;
+      case 1:
+        isValid = _woKey.currentState?.validate() ?? false;
+        break;
+      case 2:
+        isValid = _reportKey.currentState?.validate() ?? false;
+        break;
+    }
+
+    if (isValid && currentIndex < _tabController.length - 1) {
+      _tabController.animateTo(currentIndex + 1);
+    }
+  }
+
+  void _onPrevious() {
+    if (_tabController.index > 0) {
+      _tabController.animateTo(_tabController.index - 1);
+    }
   }
 
   bool _validateRequiredStaff() {
@@ -118,16 +104,14 @@ class _CreateServicePageState extends State<CreateServicePage> {
   }
 
   void _onSubmit() {
-    // final isServiceValid = _serviceKey.currentState?.validate() ?? false;
-    // final isWOValid = _woKey.currentState?.validate() ?? false;
-    // final isReportValid = _reportKey.currentState?.validate() ?? false;
+    final isValid = _serviceKey.currentState?.validate() == true &&
+        _woKey.currentState?.validate() == true &&
+        _reportKey.currentState?.validate() == true;
 
-    // if (!isServiceValid || !isWOValid || !isReportValid) {
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     const SnackBar(content: Text('Mohon lengkapi semua form!')),
-    //   );
-    //   return;
-    // }
+    if (!isValid) {
+      return;
+    }
+
     if (!_validateRequiredStaff()) return;
 
     final service = ServiceEntity(
@@ -209,96 +193,94 @@ class _CreateServicePageState extends State<CreateServicePage> {
   }
 
   Widget _buildPositionsRequiredSetting() {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text('Required Staff',
-                style: TextStyle(fontWeight: FontWeight.bold)),
-            IconButton(
-              onPressed: _showPositionBottomSheet,
-              icon: const Icon(Icons.add_circle_outline),
-            ),
-          ],
-        ),
-        if (requiredStaff.isEmpty)
-          const Text('No staff added', style: TextStyle(color: Colors.grey))
-        else
-          Column(
-            children: requiredStaff.map((s) {
-              final minController =
-                  TextEditingController(text: s.minimumStaff.toString());
-              final maxController =
-                  TextEditingController(text: s.maximumStaff.toString());
+    return PositionsSelector(
+      selectedPositions: requiredStaff.map((s) => s.position).toList(),
+      onAdd: (pos) {
+        setState(() {
+          requiredStaff.add(RequiredStaffEntity(
+            position: pos,
+            minimumStaff: 1,
+            maximumStaff: 1,
+          ));
+        });
+      },
+      onRemove: (pos) {
+        setState(() {
+          requiredStaff.removeWhere((s) => s.position.id == pos.id);
+        });
+      },
+      itemBuilder: (position) {
+        final staff =
+            requiredStaff.firstWhere((s) => s.position.id == position.id);
 
-              return Card(
-                margin: const EdgeInsets.symmetric(vertical: 4),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        flex: 3,
-                        child: Text(
-                          s.position.name,
-                          style: const TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                      ),
-                      Expanded(
-                        child: TextField(
-                          controller: minController,
-                          keyboardType: TextInputType.number,
-                          textAlign: TextAlign.center,
-                          decoration: const InputDecoration(
-                              labelText: 'Min', isDense: true),
-                          onChanged: (val) {
-                            final parsed = int.tryParse(val);
-                            if (parsed != null) {
-                              setState(() {
-                                final index = requiredStaff.indexOf(s);
-                                requiredStaff[index] =
-                                    s.copyWith(minimumStaff: parsed);
-                              });
-                            }
-                          },
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: TextField(
-                          controller: maxController,
-                          keyboardType: TextInputType.number,
-                          textAlign: TextAlign.center,
-                          decoration: const InputDecoration(
-                              labelText: 'Max', isDense: true),
-                          onChanged: (val) {
-                            final parsed = int.tryParse(val);
-                            if (parsed != null) {
-                              setState(() {
-                                final index = requiredStaff.indexOf(s);
-                                requiredStaff[index] =
-                                    s.copyWith(maximumStaff: parsed);
-                              });
-                            }
-                          },
-                        ),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.delete_outline),
-                        onPressed: () {
-                          setState(() => requiredStaff.remove(s));
-                        },
-                      ),
-                    ],
+        final minController =
+            TextEditingController(text: staff.minimumStaff.toString());
+        final maxController =
+            TextEditingController(text: staff.maximumStaff.toString());
+
+        return Card(
+          margin: const EdgeInsets.symmetric(vertical: 4),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: Text(
+                    staff.position.name,
+                    style: const TextStyle(fontWeight: FontWeight.w600),
                   ),
                 ),
-              );
-            }).toList(),
+                Expanded(
+                  child: TextField(
+                    controller: minController,
+                    keyboardType: TextInputType.number,
+                    textAlign: TextAlign.center,
+                    decoration:
+                        const InputDecoration(labelText: 'Min', isDense: true),
+                    onChanged: (val) {
+                      final parsed = int.tryParse(val);
+                      if (parsed != null) {
+                        setState(() {
+                          final index = requiredStaff.indexOf(staff);
+                          requiredStaff[index] =
+                              staff.copyWith(minimumStaff: parsed);
+                        });
+                      }
+                    },
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: TextField(
+                    controller: maxController,
+                    keyboardType: TextInputType.number,
+                    textAlign: TextAlign.center,
+                    decoration:
+                        const InputDecoration(labelText: 'Max', isDense: true),
+                    onChanged: (val) {
+                      final parsed = int.tryParse(val);
+                      if (parsed != null) {
+                        setState(() {
+                          final index = requiredStaff.indexOf(staff);
+                          requiredStaff[index] =
+                              staff.copyWith(maximumStaff: parsed);
+                        });
+                      }
+                    },
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.delete_outline),
+                  onPressed: () {
+                    setState(() => requiredStaff.remove(staff));
+                  },
+                ),
+              ],
+            ),
           ),
-        const Divider(height: 32),
-      ],
+        );
+      },
     );
   }
 
@@ -308,6 +290,7 @@ class _CreateServicePageState extends State<CreateServicePage> {
       providers: [
         BlocProvider.value(value: _servicesBloc),
         BlocProvider.value(value: _formsBloc),
+        BlocProvider.value(value: _positionsBloc),
       ],
       child: BlocListener<ServicesBloc, ServicesState>(
         listener: (context, state) {
@@ -325,37 +308,61 @@ class _CreateServicePageState extends State<CreateServicePage> {
           child: Scaffold(
             appBar: AppBar(
               title: const Text('Buat Service Baru'),
-              bottom: const TabBar(
+              bottom: TabBar(
+                controller: _tabController,
                 dividerColor: Colors.transparent,
                 tabs: [
                   Tab(text: 'Pengaturan Service'),
                   Tab(text: 'Form WO'),
                   Tab(text: 'Form Laporan'),
                 ],
+                onTap: (_) {},
               ),
-              actions: [
-                BlocSelector<ServicesBloc, ServicesState, bool>(
-                  selector: (state) =>
-                      state is ServicesLoaded ? state.isSubLoading : false,
-                  builder: (context, isLoading) {
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 8),
-                      child: TextButton.icon(
-                        onPressed: isLoading ? null : _onSubmit,
-                        icon: isLoading
-                            ? const SizedBox(
-                                height: 18,
-                                width: 18,
-                                child:
-                                    CircularProgressIndicator(strokeWidth: 2),
-                              )
-                            : const Icon(Icons.save),
-                        label: const Text('Simpan Service'),
+              // actions: [
+              //   BlocSelector<ServicesBloc, ServicesState, bool>(
+              //     selector: (state) =>
+              //         state is ServicesLoaded ? state.isSubLoading : false,
+              //     builder: (context, isLoading) {
+              //       return Padding(
+              //         padding: const EdgeInsets.only(right: 8),
+              //         child: TextButton.icon(
+              //           onPressed: isLoading ? null : _onSubmit,
+              //           icon: isLoading
+              //               ? const SizedBox(
+              //                   height: 18,
+              //                   width: 18,
+              //                   child:
+              //                       CircularProgressIndicator(strokeWidth: 2),
+              //                 )
+              //               : const Icon(Icons.save),
+              //           label: const Text('Simpan Service'),
+              //         ),
+              //       );
+              //     },
+              //   ),
+              // ],
+            ),
+            bottomNavigationBar: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    top: 2, left: 16, right: 16, bottom: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    if (_tabController.index > 0)
+                      OutlinedButton(
+                        onPressed: _onPrevious,
+                        child: const Text('Previous'),
                       ),
-                    );
-                  },
+                    ElevatedButton(
+                      onPressed: _onNext,
+                      child: Text(
+                        _tabController.index == 2 ? 'Submit' : 'Next',
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
             body: BlocBuilder<ServicesBloc, ServicesState>(
               buildWhen: (previous, current) {
@@ -366,6 +373,8 @@ class _CreateServicePageState extends State<CreateServicePage> {
               },
               builder: (context, state) {
                 return TabBarView(
+                  controller: _tabController,
+                  physics: const NeverScrollableScrollPhysics(),
                   children: [
 // Tab 1
                     SingleChildScrollView(
@@ -375,6 +384,7 @@ class _CreateServicePageState extends State<CreateServicePage> {
                         child: Column(
                           children: [
                             _buildServiceSetting(),
+                            const SizedBox(height: 24),
                             _buildPositionsRequiredSetting(),
                           ],
                         ),
