@@ -6,6 +6,8 @@ import 'package:workorder_company_app/features/forms/domain/entities/form_entity
 import 'package:workorder_company_app/features/forms/domain/entities/option_entity.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/forms_bloc.dart';
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
+import 'package:workorder_company_app/shared/widgets/custom_dropdown.dart';
+import 'package:workorder_company_app/shared/widgets/custom_filter_chip.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 
 class CreateNewFormPage extends StatefulWidget {
@@ -53,6 +55,7 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
   final List<EditableField> _fields = [];
 
   String _accessType = 'public';
+  String _formType = 'work-order';
   final List<String> _accessibleBy = [];
   final List<PositionEntity> _allowedPositions = [];
 
@@ -175,27 +178,35 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
                 field.options.insert(newIndex, item);
               });
             },
+            proxyDecorator: (child, index, animation) {
+              return Material(
+                color: Colors.transparent,
+                elevation: 0,
+                child: child,
+              );
+            },
             children: List.generate(field.options.length, (i) {
               final option = field.options[i];
               final controller = TextEditingController(text: option.value);
               controller.selection = TextSelection.fromPosition(
-                  TextPosition(offset: controller.text.length));
+                TextPosition(offset: controller.text.length),
+              );
 
               return Padding(
                 key: ValueKey(option.key),
                 padding: const EdgeInsets.symmetric(vertical: 4),
                 child: Row(
                   children: [
-                    const Icon(Icons.drag_handle),
+                    // 🔹 hanya icon ini yang bisa dipakai untuk drag
+                    ReorderableDragStartListener(
+                      index: i,
+                      child: const Icon(Icons.drag_indicator_outlined),
+                    ),
                     const SizedBox(width: 8),
                     Expanded(
-                      child: TextField(
+                      child: CustomInputField(
+                        label: 'Opsi ${i + 1}',
                         controller: controller,
-                        decoration: InputDecoration(
-                          labelText: 'Opsi ${i + 1}',
-                          border: const OutlineInputBorder(),
-                          isDense: true,
-                        ),
                         onChanged: (val) {
                           field.options[i] =
                               OptionEntity(key: option.key, value: val);
@@ -203,7 +214,10 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
                       ),
                     ),
                     IconButton(
-                      icon: const Icon(Icons.remove_circle, color: Colors.red),
+                      icon: const Icon(
+                        Icons.remove_circle_outline_rounded,
+                        color: Color.fromARGB(255, 255, 93, 81),
+                      ),
                       onPressed: () => _removeOption(fieldIndex, i),
                     ),
                   ],
@@ -239,11 +253,8 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
           children: [
             Row(
               children: [
-                Text("Field ${field.order}",
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w600, fontSize: 16)),
-                const Spacer(),
                 const Icon(Icons.drag_handle),
+                const Spacer(),
                 IconButton(
                   icon: const Icon(Icons.delete_outline, color: Colors.red),
                   onPressed: () => _removeField(index),
@@ -251,32 +262,28 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
               ],
             ),
             const SizedBox(height: 8),
-            // TextField(
-            //   decoration: const InputDecoration(
-            //     labelText: 'Label Field',
-            //     border: OutlineInputBorder(),
-            //   ),
-            //   onChanged: (val) => field.label = val,
-            //   controller: TextEditingController(text: field.label),
-            // ),
             CustomInputField(
-              label: "Label Field",
+              label: "Pertanyaan",
               onChanged: (value) => field.label = value,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return "Label wajib diisi";
+                  return "Pertanyaan wajib diisi";
                 }
                 return null;
               },
               controller: TextEditingController(text: field.label),
             ),
             const SizedBox(height: 12),
-            DropdownButtonFormField<String>(
+            CustomDropdown<String>(
+              label: "Tipe Pertanyaan",
               value: field.type,
-              decoration: const InputDecoration(
-                labelText: 'Tipe Field',
-                border: OutlineInputBorder(),
-              ),
+              onChanged: (val) {
+                if (val != null) setState(() => field.type = val);
+              },
+              validator: (val) {
+                if (val == null || val.isEmpty) return "Tipe wajib diisi";
+                return null;
+              },
               items: const [
                 DropdownMenuItem(value: 'text', child: Text('Text')),
                 DropdownMenuItem(value: 'number', child: Text('Number')),
@@ -286,9 +293,6 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
                 DropdownMenuItem(
                     value: 'multi-select', child: Text('Multi Select')),
               ],
-              onChanged: (val) {
-                if (val != null) setState(() => field.type = val);
-              },
             ),
             const SizedBox(height: 12),
             Row(
@@ -306,24 +310,28 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
               Row(
                 children: [
                   Expanded(
-                    child: TextField(
-                      decoration: const InputDecoration(
-                        labelText: 'Min Value',
-                        border: OutlineInputBorder(),
-                      ),
+                    child: CustomInputField(
+                      label: "Minimal",
                       keyboardType: TextInputType.number,
                       onChanged: (val) => field.min = int.tryParse(val),
                       controller: TextEditingController(
                           text: field.min?.toString() ?? ''),
                     ),
+                    // child: TextField(
+                    //   decoration: const InputDecoration(
+                    //     labelText: 'Min Value',
+                    //     border: OutlineInputBorder(),
+                    //   ),
+                    //   keyboardType: TextInputType.number,
+                    //   onChanged: (val) => field.min = int.tryParse(val),
+                    //   controller: TextEditingController(
+                    //       text: field.min?.toString() ?? ''),
+                    // ),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: TextField(
-                      decoration: const InputDecoration(
-                        labelText: 'Max Value',
-                        border: OutlineInputBorder(),
-                      ),
+                    child: CustomInputField(
+                      label: "Maksimal",
                       keyboardType: TextInputType.number,
                       onChanged: (val) => field.max = int.tryParse(val),
                       controller: TextEditingController(
@@ -353,38 +361,47 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
             const Text('Pengaturan Akses',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             const SizedBox(height: 12),
-            DropdownButtonFormField<String>(
-              value: _accessType,
-              decoration: const InputDecoration(
-                labelText: 'Tipe Akses',
-                border: OutlineInputBorder(),
-              ),
-              items: const [
-                DropdownMenuItem(value: 'public', child: Text('Public')),
-                DropdownMenuItem(
-                    value: 'member-only', child: Text('Member Only')),
-                DropdownMenuItem(value: 'internal', child: Text('Internal')),
+            const Text('Tipe Akses',
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            Row(
+              children: [
+                Expanded(
+                  child: ChoiceChip(
+                    label: const Center(child: Text('Public')),
+                    selected: _accessType == 'public',
+                    onSelected: (_) => setState(() => _accessType = 'public'),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: ChoiceChip(
+                    label: const Center(child: Text('Internal')),
+                    selected: _accessType == 'internal',
+                    onSelected: (_) => setState(() => _accessType = 'internal'),
+                  ),
+                ),
               ],
-              onChanged: (val) {
-                if (val != null) setState(() => _accessType = val);
-              },
             ),
             const SizedBox(height: 16),
-            const Text('Dapat Diakses Oleh:',
+            const Text('Dapat Diakses Oleh',
                 style: TextStyle(fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),
-            Wrap(
-              spacing: 8,
+            Row(
               children: [
-                FilterChip(
-                  label: const Text('Manager'),
-                  selected: _accessibleBy.contains('manager'),
-                  onSelected: (_) => _toggleAccessibleBy('manager'),
+                Expanded(
+                  child: FilterChip(
+                    label: const Center(child: Text('Manager')),
+                    selected: _accessibleBy.contains('manager'),
+                    onSelected: (_) => _toggleAccessibleBy('manager'),
+                  ),
                 ),
-                FilterChip(
-                  label: const Text('Staff'),
-                  selected: _accessibleBy.contains('staff'),
-                  onSelected: (_) => _toggleAccessibleBy('staff'),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: FilterChip(
+                    label: const Center(child: Text('Staff')),
+                    selected: _accessibleBy.contains('staff'),
+                    onSelected: (_) => _toggleAccessibleBy('staff'),
+                  ),
                 ),
               ],
             ),
@@ -411,6 +428,100 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
     );
   }
 
+  Widget _buildFormSetting() {
+    return Card(
+      elevation: 2,
+      margin: const EdgeInsets.only(bottom: 16),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CustomInputField(
+              label: "Judul Form",
+              controller: _titleController,
+              hint: "Masukan nama lengkap",
+              description:
+                  "Judul Form akan digunakan sebagai judul step di dalam report",
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Judul wajib diisi';
+                }
+                return null;
+              },
+            ),
+            const SizedBox(height: 18),
+            CustomInputField(
+              label: "Deskripsi Form",
+              controller: _descController,
+              maxLines: 3,
+            ),
+            const SizedBox(height: 18),
+            Row(
+              children: [
+                Expanded(
+                  child: ChoiceChip(
+                    label: const Center(child: Text('Work order')),
+                    selected: _formType == 'work-order',
+                    onSelected: (_) => setState(() => _formType = 'work-order'),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: ChoiceChip(
+                    label: const Center(child: Text('Report')),
+                    selected: _formType == 'report',
+                    onSelected: (_) => setState(() => _formType = 'report'),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFields() {
+    return Column(
+      children: [
+        ReorderableListView(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          proxyDecorator: (child, index, animation) {
+            return Material(
+              color: Colors.transparent,
+              elevation: 0,
+              child: child,
+            );
+          },
+          onReorder: (oldIndex, newIndex) {
+            setState(() {
+              if (newIndex > oldIndex) newIndex--;
+              final item = _fields.removeAt(oldIndex);
+              _fields.insert(newIndex, item);
+              for (int i = 0; i < _fields.length; i++) {
+                _fields[i].order = i + 1;
+              }
+            });
+          },
+          children: List.generate(
+            _fields.length,
+            (index) => _buildFieldCard(index),
+          ),
+        ),
+        const SizedBox(height: 8),
+        OutlinedButton.icon(
+          onPressed: _addField,
+          icon: const Icon(Icons.add),
+          label: const Text('Tambah Field'),
+        ),
+        const SizedBox(height: 32),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
@@ -419,89 +530,87 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
         listener: (context, state) {
           if (state is FormsLoaded && !state.isSubLoading) {
             ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Form berhasil dibuat!')));
+              const SnackBar(content: Text('Form berhasil dibuat!')),
+            );
           } else if (state is FormsError) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text(state.message)));
-          }
+          } 
         },
-        child: Scaffold(
-          appBar: AppBar(title: const Text('Buat Form Baru')),
-          body: BlocBuilder<FormsBloc, FormsState>(
-            builder: (context, state) {
-              final isLoading =
-                  state is FormsLoaded ? state.isSubLoading : false;
-
-              return SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    CustomInputField(
-                      label: "Judul Form",
-                      controller: _titleController,
-                      hint: "Masukan nama lengkap",
-                      description:
-                          "Judul Form akan digunakan sebagai judul step di dalam report",
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Judul wajib diisi';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 18),
-                    CustomInputField(
-                      label: "Deskripsi Form",
-                      controller: _descController,
-                      maxLines: 3,
-                    ),
-                    const SizedBox(height: 16),
-                    _buildAccessControls(),
-
-                    // --- Reorderable List untuk fields ---
-                    ReorderableListView(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      onReorder: (oldIndex, newIndex) {
-                        setState(() {
-                          if (newIndex > oldIndex) newIndex--;
-                          final item = _fields.removeAt(oldIndex);
-                          _fields.insert(newIndex, item);
-                          for (int i = 0; i < _fields.length; i++) {
-                            _fields[i].order = i + 1;
-                          }
-                        });
-                      },
-                      children: List.generate(
-                        _fields.length,
-                        (index) => _buildFieldCard(index),
-                      ),
-                    ),
-
-                    const SizedBox(height: 8),
-                    OutlinedButton.icon(
-                      onPressed: _addField,
-                      icon: const Icon(Icons.add),
-                      label: const Text('Tambah Field'),
-                    ),
-                    const SizedBox(height: 24),
-                    ElevatedButton(
-                      onPressed: isLoading ? null : _submitForm,
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(double.infinity, 48),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+        child: DefaultTabController(
+          length: 2,
+          child: Scaffold(
+            appBar: AppBar(
+              title: const Text('Buat Form Baru'),
+              bottom: const TabBar(
+                dividerColor: Colors.transparent,
+                tabs: [
+                  Tab(text: 'Pengaturan Form'),
+                  Tab(text: 'Pertanyaan'),
+                ],
+              ),
+              actions: [
+                BlocSelector<FormsBloc, FormsState, bool>(
+                  selector: (state) =>
+                      state is FormsLoaded ? state.isSubLoading : false,
+                  builder: (context, isLoading) {
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 8),
+                      child: TextButton.icon(
+                        onPressed: isLoading ? null : _submitForm,
+                        icon: isLoading
+                            ? const SizedBox(
+                                height: 18,
+                                width: 18,
+                                child:
+                                    CircularProgressIndicator(strokeWidth: 2),
+                              )
+                            : const Icon(Icons.save),
+                        label: const Text('Simpan Form'),
+                        style: TextButton.styleFrom(
+                          foregroundColor:
+                              Theme.of(context).colorScheme.primary,
                         ),
                       ),
-                      child: isLoading
-                          ? const CircularProgressIndicator()
-                          : const Text('Simpan Form',
-                              style: TextStyle(fontSize: 16)),
+                    );
+                  },
+                ),
+              ],
+            ),
+            body: BlocBuilder<FormsBloc, FormsState>(
+              buildWhen: (previous, current) {
+                if (previous is FormsLoaded && current is FormsLoaded) {
+                  return previous.isSubLoading != current.isSubLoading;
+                }
+                return previous.runtimeType != current.runtimeType;
+              },
+              builder: (context, state) {
+                return TabBarView(
+                  children: [
+                    // Tab 1: Pengaturan Form
+                    SingleChildScrollView(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        children: [
+                          _buildFormSetting(),
+                          _buildAccessControls(),
+                        ],
+                      ),
+                    ),
+
+                    // Tab 2: Pertanyaan
+                    SingleChildScrollView(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        children: [
+                          _buildFields(),
+                        ],
+                      ),
                     ),
                   ],
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         ),
       ),
