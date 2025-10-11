@@ -15,7 +15,7 @@ class ServicesError extends ServicesState {
 class ServicesLoaded extends ServicesState {
   final List<ServiceEntity>? services;
   final ServiceEntity? selectedService;
-  final bool? isSubLoading;
+  final bool isSubLoading;
   final String? errorMessage;
 
   ServicesLoaded({

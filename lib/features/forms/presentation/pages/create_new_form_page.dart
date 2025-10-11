@@ -7,7 +7,6 @@ import 'package:workorder_company_app/features/forms/domain/entities/option_enti
 import 'package:workorder_company_app/features/forms/presentation/bloc/forms_bloc.dart';
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
 import 'package:workorder_company_app/shared/widgets/custom_dropdown.dart';
-import 'package:workorder_company_app/shared/widgets/custom_filter_chip.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 
 class CreateNewFormPage extends StatefulWidget {
@@ -317,16 +316,6 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
                       controller: TextEditingController(
                           text: field.min?.toString() ?? ''),
                     ),
-                    // child: TextField(
-                    //   decoration: const InputDecoration(
-                    //     labelText: 'Min Value',
-                    //     border: OutlineInputBorder(),
-                    //   ),
-                    //   keyboardType: TextInputType.number,
-                    //   onChanged: (val) => field.min = int.tryParse(val),
-                    //   controller: TextEditingController(
-                    //       text: field.min?.toString() ?? ''),
-                    // ),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
