@@ -6,6 +6,7 @@ import 'package:workorder_company_app/features/forms/presentation/widgets/forms_
 import 'package:workorder_company_app/features/positions/presentation/bloc/positions_bloc.dart';
 import 'package:workorder_company_app/features/positions/presentation/widget/positions_selector.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
+import 'package:workorder_company_app/shared/widgets/custom_step_indicator.dart';
 import '../../domain/entities/service_entity.dart';
 import '../../domain/entities/form_order_entity.dart';
 import '../../domain/entities/required_staff_entity.dart';
@@ -314,20 +315,35 @@ class _CreateServicePageState extends State<CreateServicePage>
         child: DefaultTabController(
           length: 3,
           child: Scaffold(
+            // appBar: AppBar(
+            //   title: Text('Buat Layanan'),
+            //   bottom: PreferredSize(
+            //     preferredSize: const Size.fromHeight(kToolbarHeight),
+            //     child: IgnorePointer(
+            //       ignoring: true, // ⬅️ Ini yang bikin tab tidak bisa diklik
+            //       child: TabBar(
+            //         controller: _tabController,
+            //         dividerColor: Colors.transparent,
+            //         tabs: const [
+            //           Tab(text: 'Pengaturan Service'),
+            //           Tab(text: 'Form WO'),
+            //           Tab(text: 'Form Laporan'),
+            //         ],
+            //       ),
+            //     ),
+            //   ),
+            // ),
             appBar: AppBar(
-              title: Text('Buat Layanan'),
+              title: const Text('Buat Layanan'),
               bottom: PreferredSize(
-                preferredSize: const Size.fromHeight(kToolbarHeight),
-                child: IgnorePointer(
-                  ignoring: true, // ⬅️ Ini yang bikin tab tidak bisa diklik
-                  child: TabBar(
-                    controller: _tabController,
-                    dividerColor: Colors.transparent,
-                    tabs: const [
-                      Tab(text: 'Pengaturan Service'),
-                      Tab(text: 'Form WO'),
-                      Tab(text: 'Form Laporan'),
-                    ],
+                preferredSize: const Size.fromHeight(72),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: CustomStepIndicator(
+                    // firstAvatarPadding: 48,
+                    // lastAvatarPadding: 4,
+                    currentStep: _tabController.index,
+                    steps: const ['Pengaturan Layanan', 'Form WO', 'Form Laporan'],
                   ),
                 ),
               ),
