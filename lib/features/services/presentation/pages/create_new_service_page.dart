@@ -21,8 +21,8 @@ class CreateServicePage extends StatefulWidget {
 class _CreateServicePageState extends State<CreateServicePage>
     with TickerProviderStateMixin {
   final _serviceKey = GlobalKey<FormState>();
-  final _woKey = GlobalKey<FormState>();
-  final _reportKey = GlobalKey<FormState>();
+  // final _woKey = GlobalKey<FormState>();
+  // final _reportKey = GlobalKey<FormState>();
 
   final _titleController = TextEditingController();
   final _descController = TextEditingController();
@@ -35,7 +35,7 @@ class _CreateServicePageState extends State<CreateServicePage>
   List<RequiredStaffEntity> requiredStaff = [];
   List<FormOrderEntity> selectedWorkOrderForms = [];
   List<FormOrderEntity> selectedReportForms = [];
-  String accessType = 'public';
+  String accessType = 'internal';
   bool isActive = true;
 
   @override
@@ -45,9 +45,11 @@ class _CreateServicePageState extends State<CreateServicePage>
     _formsBloc = sl<FormsBloc>()..add(GetFormsRequested());
     _positionsBloc = sl<PositionsBloc>()..add(GetPositionsRequested());
     _tabController = TabController(length: 3, vsync: this);
-    // _tabController.addListener(() {
-    //   setState(() {});
-    // });
+    _tabController.addListener(() {
+      if (_tabController.indexIsChanging) {
+        setState(() {});
+      }
+    });
   }
 
   @override
@@ -60,20 +62,28 @@ class _CreateServicePageState extends State<CreateServicePage>
     super.dispose();
   }
 
-  void _onNext() {
+  void _onNext(BuildContext context) {
     final currentIndex = _tabController.index;
     bool isValid = false;
 
-    // Jalankan validator berdasarkan tab aktif
     switch (currentIndex) {
       case 0:
-        isValid = _serviceKey.currentState?.validate() ?? false;
+        if (requiredStaff.isNotEmpty && _validateRequiredStaff()) {
+          isValid = _serviceKey.currentState?.validate() ?? false;
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Posisi Belum diisi')),
+          );
+        }
         break;
       case 1:
-        isValid = _woKey.currentState?.validate() ?? false;
-        break;
-      case 2:
-        isValid = _reportKey.currentState?.validate() ?? false;
+        if (selectedWorkOrderForms.isNotEmpty) {
+          isValid = true;
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Form Workorder Belum diisi')),
+          );
+        }
         break;
     }
 
@@ -104,15 +114,12 @@ class _CreateServicePageState extends State<CreateServicePage>
   }
 
   void _onSubmit() {
-    final isValid = _serviceKey.currentState?.validate() == true &&
-        _woKey.currentState?.validate() == true &&
-        _reportKey.currentState?.validate() == true;
-
-    if (!isValid) {
+    if (selectedReportForms.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Form Laporan Belum diisi')),
+      );
       return;
     }
-
-    if (!_validateRequiredStaff()) return;
 
     final service = ServiceEntity(
       id: '',
@@ -148,6 +155,7 @@ class _CreateServicePageState extends State<CreateServicePage>
               label: "Deskripsi Service",
               controller: _descController,
               maxLines: 3,
+              validator: (v) => v == null || v.isEmpty ? 'Required' : null,
             ),
             const SizedBox(height: 12),
             const Text('Tipe Akses',
@@ -307,40 +315,22 @@ class _CreateServicePageState extends State<CreateServicePage>
           length: 3,
           child: Scaffold(
             appBar: AppBar(
-              title: const Text('Buat Service Baru'),
-              bottom: TabBar(
-                controller: _tabController,
-                dividerColor: Colors.transparent,
-                tabs: [
-                  Tab(text: 'Pengaturan Service'),
-                  Tab(text: 'Form WO'),
-                  Tab(text: 'Form Laporan'),
-                ],
-                onTap: (_) {},
+              title: Text('Buat Layanan'),
+              bottom: PreferredSize(
+                preferredSize: const Size.fromHeight(kToolbarHeight),
+                child: IgnorePointer(
+                  ignoring: true, // ⬅️ Ini yang bikin tab tidak bisa diklik
+                  child: TabBar(
+                    controller: _tabController,
+                    dividerColor: Colors.transparent,
+                    tabs: const [
+                      Tab(text: 'Pengaturan Service'),
+                      Tab(text: 'Form WO'),
+                      Tab(text: 'Form Laporan'),
+                    ],
+                  ),
+                ),
               ),
-              // actions: [
-              //   BlocSelector<ServicesBloc, ServicesState, bool>(
-              //     selector: (state) =>
-              //         state is ServicesLoaded ? state.isSubLoading : false,
-              //     builder: (context, isLoading) {
-              //       return Padding(
-              //         padding: const EdgeInsets.only(right: 8),
-              //         child: TextButton.icon(
-              //           onPressed: isLoading ? null : _onSubmit,
-              //           icon: isLoading
-              //               ? const SizedBox(
-              //                   height: 18,
-              //                   width: 18,
-              //                   child:
-              //                       CircularProgressIndicator(strokeWidth: 2),
-              //                 )
-              //               : const Icon(Icons.save),
-              //           label: const Text('Simpan Service'),
-              //         ),
-              //       );
-              //     },
-              //   ),
-              // ],
             ),
             bottomNavigationBar: SafeArea(
               child: Padding(
@@ -350,16 +340,63 @@ class _CreateServicePageState extends State<CreateServicePage>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     if (_tabController.index > 0)
-                      OutlinedButton(
-                        onPressed: _onPrevious,
-                        child: const Text('Previous'),
-                      ),
-                    ElevatedButton(
-                      onPressed: _onNext,
-                      child: Text(
-                        _tabController.index == 2 ? 'Submit' : 'Next',
-                      ),
-                    ),
+                      TextButton(
+                          onPressed: _onPrevious,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.arrow_back),
+                              SizedBox(width: 6),
+                              Text(
+                                "Sebelumnya",
+                              ),
+                            ],
+                          )),
+                    Spacer(),
+                    _tabController.index == 2
+                        ? BlocSelector<ServicesBloc, ServicesState, bool>(
+                            selector: (state) => state is ServicesLoaded
+                                ? state.isSubLoading
+                                : false,
+                            builder: (context, isLoading) {
+                              return ElevatedButton(
+                                onPressed: isLoading ? null : _onSubmit,
+                                style: ElevatedButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 12),
+                                ),
+                                child: isLoading
+                                    ? const SizedBox(
+                                        height: 18,
+                                        width: 18,
+                                        child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                            color: Colors.white),
+                                      )
+                                    : Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: const [
+                                          Icon(Icons.upload),
+                                          SizedBox(width: 8),
+                                          Text('Simpan Layanan'),
+                                        ],
+                                      ),
+                              );
+                            },
+                          )
+                        : TextButton(
+                            onPressed: () => _onNext(context),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  "Selanjutnya",
+                                ),
+                                SizedBox(width: 6),
+                                Icon(Icons.arrow_forward),
+                              ],
+                            ),
+                          )
                   ],
                 ),
               ),
@@ -396,7 +433,6 @@ class _CreateServicePageState extends State<CreateServicePage>
                       child: Column(
                         children: [
                           FormsSelector(
-                            key: _woKey,
                             selectedFormsOrder: selectedWorkOrderForms,
                             onAdd: (formOrder) {
                               setState(
@@ -441,7 +477,6 @@ class _CreateServicePageState extends State<CreateServicePage>
                         children: [
                           // 🔹 Selector untuk Report
                           FormsSelector(
-                            key: _reportKey,
                             selectedFormsOrder: selectedReportForms,
                             onAdd: (formOrder) {
                               setState(
