@@ -45,7 +45,8 @@ class StepNavigationBar extends StatelessWidget {
                   )),
             Spacer(),
             isLastStep
-                ? TextButton(
+                ? finalAction
+                : TextButton(
                     onPressed: onNext,
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -58,7 +59,6 @@ class StepNavigationBar extends StatelessWidget {
                       ],
                     ),
                   )
-                : finalAction
           ],
         ),
       ),

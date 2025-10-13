@@ -7,6 +7,7 @@ import 'package:workorder_company_app/features/positions/presentation/bloc/posit
 import 'package:workorder_company_app/features/positions/presentation/widget/positions_selector.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 import 'package:workorder_company_app/shared/widgets/custom_step_indicator.dart';
+import 'package:workorder_company_app/shared/widgets/step_navigation_bar.dart.dart';
 import '../../domain/entities/service_entity.dart';
 import '../../domain/entities/form_order_entity.dart';
 import '../../domain/entities/required_staff_entity.dart';
@@ -351,75 +352,39 @@ class _CreateServicePageState extends State<CreateServicePage>
                 ),
               ),
             ),
-            bottomNavigationBar: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.only(
-                    top: 2, left: 16, right: 16, bottom: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    if (_tabController.index > 0)
-                      TextButton(
-                          onPressed: _onPrevious,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(Icons.arrow_back),
-                              SizedBox(width: 6),
-                              Text(
-                                "Sebelumnya",
-                              ),
-                            ],
-                          )),
-                    Spacer(),
-                    _tabController.index == 2
-                        ? BlocSelector<ServicesBloc, ServicesState, bool>(
-                            selector: (state) => state is ServicesLoaded
-                                ? state.isSubLoading
-                                : false,
-                            builder: (context, isLoading) {
-                              return ElevatedButton(
-                                onPressed: isLoading ? null : _onSubmit,
-                                style: ElevatedButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 12),
-                                ),
-                                child: isLoading
-                                    ? const SizedBox(
-                                        height: 18,
-                                        width: 18,
-                                        child: CircularProgressIndicator(
-                                            strokeWidth: 2,
-                                            color: Colors.white),
-                                      )
-                                    : Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: const [
-                                          Icon(Icons.upload),
-                                          SizedBox(width: 8),
-                                          Text('Simpan Layanan'),
-                                        ],
-                                      ),
-                              );
-                            },
-                          )
-                        : TextButton(
-                            onPressed: () => _onNext(context),
-                            child: Row(
+            bottomNavigationBar: StepNavigationBar(
+                currentStep: _tabController.index,
+                totalSteps: 3,
+                onPrevious: _onPrevious,
+                onNext: () => _onNext(context),
+                finalAction: BlocSelector<ServicesBloc, ServicesState, bool>(
+                  selector: (state) =>
+                      state is ServicesLoaded ? state.isSubLoading : false,
+                  builder: (context, isLoading) {
+                    return ElevatedButton(
+                      onPressed: isLoading ? null : _onSubmit,
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 12),
+                      ),
+                      child: isLoading
+                          ? const SizedBox(
+                              height: 18,
+                              width: 18,
+                              child: CircularProgressIndicator(
+                                  strokeWidth: 2, color: Colors.white),
+                            )
+                          : Row(
                               mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  "Selanjutnya",
-                                ),
-                                SizedBox(width: 6),
-                                Icon(Icons.arrow_forward),
+                              children: const [
+                                Icon(Icons.upload),
+                                SizedBox(width: 8),
+                                Text('Simpan Layanan'),
                               ],
                             ),
-                          )
-                  ],
-                ),
-              ),
-            ),
+                    );
+                  },
+                )),
             body: BlocBuilder<ServicesBloc, ServicesState>(
               buildWhen: (previous, current) {
                 if (previous is ServicesLoaded && current is ServicesLoaded) {

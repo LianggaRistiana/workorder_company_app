@@ -583,7 +583,7 @@ class _CreateNewFormPageState extends State<CreateNewFormPage>
             ),
             bottomNavigationBar: StepNavigationBar(
               currentStep: _tabController.index,
-              totalSteps: 1,
+              totalSteps: 2,
               onPrevious: _onPrevious,
               onNext: () => _onNext(context),
               finalAction: BlocSelector<FormsBloc, FormsState, bool>(
