@@ -11,6 +11,7 @@ import 'package:workorder_company_app/features/positions/presentation/widget/pos
 import 'package:workorder_company_app/shared/widgets/custom_dropdown.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 import 'package:workorder_company_app/shared/widgets/custom_step_indicator.dart';
+import 'package:workorder_company_app/shared/widgets/step_navigation_bar.dart.dart';
 
 class CreateNewFormPage extends StatefulWidget {
   const CreateNewFormPage({super.key});
@@ -56,6 +57,7 @@ class _CreateNewFormPageState extends State<CreateNewFormPage>
   late final TabController _tabController;
 
   final _formKey = GlobalKey<FormState>();
+  final _fieldKey = GlobalKey<FormState>();
 
   final _titleController = TextEditingController();
   final _descController = TextEditingController();
@@ -160,6 +162,10 @@ class _CreateNewFormPageState extends State<CreateNewFormPage>
       return;
     }
 
+    if (!(_fieldKey.currentState?.validate() ?? false)) {
+      return;
+    }
+
     final form = FormEntity(
       id: '',
       title: _titleController.text.trim(),
@@ -230,6 +236,12 @@ class _CreateNewFormPageState extends State<CreateNewFormPage>
                           field.options[i] =
                               OptionEntity(key: option.key, value: val);
                         },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Opsi wajib diisi";
+                          }
+                          return null;
+                        },
                       ),
                     ),
                     IconButton(
@@ -298,10 +310,6 @@ class _CreateNewFormPageState extends State<CreateNewFormPage>
               value: field.type,
               onChanged: (val) {
                 if (val != null) setState(() => field.type = val);
-              },
-              validator: (val) {
-                if (val == null || val.isEmpty) return "Tipe wajib diisi";
-                return null;
               },
               items: const [
                 DropdownMenuItem(value: 'text', child: Text('Text')),
@@ -558,7 +566,7 @@ class _CreateNewFormPageState extends State<CreateNewFormPage>
           length: 2,
           child: Scaffold(
             appBar: AppBar(
-              title: const Text('Buat Layanan'),
+              title: const Text('Buat Form'),
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(72),
                 child: SizedBox(
@@ -573,75 +581,109 @@ class _CreateNewFormPageState extends State<CreateNewFormPage>
                 ),
               ),
             ),
-            bottomNavigationBar: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.only(
-                    top: 2, left: 16, right: 16, bottom: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    if (_tabController.index > 0)
-                      TextButton(
-                          onPressed: _onPrevious,
-                          child: Row(
+            bottomNavigationBar: StepNavigationBar(
+              currentStep: _tabController.index,
+              totalSteps: 1,
+              onPrevious: _onPrevious,
+              onNext: () => _onNext(context),
+              finalAction: BlocSelector<FormsBloc, FormsState, bool>(
+                selector: (state) =>
+                    state is FormsLoaded ? state.isSubLoading : false,
+                builder: (context, isLoading) {
+                  return ElevatedButton(
+                    onPressed: isLoading ? null : _submitForm,
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 12),
+                    ),
+                    child: isLoading
+                        ? const SizedBox(
+                            height: 18,
+                            width: 18,
+                            child: CircularProgressIndicator(
+                                strokeWidth: 2, color: Colors.white),
+                          )
+                        : Row(
                             mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(Icons.arrow_back),
-                              SizedBox(width: 6),
-                              Text(
-                                "Sebelumnya",
-                              ),
+                            children: const [
+                              Icon(Icons.upload),
+                              SizedBox(width: 8),
+                              Text('Simpan Form'),
                             ],
-                          )),
-                    Spacer(),
-                    _tabController.index == 1
-                        ? BlocSelector<FormsBloc, FormsState, bool>(
-                            selector: (state) => state is FormsLoaded
-                                ? state.isSubLoading
-                                : false,
-                            builder: (context, isLoading) {
-                              return ElevatedButton(
-                                onPressed: isLoading ? null : _submitForm,
-                                style: ElevatedButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 12),
-                                ),
-                                child: isLoading
-                                    ? const SizedBox(
-                                        height: 18,
-                                        width: 18,
-                                        child: CircularProgressIndicator(
-                                            strokeWidth: 2,
-                                            color: Colors.white),
-                                      )
-                                    : Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: const [
-                                          Icon(Icons.upload),
-                                          SizedBox(width: 8),
-                                          Text('Simpan Form'),
-                                        ],
-                                      ),
-                              );
-                            },
-                          )
-                        : TextButton(
-                            onPressed: () => _onNext(context),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  "Selanjutnya",
-                                ),
-                                SizedBox(width: 6),
-                                Icon(Icons.arrow_forward),
-                              ],
-                            ),
-                          )
-                  ],
-                ),
+                          ),
+                  );
+                },
               ),
             ),
+            // SafeArea(
+            //   child: Padding(
+            //     padding: const EdgeInsets.only(
+            //         top: 2, left: 16, right: 16, bottom: 16),
+            //     child: Row(
+            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //       children: [
+            //         if (_tabController.index > 0)
+            //           TextButton(
+            //               onPressed: _onPrevious,
+            //               child: Row(
+            //                 mainAxisSize: MainAxisSize.min,
+            //                 children: [
+            //                   Icon(Icons.arrow_back),
+            //                   SizedBox(width: 6),
+            //                   Text(
+            //                     "Sebelumnya",
+            //                   ),
+            //                 ],
+            //               )),
+            //         Spacer(),
+            //         _tabController.index == 1
+            //             ? BlocSelector<FormsBloc, FormsState, bool>(
+            //                 selector: (state) => state is FormsLoaded
+            //                     ? state.isSubLoading
+            //                     : false,
+            //                 builder: (context, isLoading) {
+            //                   return ElevatedButton(
+            //                     onPressed: isLoading ? null : _submitForm,
+            //                     style: ElevatedButton.styleFrom(
+            //                       padding: const EdgeInsets.symmetric(
+            //                           horizontal: 20, vertical: 12),
+            //                     ),
+            //                     child: isLoading
+            //                         ? const SizedBox(
+            //                             height: 18,
+            //                             width: 18,
+            //                             child: CircularProgressIndicator(
+            //                                 strokeWidth: 2,
+            //                                 color: Colors.white),
+            //                           )
+            //                         : Row(
+            //                             mainAxisSize: MainAxisSize.min,
+            //                             children: const [
+            //                               Icon(Icons.upload),
+            //                               SizedBox(width: 8),
+            //                               Text('Simpan Form'),
+            //                             ],
+            //                           ),
+            //                   );
+            //                 },
+            //               )
+            //             : TextButton(
+            //                 onPressed: () => _onNext(context),
+            //                 child: Row(
+            //                   mainAxisSize: MainAxisSize.min,
+            //                   children: [
+            //                     Text(
+            //                       "Selanjutnya",
+            //                     ),
+            //                     SizedBox(width: 6),
+            //                     Icon(Icons.arrow_forward),
+            //                   ],
+            //                 ),
+            //               )
+            //       ],
+            //     ),
+            //   ),
+            // ),
             body: BlocBuilder<FormsBloc, FormsState>(
               buildWhen: (previous, current) {
                 if (previous is FormsLoaded && current is FormsLoaded) {
@@ -674,7 +716,10 @@ class _CreateNewFormPageState extends State<CreateNewFormPage>
                       padding: const EdgeInsets.all(16),
                       child: Column(
                         children: [
-                          _buildFields(),
+                          Form(
+                            key: _fieldKey,
+                            child: _buildFields(),
+                          )
                         ],
                       ),
                     ),

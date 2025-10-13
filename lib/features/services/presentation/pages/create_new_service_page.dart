@@ -19,48 +19,8 @@ class CreateServicePage extends StatefulWidget {
   State<CreateServicePage> createState() => _CreateServicePageState();
 }
 
-class _CreateServicePageState extends State<CreateServicePage>
-    with TickerProviderStateMixin {
-  final _serviceKey = GlobalKey<FormState>();
-
-  final _titleController = TextEditingController();
-  final _descController = TextEditingController();
-
-  late final TabController _tabController;
-  late final ServicesBloc _servicesBloc;
-  late final FormsBloc _formsBloc;
-  late final PositionsBloc _positionsBloc;
-
-  List<RequiredStaffEntity> requiredStaff = [];
-  List<FormOrderEntity> selectedWorkOrderForms = [];
-  List<FormOrderEntity> selectedReportForms = [];
-  String accessType = 'internal';
-  bool isActive = true;
-
-  @override
-  void initState() {
-    super.initState();
-    _servicesBloc = sl<ServicesBloc>();
-    _formsBloc = sl<FormsBloc>()..add(GetFormsRequested());
-    _positionsBloc = sl<PositionsBloc>()..add(GetPositionsRequested());
-    _tabController = TabController(length: 3, vsync: this);
-    _tabController.addListener(() {
-      if (_tabController.indexIsChanging) {
-        setState(() {});
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _titleController.dispose();
-    _descController.dispose();
-    _servicesBloc.close();
-    _formsBloc.close();
-    _positionsBloc.close();
-    super.dispose();
-  }
-
+// FIXME : Not Tested yet, Sperated Logic From UI
+extension _UiLogic on _CreateServicePageState {
   void _onNext(BuildContext context) {
     final currentIndex = _tabController.index;
     bool isValid = false;
@@ -136,6 +96,49 @@ class _CreateServicePageState extends State<CreateServicePage>
 
     _servicesBloc.add(CreateServiceRequested(service));
   }
+}
+
+class _CreateServicePageState extends State<CreateServicePage>
+    with TickerProviderStateMixin {
+  final _serviceKey = GlobalKey<FormState>();
+
+  final _titleController = TextEditingController();
+  final _descController = TextEditingController();
+
+  late final TabController _tabController;
+  late final ServicesBloc _servicesBloc;
+  late final FormsBloc _formsBloc;
+  late final PositionsBloc _positionsBloc;
+
+  List<RequiredStaffEntity> requiredStaff = [];
+  List<FormOrderEntity> selectedWorkOrderForms = [];
+  List<FormOrderEntity> selectedReportForms = [];
+  String accessType = 'internal';
+  bool isActive = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _servicesBloc = sl<ServicesBloc>();
+    _formsBloc = sl<FormsBloc>()..add(GetFormsRequested());
+    _positionsBloc = sl<PositionsBloc>()..add(GetPositionsRequested());
+    _tabController = TabController(length: 3, vsync: this);
+    _tabController.addListener(() {
+      if (_tabController.indexIsChanging) {
+        setState(() {});
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _descController.dispose();
+    _servicesBloc.close();
+    _formsBloc.close();
+    _positionsBloc.close();
+    super.dispose();
+  }
 
   Widget _buildServiceSetting() {
     return Card(
@@ -205,10 +208,9 @@ class _CreateServicePageState extends State<CreateServicePage>
                 const SizedBox(width: 8),
                 Expanded(
                   child: ChoiceChip(
-                    label: const Center(child: Text('Tidak aktif')),
-                    selected: !isActive,
-                    onSelected: (val) => setState(() => isActive = false)
-                  ),
+                      label: const Center(child: Text('Tidak aktif')),
+                      selected: !isActive,
+                      onSelected: (val) => setState(() => isActive = false)),
                 ),
               ],
             ),
