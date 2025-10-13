@@ -7,7 +7,7 @@ class AppColors {
 
   // === Light Colors ===
   static const Color lightPrimary = Color.fromARGB(255, 0, 126, 230);
-  static const Color lightBackground = Color.fromARGB(255, 243, 243, 243);
+  static const Color lightBackground = Color.fromARGB(255, 243, 243, 245);
   static const Color lightTextPrimary = Colors.black;
   static const Color lightTextSecondary = Colors.black54;
 

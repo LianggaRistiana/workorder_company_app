@@ -59,10 +59,13 @@ class AppTheme {
     colorScheme: ColorScheme.fromSeed(
       seedColor: _seedDark,
       brightness: Brightness.dark,
+    ).copyWith(
+      // primary: AppColors.darkPrimary
     ),
     scaffoldBackgroundColor: AppColors.darkBackground,
     appBarTheme: AppBarTheme(
-      backgroundColor: _seedDark,
+      backgroundColor: AppColors.darkBackground,
+      surfaceTintColor: AppColors.darkBackground,
       foregroundColor: Colors.white,
       elevation: 2,
     ),

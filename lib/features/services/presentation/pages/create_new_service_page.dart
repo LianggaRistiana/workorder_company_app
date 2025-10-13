@@ -22,8 +22,6 @@ class CreateServicePage extends StatefulWidget {
 class _CreateServicePageState extends State<CreateServicePage>
     with TickerProviderStateMixin {
   final _serviceKey = GlobalKey<FormState>();
-  // final _woKey = GlobalKey<FormState>();
-  // final _reportKey = GlobalKey<FormState>();
 
   final _titleController = TextEditingController();
   final _descController = TextEditingController();
@@ -69,12 +67,15 @@ class _CreateServicePageState extends State<CreateServicePage>
 
     switch (currentIndex) {
       case 0:
-        if (requiredStaff.isNotEmpty && _validateRequiredStaff()) {
-          isValid = _serviceKey.currentState?.validate() ?? false;
-        } else {
+        final formValid = _serviceKey.currentState?.validate() ?? false;
+
+        if (requiredStaff.isEmpty || !_validateRequiredStaff()) {
+          isValid = false;
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Posisi Belum diisi')),
           );
+        } else {
+          isValid = formValid;
         }
         break;
       case 1:
@@ -142,7 +143,7 @@ class _CreateServicePageState extends State<CreateServicePage>
       margin: const EdgeInsets.only(bottom: 16),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -190,10 +191,26 @@ class _CreateServicePageState extends State<CreateServicePage>
               ],
             ),
             const SizedBox(height: 16),
-            SwitchListTile(
-              title: const Text('Active'),
-              value: isActive,
-              onChanged: (val) => setState(() => isActive = val),
+            const Text('Status Layanan',
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            Row(
+              children: [
+                Expanded(
+                  child: ChoiceChip(
+                    label: const Center(child: Text('Aktif')),
+                    selected: isActive,
+                    onSelected: (val) => setState(() => isActive = true),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: ChoiceChip(
+                    label: const Center(child: Text('Tidak aktif')),
+                    selected: !isActive,
+                    onSelected: (val) => setState(() => isActive = false)
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -315,24 +332,6 @@ class _CreateServicePageState extends State<CreateServicePage>
         child: DefaultTabController(
           length: 3,
           child: Scaffold(
-            // appBar: AppBar(
-            //   title: Text('Buat Layanan'),
-            //   bottom: PreferredSize(
-            //     preferredSize: const Size.fromHeight(kToolbarHeight),
-            //     child: IgnorePointer(
-            //       ignoring: true, // ⬅️ Ini yang bikin tab tidak bisa diklik
-            //       child: TabBar(
-            //         controller: _tabController,
-            //         dividerColor: Colors.transparent,
-            //         tabs: const [
-            //           Tab(text: 'Pengaturan Service'),
-            //           Tab(text: 'Form WO'),
-            //           Tab(text: 'Form Laporan'),
-            //         ],
-            //       ),
-            //     ),
-            //   ),
-            // ),
             appBar: AppBar(
               title: const Text('Buat Layanan'),
               bottom: PreferredSize(
@@ -340,10 +339,12 @@ class _CreateServicePageState extends State<CreateServicePage>
                 child: SizedBox(
                   width: double.infinity,
                   child: CustomStepIndicator(
-                    // firstAvatarPadding: 48,
-                    // lastAvatarPadding: 4,
                     currentStep: _tabController.index,
-                    steps: const ['Pengaturan Layanan', 'Form WO', 'Form Laporan'],
+                    steps: const [
+                      'Pengaturan Layanan',
+                      'Form WO',
+                      'Form Laporan'
+                    ],
                   ),
                 ),
               ),
@@ -429,7 +430,7 @@ class _CreateServicePageState extends State<CreateServicePage>
                   controller: _tabController,
                   physics: const NeverScrollableScrollPhysics(),
                   children: [
-// Tab 1
+                    // Tab 1
                     SingleChildScrollView(
                       padding: const EdgeInsets.all(16),
                       child: Form(
