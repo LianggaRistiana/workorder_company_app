@@ -6,8 +6,11 @@ import 'package:workorder_company_app/features/forms/domain/entities/form_entity
 import 'package:workorder_company_app/features/forms/domain/entities/option_entity.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/forms_bloc.dart';
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
+import 'package:workorder_company_app/features/positions/presentation/bloc/positions_bloc.dart';
+import 'package:workorder_company_app/features/positions/presentation/widget/positions_selector.dart';
 import 'package:workorder_company_app/shared/widgets/custom_dropdown.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
+import 'package:workorder_company_app/shared/widgets/custom_step_indicator.dart';
 
 class CreateNewFormPage extends StatefulWidget {
   const CreateNewFormPage({super.key});
@@ -46,8 +49,13 @@ class EditableField {
       );
 }
 
-class _CreateNewFormPageState extends State<CreateNewFormPage> {
+class _CreateNewFormPageState extends State<CreateNewFormPage>
+    with TickerProviderStateMixin {
   late FormsBloc _formsBloc;
+  late final PositionsBloc _positionsBloc;
+  late final TabController _tabController;
+
+  final _formKey = GlobalKey<FormState>();
 
   final _titleController = TextEditingController();
   final _descController = TextEditingController();
@@ -58,23 +66,24 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
   final List<String> _accessibleBy = [];
   final List<PositionEntity> _allowedPositions = [];
 
-  final List<PositionEntity> _positionOptions = const [
-    PositionEntity(id: '1', name: 'Manager'),
-    PositionEntity(id: '2', name: 'Supervisor'),
-    PositionEntity(id: '3', name: 'Staff'),
-    PositionEntity(id: '4', name: 'Technician'),
-  ];
-
   @override
   void initState() {
     super.initState();
     _formsBloc = sl<FormsBloc>();
+    _positionsBloc = sl<PositionsBloc>()..add(GetPositionsRequested());
+    _tabController = TabController(length: 2, vsync: this);
+    _tabController.addListener(() {
+      if (_tabController.indexIsChanging) {
+        setState(() {});
+      }
+    });
   }
 
   @override
   void dispose() {
     _titleController.dispose();
     _descController.dispose();
+    _positionsBloc.close();
     super.dispose();
   }
 
@@ -104,6 +113,28 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
     });
   }
 
+  void _onNext(BuildContext context) {
+    final currentIndex = _tabController.index;
+    bool isValid = false;
+
+    switch (currentIndex) {
+      case 0:
+        isValid = _formKey.currentState?.validate() ?? false;
+        break;
+      case 1:
+    }
+
+    if (isValid && currentIndex < _tabController.length - 1) {
+      _tabController.animateTo(currentIndex + 1);
+    }
+  }
+
+  void _onPrevious() {
+    if (_tabController.index > 0) {
+      _tabController.animateTo(_tabController.index - 1);
+    }
+  }
+
   void _removeOption(int fieldIndex, int optionIndex) {
     setState(() => _fields[fieldIndex].options.removeAt(optionIndex));
   }
@@ -121,21 +152,10 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
     });
   }
 
-  void _toggleAllowedPosition(PositionEntity position) {
-    setState(() {
-      final exists = _allowedPositions.any((p) => p.id == position.id);
-      if (exists) {
-        _allowedPositions.removeWhere((p) => p.id == position.id);
-      } else {
-        _allowedPositions.add(position);
-      }
-    });
-  }
-
   void _submitForm() {
-    if (_titleController.text.trim().isEmpty) {
+    if (_fields.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Judul tidak boleh kosong')),
+        const SnackBar(content: Text('Isi Pertanyaan')),
       );
       return;
     }
@@ -394,23 +414,6 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
                 ),
               ],
             ),
-            if (_accessibleBy.contains('staff')) ...[
-              const SizedBox(height: 16),
-              const Text('Posisi yang Diizinkan:',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-              const SizedBox(height: 8),
-              Wrap(
-                spacing: 8,
-                children: _positionOptions.map((pos) {
-                  final selected = _allowedPositions.any((p) => p.id == pos.id);
-                  return FilterChip(
-                    label: Text(pos.name),
-                    selected: selected,
-                    onSelected: (_) => _toggleAllowedPosition(pos),
-                  );
-                }).toList(),
-              ),
-            ],
           ],
         ),
       ),
@@ -445,6 +448,12 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
               label: "Deskripsi Form",
               controller: _descController,
               maxLines: 3,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Deskripsi wajib diisi';
+                }
+                return null;
+              },
             ),
             const SizedBox(height: 18),
             Row(
@@ -511,10 +520,29 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
     );
   }
 
+  Widget _buildAllowedPositions() {
+    return PositionsSelector(
+      selectedPositions: _allowedPositions.toList(),
+      onAdd: (pos) {
+        setState(() {
+          _allowedPositions.add(pos);
+        });
+      },
+      onRemove: (pos) {
+        setState(() {
+          _allowedPositions.removeWhere((s) => s.id == pos.id);
+        });
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: _formsBloc,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(value: _formsBloc),
+        BlocProvider.value(value: _positionsBloc),
+      ],
       child: BlocListener<FormsBloc, FormsState>(
         listener: (context, state) {
           if (state is FormsLoaded && !state.isSubLoading) {
@@ -524,47 +552,95 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
           } else if (state is FormsError) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text(state.message)));
-          } 
+          }
         },
         child: DefaultTabController(
           length: 2,
           child: Scaffold(
             appBar: AppBar(
-              title: const Text('Buat Form Baru'),
-              bottom: const TabBar(
-                dividerColor: Colors.transparent,
-                tabs: [
-                  Tab(text: 'Pengaturan Form'),
-                  Tab(text: 'Pertanyaan'),
-                ],
-              ),
-              actions: [
-                BlocSelector<FormsBloc, FormsState, bool>(
-                  selector: (state) =>
-                      state is FormsLoaded ? state.isSubLoading : false,
-                  builder: (context, isLoading) {
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 8),
-                      child: TextButton.icon(
-                        onPressed: isLoading ? null : _submitForm,
-                        icon: isLoading
-                            ? const SizedBox(
-                                height: 18,
-                                width: 18,
-                                child:
-                                    CircularProgressIndicator(strokeWidth: 2),
-                              )
-                            : const Icon(Icons.save),
-                        label: const Text('Simpan Form'),
-                        style: TextButton.styleFrom(
-                          foregroundColor:
-                              Theme.of(context).colorScheme.primary,
-                        ),
-                      ),
-                    );
-                  },
+              title: const Text('Buat Layanan'),
+              bottom: PreferredSize(
+                preferredSize: const Size.fromHeight(72),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: CustomStepIndicator(
+                    currentStep: _tabController.index,
+                    steps: const [
+                      'Pengaturan Form',
+                      'Pertanyaan',
+                    ],
+                  ),
                 ),
-              ],
+              ),
+            ),
+            bottomNavigationBar: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    top: 2, left: 16, right: 16, bottom: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    if (_tabController.index > 0)
+                      TextButton(
+                          onPressed: _onPrevious,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.arrow_back),
+                              SizedBox(width: 6),
+                              Text(
+                                "Sebelumnya",
+                              ),
+                            ],
+                          )),
+                    Spacer(),
+                    _tabController.index == 1
+                        ? BlocSelector<FormsBloc, FormsState, bool>(
+                            selector: (state) => state is FormsLoaded
+                                ? state.isSubLoading
+                                : false,
+                            builder: (context, isLoading) {
+                              return ElevatedButton(
+                                onPressed: isLoading ? null : _submitForm,
+                                style: ElevatedButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 12),
+                                ),
+                                child: isLoading
+                                    ? const SizedBox(
+                                        height: 18,
+                                        width: 18,
+                                        child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                            color: Colors.white),
+                                      )
+                                    : Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: const [
+                                          Icon(Icons.upload),
+                                          SizedBox(width: 8),
+                                          Text('Simpan Form'),
+                                        ],
+                                      ),
+                              );
+                            },
+                          )
+                        : TextButton(
+                            onPressed: () => _onNext(context),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  "Selanjutnya",
+                                ),
+                                SizedBox(width: 6),
+                                Icon(Icons.arrow_forward),
+                              ],
+                            ),
+                          )
+                  ],
+                ),
+              ),
             ),
             body: BlocBuilder<FormsBloc, FormsState>(
               buildWhen: (previous, current) {
@@ -575,17 +651,23 @@ class _CreateNewFormPageState extends State<CreateNewFormPage> {
               },
               builder: (context, state) {
                 return TabBarView(
+                  controller: _tabController,
+                  physics: const NeverScrollableScrollPhysics(),
                   children: [
                     // Tab 1: Pengaturan Form
                     SingleChildScrollView(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        children: [
-                          _buildFormSetting(),
-                          _buildAccessControls(),
-                        ],
-                      ),
-                    ),
+                        padding: const EdgeInsets.all(16),
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            children: [
+                              _buildFormSetting(),
+                              _buildAccessControls(),
+                              if (_accessibleBy.contains("staff"))
+                                _buildAllowedPositions(),
+                            ],
+                          ),
+                        )),
 
                     // Tab 2: Pertanyaan
                     SingleChildScrollView(

@@ -64,8 +64,8 @@ class PositionsSelector extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  "Posisi yang dibutuhkan",
-                  style: Theme.of(context).textTheme.bodyLarge,
+                  "Posisi",
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
                 const Spacer(),
                 OutlinedButton.icon(
@@ -85,7 +85,6 @@ class PositionsSelector extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 12),
-
             if (selectedPositions.isEmpty)
               const Text('Belum ada posisi yang dipilih')
             else
@@ -101,13 +100,17 @@ class PositionsSelector extends StatelessWidget {
                     return itemBuilder!(position);
                   }
                   // Default tampilan (tanpa min/max)
-                  return Container(
+                  return Card(
+                      // padding:
+                      //     const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      // decoration: BoxDecoration(
+                      //   border: Border.all(color: Colors.grey.shade300),
+                      //   borderRadius: BorderRadius.circular(12),
+                      // ),
+
+                      child: Padding(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey.shade300),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
                     child: Row(
                       children: [
                         Expanded(
@@ -122,7 +125,7 @@ class PositionsSelector extends StatelessWidget {
                         ),
                       ],
                     ),
-                  );
+                  ));
                 },
               ),
           ],
