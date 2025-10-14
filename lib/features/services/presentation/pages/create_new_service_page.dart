@@ -143,9 +143,15 @@ class _CreateServicePageState extends State<CreateServicePage>
 
   Widget _buildServiceSetting() {
     return Card(
-      elevation: 2,
+      elevation: 1,
       margin: const EdgeInsets.only(bottom: 16),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: const BorderSide(
+          color: Colors.grey, // warna border
+          width: 1, // ketebalan border
+        ),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
