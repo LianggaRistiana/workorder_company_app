@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 
 class CompanyPage extends StatelessWidget {
   const CompanyPage({super.key});
@@ -15,9 +16,21 @@ class CompanyPage extends StatelessWidget {
 
     // Menu items
     final menuItems = [
-      {'icon': Icons.badge_rounded, 'label': 'Positions', 'route': AppRoutes.ownerPositions},
-      {'icon': Icons.home_repair_service_rounded, 'label': 'Services', 'route': AppRoutes.ownerServices},
-      {'icon': Icons.article_rounded, 'label': 'Forms', 'route': AppRoutes.ownerForms},
+      {
+        'icon': Icons.badge_rounded,
+        'label': 'Positions',
+        'route': AppRoutes.ownerPositions
+      },
+      {
+        'icon': Icons.home_repair_service_rounded,
+        'label': 'Services',
+        'route': AppRoutes.ownerServices
+      },
+      {
+        'icon': Icons.article_rounded,
+        'label': 'Forms',
+        'route': AppRoutes.ownerForms
+      },
     ];
 
     return Scaffold(
@@ -39,49 +52,47 @@ class CompanyPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             /// --- Company Card ---
-            Card(
-              elevation: 2,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Row(
-                  children: [
-                    // Company Logo / Avatar
-                    CircleAvatar(
-                      radius: 32,
-                      backgroundColor: theme.colorScheme.primaryContainer,
-                      child: const Icon(
-                        Icons.apartment_rounded,
-                        size: 36,
-                        color: Colors.white,
-                      ),
+            CustomCard(
+              child: Row(
+                children: [
+                  // Company Logo / Avatar
+                  CircleAvatar(
+                    radius: 32,
+                    backgroundColor: theme.colorScheme.primaryContainer,
+                    child: const Icon(
+                      Icons.apartment_rounded,
+                      size: 36,
+                      color: Colors.white,
                     ),
-                    const SizedBox(width: 16),
-                    // Company Info
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            companyName,
-                            style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            companyAddress,
-                            style: theme.textTheme.bodyMedium?.copyWith(color: Colors.grey[700]),
-                          ),
-                          const SizedBox(height: 8),
-                          Chip(
-                            label: const Text('Active', style: TextStyle(color: Colors.white)),
-                            backgroundColor: Colors.green,
-                            visualDensity: VisualDensity.compact,
-                          ),
-                        ],
-                      ),
+                  ),
+                  const SizedBox(width: 16),
+                  // Company Info
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          companyName,
+                          style: theme.textTheme.titleLarge
+                              ?.copyWith(fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          companyAddress,
+                          style: theme.textTheme.bodyMedium
+                              ?.copyWith(color: Colors.grey[700]),
+                        ),
+                        const SizedBox(height: 8),
+                        Chip(
+                          label: const Text('Active',
+                              style: TextStyle(color: Colors.white)),
+                          backgroundColor: Colors.green,
+                          visualDensity: VisualDensity.compact,
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
 
@@ -159,7 +170,12 @@ class _DashboardCardState extends State<_DashboardCard> {
               ? theme.colorScheme.primary.withOpacity(0.1)
               : theme.colorScheme.surfaceVariant.withOpacity(0.6),
           boxShadow: _isHovered
-              ? [BoxShadow(color: Colors.black12, blurRadius: 8, offset: const Offset(0, 4))]
+              ? [
+                  BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 8,
+                      offset: const Offset(0, 4))
+                ]
               : [],
         ),
         padding: const EdgeInsets.all(20),

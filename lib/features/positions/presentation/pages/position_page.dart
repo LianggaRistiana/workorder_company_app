@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/positions_bloc.dart';
 import 'package:workorder_company_app/features/positions/presentation/widget/add_position_widget.dart';
+import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 
 class PositionsPage extends StatelessWidget {
   const PositionsPage({super.key});
@@ -52,11 +53,9 @@ class _PositionsView extends StatelessWidget {
                   separatorBuilder: (_, __) => const SizedBox(height: 12),
                   itemBuilder: (context, index) {
                     final position = positions[index];
-                    return Card(
-                      elevation: 2,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
+                    return CustomCard(
+                      margin: const EdgeInsets.all(0),
+                      padding: const EdgeInsets.all(0),
                       child: ListTile(
                         contentPadding: const EdgeInsets.symmetric(
                           horizontal: 16,
@@ -81,7 +80,7 @@ class _PositionsView extends StatelessWidget {
                           color: Colors.grey,
                         ),
                         onTap: () {
-                          // nanti arahkan ke detail/edit posisi
+                          // TODO: nanti arahkan ke detail/edit posisi
                         },
                       ),
                     );
@@ -127,16 +126,8 @@ class _PositionsView extends StatelessWidget {
           }
         },
         icon: const Icon(Icons.add),
-        label:  const Text('Tambah Posisi'),
+        label: const Text('Tambah Posisi'),
       ),
-
-      // FloatingActionButton.extended(
-      //   onPressed: () {
-      //     // nanti arahkan ke halaman tambah posisi
-      //   },
-      //   label: const Text('Tambah Posisi'),
-      //   icon: const Icon(Icons.add),
-      // ),
     );
   }
 }

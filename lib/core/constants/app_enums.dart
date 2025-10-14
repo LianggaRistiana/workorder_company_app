@@ -28,11 +28,11 @@ enum UserRole {
   String get displayName {
     switch (this) {
       case UserRole.ownerCompany:
-        return 'Owner Company';
+        return 'Owner';
       case UserRole.managerCompany:
-        return 'Manager Company';
+        return 'Manager';
       case UserRole.staffCompany:
-        return 'Staff Company';
+        return 'Staff';
       case UserRole.staffUnssigned:
         return 'Unassigned Staff';
     }

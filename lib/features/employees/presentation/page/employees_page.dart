@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 import 'package:workorder_company_app/features/employees/presentation/bloc/employees_bloc.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/modern_app_bar.dart';
 
 class EmployeesPage extends StatelessWidget {
@@ -86,9 +87,9 @@ class EmployeesPage extends StatelessWidget {
   }
 
   Widget _buildEmployeeCard(BuildContext context, UserEntity employee) {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    return CustomCard(
+      margin: const EdgeInsets.all(0),
+      padding: const EdgeInsets.all(0),
       child: ListTile(
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 16, vertical: 12),

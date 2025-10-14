@@ -5,6 +5,7 @@ import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/services_bloc.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 
 class ServicesPage extends StatefulWidget {
   const ServicesPage({super.key});
@@ -88,9 +89,9 @@ class _ServicesPageState extends State<ServicesPage> {
   }
 
   Widget _buildServiceCard(BuildContext context, ServiceEntity service) {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    return CustomCard(
+      margin: const EdgeInsets.all(0),
+      padding: const EdgeInsets.all(0),
       child: ListTile(
         contentPadding:
             const EdgeInsets.symmetric(vertical: 12, horizontal: 16),

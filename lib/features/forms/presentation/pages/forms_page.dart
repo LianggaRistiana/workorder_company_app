@@ -5,6 +5,7 @@ import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/forms_bloc.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 
 class FormsPage extends StatefulWidget {
   const FormsPage({super.key});
@@ -72,77 +73,74 @@ class _FormsPageState extends State<FormsPage> {
                     itemBuilder: (context, index) {
                       final form = forms[index];
                       return AnimatedContainer(
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeOut,
-                        child: Card(
-                          elevation: 2,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(12),
-                            onTap: () {
-                              context.push(AppRoutes.ownerFormDetail(form.id));
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(16),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          form.title,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleMedium
-                                              ?.copyWith(
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                        ),
-                                      ),
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 8,
-                                          vertical: 4,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color:
-                                              form.accessType == "internal"
-                                                  ? Colors.blue.shade100
-                                                  : Colors.green.shade100,
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                        ),
-                                        child: Text(
-                                          form.accessType.toUpperCase(),
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color:
-                                                form.accessType == "internal"
-                                                    ? Colors.blue.shade800
-                                                    : Colors.green.shade800,
-                                            fontWeight: FontWeight.w500,
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeOut,
+                          child: CustomCard(
+                            margin: const EdgeInsets.all(4),
+                            padding: const EdgeInsets.all(0),
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(12),
+                              onTap: () {
+                                context
+                                    .push(AppRoutes.ownerFormDetail(form.id));
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            form.title,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleMedium
+                                                ?.copyWith(
+                                                  fontWeight: FontWeight.w600,
+                                                ),
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    form.description,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium
-                                        ?.copyWith(color: Colors.grey[700]),
-                                  ),
-                                ],
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 8,
+                                            vertical: 4,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: form.accessType == "internal"
+                                                ? Colors.blue.shade100
+                                                : Colors.green.shade100,
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
+                                          child: Text(
+                                            form.accessType.toUpperCase(),
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color:
+                                                  form.accessType == "internal"
+                                                      ? Colors.blue.shade800
+                                                      : Colors.green.shade800,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      form.description,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.copyWith(color: Colors.grey[700]),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                      );
+                          ));
                     },
                   ),
                 ),
