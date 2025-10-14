@@ -12,7 +12,7 @@ import 'package:workorder_company_app/features/forms/presentation/pages/form_det
 import 'package:workorder_company_app/features/forms/presentation/pages/forms_page.dart';
 import 'package:workorder_company_app/features/home/presentation/pages/homepage/owner_company_homepage.dart';
 import 'package:workorder_company_app/features/positions/presentation/pages/position_page.dart';
-import 'package:workorder_company_app/features/services/presentation/pages/create_new_service_page.dart';
+import 'package:workorder_company_app/features/services/presentation/pages/create_new_service/create_new_service_page.dart';
 import 'package:workorder_company_app/features/services/presentation/pages/service_detail_page.dart';
 import 'package:workorder_company_app/features/services/presentation/pages/services_page.dart';
 import 'package:workorder_company_app/shared/layout/manager_company_layout.dart';

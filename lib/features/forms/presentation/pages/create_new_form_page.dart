@@ -11,7 +11,7 @@ import 'package:workorder_company_app/features/positions/presentation/widget/pos
 import 'package:workorder_company_app/shared/widgets/custom_dropdown.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 import 'package:workorder_company_app/shared/widgets/custom_step_indicator.dart';
-import 'package:workorder_company_app/shared/widgets/step_navigation_bar.dart.dart';
+import 'package:workorder_company_app/shared/widgets/step_navigation_bar.dart';
 
 class CreateNewFormPage extends StatefulWidget {
   const CreateNewFormPage({super.key});
