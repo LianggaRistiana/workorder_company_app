@@ -63,17 +63,17 @@ extension CreateNewServiceLogic on CreateServicePageState {
       return;
     }
 
-    final service = ServiceEntity(
-      id: '',
-      title: _titleController.text,
-      description: _descController.text,
-      requiredStaff: requiredStaff,
-      workOrderForms: selectedWorkOrderForms,
-      reportForms: selectedReportForms,
-      accessType: accessType,
-      isActive: isActive,
-    );
+    // final service = ServiceEntity(
+    //   id: '',
+    //   title: _titleController.text,
+    //   description: _descController.text,
+    //   requiredStaff: requiredStaff,
+    //   workOrderForms: selectedWorkOrderForms,
+    //   reportForms: selectedReportForms,
+    //   accessType: accessType,
+    //   isActive: isActive,
+    // );
 
-    _servicesBloc.add(CreateServiceRequested(service));
+    // _servicesBloc.add(CreateServiceRequested(service));
   }
 }

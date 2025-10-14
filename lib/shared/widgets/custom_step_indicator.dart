@@ -20,8 +20,12 @@ class CustomStepIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final brightness = Theme.of(context).brightness;
     final active = activeColor ?? Theme.of(context).colorScheme.primary;
-    final inactive = inactiveColor ?? Colors.grey.shade300;
+    final inactive = inactiveColor ??
+        (brightness == Brightness.light
+            ? Colors.grey.shade300
+            : Colors.grey.shade700);
 
     return LayoutBuilder(builder: (context, constraints) {
       final stepWidth = constraints.maxWidth / steps.length;

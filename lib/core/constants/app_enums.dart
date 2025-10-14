@@ -2,7 +2,8 @@ enum UserRole {
   ownerCompany,
   managerCompany,
   staffCompany,
-  staffUnssigned;
+  staffUnssigned,
+  client;
 
   static UserRole fromString(String value) {
     switch (value) {
@@ -14,6 +15,8 @@ enum UserRole {
         return UserRole.staffCompany;
       case 'staff_unssigned':
         return UserRole.staffUnssigned;
+      case 'client':
+        return UserRole.client;
       default:
         throw Exception('Unknown UserRole: $value');
     }
@@ -21,10 +24,11 @@ enum UserRole {
 
   String toSnakeCase() {
     final regex = RegExp(r'(?<=[a-z])[A-Z]');
-    return name.replaceAllMapped(regex, (match) => '_${match.group(0)!.toLowerCase()}');
+    return name.replaceAllMapped(
+        regex, (match) => '_${match.group(0)!.toLowerCase()}');
   }
 
-    /// Label yang ramah untuk ditampilkan di UI
+  /// Label yang ramah untuk ditampilkan di UI
   String get displayName {
     switch (this) {
       case UserRole.ownerCompany:
@@ -35,6 +39,8 @@ enum UserRole {
         return 'Staff';
       case UserRole.staffUnssigned:
         return 'Unassigned Staff';
+      case UserRole.client:
+        return 'Client';
     }
   }
 

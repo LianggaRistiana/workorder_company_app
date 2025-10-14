@@ -7,7 +7,6 @@ import 'package:workorder_company_app/features/forms/domain/entities/option_enti
 import 'package:workorder_company_app/features/forms/presentation/bloc/forms_bloc.dart';
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/positions_bloc.dart';
-import 'package:workorder_company_app/features/positions/presentation/widget/positions_selector.dart';
 import 'package:workorder_company_app/shared/widgets/custom_dropdown.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 import 'package:workorder_company_app/shared/widgets/custom_step_indicator.dart';
@@ -50,6 +49,8 @@ class EditableField {
       );
 }
 
+
+// FIXME : REMOVE ACCESS SETTING IN HERE AND SPERATE INTO FEW WIDGET
 class _CreateNewFormPageState extends State<CreateNewFormPage>
     with TickerProviderStateMixin {
   late FormsBloc _formsBloc;
@@ -141,18 +142,18 @@ class _CreateNewFormPageState extends State<CreateNewFormPage>
     setState(() => _fields[fieldIndex].options.removeAt(optionIndex));
   }
 
-  void _toggleAccessibleBy(String role) {
-    setState(() {
-      if (_accessibleBy.contains(role)) {
-        _accessibleBy.remove(role);
-      } else {
-        _accessibleBy.add(role);
-      }
-      if (!_accessibleBy.contains('staff')) {
-        _allowedPositions.clear();
-      }
-    });
-  }
+  // void _toggleAccessibleBy(String role) {
+  //   setState(() {
+  //     if (_accessibleBy.contains(role)) {
+  //       _accessibleBy.remove(role);
+  //     } else {
+  //       _accessibleBy.add(role);
+  //     }
+  //     if (!_accessibleBy.contains('staff')) {
+  //       _allowedPositions.clear();
+  //     }
+  //   });
+  // }
 
   void _submitForm() {
     if (_fields.isEmpty) {
@@ -365,68 +366,68 @@ class _CreateNewFormPageState extends State<CreateNewFormPage>
     );
   }
 
-  Widget _buildAccessControls() {
-    return Card(
-      elevation: 2,
-      margin: const EdgeInsets.only(bottom: 16),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text('Pengaturan Akses',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-            const SizedBox(height: 12),
-            const Text('Tipe Akses',
-                style: TextStyle(fontWeight: FontWeight.bold)),
-            Row(
-              children: [
-                Expanded(
-                  child: ChoiceChip(
-                    label: const Center(child: Text('Public')),
-                    selected: _accessType == 'public',
-                    onSelected: (_) => setState(() => _accessType = 'public'),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: ChoiceChip(
-                    label: const Center(child: Text('Internal')),
-                    selected: _accessType == 'internal',
-                    onSelected: (_) => setState(() => _accessType = 'internal'),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            const Text('Dapat Diakses Oleh',
-                style: TextStyle(fontWeight: FontWeight.bold)),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                Expanded(
-                  child: FilterChip(
-                    label: const Center(child: Text('Manager')),
-                    selected: _accessibleBy.contains('manager'),
-                    onSelected: (_) => _toggleAccessibleBy('manager'),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: FilterChip(
-                    label: const Center(child: Text('Staff')),
-                    selected: _accessibleBy.contains('staff'),
-                    onSelected: (_) => _toggleAccessibleBy('staff'),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  // Widget _buildAccessControls() {
+  //   return Card(
+  //     elevation: 2,
+  //     margin: const EdgeInsets.only(bottom: 16),
+  //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+  //     child: Padding(
+  //       padding: const EdgeInsets.all(16),
+  //       child: Column(
+  //         crossAxisAlignment: CrossAxisAlignment.start,
+  //         children: [
+  //           const Text('Pengaturan Akses',
+  //               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+  //           const SizedBox(height: 12),
+  //           const Text('Tipe Akses',
+  //               style: TextStyle(fontWeight: FontWeight.bold)),
+  //           Row(
+  //             children: [
+  //               Expanded(
+  //                 child: ChoiceChip(
+  //                   label: const Center(child: Text('Public')),
+  //                   selected: _accessType == 'public',
+  //                   onSelected: (_) => setState(() => _accessType = 'public'),
+  //                 ),
+  //               ),
+  //               const SizedBox(width: 8),
+  //               Expanded(
+  //                 child: ChoiceChip(
+  //                   label: const Center(child: Text('Internal')),
+  //                   selected: _accessType == 'internal',
+  //                   onSelected: (_) => setState(() => _accessType = 'internal'),
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //           const SizedBox(height: 16),
+  //           const Text('Dapat Diakses Oleh',
+  //               style: TextStyle(fontWeight: FontWeight.bold)),
+  //           const SizedBox(height: 8),
+  //           Row(
+  //             children: [
+  //               Expanded(
+  //                 child: FilterChip(
+  //                   label: const Center(child: Text('Manager')),
+  //                   selected: _accessibleBy.contains('manager'),
+  //                   onSelected: (_) => _toggleAccessibleBy('manager'),
+  //                 ),
+  //               ),
+  //               const SizedBox(width: 8),
+  //               Expanded(
+  //                 child: FilterChip(
+  //                   label: const Center(child: Text('Staff')),
+  //                   selected: _accessibleBy.contains('staff'),
+  //                   onSelected: (_) => _toggleAccessibleBy('staff'),
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget _buildFormSetting() {
     return Card(
@@ -528,21 +529,21 @@ class _CreateNewFormPageState extends State<CreateNewFormPage>
     );
   }
 
-  Widget _buildAllowedPositions() {
-    return PositionsSelector(
-      selectedPositions: _allowedPositions.toList(),
-      onAdd: (pos) {
-        setState(() {
-          _allowedPositions.add(pos);
-        });
-      },
-      onRemove: (pos) {
-        setState(() {
-          _allowedPositions.removeWhere((s) => s.id == pos.id);
-        });
-      },
-    );
-  }
+  // Widget _buildAllowedPositions() {
+  //   return PositionsSelector(
+  //     selectedPositions: _allowedPositions.toList(),
+  //     onAdd: (pos) {
+  //       setState(() {
+  //         _allowedPositions.add(pos);
+  //       });
+  //     },
+  //     onRemove: (pos) {
+  //       setState(() {
+  //         _allowedPositions.removeWhere((s) => s.id == pos.id);
+  //       });
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -704,9 +705,9 @@ class _CreateNewFormPageState extends State<CreateNewFormPage>
                           child: Column(
                             children: [
                               _buildFormSetting(),
-                              _buildAccessControls(),
-                              if (_accessibleBy.contains("staff"))
-                                _buildAllowedPositions(),
+                              // _buildAccessControls(),
+                              // if (_accessibleBy.contains("staff"))
+                              //   _buildAllowedPositions(),
                             ],
                           ),
                         )),

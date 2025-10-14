@@ -4,14 +4,14 @@ import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/forms_bloc.dart';
 import 'package:workorder_company_app/features/forms/presentation/widgets/forms_selector.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/positions_bloc.dart';
+import 'package:workorder_company_app/features/services/domain/entities/service_form_entity.dart';
 import 'package:workorder_company_app/features/services/presentation/widgets/required_positions_setting.dart';
+import 'package:workorder_company_app/features/services/presentation/widgets/service_form_card.dart';
 import 'package:workorder_company_app/features/services/presentation/widgets/service_setting_card.dart';
 import 'package:workorder_company_app/shared/utils/remove_item_list_util.dart';
 import 'package:workorder_company_app/shared/utils/reorder_helper_util.dart';
 import 'package:workorder_company_app/shared/widgets/custom_step_indicator.dart';
 import 'package:workorder_company_app/shared/widgets/step_navigation_bar.dart';
-import '../../../domain/entities/service_entity.dart';
-import '../../../domain/entities/form_order_entity.dart';
 import '../../../domain/entities/required_staff_entity.dart';
 import '../../bloc/services_bloc.dart';
 
@@ -38,10 +38,12 @@ class CreateServicePageState extends State<CreateServicePage>
   late final PositionsBloc _positionsBloc;
 
   List<RequiredStaffEntity> requiredStaff = [];
-  List<FormOrderEntity> selectedWorkOrderForms = [];
-  List<FormOrderEntity> selectedReportForms = [];
+  List<ServiceFormEntity> selectedWorkOrderForms = [];
+  List<ServiceFormEntity> selectedReportForms = [];
   String accessType = 'internal';
   bool isActive = true;
+
+
 
   @override
   void initState() {

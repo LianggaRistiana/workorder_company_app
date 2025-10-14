@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
 import 'package:workorder_company_app/features/positions/presentation/widget/positions_selector.dart';
 import 'package:workorder_company_app/features/services/domain/entities/required_staff_entity.dart';
+import 'package:workorder_company_app/shared/widgets/custom_card.dart';
+import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
+import 'package:workorder_company_app/shared/widgets/custom_list.dart';
+import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
 
 class RequiredPositionsSetting extends StatelessWidget {
   final List<RequiredStaffEntity> requiredStaff;
@@ -23,63 +27,90 @@ class RequiredPositionsSetting extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PositionsSelector(
-      selectedPositions: requiredStaff.map((s) => s.position).toList(),
-      onAdd: onAdd,
-      onRemove: onRemove,
-      itemBuilder: (position) {
-        final staff = requiredStaff.firstWhere((s) => s.position.id == position.id);
-
-        final minController = TextEditingController(text: staff.minimumStaff.toString());
-        final maxController = TextEditingController(text: staff.maximumStaff.toString());
-
-        return Card(
-          margin: const EdgeInsets.symmetric(vertical: 4),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            child: Row(
+    return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        child: Column(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Expanded(
-                  flex: 3,
-                  child: Text(
-                    staff.position.name,
-                    style: const TextStyle(fontWeight: FontWeight.w600),
-                  ),
-                ),
-                Expanded(
-                  child: TextField(
-                    controller: minController,
-                    keyboardType: TextInputType.number,
-                    textAlign: TextAlign.center,
-                    decoration: const InputDecoration(labelText: 'Min', isDense: true),
-                    onChanged: (val) {
-                      final parsed = int.tryParse(val);
-                      if (parsed != null) onMinChange(staff, parsed);
-                    },
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: TextField(
-                    controller: maxController,
-                    keyboardType: TextInputType.number,
-                    textAlign: TextAlign.center,
-                    decoration: const InputDecoration(labelText: 'Max', isDense: true),
-                    onChanged: (val) {
-                      final parsed = int.tryParse(val);
-                      if (parsed != null) onMaxChange(staff, parsed);
-                    },
-                  ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.delete_outline),
-                  onPressed: () => onRemove(position),
+                Text("Posisi", style: Theme.of(context).textTheme.titleMedium),
+                const Spacer(),
+                PositionsSelector(
+                  onAdd: onAdd,
+                  useBloc: true,
+                  selectedPositions:
+                      requiredStaff.map((s) => s.position).toList(),
                 ),
               ],
             ),
-          ),
-        );
-      },
+            const SizedBox(height: 12),
+            CustomList(
+              separatorHeight: 8,
+              items: requiredStaff,
+              itemBuilder: (requiredStaff) =>
+                  _buildPositonOptionItem(requiredStaff),
+              emptyWidget: EmptyStateWidget(
+                text: 'Tidak ada posisi Ditugaskan',
+                size: 40,
+                icon: Icons.warning_amber_rounded,
+                backgroundColor: Theme.of(context).colorScheme.error.withValues(alpha: 0.1),
+              ),
+            ),
+          ],
+        ));
+  }
+
+  Widget _buildPositonOptionItem(RequiredStaffEntity staff) {
+    final minController =
+        TextEditingController(text: staff.minimumStaff.toString());
+    final maxController =
+        TextEditingController(text: staff.maximumStaff.toString());
+
+    return CustomCard(
+      margin: const EdgeInsets.all(0),
+      padding: const EdgeInsets.all(0),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        child: Row(
+          children: [
+            Expanded(
+              flex: 3,
+              child: Text(
+                staff.position.name,
+                style: const TextStyle(fontWeight: FontWeight.w600),
+              ),
+            ),
+            Expanded(
+              child: CustomInputField(
+                label: "Min",
+                controller: minController,
+                keyboardType: TextInputType.number,
+                onChanged: (val) {
+                  final parsed = int.tryParse(val);
+                  if (parsed != null) onMinChange(staff, parsed);
+                },
+              ),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: CustomInputField(
+                label: "Max",
+                controller: maxController,
+                keyboardType: TextInputType.number,
+                onChanged: (val) {
+                  final parsed = int.tryParse(val);
+                  if (parsed != null) onMaxChange(staff, parsed);
+                },
+              ),
+            ),
+            IconButton(
+              icon: const Icon(Icons.delete_outline),
+              onPressed: () => onRemove(staff.position),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -70,6 +70,8 @@ final GoRouter appRouter = GoRouter(
               return '/staff-company';
             case UserRole.staffUnssigned:
               return '/home/staff-unssigned';
+            default:
+              return '/login';
           }
         },
       ),

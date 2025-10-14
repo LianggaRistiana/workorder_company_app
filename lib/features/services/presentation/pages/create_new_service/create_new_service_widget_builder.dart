@@ -22,7 +22,6 @@ extension CreateNewServiceWidgetBuilder on CreateServicePageState {
                 setState(() => isActive = status);
               },
             ),
-            const SizedBox(height: 24),
             _buildPositionsRequiredSetting(),
           ],
         ),
@@ -31,51 +30,51 @@ extension CreateNewServiceWidgetBuilder on CreateServicePageState {
   }
 
   Widget _buildWorkOrdertab() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(8),
-      child: Column(
-        children: [
-          FormsSelector(
-            selectedFormsOrder: selectedWorkOrderForms,
-            onAdd: (formOrder) {
-              setState(() => selectedWorkOrderForms.add(formOrder));
+  return SingleChildScrollView(
+    padding: const EdgeInsets.all(8),
+    child: Column(
+      children: [
+        FormsSelector(
+          selectedServiceForms: selectedWorkOrderForms,
+          onAdd: (formOrder) {
+            setState(() => selectedWorkOrderForms.add(formOrder));
+          },
+          onRemove: (formOrder) {
+            setState(() {
+              selectedWorkOrderForms.removeWithCallback(
+                formOrder,
+                (item, i) {
+                  selectedWorkOrderForms[i] = item.copyWith(order: i + 1);
+                },
+              );
+            });
+          },
+          onReorder: (oldIndex, newIndex) {
+            setState(() {
+              selectedWorkOrderForms.reorderWithCallback(
+                oldIndex,
+                newIndex,
+                (item, i) {
+                  selectedWorkOrderForms[i] = item.copyWith(order: i + 1);
+                },
+              );
+            });
+          },
+          itemBuilder: (serviceForm) => ServiceFormCard(
+            availablePositions: requiredStaff.map((s) => s.position).toList(),
+            serviceForm: serviceForm,
+            onUpdate: (updated) {
+              final index = selectedWorkOrderForms.indexWhere((f) => f.form.id == updated.form.id);
+              if (index != -1) {
+                setState(() {
+                  selectedWorkOrderForms[index] = updated;
+                });
+              }
             },
-            // onRemove: (formOrder) {
-            //   setState(() {
-            //     selectedWorkOrderForms.remove(formOrder);
-            //     for (var i = 0; i < selectedWorkOrderForms.length; i++) {
-            //       selectedWorkOrderForms[i] =
-            //           selectedWorkOrderForms[i].copyWith(order: i + 1);
-            //     }
-            //   });
-            // },
-            onRemove: (formOrder) {
+            onRemove: (serviceForm) {
               setState(() {
                 selectedWorkOrderForms.removeWithCallback(
-                  formOrder,
-                  (item, i) {
-                    selectedWorkOrderForms[i] = item.copyWith(order: i + 1);
-                  },
-                );
-              });
-            },
-
-            // onReorder: (oldIndex, newIndex) {
-            //   setState(() {
-            //     if (newIndex > oldIndex) newIndex -= 1;
-            //     final item = selectedWorkOrderForms.removeAt(oldIndex);
-            //     selectedWorkOrderForms.insert(newIndex, item);
-            //     for (var i = 0; i < selectedWorkOrderForms.length; i++) {
-            //       selectedWorkOrderForms[i] =
-            //           selectedWorkOrderForms[i].copyWith(order: i + 1);
-            //     }
-            //   });
-            // },
-            onReorder: (oldIndex, newIndex) {
-              setState(() {
-                selectedWorkOrderForms.reorderWithCallback(
-                  oldIndex,
-                  newIndex,
+                  serviceForm,
                   (item, i) {
                     selectedWorkOrderForms[i] = item.copyWith(order: i + 1);
                   },
@@ -83,10 +82,12 @@ extension CreateNewServiceWidgetBuilder on CreateServicePageState {
               });
             },
           ),
-        ],
-      ),
-    );
-  }
+        ),
+      ],
+    ),
+  );
+}
+
 
   Widget _buildReportTab() {
     return SingleChildScrollView(
@@ -95,19 +96,10 @@ extension CreateNewServiceWidgetBuilder on CreateServicePageState {
         children: [
           // 🔹 Selector untuk Report
           FormsSelector(
-            selectedFormsOrder: selectedReportForms,
+            selectedServiceForms: selectedReportForms,
             onAdd: (formOrder) {
               setState(() => selectedReportForms.add(formOrder));
             },
-            // onRemove: (formOrder) {
-            //   setState(() {
-            //     selectedReportForms.remove(formOrder);
-            //     for (var i = 0; i < selectedReportForms.length; i++) {
-            //       selectedReportForms[i] =
-            //           selectedReportForms[i].copyWith(order: i + 1);
-            //     }
-            //   });
-            // },
             onRemove: (formOrder) {
               setState(() {
                 selectedReportForms.removeWithCallback(
@@ -118,17 +110,6 @@ extension CreateNewServiceWidgetBuilder on CreateServicePageState {
                 );
               });
             },
-            // onReorder: (oldIndex, newIndex) {
-            //   setState(() {
-            //     if (newIndex > oldIndex) newIndex -= 1;
-            //     final item = selectedReportForms.removeAt(oldIndex);
-            //     selectedReportForms.insert(newIndex, item);
-            //     for (var i = 0; i < selectedReportForms.length; i++) {
-            //       selectedReportForms[i] =
-            //           selectedReportForms[i].copyWith(order: i + 1);
-            //     }
-            //   });
-            // },
             onReorder: (oldIndex, newIndex) {
               setState(() {
                 selectedReportForms.reorderWithCallback(

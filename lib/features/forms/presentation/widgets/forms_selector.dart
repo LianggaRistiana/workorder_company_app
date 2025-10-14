@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:workorder_company_app/features/services/domain/entities/form_order_entity.dart';
+import 'package:workorder_company_app/core/constants/app_enums.dart';
+import 'package:workorder_company_app/features/services/domain/entities/service_form_entity.dart';
 import '../../domain/entities/form_entity.dart';
 import '../bloc/forms_bloc.dart';
 import 'package:workorder_company_app/shared/widgets/select_buttom_sheet.dart';
@@ -8,16 +9,18 @@ import 'package:workorder_company_app/shared/widgets/select_buttom_sheet.dart';
 class FormsSelector extends StatelessWidget {
   const FormsSelector({
     super.key,
-    required this.selectedFormsOrder,
+    required this.selectedServiceForms,
     required this.onAdd,
     required this.onRemove,
     required this.onReorder,
+    this.itemBuilder,
   });
 
-  final List<FormOrderEntity> selectedFormsOrder;
-  final void Function(FormOrderEntity) onAdd;
-  final void Function(FormOrderEntity) onRemove;
+  final List<ServiceFormEntity> selectedServiceForms;
+  final void Function(ServiceFormEntity) onAdd;
+  final void Function(ServiceFormEntity) onRemove;
   final void Function(int oldIndex, int newIndex) onReorder;
+  final Widget Function(ServiceFormEntity serviceForm)? itemBuilder;
 
   Future<void> _openFormSelector(
     BuildContext context,
@@ -39,9 +42,13 @@ class FormsSelector extends StatelessWidget {
     );
 
     if (form != null &&
-        !selectedFormsOrder.any((f) => f.form.id == form.id)) {
-      final newOrder = FormOrderEntity(
-        order: selectedFormsOrder.length + 1,
+        !selectedServiceForms.any((f) => f.form.id == form.id)) {
+      final newOrder = ServiceFormEntity(
+        order: selectedServiceForms.length + 1,
+        fillableByRoles: [UserRole.managerCompany],
+        fillableByPositions: [],
+        viewableByRoles: [UserRole.managerCompany],
+        viewableByPositions: [],
         form: form,
       );
       onAdd(newOrder);
@@ -81,25 +88,60 @@ class FormsSelector extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 12),
-            if (selectedFormsOrder.isEmpty)
+            if (selectedServiceForms.isEmpty)
               const Text('Belum ada form yang dipilih')
             else
+              // ReorderableListView(
+              //   shrinkWrap: true,
+              //   physics: const NeverScrollableScrollPhysics(),
+              //   onReorder: onReorder,
+              //   children: [
+              //     for (final formOrder in selectedServiceForms)
+              //       itemBuilder != null
+              //           ? KeyedSubtree(
+              //               key: ValueKey(formOrder.form.id),
+              //               child: itemBuilder!(formOrder),
+              //             )
+              //           : ListTile(
+              //               key: ValueKey(formOrder.form.id),
+              //               title: Text(formOrder.form.title),
+              //               trailing: IconButton(
+              //                 icon: const Icon(Icons.close),
+              //                 onPressed: () => onRemove(formOrder),
+              //               ),
+              //             ),
+              //   ],
+              // ),
               ReorderableListView(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
+                proxyDecorator: (child, index, animation) {
+                  return Material(
+                    color: Colors.transparent,
+                    elevation: 0,
+                    child: child,
+                  );
+                }, 
                 onReorder: onReorder,
                 children: [
-                  for (final formOrder in selectedFormsOrder)
-                    ListTile(
-                      key: ValueKey(formOrder.form.id),
-                      title: Text(formOrder.form.title),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.close),
-                        onPressed: () => onRemove(formOrder),
-                      ),
-                    ),
+                  for (final formOrder in selectedServiceForms)
+                    itemBuilder != null
+                        ? KeyedSubtree(
+                            key: ValueKey(formOrder.form.id),
+                            child: Builder(
+                              builder: (context) => itemBuilder!(formOrder),
+                            ),
+                          )
+                        : ListTile(
+                            key: ValueKey(formOrder.form.id),
+                            title: Text(formOrder.form.title),
+                            trailing: IconButton(
+                              icon: const Icon(Icons.close),
+                              onPressed: () => onRemove(formOrder),
+                            ),
+                          ),
                 ],
-              ),
+              )
           ],
         );
       },

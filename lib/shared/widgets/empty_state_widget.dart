@@ -1,0 +1,47 @@
+import 'package:flutter/material.dart';
+
+class EmptyStateWidget extends StatelessWidget {
+  final String text;
+  final IconData icon;
+  final Color? backgroundColor;
+  final double size;
+  final TextStyle? textStyle;
+
+  const EmptyStateWidget({
+    super.key,
+    this.text = 'Tidak ada item',
+    this.icon = Icons.inbox_outlined,
+    this.backgroundColor , // abu pudar
+    this.size = 80,
+    this.textStyle,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: size,
+          height: size,
+          decoration: BoxDecoration(
+          color: backgroundColor?? Theme.of(context).cardColor,
+            shape: BoxShape.circle,
+          ),
+          child: Icon(
+            icon,
+            size: size * 0.5,
+            color: Colors.grey.shade600,
+          ),
+        ),
+        const SizedBox(height: 12),
+        Text(
+          text,
+          style: textStyle ??
+              Theme.of(context).textTheme.titleMedium,
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
+  }
+}
