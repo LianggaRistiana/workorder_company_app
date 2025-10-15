@@ -1,4 +1,4 @@
-import 'package:workorder_company_app/features/services/data/models/form_order_model.dart';
+import 'package:workorder_company_app/features/services/data/models/service_form_model.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
 import 'package:workorder_company_app/features/services/data/models/required_staff_model.dart';
 
@@ -25,11 +25,11 @@ class ServiceModel extends ServiceEntity {
               .toList() ??
           [],
       workOrderForms: (json['workOrderForms'] as List<dynamic>?)
-              ?.map((e) => FormOrderModel.fromJson(e))
+              ?.map((e) => ServiceFormModel.fromJson(e))
               .toList() ??
           [],
       reportForms: (json['reportForms'] as List<dynamic>?)
-              ?.map((e) => FormOrderModel.fromJson(e))
+              ?.map((e) => ServiceFormModel.fromJson(e))
               .toList() ??
           [],
       accessType: json['accessType'] ?? '',
@@ -47,9 +47,9 @@ class ServiceModel extends ServiceEntity {
           .map((e) => (e as RequiredStaffModel).toJson())
           .toList(),
       'workOrderForms':
-          workOrderForms?.map((e) => (e as FormOrderModel).toJson()).toList(),
+          workOrderForms?.map((e) => (e as ServiceFormModel).toJson()).toList(),
       'reportForms':
-          reportForms?.map((e) => (e as FormOrderModel).toJson()).toList(),
+          reportForms?.map((e) => (e as ServiceFormModel).toJson()).toList(),
       'accessType': accessType,
       'isActive': isActive,
     };
@@ -67,11 +67,11 @@ class ServiceModel extends ServiceEntity {
           .toList(),
       workOrderForms: entity.workOrderForms
           ?.map((e) =>
-              e is FormOrderModel ? e : FormOrderModel.fromEntity(e))
+              e is ServiceFormModel ? e : ServiceFormModel.fromEntity(e))
           .toList(),
       reportForms: entity.reportForms
           ?.map((e) =>
-              e is FormOrderModel ? e : FormOrderModel.fromEntity(e))
+              e is ServiceFormModel ? e : ServiceFormModel.fromEntity(e))
           .toList(),
       accessType: entity.accessType,
       isActive: entity.isActive,

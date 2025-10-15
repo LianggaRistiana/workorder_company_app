@@ -4,6 +4,7 @@ import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/forms_bloc.dart';
 import 'package:workorder_company_app/features/forms/presentation/widgets/forms_selector.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/positions_bloc.dart';
+import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_form_entity.dart';
 import 'package:workorder_company_app/features/services/presentation/widgets/required_positions_setting.dart';
 import 'package:workorder_company_app/features/services/presentation/widgets/service_form_card.dart';
@@ -28,6 +29,7 @@ class CreateServicePage extends StatefulWidget {
 class CreateServicePageState extends State<CreateServicePage>
     with TickerProviderStateMixin {
   final _serviceKey = GlobalKey<FormState>();
+  // ServiceEntity? service;
 
   final _titleController = TextEditingController();
   final _descController = TextEditingController();
@@ -42,8 +44,6 @@ class CreateServicePageState extends State<CreateServicePage>
   List<ServiceFormEntity> selectedReportForms = [];
   String accessType = 'internal';
   bool isActive = true;
-
-
 
   @override
   void initState() {

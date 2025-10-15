@@ -22,24 +22,24 @@ class _FormDetailPageState extends State<FormDetailPage> {
     _formsBloc = GetIt.I<FormsBloc>()..add(GetFormByIdRequested(widget.formId));
   }
 
-  Widget _buildAccessBox(String text,
-      {Color color = Colors.grey, Color borderColor = Colors.grey}) {
-    return Container(
-      width: 100, // fix width
-      height: 100, // fix height
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: borderColor),
-      ),
-      child: Text(
-        text,
-        textAlign: TextAlign.center,
-        style: const TextStyle(fontWeight: FontWeight.bold),
-      ),
-    );
-  }
+  // Widget _buildAccessBox(String text,
+  //     {Color color = Colors.grey, Color borderColor = Colors.grey}) {
+  //   return Container(
+  //     width: 100, // fix width
+  //     height: 100, // fix height
+  //     alignment: Alignment.center,
+  //     decoration: BoxDecoration(
+  //       color: color,
+  //       borderRadius: BorderRadius.circular(12),
+  //       border: Border.all(color: borderColor),
+  //     ),
+  //     child: Text(
+  //       text,
+  //       textAlign: TextAlign.center,
+  //       style: const TextStyle(fontWeight: FontWeight.bold),
+  //     ),
+  //   );
+  // }
   
 
   @override
@@ -122,44 +122,44 @@ class _FormDetailPageState extends State<FormDetailPage> {
                         runSpacing: 8,
                         children: [
                           // Access Type
-                          _buildAccessBox(form.accessType,
-                              color: Colors.blue.shade50,
-                              borderColor: Colors.blue.shade100),
+                          // _buildAccessBox(form.accessType,
+                          //     color: Colors.blue.shade50,
+                          //     borderColor: Colors.blue.shade100),
 
                           // Accessible By
-                          ...form.accessibleBy.map<Widget>((role) =>
-                              _buildAccessBox(role,
-                                  color: Colors.orange.shade50,
-                                  borderColor: Colors.orange.shade100)),
+                          // ...form.accessibleBy.map<Widget>((role) =>
+                          //     _buildAccessBox(role,
+                          //         color: Colors.orange.shade50,
+                          //         borderColor: Colors.orange.shade100)),
                         ],
                       ),
 
                       const SizedBox(height: 16),
 
                       // Allowed Positions → full width vertical list
-                      if ((form.allowedPositions ?? []).isNotEmpty) ...[
-                        const Text(
-                          'Posisi Diizinkan:',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(height: 8),
-                        Column(
-                          children:
-                              (form.allowedPositions ?? []).map<Widget>((pos) {
-                            return Container(
-                              width: double.infinity,
-                              margin: const EdgeInsets.only(bottom: 8),
-                              padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                border:
-                                    Border.all(color: Colors.grey),
-                              ),
-                              child: Text(pos.name),
-                            );
-                          }).toList(),
-                        ),
-                      ],
+                    //   if ((form.allowedPositions ?? []).isNotEmpty) ...[
+                    //     const Text(
+                    //       'Posisi Diizinkan:',
+                    //       style: TextStyle(fontWeight: FontWeight.bold),
+                    //     ),
+                    //     const SizedBox(height: 8),
+                    //     Column(
+                    //       children:
+                    //           (form.allowedPositions ?? []).map<Widget>((pos) {
+                    //         return Container(
+                    //           width: double.infinity,
+                    //           margin: const EdgeInsets.only(bottom: 8),
+                    //           padding: const EdgeInsets.all(12),
+                    //           decoration: BoxDecoration(
+                    //             borderRadius: BorderRadius.circular(12),
+                    //             border:
+                    //                 Border.all(color: Colors.grey),
+                    //           ),
+                    //           child: Text(pos.name),
+                    //         );
+                    //       }).toList(),
+                    //     ),
+                    //   ],
                     ],
                   ),
                 ),

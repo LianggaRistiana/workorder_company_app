@@ -30,64 +30,64 @@ extension CreateNewServiceWidgetBuilder on CreateServicePageState {
   }
 
   Widget _buildWorkOrdertab() {
-  return SingleChildScrollView(
-    padding: const EdgeInsets.all(8),
-    child: Column(
-      children: [
-        FormsSelector(
-          selectedServiceForms: selectedWorkOrderForms,
-          onAdd: (formOrder) {
-            setState(() => selectedWorkOrderForms.add(formOrder));
-          },
-          onRemove: (formOrder) {
-            setState(() {
-              selectedWorkOrderForms.removeWithCallback(
-                formOrder,
-                (item, i) {
-                  selectedWorkOrderForms[i] = item.copyWith(order: i + 1);
-                },
-              );
-            });
-          },
-          onReorder: (oldIndex, newIndex) {
-            setState(() {
-              selectedWorkOrderForms.reorderWithCallback(
-                oldIndex,
-                newIndex,
-                (item, i) {
-                  selectedWorkOrderForms[i] = item.copyWith(order: i + 1);
-                },
-              );
-            });
-          },
-          itemBuilder: (serviceForm) => ServiceFormCard(
-            availablePositions: requiredStaff.map((s) => s.position).toList(),
-            serviceForm: serviceForm,
-            onUpdate: (updated) {
-              final index = selectedWorkOrderForms.indexWhere((f) => f.form.id == updated.form.id);
-              if (index != -1) {
-                setState(() {
-                  selectedWorkOrderForms[index] = updated;
-                });
-              }
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(8),
+      child: Column(
+        children: [
+          FormsSelector(
+            selectedServiceForms: selectedWorkOrderForms,
+            onAdd: (formOrder) {
+              setState(() => selectedWorkOrderForms.add(formOrder));
             },
-            onRemove: (serviceForm) {
+            onRemove: (formOrder) {
               setState(() {
                 selectedWorkOrderForms.removeWithCallback(
-                  serviceForm,
+                  formOrder,
                   (item, i) {
                     selectedWorkOrderForms[i] = item.copyWith(order: i + 1);
                   },
                 );
               });
             },
+            onReorder: (oldIndex, newIndex) {
+              setState(() {
+                selectedWorkOrderForms.reorderWithCallback(
+                  oldIndex,
+                  newIndex,
+                  (item, i) {
+                    selectedWorkOrderForms[i] = item.copyWith(order: i + 1);
+                  },
+                );
+              });
+            },
+            itemBuilder: (serviceForm) => ServiceFormCard(
+              availablePositions: requiredStaff.map((s) => s.position).toList(),
+              serviceForm: serviceForm,
+              onUpdate: (updated) {
+                final index = selectedWorkOrderForms
+                    .indexWhere((f) => f.form.id == updated.form.id);
+                if (index != -1) {
+                  setState(() {
+                    selectedWorkOrderForms[index] = updated;
+                  });
+                }
+              },
+              onRemove: (serviceForm) {
+                setState(() {
+                  selectedWorkOrderForms.removeWithCallback(
+                    serviceForm,
+                    (item, i) {
+                      selectedWorkOrderForms[i] = item.copyWith(order: i + 1);
+                    },
+                  );
+                });
+              },
+            ),
           ),
-        ),
-      ],
-    ),
-  );
-}
-
+        ],
+      ),
+    );
+  }
 
   Widget _buildReportTab() {
     return SingleChildScrollView(
@@ -121,6 +121,29 @@ extension CreateNewServiceWidgetBuilder on CreateServicePageState {
                 );
               });
             },
+            itemBuilder: (serviceForm) => ServiceFormCard(
+              availablePositions: requiredStaff.map((s) => s.position).toList(),
+              serviceForm: serviceForm,
+              onUpdate: (updated) {
+                final index = selectedReportForms
+                    .indexWhere((f) => f.form.id == updated.form.id);
+                if (index != -1) {
+                  setState(() {
+                    selectedReportForms[index] = updated;
+                  });
+                }
+              },
+              onRemove: (serviceForm) {
+                setState(() {
+                  selectedReportForms.removeWithCallback(
+                    serviceForm,
+                    (item, i) {
+                      selectedReportForms[i] = item.copyWith(order: i + 1);
+                    },
+                  );
+                });
+              },
+            ),
           ),
         ],
       ),

@@ -5,18 +5,18 @@ class FormEntity {
   final String id;
   final String title;
   final String description;
-  final String accessType;
-  final List<String> accessibleBy;
-  final List<PositionEntity>? allowedPositions;
+  // final String accessType;
+  // final List<String> accessibleBy;
+  // final List<PositionEntity>? allowedPositions;
   final List<FieldEntity>? fields;
 
   const FormEntity({
     required this.id,
     required this.title,
     required this.description,
-    required this.accessType,
-    required this.accessibleBy,
-    this.allowedPositions,
+    // required this.accessType,
+    // required this.accessibleBy,
+    // this.allowedPositions,
     this.fields,
   });
 }

@@ -1,14 +1,14 @@
 import 'package:equatable/equatable.dart';
-import 'package:workorder_company_app/features/services/domain/entities/form_order_entity.dart';
 import 'package:workorder_company_app/features/services/domain/entities/required_staff_entity.dart';
+import 'package:workorder_company_app/features/services/domain/entities/service_form_entity.dart';
 
 class ServiceEntity extends Equatable {
   final String id;
   final String title;
   final String description;
   final List<RequiredStaffEntity> requiredStaff;
-  final List<FormOrderEntity>? workOrderForms;
-  final List<FormOrderEntity>? reportForms;
+  final List<ServiceFormEntity>? workOrderForms;
+  final List<ServiceFormEntity>? reportForms;
   final String accessType;
   final bool isActive;
 
@@ -28,8 +28,8 @@ class ServiceEntity extends Equatable {
     String? title,
     String? description,
     List<RequiredStaffEntity>? requiredStaff,
-    List<FormOrderEntity>? workOrderForms,
-    List<FormOrderEntity>? reportForms,
+    List<ServiceFormEntity>? workOrderForms,
+    List<ServiceFormEntity>? reportForms,
     String? accessType,
     bool? isActive,
   }) {

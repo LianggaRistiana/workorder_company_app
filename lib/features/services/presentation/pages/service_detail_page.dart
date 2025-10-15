@@ -102,8 +102,10 @@ class _ServiceDetailPageState extends State<ServiceDetailPage> {
                 body: TabBarView(
                   children: [
                     _buildOverviewTab(service),
-                    _buildFormsTab(service.workOrderForms, "WorkOrder Forms"),
-                    _buildFormsTab(service.reportForms, "Report Forms"),
+                    _buildOverviewTab(service),
+                    _buildOverviewTab(service),
+                    // _buildFormsTab(service.workOrderForms, "WorkOrder Forms"),
+                    // _buildFormsTab(service.reportForms, "Report Forms"),
                   ],
                 ),
               ),
@@ -183,27 +185,27 @@ class _ServiceDetailPageState extends State<ServiceDetailPage> {
     );
   }
 
-  Widget _buildFormsTab(List<FormOrderEntity>? formOrders, String title) {
-    if (formOrders == null || formOrders.isEmpty) {
-      return Center(child: Text("No $title available."));
-    }
+  // Widget _buildFormsTab(List<FormOrderEntity>? formOrders, String title) {
+  //   if (formOrders == null || formOrders.isEmpty) {
+  //     return Center(child: Text("No $title available."));
+  //   }
 
-    final sortedForms = [...formOrders]
-      ..sort((a, b) => a.order.compareTo(b.order));
+  //   final sortedForms = [...formOrders]
+  //     ..sort((a, b) => a.order.compareTo(b.order));
 
-    return ListView.builder(
-      padding: const EdgeInsets.all(16),
-      shrinkWrap: true,
-      itemCount: sortedForms.length,
-      physics: NeverScrollableScrollPhysics(),
-      itemBuilder: (context, index) => _buildFormCard(
-        sortedForms[index].form,
-        onTap: () => context.push(
-          AppRoutes.ownerFormDetail(sortedForms[index].form.id),
-        ),
-      ),
-    );
-  }
+  //   return ListView.builder(
+  //     padding: const EdgeInsets.all(16),
+  //     shrinkWrap: true,
+  //     itemCount: sortedForms.length,
+  //     physics: NeverScrollableScrollPhysics(),
+  //     itemBuilder: (context, index) => _buildFormCard(
+  //       sortedForms[index].form,
+  //       onTap: () => context.push(
+  //         AppRoutes.ownerFormDetail(sortedForms[index].form.id),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget _buildFormCard(dynamic form, {VoidCallback? onTap}) {
     return InkWell(

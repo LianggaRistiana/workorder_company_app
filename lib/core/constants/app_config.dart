@@ -1,7 +1,7 @@
 class AppConfig {
   static const String appName = "Work Order Company App";
   static const String appVersion = "1.0.0";
-  static const String appFlavor = "development.device"; // development, staging, production
+  static const String appFlavor = "development"; // development, staging, production
 
   // network
   static const Map<String, String> baseApiUrls = {
@@ -14,6 +14,4 @@ class AppConfig {
   static String get baseApiUrl => baseApiUrls[appFlavor]!;
   static const int receivedTimeout = 10;
   static const int connectTimeout = 10;
-  
-  
 }

@@ -5,7 +5,6 @@ import 'package:workorder_company_app/features/forms/domain/entities/field_entit
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/option_entity.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/forms_bloc.dart';
-import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/positions_bloc.dart';
 import 'package:workorder_company_app/shared/widgets/custom_dropdown.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
@@ -64,10 +63,10 @@ class _CreateNewFormPageState extends State<CreateNewFormPage>
   final _descController = TextEditingController();
   final List<EditableField> _fields = [];
 
-  String _accessType = 'public';
+  // String _accessType = 'public';
   String _formType = 'work-order';
-  final List<String> _accessibleBy = [];
-  final List<PositionEntity> _allowedPositions = [];
+  // final List<String> _accessibleBy = [];
+  // final List<PositionEntity> _allowedPositions = [];
 
   @override
   void initState() {
@@ -171,9 +170,9 @@ class _CreateNewFormPageState extends State<CreateNewFormPage>
       id: '',
       title: _titleController.text.trim(),
       description: _descController.text.trim(),
-      accessType: _accessType,
-      accessibleBy: _accessibleBy,
-      allowedPositions: _allowedPositions,
+      // accessType: _accessType,
+      // accessibleBy: _accessibleBy,
+      // allowedPositions: _allowedPositions,
       fields: _fields.map((e) => e.toEntity()).toList(),
     );
 

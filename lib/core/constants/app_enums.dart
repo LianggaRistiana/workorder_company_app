@@ -48,3 +48,42 @@ enum UserRole {
   @override
   String toString() => displayName;
 }
+
+enum TypeAccess {
+  public,
+  memberOnly,
+  internal;
+
+  static TypeAccess fromString(String value) {
+    switch (value) {
+      case 'public':
+        return TypeAccess.public;
+      case 'member_only':
+        return TypeAccess.memberOnly;
+      case 'internal':
+        return TypeAccess.internal;
+      default:
+        throw Exception('Unknown TypeAccess: $value');
+    }
+  }
+
+  String toSnakeCase() {
+    final regex = RegExp(r'(?<=[a-z])[A-Z]');
+    return name.replaceAllMapped(
+        regex, (match) => '_${match.group(0)!.toLowerCase()}');
+  }
+
+  String get displayName {
+    switch (this) {
+      case TypeAccess.public:
+        return 'Public';
+      case TypeAccess.memberOnly:
+        return 'Member Only';
+      case TypeAccess.internal:
+        return 'Internal';
+    }
+  }
+
+  @override
+  String toString() => displayName;
+}
