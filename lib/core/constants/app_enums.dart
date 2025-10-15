@@ -49,19 +49,19 @@ enum UserRole {
   String toString() => displayName;
 }
 
-enum TypeAccess {
+enum AccessType {
   public,
   memberOnly,
   internal;
 
-  static TypeAccess fromString(String value) {
+  static AccessType fromString(String value) {
     switch (value) {
       case 'public':
-        return TypeAccess.public;
+        return AccessType.public;
       case 'member_only':
-        return TypeAccess.memberOnly;
+        return AccessType.memberOnly;
       case 'internal':
-        return TypeAccess.internal;
+        return AccessType.internal;
       default:
         throw Exception('Unknown TypeAccess: $value');
     }
@@ -75,12 +75,46 @@ enum TypeAccess {
 
   String get displayName {
     switch (this) {
-      case TypeAccess.public:
+      case AccessType.public:
         return 'Public';
-      case TypeAccess.memberOnly:
+      case AccessType.memberOnly:
         return 'Member Only';
-      case TypeAccess.internal:
+      case AccessType.internal:
         return 'Internal';
+    }
+  }
+
+  @override
+  String toString() => displayName;
+}
+
+enum FormType {
+  workOrder,
+  report;
+
+  static FormType fromString(String value) {
+    switch (value) {
+      case 'work_order':
+        return FormType.workOrder;
+      case 'report':
+        return FormType.report;
+      default:
+        throw Exception('Unknown FormType: $value');
+    }
+  }
+
+  String toSnakeCase() {
+    final regex = RegExp(r'(?<=[a-z])[A-Z]');
+    return name.replaceAllMapped(
+        regex, (match) => '_${match.group(0)!.toLowerCase()}');
+  }
+
+  String get displayName {
+    switch (this) {
+      case FormType.workOrder:
+        return 'Work Order';
+      case FormType.report:
+        return 'Report';
     }
   }
 

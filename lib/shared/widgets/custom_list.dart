@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class CustomList<T> extends StatelessWidget {
   final List<T> items;
-  final Widget Function(T item) itemBuilder;
+  final Widget Function(T item, int index) itemBuilder;
   final bool isReorderable;
   final void Function(int oldIndex, int newIndex)? onReorder;
   final double separatorHeight;
@@ -27,11 +27,18 @@ class CustomList<T> extends StatelessWidget {
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         onReorder: onReorder!,
+        proxyDecorator: (child, index, animation) {
+          return Material(
+            color: Colors.transparent,
+            elevation: 0,
+            child: child,
+          );
+        },
         children: [
           for (final item in items)
             KeyedSubtree(
               key: ValueKey(item),
-              child: itemBuilder(item),
+              child: itemBuilder(item, items.indexOf(item)),
             )
         ],
       );
@@ -44,7 +51,7 @@ class CustomList<T> extends StatelessWidget {
       separatorBuilder: (_, __) => SizedBox(height: separatorHeight),
       itemBuilder: (context, index) {
         final item = items[index];
-        return itemBuilder(item);
+        return itemBuilder(item, index);
       },
     );
   }

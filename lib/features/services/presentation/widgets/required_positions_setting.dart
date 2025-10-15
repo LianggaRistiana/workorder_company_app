@@ -48,7 +48,7 @@ class RequiredPositionsSetting extends StatelessWidget {
             CustomList(
               separatorHeight: 8,
               items: requiredStaff,
-              itemBuilder: (requiredStaff) =>
+              itemBuilder: (requiredStaff, _) =>
                   _buildPositonOptionItem(requiredStaff),
               emptyWidget: EmptyStateWidget(
                 text: 'Tidak ada posisi Ditugaskan',

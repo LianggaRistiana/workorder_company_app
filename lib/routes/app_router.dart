@@ -7,7 +7,7 @@ import 'package:workorder_company_app/features/auth/presentation/pages/profile_p
 import 'package:workorder_company_app/features/company/presentation/pages/company_page.dart';
 import 'package:workorder_company_app/features/employees/presentation/page/employees_page.dart';
 import 'package:workorder_company_app/features/employees/presentation/page/invite_employees_page.dart';
-import 'package:workorder_company_app/features/forms/presentation/pages/create_new_form_page.dart';
+import 'package:workorder_company_app/features/forms/presentation/pages/create_new_form/create_new_form_page.dart';
 import 'package:workorder_company_app/features/forms/presentation/pages/form_detail.page.dart';
 import 'package:workorder_company_app/features/forms/presentation/pages/forms_page.dart';
 import 'package:workorder_company_app/features/home/presentation/pages/homepage/owner_company_homepage.dart';

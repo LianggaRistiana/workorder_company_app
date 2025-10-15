@@ -146,7 +146,7 @@ class ServiceFormCard extends StatelessWidget {
           emptyWidget: const Text("Semua posisi staff terpilih"),
           separatorHeight: 8,
           items: selectedPositions,
-          itemBuilder: (item) => _buildPositionOptionItem(item, onRemove),
+          itemBuilder: (item, _) => _buildPositionOptionItem(item, onRemove),
         ),
       ],
     );
