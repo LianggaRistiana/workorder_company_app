@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
+import 'package:workorder_company_app/features/services/domain/entities/service_form_entity.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/services_bloc.dart';
+import 'package:workorder_company_app/features/services/presentation/widgets/service_form_card.dart';
+import 'package:workorder_company_app/shared/widgets/custom_list.dart';
+import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
 
 class ServiceDetailPage extends StatefulWidget {
   final String serviceId;
@@ -19,7 +23,8 @@ class _ServiceDetailPageState extends State<ServiceDetailPage> {
   @override
   void initState() {
     super.initState();
-    _servicesBloc = sl<ServicesBloc>()..add(GetServiceByIdRequested(widget.serviceId));
+    _servicesBloc = sl<ServicesBloc>()
+      ..add(GetServiceByIdRequested(widget.serviceId));
   }
 
   @override
@@ -99,10 +104,8 @@ class _ServiceDetailPageState extends State<ServiceDetailPage> {
                 body: TabBarView(
                   children: [
                     _buildOverviewTab(service),
-                    _buildOverviewTab(service),
-                    _buildOverviewTab(service),
-                    // _buildFormsTab(service.workOrderForms, "WorkOrder Forms"),
-                    // _buildFormsTab(service.reportForms, "Report Forms"),
+                    _buildFormsTab(service.workOrderForms, "WorkOrder Forms"),
+                    _buildFormsTab(service.reportForms, "Report Forms"),
                   ],
                 ),
               ),
@@ -113,6 +116,22 @@ class _ServiceDetailPageState extends State<ServiceDetailPage> {
           body: SizedBox(),
         );
       },
+    );
+  }
+
+  Widget _buildFormsTab(List<ServiceFormEntity>? serviceForms, String title) {
+    return Padding(
+      padding: const EdgeInsets.all(8),
+      child: CustomList(
+        items: serviceForms ?? [],
+        separatorHeight: 8,
+        emptyWidget: EmptyStateWidget(
+          text: "Tidak ada $title",
+        ),
+        itemBuilder: (serviceForm, _) => ServiceFormCard(
+          serviceForm: serviceForm,
+        ),
+      ),
     );
   }
 
