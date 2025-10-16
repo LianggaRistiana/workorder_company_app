@@ -32,7 +32,7 @@ Widget build(BuildContext context) {
         context.push(AppRoutes.ownerFormDetail(serviceForm.form.id));
       },
       child: Padding(
-        padding: const EdgeInsets.all(12), 
+        padding: const EdgeInsets.all(12), // beri padding manual
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -138,3 +138,5 @@ Widget build(BuildContext context) {
     }
   }
 }
+
+
