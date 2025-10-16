@@ -1,3 +1,4 @@
+import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/features/forms/data/model/option_model.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/field_entity.dart';
 
@@ -17,7 +18,7 @@ class FieldModel extends FieldEntity {
     return FieldModel(
       order: json["order"],
       label: json["label"],
-      type: json["type"],
+      type: FieldType.fromString(json["type"]),
       required: json["required"],
       placeholder: json["placeholder"],
       min: json["min"],
@@ -38,7 +39,7 @@ class FieldModel extends FieldEntity {
     return {
       "order": order,
       "label": label,
-      "type": type,
+      "type": type.toSnakeCase(),
       "required": required,
       "placeholder": placeholder,
       "min": min,

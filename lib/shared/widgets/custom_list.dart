@@ -46,6 +46,7 @@ class CustomList<T> extends StatelessWidget {
 
     return ListView.separated(
       shrinkWrap: true,
+      padding: EdgeInsets.zero,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: items.length,
       separatorBuilder: (_, __) => SizedBox(height: separatorHeight),

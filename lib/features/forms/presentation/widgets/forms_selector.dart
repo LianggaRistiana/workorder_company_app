@@ -91,27 +91,6 @@ class FormsSelector extends StatelessWidget {
             if (selectedServiceForms.isEmpty)
               const Text('Belum ada form yang dipilih')
             else
-              // ReorderableListView(
-              //   shrinkWrap: true,
-              //   physics: const NeverScrollableScrollPhysics(),
-              //   onReorder: onReorder,
-              //   children: [
-              //     for (final formOrder in selectedServiceForms)
-              //       itemBuilder != null
-              //           ? KeyedSubtree(
-              //               key: ValueKey(formOrder.form.id),
-              //               child: itemBuilder!(formOrder),
-              //             )
-              //           : ListTile(
-              //               key: ValueKey(formOrder.form.id),
-              //               title: Text(formOrder.form.title),
-              //               trailing: IconButton(
-              //                 icon: const Icon(Icons.close),
-              //                 onPressed: () => onRemove(formOrder),
-              //               ),
-              //             ),
-              //   ],
-              // ),
               ReorderableListView(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),

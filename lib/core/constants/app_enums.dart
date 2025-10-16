@@ -1,3 +1,5 @@
+import 'package:workorder_company_app/shared/utils/string_case_utils.dart';
+
 enum UserRole {
   ownerCompany,
   managerCompany,
@@ -115,6 +117,75 @@ enum FormType {
         return 'Work Order';
       case FormType.report:
         return 'Report';
+    }
+  }
+
+  @override
+  String toString() => displayName;
+}
+
+enum FieldType {
+  text,
+  textArea,
+  number,
+  date,
+  time,
+  multiSelect,
+  singleSelect;
+
+  static FieldType fromString(String value) {
+    switch (value) {
+      case 'text':
+        return FieldType.text;
+      case 'text_area':
+        return FieldType.textArea;
+      case 'textarea':
+        return FieldType.textArea;
+      case 'text-area':
+        return FieldType.textArea;
+      case 'number':
+        return FieldType.number;
+      case 'date':
+        return FieldType.date;
+      case 'time':
+        return FieldType.time;
+      case 'multi_select':
+        return FieldType.multiSelect;
+      case 'single_select':
+        return FieldType.singleSelect;
+      case 'multi-select':
+        return FieldType.multiSelect;
+      case 'single-select':
+        return FieldType.singleSelect;
+      default:
+        throw Exception('Unknown FieldType: $value');
+    }
+  }
+
+  String toSnakeCase() {
+    return name.toSnakeCase();
+  }
+
+  String toKebabCase() {
+    return name.toKebabCase();
+  }
+
+  String get displayName {
+    switch (this) {
+      case FieldType.text:
+        return 'Text';
+      case FieldType.textArea:
+        return 'Text Area';
+      case FieldType.number:
+        return 'Number';
+      case FieldType.date:
+        return 'Date';
+      case FieldType.time:
+        return 'Time';
+      case FieldType.multiSelect:
+        return 'Multi Select';
+      case FieldType.singleSelect:
+        return 'Single Select';
     }
   }
 

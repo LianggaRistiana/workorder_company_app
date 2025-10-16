@@ -9,13 +9,17 @@ class FieldOptionItem extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade300),
+        border: Border.all(color: Theme.of(context).dividerColor.withAlpha(80)),
         borderRadius: BorderRadius.circular(8),
-        color: Colors.grey.shade50,
+        color: Theme.of(context).colorScheme.surfaceContainer.withAlpha(90),
       ),
       child: Row(
         children: [
-          const Icon(Icons.circle, size: 8, color: Colors.grey),
+          Icon(
+            Icons.circle,
+            size: 8,
+            color: Theme.of(context).colorScheme.secondary,
+          ),
           const SizedBox(width: 8),
           Expanded(child: Text(value)),
         ],

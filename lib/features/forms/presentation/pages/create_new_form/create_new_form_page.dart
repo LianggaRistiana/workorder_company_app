@@ -47,7 +47,7 @@ class EditableField {
 
   FieldEntity toEntity() => FieldEntity(
         label: label,
-        type: type,
+        type: FieldType.fromString(type),
         required: required,
         min: min,
         max: max,

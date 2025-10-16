@@ -1,9 +1,10 @@
+import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/option_entity.dart';
 
 class FieldEntity {
   final int? order;
   final String label;
-  final String type;
+  final FieldType type;
   final bool required;
   final String? placeholder;
   final int? min;
