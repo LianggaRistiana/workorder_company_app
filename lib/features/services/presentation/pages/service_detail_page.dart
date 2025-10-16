@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
-import 'package:workorder_company_app/features/services/domain/entities/form_order_entity.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/services_bloc.dart';
-import 'package:workorder_company_app/routes/app_routes.dart';
 
 class ServiceDetailPage extends StatefulWidget {
   final String serviceId;
@@ -182,131 +179,6 @@ class _ServiceDetailPageState extends State<ServiceDetailPage> {
             }).toList(),
           ),
       ],
-    );
-  }
-
-  // Widget _buildFormsTab(List<FormOrderEntity>? formOrders, String title) {
-  //   if (formOrders == null || formOrders.isEmpty) {
-  //     return Center(child: Text("No $title available."));
-  //   }
-
-  //   final sortedForms = [...formOrders]
-  //     ..sort((a, b) => a.order.compareTo(b.order));
-
-  //   return ListView.builder(
-  //     padding: const EdgeInsets.all(16),
-  //     shrinkWrap: true,
-  //     itemCount: sortedForms.length,
-  //     physics: NeverScrollableScrollPhysics(),
-  //     itemBuilder: (context, index) => _buildFormCard(
-  //       sortedForms[index].form,
-  //       onTap: () => context.push(
-  //         AppRoutes.ownerFormDetail(sortedForms[index].form.id),
-  //       ),
-  //     ),
-  //   );
-  // }
-
-  Widget _buildFormCard(dynamic form, {VoidCallback? onTap}) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(20),
-      splashColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
-      highlightColor: Colors.transparent,
-      child: Card(
-        margin: const EdgeInsets.only(bottom: 16),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Title + Access Type
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Text(
-                      form.title,
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  _buildAccessTypeChip(form.accessType),
-                ],
-              ),
-
-              const SizedBox(height: 8),
-
-              // Description
-              Text(
-                form.description,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Colors.grey.shade700,
-                      height: 1.5,
-                    ),
-              ),
-
-              const SizedBox(height: 16),
-              const Divider(),
-
-              // Accessible by
-              if (form.accessibleBy.isNotEmpty) ...[
-                Text(
-                  "Accessible By",
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey.shade800,
-                      ),
-                ),
-                const SizedBox(height: 6),
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: form.accessibleBy
-                      .map<Widget>(
-                        (role) => Chip(
-                          label: Text(role),
-                          backgroundColor: Colors.orange.shade50,
-                          side: BorderSide(color: Colors.orange.shade100),
-                        ),
-                      )
-                      .toList(),
-                ),
-              ],
-
-              const SizedBox(height: 16),
-
-              // Allowed positions
-              if (form.allowedPositions.isNotEmpty) ...[
-                Text(
-                  "Allowed Positions",
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey.shade800,
-                      ),
-                ),
-                const SizedBox(height: 6),
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: form.allowedPositions
-                      .map<Widget>(
-                        (pos) => Chip(
-                          label: Text(pos.name),
-                          backgroundColor: Colors.green.shade50,
-                          side: BorderSide(color: Colors.green.shade100),
-                        ),
-                      )
-                      .toList(),
-                ),
-              ],
-            ],
-          ),
-        ),
-      ),
     );
   }
 

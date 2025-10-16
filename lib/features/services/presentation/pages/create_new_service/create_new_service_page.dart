@@ -7,7 +7,7 @@ import 'package:workorder_company_app/features/positions/presentation/bloc/posit
 import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_form_entity.dart';
 import 'package:workorder_company_app/features/services/presentation/widgets/required_positions_setting.dart';
-import 'package:workorder_company_app/features/services/presentation/widgets/service_form_card.dart';
+import 'package:workorder_company_app/features/services/presentation/widgets/service_form_editor_card.dart';
 import 'package:workorder_company_app/features/services/presentation/widgets/service_setting_card.dart';
 import 'package:workorder_company_app/shared/utils/remove_item_list_util.dart';
 import 'package:workorder_company_app/shared/utils/reorder_helper_util.dart';

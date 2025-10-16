@@ -7,7 +7,7 @@ import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/roles_selector.dart';
 
-class ServiceFormCard extends StatelessWidget {
+class ServiceFormEditorCard extends StatelessWidget {
   final ServiceFormEntity serviceForm;
   final List<PositionEntity> availablePositions;
   final void Function(ServiceFormEntity) onUpdate;
@@ -19,7 +19,7 @@ class ServiceFormCard extends StatelessWidget {
     UserRole.client,
   ];
 
-  ServiceFormCard({
+  ServiceFormEditorCard({
     super.key,
     required this.serviceForm,
     required this.availablePositions,

@@ -60,7 +60,7 @@ extension CreateNewServiceWidgetBuilder on CreateServicePageState {
                 );
               });
             },
-            itemBuilder: (serviceForm) => ServiceFormCard(
+            itemBuilder: (serviceForm) => ServiceFormEditorCard(
               availablePositions: requiredStaff.map((s) => s.position).toList(),
               serviceForm: serviceForm,
               onUpdate: (updated) {
@@ -121,7 +121,7 @@ extension CreateNewServiceWidgetBuilder on CreateServicePageState {
                 );
               });
             },
-            itemBuilder: (serviceForm) => ServiceFormCard(
+            itemBuilder: (serviceForm) => ServiceFormEditorCard(
               availablePositions: requiredStaff.map((s) => s.position).toList(),
               serviceForm: serviceForm,
               onUpdate: (updated) {
