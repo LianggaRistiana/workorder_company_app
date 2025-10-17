@@ -126,7 +126,7 @@ enum FormType {
 
 enum FieldType {
   text,
-  textArea,
+  textarea,
   number,
   date,
   time,
@@ -138,11 +138,11 @@ enum FieldType {
       case 'text':
         return FieldType.text;
       case 'text_area':
-        return FieldType.textArea;
+        return FieldType.textarea;
       case 'textarea':
-        return FieldType.textArea;
+        return FieldType.textarea;
       case 'text-area':
-        return FieldType.textArea;
+        return FieldType.textarea;
       case 'number':
         return FieldType.number;
       case 'date':
@@ -174,7 +174,7 @@ enum FieldType {
     switch (this) {
       case FieldType.text:
         return 'Text';
-      case FieldType.textArea:
+      case FieldType.textarea:
         return 'Text Area';
       case FieldType.number:
         return 'Number';

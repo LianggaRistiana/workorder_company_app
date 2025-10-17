@@ -109,47 +109,52 @@ class _FormsPageState extends State<FormsPage> {
   }
 
   Widget _buildMainContent(List<FormEntity> forms) {
-    return CustomList(
-      items: forms,
-      itemBuilder: (form, _) => CustomCard(
-        margin: const EdgeInsets.all(4),
-        padding: const EdgeInsets.all(0),
-        child: InkWell(
-          borderRadius: BorderRadius.circular(12),
-          onTap: () {
-            context.push(AppRoutes.ownerFormDetail(form.id));
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
+    return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: CustomList(
+          items: forms,
+          emptyFooterHeight: 20,
+          scrollable: true,
+          isReorderable: false,
+          itemBuilder: (form, _) => CustomCard(
+            margin: const EdgeInsets.all(4),
+            padding: const EdgeInsets.all(0),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(12),
+              onTap: () {
+                context.push(AppRoutes.ownerFormDetail(form.id));
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      child: Text(
-                        form.title,
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium
-                            ?.copyWith(fontWeight: FontWeight.w600),
-                      ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            form.title,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      form.description,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(color: Colors.grey[700]),
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
-                Text(
-                  form.description,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(color: Colors.grey[700]),
-                ),
-              ],
+              ),
             ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 }

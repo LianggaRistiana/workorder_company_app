@@ -55,7 +55,7 @@ class FieldTypeChip extends StatelessWidget {
     switch (type) {
       case FieldType.text:
         return Icons.text_fields;
-      case FieldType.textArea:
+      case FieldType.textarea:
         return Icons.notes;
       case FieldType.number:
         return Icons.pin;

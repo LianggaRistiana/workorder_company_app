@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:workorder_company_app/shared/widgets/shimmer_placeholder.dart';
 import 'package:workorder_company_app/shared/widgets/smart_shimmer.dart';
 
-class FormsSkeleton extends StatelessWidget {
-  const FormsSkeleton({super.key});
+class ServicesSkeleton extends StatelessWidget {
+  const ServicesSkeleton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,16 +19,27 @@ class FormsSkeleton extends StatelessWidget {
             // Placeholder layout mirip tampilan form card asli
             Padding(
               padding: EdgeInsets.all(16),
-              child: Column(
+              child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Title shimmer
-                  ShimmerPlaceholder(height: 16, width: 150),
-                  SizedBox(height: 12),
-                  // Description shimmer
-                  ShimmerPlaceholder(height: 14, width: double.infinity),
-                  SizedBox(height: 6),
-                  ShimmerPlaceholder(height: 14, width: 180),
+                  // Bagian kiri: judul dan deskripsi
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ShimmerPlaceholder(height: 16, width: 150),
+                        SizedBox(height: 12),
+                        ShimmerPlaceholder(height: 14, width: 180),
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: 12),
+                  // Bagian kanan: chip kecil
+                  ShimmerPlaceholder(
+                    height: 20,
+                    width: 60,
+                    borderRadius: 20,
+                  ),
                 ],
               ),
             ),
@@ -38,4 +49,3 @@ class FormsSkeleton extends StatelessWidget {
     );
   }
 }
-

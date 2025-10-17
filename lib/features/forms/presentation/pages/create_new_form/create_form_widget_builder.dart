@@ -182,7 +182,7 @@ extension CreateFormWidgetBuilder on CreateNewFormPageState {
             CustomInputField(
               label: "Judul Form",
               controller: _titleController,
-              hint: "Masukan nama lengkap",
+              hint: "Judul Sebagai langkah step pekerjaan",
               description:
                   "Judul Form akan digunakan sebagai judul step di dalam report",
               validator: (value) {

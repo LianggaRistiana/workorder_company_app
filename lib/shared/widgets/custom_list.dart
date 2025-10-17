@@ -7,6 +7,8 @@ class CustomList<T> extends StatelessWidget {
   final void Function(int oldIndex, int newIndex)? onReorder;
   final double separatorHeight;
   final Widget emptyWidget; // opsional, default
+  final bool scrollable;
+  final double emptyFooterHeight;
 
   const CustomList({
     super.key,
@@ -16,6 +18,8 @@ class CustomList<T> extends StatelessWidget {
     this.onReorder,
     this.separatorHeight = 2, // default 2
     this.emptyWidget = const Text('Tidak ada item'), // default
+    this.scrollable = false,
+    this.emptyFooterHeight = 0,
   });
 
   @override
@@ -39,18 +43,26 @@ class CustomList<T> extends StatelessWidget {
             KeyedSubtree(
               key: ValueKey(item),
               child: itemBuilder(item, items.indexOf(item)),
-            )
+            ),
+          SizedBox(
+            key: ValueKey('__buttom_space__'),
+            height: emptyFooterHeight)
         ],
       );
     }
 
     return ListView.separated(
       shrinkWrap: true,
-      padding: EdgeInsets.zero,
-      physics: const NeverScrollableScrollPhysics(),
+      padding: EdgeInsets.only(bottom: emptyFooterHeight),
+      physics: scrollable
+          ? AlwaysScrollableScrollPhysics()
+          : NeverScrollableScrollPhysics(),
       itemCount: items.length,
       separatorBuilder: (_, __) => SizedBox(height: separatorHeight),
       itemBuilder: (context, index) {
+        if (index == items.length) {
+          return SizedBox(height : emptyFooterHeight);
+        }
         final item = items[index];
         return itemBuilder(item, index);
       },
