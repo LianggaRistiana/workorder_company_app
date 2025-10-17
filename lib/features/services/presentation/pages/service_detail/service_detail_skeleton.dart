@@ -13,7 +13,6 @@ class ServiceDetailSkeleton extends StatelessWidget {
 
         // === Chips Section ===
         SmartShimmer(
-          isLoading: true,
           placeholders: [
             Row(
               children: List.generate(2, (index) {
@@ -29,13 +28,11 @@ class ServiceDetailSkeleton extends StatelessWidget {
               }),
             ),
           ],
-          child: const SizedBox(),
         ),
         const SizedBox(height: 24),
 
         // === Description Section ===
         SmartShimmer(
-          isLoading: true,
           placeholders: [
             Container(height: 20, width: 120, color: Colors.grey.shade300),
             const SizedBox(height: 12),
@@ -54,14 +51,12 @@ class ServiceDetailSkeleton extends StatelessWidget {
               ),
             ),
           ],
-          child: const SizedBox(),
         ),
 
         const SizedBox(height: 32),
 
         // === Required Staff Section ===
         SmartShimmer(
-          isLoading: true,
           placeholders: [
             Container(height: 20, width: 150, color: Colors.grey.shade300),
             const SizedBox(height: 12),
@@ -97,7 +92,6 @@ class ServiceDetailSkeleton extends StatelessWidget {
               }),
             ),
           ],
-          child: const SizedBox(),
         ),
       ],
     );

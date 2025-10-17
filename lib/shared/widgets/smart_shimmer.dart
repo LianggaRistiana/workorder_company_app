@@ -17,8 +17,6 @@ import 'package:shimmer/shimmer.dart';
 /// )
 /// ```
 class SmartShimmer extends StatelessWidget {
-  final bool isLoading;
-  final Widget child;
   final List<Widget>? placeholders;
   final bool? forceSingle; // Force single shimmer over all placeholders
   final bool? forceMultiple; // Force shimmer per element
@@ -26,8 +24,6 @@ class SmartShimmer extends StatelessWidget {
 
   const SmartShimmer({
     super.key,
-    required this.isLoading,
-    required this.child,
     this.placeholders,
     this.forceSingle,
     this.forceMultiple,
@@ -36,7 +32,7 @@ class SmartShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!isLoading) return child;
+    // if (!isLoading) return child;
 
     // --- If no placeholders provided, fallback shimmer over full child layout
     if (placeholders == null || placeholders!.isEmpty) {
