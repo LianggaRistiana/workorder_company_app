@@ -92,22 +92,10 @@ class _FormDetailPageState extends State<FormDetailPage> {
                         form.description.isEmpty
                             ? 'Tidak ada deskripsi'
                             : form.description,
-                        style: Theme.of(context).textTheme.bodyMedium,
+                        style: Theme.of(context).textTheme.bodyLarge,
                       ),
                       const SizedBox(height: 16),
                     ],
-                  ),
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Text(
-                    "Daftar Field",
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleLarge
-                        ?.copyWith(fontWeight: FontWeight.bold),
                   ),
                 ),
               ),

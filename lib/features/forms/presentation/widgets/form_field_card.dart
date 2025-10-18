@@ -17,7 +17,7 @@ class FormFieldCard extends StatelessWidget {
     final textTheme = theme.textTheme;
 
     return CustomCard(
-      elevation: 1.5,
+      // elevation: 1.5,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,7 +91,7 @@ class FormFieldCard extends StatelessWidget {
             children: [
               Icon(
                 field.required
-                    ? Icons.warning_amber_rounded
+                    ? Icons.warning_rounded
                     : Icons.info_outline_rounded,
                 color:
                     field.required ? colorScheme.primary : Colors.grey.shade500,
@@ -100,10 +100,10 @@ class FormFieldCard extends StatelessWidget {
               const SizedBox(width: 6),
               Text(
                 field.required ? "Wajib diisi" : "Opsional",
-                style: textTheme.bodyMedium?.copyWith(
+                style: textTheme.labelSmall?.copyWith(
                   color: field.required
                       ? colorScheme.primary
-                      : Colors.grey.shade600,
+                      : colorScheme.onSurface,
                   fontWeight:
                       field.required ? FontWeight.w600 : FontWeight.normal,
                 ),

@@ -16,7 +16,7 @@ class ServiceEntity extends Equatable {
     required this.id,
     required this.title,
     required this.description,
-    required this.requiredStaff,
+    this.requiredStaff = const [],
     this.workOrderForms,
     this.reportForms,
     required this.accessType,

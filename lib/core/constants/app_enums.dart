@@ -175,17 +175,17 @@ enum FieldType {
       case FieldType.text:
         return 'Text';
       case FieldType.textarea:
-        return 'Text Area';
+        return 'Paragraf';
       case FieldType.number:
-        return 'Number';
+        return 'Angka';
       case FieldType.date:
         return 'Date';
       case FieldType.time:
         return 'Time';
       case FieldType.multiSelect:
-        return 'Multi Select';
+        return 'Pilihan Ganda';
       case FieldType.singleSelect:
-        return 'Single Select';
+        return 'Pilihan Tunggal';
     }
   }
 

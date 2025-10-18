@@ -14,7 +14,7 @@ class CustomCard extends StatelessWidget {
     required this.child,
     this.padding,
     this.margin,
-    this.elevation = 1,
+    this.elevation = 4,
     this.borderColor,
     this.borderWidth = 1,
     this.borderRadius = const BorderRadius.all(Radius.circular(12)),
@@ -26,11 +26,13 @@ class CustomCard extends StatelessWidget {
 
     return Card(
       elevation: elevation,
+      // surfaceTintColor: Colors.transparent,
+      shadowColor: Colors.black.withAlpha(60),
       margin: margin ?? const EdgeInsets.only(bottom: 16),
       shape: RoundedRectangleBorder(
         borderRadius: borderRadius,
         side: BorderSide(
-          color: borderColor ?? theme.dividerColor.withValues(alpha: 0.3),
+          color: borderColor ?? theme.dividerColor.withAlpha(40),
           width: borderWidth,
         ),
       ),

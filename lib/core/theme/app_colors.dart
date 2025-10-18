@@ -9,14 +9,10 @@ class AppColors {
   static const Color lightPrimary = Color.fromARGB(255, 0, 126, 230);
   // static const Color lightBackground = Color.fromARGB(255, 243, 243, 245);
   static const Color lightBackground = Color.fromARGB(255, 255, 255, 255);
-  static const Color lightTextPrimary = Colors.black;
-  static const Color lightTextSecondary = Colors.black54;
 
   // === Dark Colors ===
   static const Color darkPrimary = seedColorDark;
   static const Color darkBackground = Color(0xFF121212);
-  static const Color darkTextPrimary = Colors.white;
-  static const Color darkTextSecondary = Colors.white70;
 
   // === Dynamic Getters (tergantung ThemeMode) ===
   static Color primary(BuildContext context) =>
@@ -38,4 +34,14 @@ class AppColors {
       Theme.of(context).brightness == Brightness.dark
           ? darkTextSecondary
           : lightTextSecondary;
+
+  // 🌞 Light Mode
+  static const Color lightTextPrimary = Color(0xFF212121);   // hampir hitam
+  static const Color lightTextSecondary = Color(0xFF5F6368); // abu-abu sedang
+  static const Color lightTextDisabled = Color(0xFF9E9E9E);  // abu muda
+
+  // 🌚 Dark Mode
+  static const Color darkTextPrimary = Color(0xFFEDEDED);    // hampir putih
+  static const Color darkTextSecondary = Color(0xFFB0B0B0);  // abu muda
+  static const Color darkTextDisabled = Color(0xFF6F6F6F);   // abu gelap
 }

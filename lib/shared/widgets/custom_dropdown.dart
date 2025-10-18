@@ -58,6 +58,9 @@ class CustomDropdown<T> extends StatelessWidget {
               ),
               child: DropdownButtonHideUnderline(
                 child: DropdownButton<T>(
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium,
                   isExpanded: true,
                   value: value,
                   items: items,
