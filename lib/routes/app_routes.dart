@@ -20,6 +20,6 @@ class AppRoutes {
   // Client Role
   static const clientHome = '/client/home';
   static const clientProfile = '/client/profile';
-  static const clientCompanyList = '/client/companies';
+  static const clientCompanyPortal = '/client/companies';
   // static const clientCompanyDetail = '/client/company-detail';
 }

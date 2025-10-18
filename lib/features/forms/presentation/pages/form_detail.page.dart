@@ -14,7 +14,7 @@ class FormDetailPage extends StatefulWidget {
 }
 
 class _FormDetailPageState extends State<FormDetailPage> {
-  late FormsBloc _formsBloc;
+  late final FormsBloc _formsBloc;
 
   @override
   void initState() {
@@ -23,99 +23,107 @@ class _FormDetailPageState extends State<FormDetailPage> {
   }
 
   @override
+  void dispose() {
+    _formsBloc.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<FormsBloc, FormsState>(
       bloc: _formsBloc,
       builder: (context, state) {
-        if (state is FormsError) {
-          return Scaffold(
-            appBar: AppBar(title: const Text('Form Detail')),
-            body: Center(
-              child: Text(
-                state.message,
-                style: const TextStyle(color: Colors.red),
+        String appBarTitle = "Form Detail";
+        if (state is FormsLoaded && state.selectedForm != null) {
+          appBarTitle = state.selectedForm!.title;
+        }
+
+        return Scaffold(
+          body: _buildBody(context, state, appBarTitle),
+        );
+      },
+    );
+  }
+
+  Widget _buildBody(BuildContext context, FormsState state, String title) {
+    if (state is FormsLoading || state is FormsInitial) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (state is FormsError) {
+      return _buildErrorState(state.message);
+    }
+
+    if (state is FormsLoaded) {
+      if (state.isSubLoading) {
+        return const Center(child: CircularProgressIndicator());
+      }
+
+      final form = state.selectedForm;
+      if (form == null) {
+        return _buildErrorState(state.errorMessage ?? "Form not found");
+      }
+
+      return CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            expandedHeight: 140,
+            pinned: true,
+            flexibleSpace: FlexibleSpaceBar(
+              centerTitle: true,
+              expandedTitleScale: 1.5,
+              titlePadding: const EdgeInsets.only(bottom: 16),
+              title: Text(title),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    form.description.isEmpty
+                        ? 'Tidak ada deskripsi'
+                        : form.description,
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  const SizedBox(height: 12),
+                  const Divider(thickness: 0.6),
+                ],
               ),
             ),
-          );
-        }
+          ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                final field = form.fields![index];
+                return Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  child: FormFieldCard(field: field),
+                );
+              },
+              childCount: form.fields?.length ?? 0,
+            ),
+          ),
+        ],
+      );
+    }
 
-        if (state is FormsLoading) {
-          return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
-          );
-        } else if (state is FormsLoaded) {
-          final form = state.selectedForm;
+    return const SizedBox.shrink();
+  }
 
-          if (state.isSubLoading) {
-            return const Scaffold(
-              body: Center(child: CircularProgressIndicator()),
-            );
-          }
-
-          if (form == null && !state.isSubLoading) {
-            return Scaffold(
-              appBar: AppBar(title: const Text('Form Detail')),
-              body: Center(
-                child: Text(
-                  state.errorMessage ?? 'Form not found',
-                  style: const TextStyle(color: Colors.red),
-                ),
-              ),
-            );
-          }
-
-          return CustomScrollView(
-            slivers: [
-              SliverAppBar(
-                expandedHeight: 120,
-                pinned: true,
-                flexibleSpace: FlexibleSpaceBar(
-                  centerTitle: true,
-                  expandedTitleScale: 1.5,
-                  titlePadding: EdgeInsets.only(bottom: 16),
-                  title: Text(form!.title),
-                ),
-              ),
-              
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    bottom: 8,
-                    left: 8,
-                    right: 8
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      // Deskripsi
-                      Text(
-                        form.description.isEmpty
-                            ? 'Tidak ada deskripsi'
-                            : form.description,
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                      const SizedBox(height: 16),
-                    ],
-                  ),
-                ),
-              ),
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-
-                  (context, index) {
-                    final field = form.fields![index];
-                    return Container(
-                        padding: EdgeInsets.only(bottom: 0, left: 8, right: 8),
-                        child: FormFieldCard(field: field));
-                  },
-                  childCount: form.fields?.length ?? 0,
-                ),
-              ),
-            ],
-          );
-        }
-        return const SizedBox.shrink();
-      },
+  Widget _buildErrorState(String message) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Text(
+          message,
+          textAlign: TextAlign.center,
+          style: const TextStyle(color: Colors.red),
+        ),
+      ),
     );
   }
 }

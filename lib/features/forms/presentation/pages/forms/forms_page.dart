@@ -100,7 +100,7 @@ class _FormsPageState extends State<FormsPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => context.go(AppRoutes.ownerNewForm),
+        onPressed: () => context.push(AppRoutes.ownerNewForm),
         label: const Text("Tambah Form"),
         icon: const Icon(Icons.add),
       ),
