@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class CompanyPortal extends StatelessWidget {
-  const CompanyPortal({super.key});
+class CompanyDetailPage extends StatelessWidget {
+  const CompanyDetailPage({super.key});
 
   @override
   Widget build(BuildContext context) {

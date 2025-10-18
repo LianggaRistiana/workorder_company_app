@@ -4,42 +4,39 @@ import 'package:workorder_company_app/features/auth/domain/repositories/auth_rep
 import 'package:workorder_company_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
+import 'package:workorder_company_app/routes/client_router.dart';
 import 'package:workorder_company_app/routes/common_router.dart';
 import 'package:workorder_company_app/routes/owner_router.dart';
 
 final authBloc = sl<AuthBloc>();
 
-final GoRouter appRouter = GoRouter(
-    initialLocation: AppRoutes.home,
-    routes: [
-      GoRoute(
-        path: AppRoutes.home,
-        redirect: (_, __) {
-          final authRepo = sl<AuthRepository>();
-          final user = authRepo.currentUser;
+final GoRouter appRouter = GoRouter(initialLocation: AppRoutes.home, routes: [
+  GoRoute(
+    path: AppRoutes.home,
+    redirect: (_, __) {
+      final authRepo = sl<AuthRepository>();
+      final user = authRepo.currentUser;
 
-          if (user == null) return AppRoutes.login;
+      if (user == null) return AppRoutes.login;
 
-          switch (user.role) {
-            case UserRole.ownerCompany:
-              return AppRoutes.ownerHome;
-            case UserRole.managerCompany:
-              return AppRoutes.login;
-            case UserRole.staffCompany:
-              return '/staff-company';
-            case UserRole.staffUnssigned:
-              return '/home/staff-unssigned';
-            default:
-              return '/login';
-          }
-        },
-      ),
-      ...commonRouter,
-      ...ownerRouter,
-
-
-
-    ]);
+      switch (user.role) {
+        case UserRole.ownerCompany:
+          return AppRoutes.ownerHome;
+        case UserRole.managerCompany:
+          return AppRoutes.login;
+        case UserRole.staffCompany:
+          return '/staff-company';
+        case UserRole.staffUnssigned:
+          return '/home/staff-unssigned';
+        case UserRole.client:
+          return AppRoutes.clientHome;
+      }
+    },
+  ),
+  ...commonRouter,
+  ...ownerRouter,
+  ...clientRouter
+]);
 
 // class StreamRefreshNotifier extends ChangeNotifier {
 //   StreamRefreshNotifier(Stream<dynamic> stream) {

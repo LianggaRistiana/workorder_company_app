@@ -6,8 +6,9 @@ class Endpoints {
   static const String registerCompany = "/auth/register-company";
 
   // Company
-  static const String company = "/company"; // GET
-  static const String companies = '/companies'; // PUT, GET
+  static const String company = "/company"; // GET ( Internal Company endpoint)
+  static const String companies = '/companies'; // PUT, GET ( Public )
+  static companiesWithId(String id) => "/companies/$id"; // GET ( Public 
 
   // Employees
   static const String employees = "/companies/employees"; // GET, PUT
