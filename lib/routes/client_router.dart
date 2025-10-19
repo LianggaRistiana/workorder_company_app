@@ -26,13 +26,13 @@ final clientRouter = [
         path: AppRoutes.clientProfile,
         builder: (_, __) => const ProfilePage(),
       ),
+      GoRoute(
+        path: '${AppRoutes.clientCompanyPortal}/:id',
+        builder: (context, state) {
+          final id = state.pathParameters['id']!;
+          return CompanyDetailPage(companyId: id);
+        },
+      ),
     ],
-  ),
-  GoRoute(
-    path: '${AppRoutes.clientCompanyPortal}/:id',
-    builder: (context, state) {
-      final id = state.pathParameters['id']!;
-      return CompanyDetailPage(companyId: id);
-    },
   ),
 ];

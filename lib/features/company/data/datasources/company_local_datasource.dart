@@ -31,7 +31,8 @@ class CompanyLocalDatasourceImpl implements CompanyLocalDatasource {
   @override
   Future<ApiResponse<CompanyWithServiceModel>> getCompanyById(String id) async {
     final response = await _apiClient.get(Endpoints.companiesWithId(id));
-
+    
+    // TODO : add safe mapper for service list
     return ApiResponse.fromJson(
       response,
       (data) => CompanyWithServiceModel.fromJson(data),
