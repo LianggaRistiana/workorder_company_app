@@ -4,18 +4,18 @@ class CompanyModel extends CompanyEntity {
   CompanyModel({
     required super.id,
     required super.name,
-    required super.address,
-    required super.description,
+    super.address,
+    super.description,
     required super.isActive,
   });
 
   factory CompanyModel.fromJson(Map<String, dynamic> json) {
     return CompanyModel(
-      id: json['_id'],
-      name: json['name'],
-      address: json['address'],
-      description: json['description'],
-      isActive: json['isActive'],
+      id: json['_id'] as String,
+      name: json['name'] as String,
+      address: json['address'] as String,
+      description: json['description'] as String,
+      isActive: json['isActive'] as bool,
     );
   }
 

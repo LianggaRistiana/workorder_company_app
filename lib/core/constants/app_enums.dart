@@ -192,3 +192,10 @@ enum FieldType {
   @override
   String toString() => displayName;
 }
+
+enum BlocState{
+  initial,
+  loading,
+  loaded,
+  error
+}

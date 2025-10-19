@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/di/injection.dart';
+import 'package:workorder_company_app/features/company/presentation/bloc/fetch_company/company_bloc.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 
 class ClientLayout extends StatefulWidget {
@@ -17,7 +20,7 @@ class _ClientLayoutState extends State<ClientLayout> {
   final List<_NavItem> _navItems = [
     _NavItem('Home', Icons.home_rounded, AppRoutes.clientHome),
     _NavItem('Company', Icons.home_work_rounded, AppRoutes.clientCompanyPortal),
-    _NavItem('Profile', Icons.account_circle_rounded, AppRoutes.clientProfile), 
+    _NavItem('Profile', Icons.account_circle_rounded, AppRoutes.clientProfile),
   ];
 
   void _onItemTapped(int index) {
@@ -42,22 +45,28 @@ class _ClientLayoutState extends State<ClientLayout> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: widget.child,
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _currentIndex,
-        onTap: _onItemTapped,
-        items: _navItems
-            .map(
-              (item) => BottomNavigationBarItem(
-                icon: Icon(item.icon),
-                label: item.label,
-              ),
-            )
-            .toList(),
-      ),
-    );
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (_) => sl<CompanyBloc>(),
+          ),
+        ],
+        child: Scaffold(
+          body: widget.child,
+          bottomNavigationBar: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            currentIndex: _currentIndex,
+            onTap: _onItemTapped,
+            items: _navItems
+                .map(
+                  (item) => BottomNavigationBarItem(
+                    icon: Icon(item.icon),
+                    label: item.label,
+                  ),
+                )
+                .toList(),
+          ),
+        ));
   }
 }
 

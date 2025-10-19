@@ -9,8 +9,8 @@ class CompanyEntity {
   CompanyEntity({
     required this.id,
     required this.name,
-    required this.address,
-    required this.description,
+    this.address ="",
+    this.description ="",
     required this.isActive,
   });
 

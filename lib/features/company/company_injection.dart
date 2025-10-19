@@ -5,6 +5,7 @@ import 'package:workorder_company_app/features/company/data/repositories/company
 import 'package:workorder_company_app/features/company/domain/repositories/company_repository.dart';
 import 'package:workorder_company_app/features/company/domain/usecases/get_companies_usecase.dart';
 import 'package:workorder_company_app/features/company/domain/usecases/get_company_with_service.dart';
+import 'package:workorder_company_app/features/company/presentation/bloc/fetch_company/company_bloc.dart';
 
 Future<void> initCompanyFeature() async {
   sl.registerLazySingleton<CompanyLocalDatasource>(
@@ -18,4 +19,6 @@ Future<void> initCompanyFeature() async {
 
   sl.registerLazySingleton<GetCompanyWithService>(
       () => GetCompanyWithService(sl()));
+
+  sl.registerFactory<CompanyBloc>(() => CompanyBloc(getCompaniesUsecase: sl(), getCompanyWithService: sl()));
 }
