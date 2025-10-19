@@ -1,30 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
-
+import 'package:workorder_company_app/shared/widgets/custom_navigation_bar.dart';
 class OwnerCompanyLayout extends StatefulWidget {
   final Widget child;
   const OwnerCompanyLayout({super.key, required this.child});
 
   @override
-  State<OwnerCompanyLayout> createState() => _OwnerCompanyLayout();
+  State<OwnerCompanyLayout> createState() => _OwnerCompanyLayoutState();
 }
 
-class _OwnerCompanyLayout extends State<OwnerCompanyLayout> {
+class _OwnerCompanyLayoutState extends State<OwnerCompanyLayout> {
   int _currentIndex = 0;
 
-  final List<String> _routes = [
-    AppRoutes.ownerHome,
-    AppRoutes.ownerCompany,
-    AppRoutes.ownerEmployee,
-    AppRoutes.ownerProfile
+  final List<NavItem> _navItems = const [
+    NavItem('Home', Icons.home_rounded, AppRoutes.ownerHome),
+    NavItem('Company', Icons.home_work_rounded, AppRoutes.ownerCompany),
+    NavItem('Employees', Icons.people_alt_rounded, AppRoutes.ownerEmployee),
+    NavItem('Profile', Icons.account_circle_rounded, AppRoutes.ownerProfile),
   ];
 
   void _onItemTapped(int index) {
     setState(() => _currentIndex = index);
     final currentLocation = GoRouterState.of(context).uri.toString();
-    if (_routes[index] != currentLocation) {
-      context.go(_routes[index]);
+
+    final targetRoute = _navItems[index].route;
+    if (!currentLocation.startsWith(targetRoute)) {
+      context.go(targetRoute);
     }
   }
 
@@ -32,77 +34,20 @@ class _OwnerCompanyLayout extends State<OwnerCompanyLayout> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     final loc = GoRouterState.of(context).uri.toString();
-    final newIndex = _routes.indexWhere((r) => loc.startsWith(r));
+    final newIndex = _navItems.indexWhere((r) => loc.startsWith(r.route));
     if (newIndex != -1) {
       _currentIndex = newIndex;
     }
   }
 
-  // @override
-  // Widget build(BuildContext context) {
-  //   return MultiBlocProvider(
-  //     providers: [
-  //       BlocProvider(
-  //         create: (context) =>
-  //             sl<EmployeesBloc>()..add(GetEmployeesRequested()),
-  //       ),
-  //       // kalau nanti ada bloc lain untuk Company/Profile, taruh di sini juga
-  //     ],
-  //     child: Scaffold(
-  //       body: widget.child,
-  //       bottomNavigationBar: BottomNavigationBar(
-  //         type: BottomNavigationBarType.fixed,
-  //         currentIndex: _currentIndex,
-  //         onTap: _onItemTapped,
-  //         items: const [
-  //           BottomNavigationBarItem(
-  //             icon: Icon(Icons.home_rounded),
-  //             label: 'Home',
-  //           ),
-  //           BottomNavigationBarItem(
-  //             icon: Icon(Icons.home_work_rounded),
-  //             label: 'Company',
-  //           ),
-  //           BottomNavigationBarItem(
-  //             icon: Icon(Icons.people_alt_rounded),
-  //             label: 'Employees',
-  //           ),
-  //           BottomNavigationBarItem(
-  //             icon: Icon(Icons.account_circle_rounded),
-  //             label: 'Profile',
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: widget.child,
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
+      bottomNavigationBar: CustomNavigationBar(
+        items: _navItems,
         currentIndex: _currentIndex,
-        onTap: _onItemTapped,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_rounded),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_work_rounded),
-            label: 'Company',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.people_alt_rounded),
-            label: 'Employees',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle_rounded),
-            label: 'Profile',
-          ),
-        ],
+        onItemTapped: _onItemTapped,
       ),
     );
   }
