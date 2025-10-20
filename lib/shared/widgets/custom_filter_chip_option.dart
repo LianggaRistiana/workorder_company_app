@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:workorder_company_app/features/forms/domain/entities/option_entity.dart';
 
-class CustomFilterChip<T> extends StatelessWidget {
+class CustomFilterChipOption extends StatelessWidget {
   final String label;
   final String? description;
-  final List<T> options;
-  final List<T> selectedValues;
-  final void Function(List<T>)? onChanged;
+  final List<OptionEntity> options;
+  final List<OptionEntity> selectedValues;
+  final void Function(List<OptionEntity>)? onChanged;
   final bool enabled;
   final bool singleSelect;
-  final String? Function(List<T>?)? validator;
+  final String? Function(List<OptionEntity>?)? validator;
   final String? errorText;
-  final String Function(T)? labelBuilder;
+  final String Function(OptionEntity)? labelBuilder;
 
-  const CustomFilterChip({
+  const CustomFilterChipOption({
     super.key,
     required this.label,
     required this.options,
@@ -26,10 +27,23 @@ class CustomFilterChip<T> extends StatelessWidget {
     this.labelBuilder,
   });
 
+  bool _isSelected(List<OptionEntity> selected, OptionEntity option) {
+    return selected.any((s) => s.key == option.key);
+  }
+
+  List<OptionEntity> _addIfNotExists(List<OptionEntity> list, OptionEntity option) {
+    if (list.any((s) => s.key == option.key)) return list;
+    return [...list, option];
+  }
+
+  List<OptionEntity> _removeIfExists(List<OptionEntity> list, OptionEntity option) {
+    return list.where((s) => s.key != option.key).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return FormField<List<T>>(
-      initialValue: selectedValues,
+    return FormField<List<OptionEntity>>(
+      initialValue: List<OptionEntity>.from(selectedValues),
       validator: validator,
       builder: (fieldState) {
         final hasError = (fieldState.errorText?.isNotEmpty ?? false) ||
@@ -42,34 +56,33 @@ class CustomFilterChip<T> extends StatelessWidget {
             const SizedBox(height: 8),
             Column(
               children: options.map((option) {
-                final isSelected = selectedValues.contains(option);
+                final isSelected = _isSelected(selectedValues, option);
                 return SizedBox(
-                  width: double.infinity, // full width
+                  width: double.infinity,
                   child: FilterChip(
                     label: Align(
                       alignment: Alignment.centerLeft,
-                      child: Text(labelBuilder != null
-                          ? labelBuilder!(option)
-                          : option.toString()),
+                      child: Text(
+                        labelBuilder != null ? labelBuilder!(option) : option.value,
+                      ),
                     ),
                     selected: isSelected,
                     onSelected: enabled
                         ? (selected) {
-                            final newSelected = List<T>.from(selectedValues);
+                            // create new selected list based on key equality
+                            List<OptionEntity> newSelected = List<OptionEntity>.from(selectedValues);
+
                             if (singleSelect) {
-                              if (isSelected && selected) {
-                                newSelected.clear();
+                              if (selected) {
+                                newSelected = [option];
                               } else {
-                                newSelected.clear();
-                                if (selected) newSelected.add(option);
+                                newSelected = [];
                               }
                             } else {
                               if (selected) {
-                                if (!newSelected.contains(option)) {
-                                  newSelected.add(option);
-                                }
+                                newSelected = _addIfNotExists(newSelected, option);
                               } else {
-                                newSelected.remove(option);
+                                newSelected = _removeIfExists(newSelected, option);
                               }
                             }
 
@@ -80,7 +93,7 @@ class CustomFilterChip<T> extends StatelessWidget {
                     selectedColor: Theme.of(context)
                         .colorScheme
                         .primary
-                        .withValues(alpha: 0.2),
+                        .withAlpha(12),
                     checkmarkColor: Theme.of(context).colorScheme.primary,
                     disabledColor: Colors.grey[200],
                   ),

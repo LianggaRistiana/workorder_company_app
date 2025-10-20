@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/features/company/domain/entities/company_entity.dart';
 import 'package:workorder_company_app/features/company/presentation/bloc/fetch_company/company_bloc.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
+import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
 
 class CompanyDetailPage extends StatefulWidget {
@@ -143,57 +145,65 @@ class _CompanyDetailPageState extends State<CompanyDetailPage> {
     );
   }
 }
-
 class _ServiceCard extends StatelessWidget {
   final ServiceEntity service;
-  const _ServiceCard({required this.service});
+
+  const _ServiceCard({
+    required this.service,
+  });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      elevation: 1,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              service.title,
-              style: theme.textTheme.titleMedium
-                  ?.copyWith(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              service.description,
-              style: theme.textTheme.bodyMedium,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-            const SizedBox(height: 8),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Chip(
-                label: Text(
-                  service.isActive ? "Active" : "Inactive",
-                  style: TextStyle(
-                    color: service.isActive
-                        ? Colors.green[800]
-                        : Colors.red[800],
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                backgroundColor: service.isActive
-                    ? Colors.green[100]
-                    : Colors.red[100],
+    return InkWell(
+      borderRadius: BorderRadius.circular(12),
+      onTap: () => context.push(AppRoutes.clientFillServiceForms(service.id)),
+      child: Card(
+        margin: const EdgeInsets.only(bottom: 12),
+        elevation: 1,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                service.title,
+                style: theme.textTheme.titleMedium
+                    ?.copyWith(fontWeight: FontWeight.bold),
               ),
-            ),
-          ],
+              const SizedBox(height: 4),
+              Text(
+                service.description,
+                style: theme.textTheme.bodyMedium,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 8),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Chip(
+                  label: Text(
+                    service.isActive ? "Active" : "Inactive",
+                    style: TextStyle(
+                      color: service.isActive
+                          ? Colors.green[800]
+                          : Colors.red[800],
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  backgroundColor:
+                      service.isActive ? Colors.green[100] : Colors.red[100],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
+

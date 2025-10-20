@@ -4,6 +4,7 @@ import 'package:workorder_company_app/core/utils/safe_call.dart';
 import 'package:workorder_company_app/features/forms/data/datasources/forms_remote_datasource.dart';
 import 'package:workorder_company_app/features/forms/data/model/form_model.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
+import 'package:workorder_company_app/features/forms/domain/entities/ordered_form_entity.dart';
 import 'package:workorder_company_app/features/forms/domain/repositories/forms_repository.dart';
 
 class FormsRepositoryImpl implements FormsRepository {
@@ -32,6 +33,14 @@ class FormsRepositoryImpl implements FormsRepository {
     return safeCall(() async {
       final formModel = FormModel.fromEntity(form);
       await _remoteDatasource.createForm(formModel);
+    });
+  }
+
+  @override
+  Future<Either<Failure, List<OrderedFormEntity>>> publicGetServiceForms(String id) {
+    return safeCall(() async {
+      final forms = await _remoteDatasource.publicGetServiceForms(id);
+      return forms.data ?? [];
     });
   }
 }

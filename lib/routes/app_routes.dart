@@ -22,5 +22,8 @@ class AppRoutes {
   static const clientProfile = '/client/profile';
   static const clientCompanyPortal = '/client/companies';
   static clientCompanyDetail(String id) => '$clientCompanyPortal/$id';
+
+  static const clientServiceForms = '/client/service-forms';
+  static clientFillServiceForms(String id) => '$clientServiceForms/$id';
   // static const clientCompanyDetail = '/client/company-detail';
 }

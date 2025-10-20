@@ -5,6 +5,7 @@ import 'package:workorder_company_app/features/forms/domain/repositories/forms_r
 import 'package:workorder_company_app/features/forms/domain/usecases/create_form_usecase.dart';
 import 'package:workorder_company_app/features/forms/domain/usecases/get_form_byid_usecase.dart';
 import 'package:workorder_company_app/features/forms/domain/usecases/get_forms_usecase.dart';
+import 'package:workorder_company_app/features/forms/domain/usecases/public_get_service_form_usecase.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/forms_bloc.dart';
 
 Future<void> initFormsFeature() async {
@@ -16,6 +17,7 @@ Future<void> initFormsFeature() async {
   sl.registerLazySingleton<GetFormsUsecase>(() => GetFormsUsecase(sl()));
   sl.registerLazySingleton<GetFormByIdUsecase>(() => GetFormByIdUsecase(sl()));
   sl.registerLazySingleton<CreateFormUsecase>(() => CreateFormUsecase(sl()));
+  sl.registerLazySingleton<PublicGetServiceFormUsecase>(() => PublicGetServiceFormUsecase(sl()));
 
   sl.registerFactory<FormsBloc>(() => FormsBloc(getFormsUsecase: sl(), getFormByIdUsecase: sl(), createFormUsecase: sl()));
 }

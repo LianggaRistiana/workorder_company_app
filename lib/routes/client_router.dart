@@ -3,6 +3,7 @@ import 'package:workorder_company_app/features/auth/presentation/pages/profile_p
 import 'package:workorder_company_app/features/company/presentation/pages/companies_page.dart';
 import 'package:workorder_company_app/features/company/presentation/pages/company_detail_page.dart';
 import 'package:workorder_company_app/features/home/presentation/pages/homepage/client_homepage.dart';
+import 'package:workorder_company_app/features/submissions/presentation/pages/fill_form_page.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/layout/client_layout.dart';
 
@@ -34,5 +35,12 @@ final clientRouter = [
         },
       ),
     ],
+  ),
+  GoRoute(
+    path: '${AppRoutes.clientServiceForms}/:id',
+    builder: (context, state) {
+      final id = state.pathParameters['id']!;
+      return FillFormPage(serviceId: id);
+    },
   ),
 ];

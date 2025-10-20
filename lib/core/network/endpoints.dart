@@ -9,25 +9,29 @@ class Endpoints {
   static const String registerCompany = "$authPrefix/register-company";
 
   // Company
-  static const String company = "/company"; 
+  static const String company = "/company";
 
   // Employees
-  static const String employees = "$company/employees"; 
-  static const String inviteEmployees = "$company/invite-employees"; 
+  static const String employees = "$company/employees";
+  static const String inviteEmployees = "$company/invite-employees";
   static const String historyInvitations = "$company/invite-history";
 
   // Positions
-  static const String positions = "/positions"; 
+  static const String positions = "/positions";
 
   // Forms
-  static const String forms = "/forms"; 
+  static const String forms = "/forms";
 
   // Service
-  static const String services = "/services"; 
+  static const String services = "/services";
 
   // Public Endpoint
-  static const String publicCompanies = '$clientPrefix/companies'; 
-  static publicCompanyServices(String id) => '${publicCompanies.byId(id)}/services'; 
+  static const String publicCompanies = '$clientPrefix/companies';
+  static const String publicServices = '$clientPrefix/services';
+  static publicCompanyServices(String id) =>
+      '${publicCompanies.byId(id)}/services';
+  static publicServiceForms(String id) =>
+      '${publicServices.byId(id)}/forms';
 }
 
 extension EndpointIdExtension on String {
