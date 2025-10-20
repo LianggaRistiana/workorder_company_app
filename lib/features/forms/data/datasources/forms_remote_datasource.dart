@@ -28,7 +28,7 @@ class FormsRemoteDatasourceImpl implements FormsRemoteDatasource {
 
   @override
   Future<ApiResponse<FormModel>> getFormById(String id) async {
-    final response = await _apiClient.get(Endpoints.form(id));
+    final response = await _apiClient.get(Endpoints.forms.byId(id));
     return ApiResponse<FormModel>.fromJson(
       response,
       (data) => FormModel.fromJson(data['form']),

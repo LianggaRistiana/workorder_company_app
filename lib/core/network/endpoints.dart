@@ -1,28 +1,40 @@
 class Endpoints {
+  static const String clientPrefix = "/public";
+  static const String authPrefix = "/auth";
+
   // Auth
-  static const String login = "/auth/login";
-  static const String register = "/auth/register";
-  static const String logout = "/auth/logout";
-  static const String registerCompany = "/auth/register-company";
+  static const String login = "$authPrefix/login";
+  static const String register = "$authPrefix/register";
+  static const String logout = "$authPrefix/logout";
+  static const String registerCompany = "$authPrefix/register-company";
 
   // Company
-  static const String company = "/company"; // GET ( Internal Company endpoint)
-  static const String companies = '/companies'; // PUT, GET ( Public )
-  static companiesWithId(String id) => "/companies/$id"; // GET ( Public 
+  static const String company = "/company"; 
 
   // Employees
-  static const String employees = "/companies/employees"; // GET, PUT
-  static const String inviteEmployees = "/companies/invite-employees"; // POST, DEL
-  static const String historyInvitations = "/companies/invite-history";// GET
+  static const String employees = "$company/employees"; 
+  static const String inviteEmployees = "$company/invite-employees"; 
+  static const String historyInvitations = "$company/invite-history";
 
   // Positions
-  static const String positions = "/positions"; // GET all, Post, 
+  static const String positions = "/positions"; 
 
   // Forms
-  static const String forms = "/forms"; //GET all, POST
-  static form(String id) => "/forms/$id"; // GET by id, PUT
+  static const String forms = "/forms"; 
 
   // Service
-  static const String services = "/services"; // Get all, get by id, Post
-  static service(String id) => "/services/$id"; // GET by id, PUT
+  static const String services = "/services"; 
+
+  // Public Endpoint
+  static const String publicCompanies = '$clientPrefix/companies'; 
+}
+
+extension EndpointIdExtension on String {
+  String byId(String id) => "$this/$id";
+
+  String withQuery(Map<String, String> query) {
+    final queryString =
+        query.entries.map((e) => "${e.key}=${e.value}").join("&");
+    return "$this?$queryString";
+  }
 }
