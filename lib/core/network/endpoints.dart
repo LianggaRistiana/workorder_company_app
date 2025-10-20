@@ -27,6 +27,7 @@ class Endpoints {
 
   // Public Endpoint
   static const String publicCompanies = '$clientPrefix/companies'; 
+  static publicCompanyServices(String id) => '${publicCompanies.byId(id)}/services'; 
 }
 
 extension EndpointIdExtension on String {

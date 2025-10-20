@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:workorder_company_app/features/company/domain/entities/company_entity.dart';
 import 'package:workorder_company_app/features/company/presentation/bloc/fetch_company/company_bloc.dart';
-import 'package:workorder_company_app/features/company/domain/entities/company_with_service_entity.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
 import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
 
@@ -68,10 +68,11 @@ class _CompanyDetailPageState extends State<CompanyDetailPage> {
               );
 
             case CompanyStateStatus.loaded:
-              final data = state.selectedCompany;
+              final companyData = state.selectedCompany;
+              final servicesData = state.selectedCompanyServices;
 
-              if (data == null ) return EmptyStateWidget(text: "Perusahaan tidak ditemukan");
-              return _buildCompanyContent(context, data);
+              if (companyData == null ) return EmptyStateWidget(text: "Perusahaan tidak ditemukan");
+              return _buildCompanyContent(context, companyData, servicesData?? []);
 
             default:
               return const SizedBox.shrink();
@@ -82,10 +83,11 @@ class _CompanyDetailPageState extends State<CompanyDetailPage> {
   }
 
   Widget _buildCompanyContent(
-      BuildContext context, CompanyWithServiceEntity data) {
+      BuildContext context, CompanyEntity companyDetail, List<ServiceEntity> serviceData) {
     final theme = Theme.of(context);
-    final company = data.company;
-    final services = data.services;
+    final company = companyDetail;
+    final services = serviceData;
+    // final services = data.services;
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),

@@ -3,8 +3,8 @@ import 'package:workorder_company_app/core/error/failures.dart';
 import 'package:workorder_company_app/core/utils/safe_call.dart';
 import 'package:workorder_company_app/features/company/data/datasources/company_local_datasource.dart';
 import 'package:workorder_company_app/features/company/domain/entities/company_entity.dart';
-import 'package:workorder_company_app/features/company/domain/entities/company_with_service_entity.dart';
 import 'package:workorder_company_app/features/company/domain/repositories/company_repository.dart';
+import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
 
 class CompanyRepositoryImpl implements CompanyRepository {
   final CompanyLocalDatasource _companyLocalDatasource;
@@ -20,10 +20,18 @@ class CompanyRepositoryImpl implements CompanyRepository {
   }
 
   @override
-  Future<Either<Failure, CompanyWithServiceEntity>> getCompanyById(String id) {
+  Future<Either<Failure, CompanyEntity>> getCompanyById(String id) {
     return safeCall(() async {
       final payload = await _companyLocalDatasource.getCompanyById(id);
       return payload.data!;
+    });
+  }
+
+  @override
+  Future<Either<Failure, List<ServiceEntity>>> getCompanyService(String id) {
+    return safeCall(() async {
+      final payload = await _companyLocalDatasource.getCompanyService(id);
+      return payload.data ?? [];
     });
   }
 }

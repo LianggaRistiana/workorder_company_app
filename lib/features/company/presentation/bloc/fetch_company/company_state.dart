@@ -10,12 +10,14 @@ enum CompanyStateStatus {
 class CompanyState extends Equatable {
   final CompanyStateStatus status;
   final List<CompanyEntity> companies;
-  final CompanyWithServiceEntity? selectedCompany;
+  final List<ServiceEntity>? selectedCompanyServices;
+  final CompanyEntity? selectedCompany;
   final String? errorMessage;
 
   const CompanyState({
     this.status = CompanyStateStatus.initial,
     this.companies = const [],
+    this.selectedCompanyServices = const [],
     this.selectedCompany,
     this.errorMessage,
   });
@@ -23,13 +25,15 @@ class CompanyState extends Equatable {
   CompanyState copyWith({
     CompanyStateStatus? status,
     List<CompanyEntity>? companies,
-    CompanyWithServiceEntity? selectedCompany,
+    CompanyEntity? selectedCompany,
+    List<ServiceEntity>? selectedCompanyServices,
     String? errorMessage,
   }) {
     return CompanyState(
       status: status ?? this.status,
       companies: companies ?? this.companies,
       selectedCompany: selectedCompany ?? this.selectedCompany,
+      selectedCompanyServices: selectedCompanyServices ?? this.selectedCompanyServices,
       errorMessage: errorMessage ?? this.errorMessage,
     );
   }

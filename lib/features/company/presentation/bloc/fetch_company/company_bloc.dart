@@ -1,20 +1,25 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:dartz/dartz.dart';
+import 'package:workorder_company_app/core/error/error.dart';
 import 'package:workorder_company_app/features/company/domain/entities/company_entity.dart';
-import 'package:workorder_company_app/features/company/domain/entities/company_with_service_entity.dart';
-import 'package:workorder_company_app/features/company/domain/usecases/get_companies_usecase.dart';
-import 'package:workorder_company_app/features/company/domain/usecases/get_company_with_service_company.dart';
+import 'package:workorder_company_app/features/company/domain/usecases/public_get_companies_usecase.dart';
+import 'package:workorder_company_app/features/company/domain/usecases/public_get_company_detail_usecase.dart';
+import 'package:workorder_company_app/features/company/domain/usecases/public_get_company_services.dart';
+import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
 
 part 'company_state.dart';
 part 'company_event.dart';
 
 class CompanyBloc extends Bloc<CompanyEvent, CompanyState> {
-  final GetCompaniesUsecase getCompaniesUsecase;
-  final GetCompanyWithServiceUsecase getCompanyWithService;
+  final PublicGetCompaniesUsecase getCompaniesUsecase;
+  final PublicGetCompanyDetailUsecase getCompanyDetailUsecase;
+  final PublicGetCompanyServicesUsecase getCompanyServicesUsecase;
 
   CompanyBloc({
     required this.getCompaniesUsecase,
-    required this.getCompanyWithService,
+    required this.getCompanyDetailUsecase,
+    required this.getCompanyServicesUsecase,
   }) : super(CompanyState()) {
     on<GetCompaniesRequested>(_onCompaniesRequested);
     on<GetCompanyWithServiceRequested>(_onCompanyWithServiceRequested);
@@ -44,27 +49,47 @@ class CompanyBloc extends Bloc<CompanyEvent, CompanyState> {
     );
   }
 
+  // TODO: Sperate this function diffrent bloc
   Future<void> _onCompanyWithServiceRequested(
     GetCompanyWithServiceRequested event,
     Emitter<CompanyState> emit,
   ) async {
     emit(state.copyWith(status: CompanyStateStatus.loading));
 
-    final result = await getCompanyWithService(event.id);
-    result.fold(
-      (failure) => emit(
-        state.copyWith(
-          status: CompanyStateStatus.error,
-          errorMessage: failure.message,
-        ),
-      ),
-      (company) => emit(
-        state.copyWith(
-          status: CompanyStateStatus.loaded,
-          selectedCompany: company,
-          errorMessage: null,
-        ),
-      ),
-    );
+    // Jalankan dua usecase
+  final companyResult = await getCompanyDetailUsecase(event.id);
+  final servicesResult = await getCompanyServicesUsecase(event.id);
+
+  // Gabungkan dua Either secara sejajar
+  final result = _combineEither(companyResult, servicesResult);
+
+  result.fold(
+    (failure) => emit(state.copyWith(
+      status: CompanyStateStatus.error,
+      errorMessage: failure.message,
+    )),
+    (data) {
+      final (company, services) = data;
+      emit(state.copyWith(
+        status: CompanyStateStatus.loaded,
+        selectedCompany: company,
+        selectedCompanyServices: services,
+      ));
+    },
+  );  
   }
+}
+
+
+Either<Failure, (L, R)> _combineEither<L, R>(
+  Either<Failure, L> leftEither,
+  Either<Failure, R> rightEither,
+) {
+  if (leftEither.isLeft()) return leftEither as Either<Failure, (L, R)>;
+  if (rightEither.isLeft()) return rightEither as Either<Failure, (L, R)>;
+
+  final leftValue = (leftEither as Right<Failure, L>).value;
+  final rightValue = (rightEither as Right<Failure, R>).value;
+
+  return Right((leftValue, rightValue));
 }

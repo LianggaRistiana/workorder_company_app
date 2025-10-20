@@ -3,11 +3,12 @@ import 'package:workorder_company_app/core/network/api_response.dart';
 import 'package:workorder_company_app/core/network/endpoints.dart';
 import 'package:workorder_company_app/core/utils/safe_mapper.dart';
 import 'package:workorder_company_app/features/company/data/models/company_model.dart';
-import 'package:workorder_company_app/features/company/data/models/company_with_service_model.dart';
+import 'package:workorder_company_app/features/services/data/models/service_model.dart';
 
 abstract class CompanyLocalDatasource {
-  Future<ApiResponse<CompanyWithServiceModel>> getCompanyById(String id);
+  Future<ApiResponse<CompanyModel>> getCompanyById(String id);
   Future<ApiResponse<List<CompanyModel>>> getCompanies();
+  Future<ApiResponse<List<ServiceModel>>> getCompanyService(String id);
 }
 
 class CompanyLocalDatasourceImpl implements CompanyLocalDatasource {
@@ -29,13 +30,25 @@ class CompanyLocalDatasourceImpl implements CompanyLocalDatasource {
   }
 
   @override
-  Future<ApiResponse<CompanyWithServiceModel>> getCompanyById(String id) async {
+  Future<ApiResponse<CompanyModel>> getCompanyById(String id) async {
     final response = await _apiClient.get(Endpoints.publicCompanies.byId(id));
-    
-    // TODO : add safe mapper for service list
+
     return ApiResponse.fromJson(
       response,
-      (data) => CompanyWithServiceModel.fromJson(data),
+      (data) => CompanyModel.fromJson(data),
+    );
+  }
+
+  @override
+  Future<ApiResponse<List<ServiceModel>>> getCompanyService(String id) async {
+    final response = await _apiClient.get(Endpoints.publicCompanyServices(id));
+
+    return ApiResponse.fromJson(
+      response,
+      (data) => SafeMapper.mapList(
+        data as List?,
+        (json) => ServiceModel.fromJson(json),
+      ),
     );
   }
 }
