@@ -12,6 +12,7 @@ class CustomFilterChipOption extends StatelessWidget {
   final String? Function(List<OptionEntity>?)? validator;
   final String? errorText;
   final String Function(OptionEntity)? labelBuilder;
+  final bool required;
 
   const CustomFilterChipOption({
     super.key,
@@ -25,24 +26,28 @@ class CustomFilterChipOption extends StatelessWidget {
     this.validator,
     this.errorText,
     this.labelBuilder,
+    this.required = false,
   });
 
   bool _isSelected(List<OptionEntity> selected, OptionEntity option) {
     return selected.any((s) => s.key == option.key);
   }
 
-  List<OptionEntity> _addIfNotExists(List<OptionEntity> list, OptionEntity option) {
+  List<OptionEntity> _addIfNotExists(
+      List<OptionEntity> list, OptionEntity option) {
     if (list.any((s) => s.key == option.key)) return list;
     return [...list, option];
   }
 
-  List<OptionEntity> _removeIfExists(List<OptionEntity> list, OptionEntity option) {
+  List<OptionEntity> _removeIfExists(
+      List<OptionEntity> list, OptionEntity option) {
     return list.where((s) => s.key != option.key).toList();
   }
 
   @override
   Widget build(BuildContext context) {
     return FormField<List<OptionEntity>>(
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       initialValue: List<OptionEntity>.from(selectedValues),
       validator: validator,
       builder: (fieldState) {
@@ -52,7 +57,10 @@ class CustomFilterChipOption extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(label, style: Theme.of(context).textTheme.bodyMedium),
+            Text(label,
+                style: hasError
+                    ? TextStyle(color: Theme.of(context).colorScheme.error)
+                    : Theme.of(context).textTheme.bodyMedium),
             const SizedBox(height: 8),
             Column(
               children: options.map((option) {
@@ -60,17 +68,30 @@ class CustomFilterChipOption extends StatelessWidget {
                 return SizedBox(
                   width: double.infinity,
                   child: FilterChip(
+                    side: hasError
+                        ? BorderSide(
+                            color: Theme.of(context).colorScheme.error,
+                            // width: 1.5,
+                          )
+                        : null,
                     label: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        labelBuilder != null ? labelBuilder!(option) : option.value,
+                        labelBuilder != null
+                            ? labelBuilder!(option)
+                            : option.value,
+                        style: hasError
+                            ? TextStyle(
+                                color: Theme.of(context).colorScheme.error)
+                            : null,
                       ),
                     ),
                     selected: isSelected,
                     onSelected: enabled
                         ? (selected) {
                             // create new selected list based on key equality
-                            List<OptionEntity> newSelected = List<OptionEntity>.from(selectedValues);
+                            List<OptionEntity> newSelected =
+                                List<OptionEntity>.from(selectedValues);
 
                             if (singleSelect) {
                               if (selected) {
@@ -80,9 +101,11 @@ class CustomFilterChipOption extends StatelessWidget {
                               }
                             } else {
                               if (selected) {
-                                newSelected = _addIfNotExists(newSelected, option);
+                                newSelected =
+                                    _addIfNotExists(newSelected, option);
                               } else {
-                                newSelected = _removeIfExists(newSelected, option);
+                                newSelected =
+                                    _removeIfExists(newSelected, option);
                               }
                             }
 
@@ -90,10 +113,8 @@ class CustomFilterChipOption extends StatelessWidget {
                             if (onChanged != null) onChanged!(newSelected);
                           }
                         : null,
-                    selectedColor: Theme.of(context)
-                        .colorScheme
-                        .primary
-                        .withAlpha(12),
+                    selectedColor:
+                        Theme.of(context).colorScheme.primary.withAlpha(12),
                     checkmarkColor: Theme.of(context).colorScheme.primary,
                     disabledColor: Colors.grey[200],
                   ),

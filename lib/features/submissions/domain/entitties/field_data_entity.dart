@@ -16,4 +16,9 @@ class FieldDataEntity {
       value: value ?? this.value,
     );
   }
+
+  @override
+  String toString() {
+    return 'FieldDataEntity(order: $order, value: $value)';
+  }
 }

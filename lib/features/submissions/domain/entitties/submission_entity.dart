@@ -36,4 +36,10 @@ class SubmissionEntity {
       fieldsData: fieldsData ?? this.fieldsData,
     );
   }
+
+  @override
+  String toString() {
+    return 'SubmissionEntity(id: $id, formId: $formId, submissionType: $submissionType, status: $status, submittedBy: $submittedBy, fieldsData: ${fieldsData?.map((e) => e.toString()).toList() ?? []})';
+  }
+  
 }

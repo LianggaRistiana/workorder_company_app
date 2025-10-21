@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/logger.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/field_entity.dart';
@@ -23,36 +24,44 @@ class FillFormPage extends StatefulWidget {
 
 class _FillFormPageState extends State<FillFormPage> {
   final _formKey = GlobalKey<FormState>();
-  late SubmissionEntity _submission;
+  List<SubmissionEntity> _submissions = [];
 
-  @override
-  void initState() {
-    super.initState();
-
-    // init dummy submission data
-    _submission = const SubmissionEntity(
-      id: '',
-      formId: '',
-      submissionType: FormType.workOrder,
-      fieldsData: [],
-    );
-
-    // context.read<SubmissionBloc>().add(FetchServiceForm(widget.serviceId));
+  void _initializeSubmissions(List<OrderedFormEntity> orderedForms) {
+    if (_submissions.isEmpty) {
+      _submissions = orderedForms
+          .map(
+            (orderedForm) => SubmissionEntity(
+              id: '',
+              formId: orderedForm.form.id,
+              submissionType: FormType.workOrder,
+              fieldsData: [],
+            ),
+          )
+          .toList();
+    }
   }
 
-  void _onFieldChanged(String order, dynamic value) {
-    final updatedFields =
-        List<FieldDataEntity>.from(_submission.fieldsData ?? []);
-    final index = updatedFields.indexWhere((f) => f.order == order);
+  void _onFieldChanged(String formId, String order, dynamic value) {
+    final updatedSubmissions = List<SubmissionEntity>.from(_submissions);
+    final formIndex = updatedSubmissions.indexWhere((s) => s.formId == formId);
 
-    if (index != -1) {
-      updatedFields[index] = FieldDataEntity(order: order, value: value);
+    if (formIndex == -1) return; // safety
+
+    final submission = updatedSubmissions[formIndex];
+    final updatedFields = List<FieldDataEntity>.from(submission.fieldsData ?? []);
+    final fieldIndex = updatedFields.indexWhere((f) => f.order == order);
+
+    if (fieldIndex != -1) {
+      updatedFields[fieldIndex] = FieldDataEntity(order: order, value: value);
     } else {
       updatedFields.add(FieldDataEntity(order: order, value: value));
     }
 
+    updatedSubmissions[formIndex] =
+        submission.copyWith(fieldsData: updatedFields);
+
     setState(() {
-      _submission = _submission.copyWith(fieldsData: updatedFields);
+      _submissions = updatedSubmissions;
     });
   }
 
@@ -61,9 +70,7 @@ class _FillFormPageState extends State<FillFormPage> {
     return BlocProvider(
       create: (_) => sl<SubmissionBloc>()..add(FetchServiceForm(widget.serviceId)),
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Isi Formulir'),
-        ),
+        appBar: AppBar(title: const Text('Isi Formulir')),
         body: BlocBuilder<SubmissionBloc, SubmissionState>(
           builder: (context, state) {
             if (state is Loading) {
@@ -77,6 +84,8 @@ class _FillFormPageState extends State<FillFormPage> {
             if (state is ReadyToFill) {
               final orderedForms = List<OrderedFormEntity>.from(state.form)
                 ..sort((a, b) => a.order.compareTo(b.order));
+
+              _initializeSubmissions(orderedForms);
 
               return Form(
                 key: _formKey,
@@ -100,9 +109,8 @@ class _FillFormPageState extends State<FillFormPage> {
                           ),
                         const SizedBox(height: 8),
 
-                        // generate each field dynamically
                         for (final field in orderedForm.form.fields ?? []) ...[
-                          _buildField(field),
+                          _buildField(orderedForm.form.id, field),
                           const SizedBox(height: 16),
                         ],
 
@@ -112,8 +120,9 @@ class _FillFormPageState extends State<FillFormPage> {
                       ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState?.validate() ?? false) {
-                            debugPrint(
-                                'SUBMITTED DATA: ${_submission.fieldsData}');
+                            for (final sub in _submissions) {
+                              Logger().i(sub.toString());
+                            }
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                   content: Text('Dummy submit success!')),
@@ -135,32 +144,34 @@ class _FillFormPageState extends State<FillFormPage> {
     );
   }
 
-  Widget _buildField(FieldEntity field) {
+  Widget _buildField(String formId, FieldEntity field) {
     switch (field.type) {
       case FieldType.text:
         return TextFormFieldWidget(
           field: field,
-          onChanged: (val) => _onFieldChanged(field.order.toString(), val),
+          onChanged: (val) => _onFieldChanged(formId, field.order.toString(), val),
         );
       case FieldType.number:
         return NumberFormFieldWidget(
           field: field,
-          onChanged: (val) => _onFieldChanged(field.order.toString(), val),
+          onChanged: (val) => _onFieldChanged(formId, field.order.toString(), val),
         );
       case FieldType.multiSelect:
         return MultiSelectFormFieldWidget(
-          label: field.label,
-          options: field.options ?? [],
-          value: [],
+          field: field,
+          initialValue: [],
           onChanged: (vals) => _onFieldChanged(
-              field.order.toString(), vals.map((e) => e.key).toList()),
+            formId,
+            field.order.toString(),
+            vals.map((e) => e.key).toList(),
+          ),
         );
       case FieldType.singleSelect:
         return SingleSelectFormFieldWidget(
-          label: field.label,
-          options: field.options ?? [],
-          value: null,
-          onChanged: (val) => _onFieldChanged(field.order.toString(), val?.key),
+          field: field,
+          initialValue: null,
+          onChanged: (val) =>
+              _onFieldChanged(formId, field.order.toString(), val?.key),
         );
       default:
         return Text('Unsupported field type: ${field.type}');
