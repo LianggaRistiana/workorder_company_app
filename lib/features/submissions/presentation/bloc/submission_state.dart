@@ -16,3 +16,5 @@ class Error extends SubmissionState {
   final String message;
   Error(this.message);
 }
+
+class Success extends SubmissionState {}

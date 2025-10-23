@@ -91,6 +91,7 @@ enum AccessType {
 }
 
 enum FormType {
+  intake,
   workOrder,
   report;
 
@@ -100,6 +101,8 @@ enum FormType {
         return FormType.workOrder;
       case 'report':
         return FormType.report;
+      case 'intake':
+        return FormType.intake;
       default:
         throw Exception('Unknown FormType: $value');
     }
@@ -117,6 +120,8 @@ enum FormType {
         return 'Work Order';
       case FormType.report:
         return 'Report';
+      case FormType.intake:
+        return 'Intake';
     }
   }
 
@@ -193,9 +198,4 @@ enum FieldType {
   String toString() => displayName;
 }
 
-enum BlocState{
-  initial,
-  loading,
-  loaded,
-  error
-}
+enum BlocState { initial, loading, loaded, error }

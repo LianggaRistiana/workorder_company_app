@@ -33,7 +33,7 @@ class _FillFormPageState extends State<FillFormPage> {
             (orderedForm) => SubmissionEntity(
               id: '',
               formId: orderedForm.form.id,
-              submissionType: FormType.workOrder,
+              submissionType: FormType.intake,
               fieldsData: [],
             ),
           )
@@ -48,7 +48,8 @@ class _FillFormPageState extends State<FillFormPage> {
     if (formIndex == -1) return; // safety
 
     final submission = updatedSubmissions[formIndex];
-    final updatedFields = List<FieldDataEntity>.from(submission.fieldsData ?? []);
+    final updatedFields =
+        List<FieldDataEntity>.from(submission.fieldsData ?? []);
     final fieldIndex = updatedFields.indexWhere((f) => f.order == order);
 
     if (fieldIndex != -1) {
@@ -68,7 +69,8 @@ class _FillFormPageState extends State<FillFormPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => sl<SubmissionBloc>()..add(FetchServiceForm(widget.serviceId)),
+      create: (_) =>
+          sl<SubmissionBloc>()..add(FetchServiceForm(widget.serviceId)),
       child: Scaffold(
         appBar: AppBar(title: const Text('Isi Formulir')),
         body: BlocBuilder<SubmissionBloc, SubmissionState>(
@@ -108,25 +110,25 @@ class _FillFormPageState extends State<FillFormPage> {
                             ),
                           ),
                         const SizedBox(height: 8),
-
                         for (final field in orderedForm.form.fields ?? []) ...[
                           _buildField(orderedForm.form.id, field),
                           const SizedBox(height: 16),
                         ],
-
                         const Divider(height: 32),
                       ],
                       const SizedBox(height: 24),
                       ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState?.validate() ?? false) {
-                            for (final sub in _submissions) {
-                              Logger().i(sub.toString());
-                            }
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text('Dummy submit success!')),
-                            );
+                            sl<SubmissionBloc>().add(SubmitIntakeForm(
+                                widget.serviceId, _submissions));
+                            // for (final sub in _submissions) {
+                            //   Logger().i(sub.toString());
+                            // }
+                            // ScaffoldMessenger.of(context).showSnackBar(
+                            //   const SnackBar(
+                            //       content: Text('Dummy submit success!')),
+                            // );
                           }
                         },
                         child: const Text('Submit'),
@@ -149,12 +151,14 @@ class _FillFormPageState extends State<FillFormPage> {
       case FieldType.text:
         return TextFormFieldWidget(
           field: field,
-          onChanged: (val) => _onFieldChanged(formId, field.order.toString(), val),
+          onChanged: (val) =>
+              _onFieldChanged(formId, field.order.toString(), val),
         );
       case FieldType.number:
         return NumberFormFieldWidget(
           field: field,
-          onChanged: (val) => _onFieldChanged(formId, field.order.toString(), val),
+          onChanged: (val) =>
+              _onFieldChanged(formId, field.order.toString(), val),
         );
       case FieldType.multiSelect:
         return MultiSelectFormFieldWidget(

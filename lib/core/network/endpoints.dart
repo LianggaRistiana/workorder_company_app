@@ -30,8 +30,8 @@ class Endpoints {
   static const String publicServices = '$clientPrefix/services';
   static publicCompanyServices(String id) =>
       '${publicCompanies.byId(id)}/services';
-  static publicServiceForms(String id) =>
-      '${publicServices.byId(id)}/forms';
+  static publicIntakeForms(String id) =>
+      '${publicServices.byId(id)}/intake-forms';
 }
 
 extension EndpointIdExtension on String {
