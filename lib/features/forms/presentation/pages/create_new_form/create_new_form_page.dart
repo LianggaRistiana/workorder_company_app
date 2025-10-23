@@ -56,7 +56,6 @@ class EditableField {
       );
 }
 
-// FIXME : REMOVE ACCESS SETTING IN HERE AND SPERATE INTO FEW WIDGET
 class CreateNewFormPageState extends State<CreateNewFormPage>
     with TickerProviderStateMixin {
   late FormsBloc _formsBloc;
@@ -97,6 +96,7 @@ class CreateNewFormPageState extends State<CreateNewFormPage>
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        // FIXME : REMOVE POSITION BLOC
         BlocProvider.value(value: _formsBloc),
         BlocProvider.value(value: _positionsBloc),
       ],

@@ -1,3 +1,4 @@
+import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/features/services/data/models/service_form_model.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
 import 'package:workorder_company_app/features/services/data/models/required_staff_model.dart';
@@ -32,7 +33,7 @@ class ServiceModel extends ServiceEntity {
               ?.map((e) => ServiceFormModel.fromJson(e))
               .toList() ??
           [],
-      accessType: json['accessType'] ?? '',
+      accessType: ServiceAccessType.fromString(json['accessType']),
       isActive: json['isActive'] ?? false,
     );
   }

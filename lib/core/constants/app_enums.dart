@@ -51,19 +51,19 @@ enum UserRole {
   String toString() => displayName;
 }
 
-enum AccessType {
+enum ServiceAccessType {
   public,
   memberOnly,
   internal;
 
-  static AccessType fromString(String value) {
+  static ServiceAccessType fromString(String value) {
     switch (value) {
       case 'public':
-        return AccessType.public;
+        return ServiceAccessType.public;
       case 'member_only':
-        return AccessType.memberOnly;
+        return ServiceAccessType.memberOnly;
       case 'internal':
-        return AccessType.internal;
+        return ServiceAccessType.internal;
       default:
         throw Exception('Unknown TypeAccess: $value');
     }
@@ -77,11 +77,11 @@ enum AccessType {
 
   String get displayName {
     switch (this) {
-      case AccessType.public:
+      case ServiceAccessType.public:
         return 'Public';
-      case AccessType.memberOnly:
+      case ServiceAccessType.memberOnly:
         return 'Member Only';
-      case AccessType.internal:
+      case ServiceAccessType.internal:
         return 'Internal';
     }
   }
@@ -142,11 +142,7 @@ enum FieldType {
     switch (value) {
       case 'text':
         return FieldType.text;
-      case 'text_area':
-        return FieldType.textarea;
       case 'textarea':
-        return FieldType.textarea;
-      case 'text-area':
         return FieldType.textarea;
       case 'number':
         return FieldType.number;
@@ -157,10 +153,6 @@ enum FieldType {
       case 'multi_select':
         return FieldType.multiSelect;
       case 'single_select':
-        return FieldType.singleSelect;
-      case 'multi-select':
-        return FieldType.multiSelect;
-      case 'single-select':
         return FieldType.singleSelect;
       default:
         throw Exception('Unknown FieldType: $value');

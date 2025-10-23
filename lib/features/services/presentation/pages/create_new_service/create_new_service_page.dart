@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/forms_bloc.dart';
 import 'package:workorder_company_app/features/forms/presentation/widgets/forms_selector.dart';
@@ -42,7 +43,7 @@ class CreateServicePageState extends State<CreateServicePage>
   List<RequiredStaffEntity> requiredStaff = [];
   List<ServiceFormEntity> selectedWorkOrderForms = [];
   List<ServiceFormEntity> selectedReportForms = [];
-  String accessType = 'internal';
+  ServiceAccessType accessType = ServiceAccessType.internal;
   bool isActive = true;
 
   @override

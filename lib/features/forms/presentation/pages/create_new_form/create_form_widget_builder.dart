@@ -120,9 +120,9 @@ extension CreateFormWidgetBuilder on CreateNewFormPageState {
                 DropdownMenuItem(value: 'number', child: Text('Number')),
                 DropdownMenuItem(value: 'textarea', child: Text('Textarea')),
                 DropdownMenuItem(
-                    value: 'single-select', child: Text('Single Select')),
+                    value: 'single_select', child: Text('Single Select')),
                 DropdownMenuItem(
-                    value: 'multi-select', child: Text('Multi Select')),
+                    value: 'multi_select', child: Text('Multi Select')),
               ],
             ),
             const SizedBox(height: 12),

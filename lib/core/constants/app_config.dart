@@ -7,6 +7,7 @@ class AppConfig {
   static const Map<String, String> baseApiUrls = {
     'development': 'http://10.0.2.2:3000',
     'development.device': 'https://liangga.gungindikusuma.xyz',
+    'development.ngrok': 'https://tympanitic-cryptoclastic-kandis.ngrok-free.dev',
     'staging': 'https://staging.api.example.com/v1',
     'production': 'https://api.example.com/v1',
   };

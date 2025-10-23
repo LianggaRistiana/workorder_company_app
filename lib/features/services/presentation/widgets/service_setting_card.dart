@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 
 class ServiceSettingCard extends StatelessWidget {
   final TextEditingController titleController;
   final TextEditingController descController;
-  final String accessType;
+  final ServiceAccessType accessType;
   final bool isActive;
-  final ValueChanged<String> onAccessTypeChanged;
+  final ValueChanged<ServiceAccessType> onAccessTypeChanged;
   final ValueChanged<bool> onStatusChanged;
 
   const ServiceSettingCard({
@@ -43,12 +44,12 @@ class ServiceSettingCard extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold)),
           Row(
             children: [
-              for (final type in ['public', 'member-only', 'internal'])
+              for (final type in [ServiceAccessType.public, ServiceAccessType.internal, ServiceAccessType.memberOnly])
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 4),
                     child: ChoiceChip(
-                      label: Center(child: Text(type)),
+                      label: Center(child: Text(type.toString())),
                       selected: accessType == type,
                       onSelected: (_) => onAccessTypeChanged(type),
                     ),

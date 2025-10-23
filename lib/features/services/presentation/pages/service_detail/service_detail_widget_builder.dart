@@ -22,7 +22,7 @@ extension ServiceDetailWidgetBuilder on ServiceDetailPageState {
       children: [
         Row(
           children: [
-            _buildAccessTypeChip(service.accessType),
+            _buildAccessTypeChip(service.accessType.toString()),
             const SizedBox(width: 8),
             Chip(
               label: Text(service.isActive ? "Active" : "Inactive"),

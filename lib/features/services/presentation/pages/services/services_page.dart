@@ -147,7 +147,7 @@ class _ServicesPageState extends State<ServicesPage> {
           overflow: TextOverflow.ellipsis,
         ),
         trailing: Chip(
-          label: Text(service.accessType),
+          label: Text(service.accessType.toString()),
         ),
         onTap: () {
           context.push(AppRoutes.ownerServiceDetail(service.id));

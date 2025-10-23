@@ -25,9 +25,8 @@ class FormsRemoteDatasourceImpl implements FormsRemoteDatasource {
 
     return ApiResponse.fromJson(
       response,
-      (data) => ((data as Map<String, dynamic>?)?['forms'] as List? ?? [])
-          .map((e) => FormModel.fromJson(e))
-          .toList(),
+      (data) =>
+          (data as List? ?? []).map((e) => FormModel.fromJson(e)).toList(),
     );
   }
 
@@ -36,7 +35,7 @@ class FormsRemoteDatasourceImpl implements FormsRemoteDatasource {
     final response = await _apiClient.get(Endpoints.forms.byId(id));
     return ApiResponse<FormModel>.fromJson(
       response,
-      (data) => FormModel.fromJson(data['form']),
+      (data) => FormModel.fromJson(data),
     );
   }
 
