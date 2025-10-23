@@ -198,4 +198,25 @@ enum FieldType {
   String toString() => displayName;
 }
 
+enum SubmissionStatus {
+  drafted,
+  submitted,
+  approved,
+  rejected;
+}
+
+enum ClientServiceRequestStatus {
+  received,
+  cancelled,
+  rejected,
+  underReview,
+  approved,
+  workOrderCreated,
+  completed
+}
+
+enum WorkOrderStatus { drafted, ready, inProgress, completed, cancelled }
+
+enum WorkReportStatus { inProgress, completed, cancelled }
+
 enum BlocState { initial, loading, loaded, error }
