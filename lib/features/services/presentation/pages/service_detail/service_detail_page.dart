@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
-import 'package:workorder_company_app/features/services/domain/entities/service_form_entity.dart';
+import 'package:workorder_company_app/features/forms/domain/entities/service_form_entity.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/services_bloc.dart';
 import 'package:workorder_company_app/features/services/presentation/pages/service_detail/service_detail_skeleton.dart';
 import 'package:workorder_company_app/features/services/presentation/widgets/service_form_card.dart';

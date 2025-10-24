@@ -68,6 +68,7 @@ extension CreateNewServiceLogic on CreateServicePageState {
       title: _titleController.text,
       description: _descController.text,
       requiredStaff: requiredStaff,
+      clientIntakeForms : selectedIntakeForms,
       workOrderForms: selectedWorkOrderForms,
       reportForms: selectedReportForms,
       accessType: accessType,

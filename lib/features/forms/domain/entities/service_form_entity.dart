@@ -1,9 +1,11 @@
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
+import 'package:workorder_company_app/features/forms/domain/entities/has_form.dart';
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
 
-class ServiceFormEntity {
+class ServiceFormEntity implements HasForm{
   final int order;
+  @override
   final FormEntity form;
   final List<UserRole> fillableByRoles;
   final List<PositionEntity> fillableByPositions;
@@ -18,7 +20,7 @@ class ServiceFormEntity {
     required this.fillableByPositions,
     required this.viewableByRoles,
     required this.viewableByPositions,
-  });
+  }); 
 
   ServiceFormEntity copyWith({
     int? order,

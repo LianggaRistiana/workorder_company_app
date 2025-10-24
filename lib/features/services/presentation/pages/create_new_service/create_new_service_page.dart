@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
+import 'package:workorder_company_app/features/forms/domain/entities/ordered_form_entity.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/forms_bloc.dart';
 import 'package:workorder_company_app/features/forms/presentation/widgets/forms_selector.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/positions_bloc.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
-import 'package:workorder_company_app/features/services/domain/entities/service_form_entity.dart';
+import 'package:workorder_company_app/features/forms/domain/entities/service_form_entity.dart';
 import 'package:workorder_company_app/features/services/presentation/widgets/required_positions_setting.dart';
 import 'package:workorder_company_app/features/services/presentation/widgets/service_form_editor_card.dart';
 import 'package:workorder_company_app/features/services/presentation/widgets/service_setting_card.dart';
@@ -41,6 +42,7 @@ class CreateServicePageState extends State<CreateServicePage>
   late final PositionsBloc _positionsBloc;
 
   List<RequiredStaffEntity> requiredStaff = [];
+  List<OrderedFormEntity> selectedIntakeForms = [];
   List<ServiceFormEntity> selectedWorkOrderForms = [];
   List<ServiceFormEntity> selectedReportForms = [];
   ServiceAccessType accessType = ServiceAccessType.internal;

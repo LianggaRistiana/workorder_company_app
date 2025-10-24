@@ -1,26 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:workorder_company_app/core/constants/app_enums.dart';
-import 'package:workorder_company_app/features/services/domain/entities/service_form_entity.dart';
+// import 'package:workorder_company_app/core/constants/app_enums.dart';
+import 'package:workorder_company_app/features/forms/domain/entities/has_form.dart';
 import '../../domain/entities/form_entity.dart';
 import '../bloc/forms_bloc.dart';
 import 'package:workorder_company_app/shared/widgets/select_buttom_sheet.dart';
 
-class FormsSelector extends StatelessWidget {
+// TODO : Remove List from selector
+class FormsSelector<T extends HasForm> extends StatelessWidget {
   const FormsSelector({
     super.key,
-    required this.selectedServiceForms,
+    required this.selectedForms,
     required this.onAdd,
     required this.onRemove,
     required this.onReorder,
+    required this.createEntity,
     this.itemBuilder,
   });
 
-  final List<ServiceFormEntity> selectedServiceForms;
-  final void Function(ServiceFormEntity) onAdd;
-  final void Function(ServiceFormEntity) onRemove;
+  final List<T> selectedForms;
+  final void Function(T) onAdd;
+  final void Function(T) onRemove;
   final void Function(int oldIndex, int newIndex) onReorder;
-  final Widget Function(ServiceFormEntity serviceForm)? itemBuilder;
+  final Widget Function(T entity)? itemBuilder;
+
+  /// Factory function untuk membuat instance baru dari entity generic
+  /// Berdasarkan FormEntity yang dipilih
+  final T Function(FormEntity form, int order) createEntity;
 
   Future<void> _openFormSelector(
     BuildContext context,
@@ -41,17 +47,9 @@ class FormsSelector extends StatelessWidget {
       ),
     );
 
-    if (form != null &&
-        !selectedServiceForms.any((f) => f.form.id == form.id)) {
-      final newOrder = ServiceFormEntity(
-        order: selectedServiceForms.length + 1,
-        fillableByRoles: [UserRole.managerCompany],
-        fillableByPositions: [],
-        viewableByRoles: [UserRole.managerCompany],
-        viewableByPositions: [],
-        form: form,
-      );
-      onAdd(newOrder);
+    if (form != null && !selectedForms.any((f) => f.form.id == form.id)) {
+      final newEntity = createEntity(form, selectedForms.length + 1);
+      onAdd(newEntity);
     }
   }
 
@@ -88,22 +86,20 @@ class FormsSelector extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 12),
-            if (selectedServiceForms.isEmpty)
+            if (selectedForms.isEmpty)
               const Text('Belum ada form yang dipilih')
             else
               ReorderableListView(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                proxyDecorator: (child, index, animation) {
-                  return Material(
-                    color: Colors.transparent,
-                    elevation: 0,
-                    child: child,
-                  );
-                }, 
+                proxyDecorator: (child, index, animation) => Material(
+                  color: Colors.transparent,
+                  elevation: 0,
+                  child: child,
+                ),
                 onReorder: onReorder,
                 children: [
-                  for (final formOrder in selectedServiceForms)
+                  for (final formOrder in selectedForms)
                     itemBuilder != null
                         ? KeyedSubtree(
                             key: ValueKey(formOrder.form.id),
@@ -120,7 +116,7 @@ class FormsSelector extends StatelessWidget {
                             ),
                           ),
                 ],
-              )
+              ),
           ],
         );
       },

@@ -1,7 +1,7 @@
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/features/forms/data/model/form_model.dart';
 import 'package:workorder_company_app/features/positions/data/models/position_model.dart';
-import 'package:workorder_company_app/features/services/domain/entities/service_form_entity.dart';
+import 'package:workorder_company_app/features/forms/domain/entities/service_form_entity.dart';
 
 class ServiceFormModel extends ServiceFormEntity {
   const ServiceFormModel({

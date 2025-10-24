@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/ordered_form_entity.dart';
 import 'package:workorder_company_app/features/services/domain/entities/required_staff_entity.dart';
-import 'package:workorder_company_app/features/services/domain/entities/service_form_entity.dart';
+import 'package:workorder_company_app/features/forms/domain/entities/service_form_entity.dart';
 
 class ServiceEntity extends Equatable {
   final String id;

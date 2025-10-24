@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
-import 'package:workorder_company_app/features/services/domain/entities/service_form_entity.dart';
+import 'package:workorder_company_app/features/forms/domain/entities/service_form_entity.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
@@ -89,7 +89,7 @@ Widget build(BuildContext context) {
           spacing: 8,
           children: selectedRoles.map((role) {
             return Chip(
-              label: Text(_roleLabel(role)),
+              label: Text(role.displayName),
             );
           }).toList(),
         ),
@@ -123,19 +123,6 @@ Widget build(BuildContext context) {
         ],
       ),
     );
-  }
-
-  String _roleLabel(UserRole role) {
-    switch (role) {
-      case UserRole.managerCompany:
-        return 'Manager';
-      case UserRole.staffCompany:
-        return 'Staff';
-      case UserRole.client:
-        return 'Client';
-      default:
-        return role.toString();
-    }
   }
 }
 

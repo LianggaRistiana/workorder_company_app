@@ -2,6 +2,41 @@ part of 'create_new_service_page.dart';
 
 // ignore_for_file: invalid_use_of_protected_member
 extension CreateNewServiceWidgetBuilder on CreateServicePageState {
+  Widget _buildIntakeServiceFormsSelector() {
+    return FormsSelector<OrderedFormEntity>(
+      // selectedServiceForms: selectedWorkOrderForms,
+      createEntity: (form, order) => OrderedFormEntity(
+        order: order,
+        form: form,
+      ),
+      selectedForms: selectedIntakeForms,
+      onAdd: (formOrder) {
+        setState(() => selectedIntakeForms.add(formOrder));
+      },
+      onRemove: (formOrder) {
+        setState(() {
+          selectedIntakeForms.removeWithCallback(
+            formOrder,
+            (item, i) {
+              selectedIntakeForms[i] = item.copyWith(order: i + 1);
+            },
+          );
+        });
+      },
+      onReorder: (oldIndex, newIndex) {
+        setState(() {
+          selectedWorkOrderForms.reorderWithCallback(
+            oldIndex,
+            newIndex,
+            (item, i) {
+              selectedWorkOrderForms[i] = item.copyWith(order: i + 1);
+            },
+          );
+        });
+      },
+    );
+  }
+
   Widget _buildServiceSettingTab() {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
@@ -23,6 +58,7 @@ extension CreateNewServiceWidgetBuilder on CreateServicePageState {
               },
             ),
             _buildPositionsRequiredSetting(),
+            _buildIntakeServiceFormsSelector(),
           ],
         ),
       ),
@@ -34,8 +70,17 @@ extension CreateNewServiceWidgetBuilder on CreateServicePageState {
       padding: const EdgeInsets.all(8),
       child: Column(
         children: [
-          FormsSelector(
-            selectedServiceForms: selectedWorkOrderForms,
+          FormsSelector<ServiceFormEntity>(
+            // selectedServiceForms: selectedWorkOrderForms,
+            createEntity: (form, order) => ServiceFormEntity(
+              order: order,
+              fillableByRoles: [UserRole.managerCompany],
+              fillableByPositions: [],
+              viewableByRoles: [UserRole.managerCompany],
+              viewableByPositions: [],
+              form: form,
+            ),
+            selectedForms: selectedWorkOrderForms,
             onAdd: (formOrder) {
               setState(() => selectedWorkOrderForms.add(formOrder));
             },
@@ -95,8 +140,17 @@ extension CreateNewServiceWidgetBuilder on CreateServicePageState {
       child: Column(
         children: [
           // 🔹 Selector untuk Report
-          FormsSelector(
-            selectedServiceForms: selectedReportForms,
+          FormsSelector<ServiceFormEntity>(
+            // selectedServiceForms: selectedReportForms,
+            selectedForms: selectedReportForms,
+            createEntity: (form, order) => ServiceFormEntity(
+              order: order,
+              fillableByRoles: [UserRole.managerCompany],
+              fillableByPositions: [],
+              viewableByRoles: [UserRole.managerCompany],
+              viewableByPositions: [],
+              form: form,
+            ),
             onAdd: (formOrder) {
               setState(() => selectedReportForms.add(formOrder));
             },

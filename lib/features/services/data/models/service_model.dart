@@ -1,6 +1,6 @@
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/features/forms/data/model/ordered_form_model.dart';
-import 'package:workorder_company_app/features/services/data/models/service_form_model.dart';
+import 'package:workorder_company_app/features/forms/data/model/service_form_model.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
 import 'package:workorder_company_app/features/services/data/models/required_staff_model.dart';
 
@@ -53,11 +53,13 @@ class ServiceModel extends ServiceEntity {
       'requiredStaff': requiredStaff
           .map((e) => (e as RequiredStaffModel).toJson())
           .toList(),
+      'clientIntakeForms':
+          workOrderForms?.map((e) => (e as ServiceFormModel).toJson()).toList(),
       'workOrderForms':
           workOrderForms?.map((e) => (e as ServiceFormModel).toJson()).toList(),
       'reportForms':
           reportForms?.map((e) => (e as ServiceFormModel).toJson()).toList(),
-      'accessType': accessType,
+      'accessType': accessType.toSnakeCase(),
       'isActive': isActive,
     };
   }
@@ -71,6 +73,10 @@ class ServiceModel extends ServiceEntity {
           .map((e) => e is RequiredStaffModel
               ? e
               : RequiredStaffModel.fromEntity(e))
+          .toList(),
+      clientIntakeForms: entity.clientIntakeForms
+          ?.map((e) =>
+              e is ServiceFormModel ? e : OrderedFormModel.fromEntity(e))
           .toList(),
       workOrderForms: entity.workOrderForms
           ?.map((e) =>
