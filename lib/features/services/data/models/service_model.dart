@@ -1,4 +1,5 @@
 import 'package:workorder_company_app/core/constants/app_enums.dart';
+import 'package:workorder_company_app/features/forms/data/model/ordered_form_model.dart';
 import 'package:workorder_company_app/features/services/data/models/service_form_model.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
 import 'package:workorder_company_app/features/services/data/models/required_staff_model.dart';
@@ -9,6 +10,7 @@ class ServiceModel extends ServiceEntity {
     required super.title,
     required super.description,
     required super.requiredStaff,
+    super.clientIntakeForms,
     super.workOrderForms,
     super.reportForms,
     required super.accessType,
@@ -23,6 +25,10 @@ class ServiceModel extends ServiceEntity {
       description: json['description'] ?? '',
       requiredStaff: (json['requiredStaff'] as List<dynamic>?)
               ?.map((e) => RequiredStaffModel.fromJson(e))
+              .toList() ??
+          [],
+      clientIntakeForms : (json['clientIntakeForms'] as List<dynamic>?)
+              ?.map((e) => OrderedFormModel.fromJson(e))
               .toList() ??
           [],
       workOrderForms: (json['workOrderForms'] as List<dynamic>?)

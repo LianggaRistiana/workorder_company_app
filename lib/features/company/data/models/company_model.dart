@@ -13,8 +13,8 @@ class CompanyModel extends CompanyEntity {
     return CompanyModel(
       id: json['_id'] as String,
       name: json['name'] as String,
-      address: json['address'] as String,
-      description: json['description'] as String,
+      address: json['address'] as String? ?? "",
+      description: json['description'] as String? ?? "",
       isActive: json['isActive'] as bool,
     );
   }
