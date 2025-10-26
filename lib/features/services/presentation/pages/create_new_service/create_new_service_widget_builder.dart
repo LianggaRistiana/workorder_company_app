@@ -3,7 +3,7 @@ part of 'create_new_service_page.dart';
 // ignore_for_file: invalid_use_of_protected_member
 extension CreateNewServiceWidgetBuilder on CreateServicePageState {
   Widget _buildIntakeServiceFormsSelector() {
-    return FormsSelector<OrderedFormEntity>(
+    return FormsSelectorWithList<OrderedFormEntity>(
       // selectedServiceForms: selectedWorkOrderForms,
       createEntity: (form, order) => OrderedFormEntity(
         order: order,
@@ -70,7 +70,7 @@ extension CreateNewServiceWidgetBuilder on CreateServicePageState {
       padding: const EdgeInsets.all(8),
       child: Column(
         children: [
-          FormsSelector<ServiceFormEntity>(
+          FormsSelectorWithList<ServiceFormEntity>(
             // selectedServiceForms: selectedWorkOrderForms,
             createEntity: (form, order) => ServiceFormEntity(
               order: order,
@@ -140,7 +140,7 @@ extension CreateNewServiceWidgetBuilder on CreateServicePageState {
       child: Column(
         children: [
           // 🔹 Selector untuk Report
-          FormsSelector<ServiceFormEntity>(
+          FormsSelectorWithList<ServiceFormEntity>(
             // selectedServiceForms: selectedReportForms,
             selectedForms: selectedReportForms,
             createEntity: (form, order) => ServiceFormEntity(

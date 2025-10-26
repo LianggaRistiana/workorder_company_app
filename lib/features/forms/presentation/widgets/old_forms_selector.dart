@@ -6,9 +6,10 @@ import '../../domain/entities/form_entity.dart';
 import '../bloc/forms_bloc.dart';
 import 'package:workorder_company_app/shared/widgets/select_buttom_sheet.dart';
 
-// TODO : Remove List from selector
-class FormsSelector<T extends HasForm> extends StatelessWidget {
-  const FormsSelector({
+
+@Deprecated("Use Form Selector Insteds")
+class FormsSelectorWithList<T extends HasForm> extends StatelessWidget {
+  const FormsSelectorWithList({
     super.key,
     required this.selectedForms,
     required this.onAdd,
