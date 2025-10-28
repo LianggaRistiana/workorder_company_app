@@ -19,7 +19,9 @@ import '../../../domain/entities/required_staff_entity.dart';
 import '../../bloc/services_bloc.dart';
 
 part 'create_new_service_logic.dart';
-part 'create_new_service_widget_builder.dart';
+part 'service_setting_tab.dart';
+part 'workorder_tab.dart';
+part 'report_tab.dart';
 
 class CreateServicePage extends StatefulWidget {
   const CreateServicePage({super.key});
@@ -31,7 +33,6 @@ class CreateServicePage extends StatefulWidget {
 class CreateServicePageState extends State<CreateServicePage>
     with TickerProviderStateMixin {
   final _serviceKey = GlobalKey<FormState>();
-  // ServiceEntity? service;
 
   final _titleController = TextEditingController();
   final _descController = TextEditingController();

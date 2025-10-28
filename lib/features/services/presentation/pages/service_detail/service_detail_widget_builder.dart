@@ -50,22 +50,44 @@ extension ServiceDetailWidgetBuilder on ServiceDetailPageState {
           items: service.requiredStaff,
           separatorHeight: 8,
           itemBuilder: (staff, _) => CustomCard(
-            margin: const EdgeInsets.all(0),
-            padding: const EdgeInsets.all(4),
-            elevation: 0,
+              margin: const EdgeInsets.all(0),
+              padding: const EdgeInsets.all(4),
               child: ListTile(
-            leading: const CircleAvatar(
-              child: Icon(Icons.person_outline, color: Colors.blueAccent),
-            ),
-            title: Text(
-              staff.position.name,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-            subtitle: Text(
-              'Min: ${staff.minimumStaff}, Max: ${staff.maximumStaff}',
-            ),
-          )),
+                leading: const CircleAvatar(
+                  child: Icon(Icons.person_outline, color: Colors.blueAccent),
+                ),
+                title: Text(
+                  staff.position.name,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                subtitle: Text(
+                  'Min: ${staff.minimumStaff}, Max: ${staff.maximumStaff}',
+                ),
+              )),
         ),
+        if (service.clientIntakeForms != null ||
+            service.clientIntakeForms!.isNotEmpty) ...{
+          _buildSectionTitle("Intake Forms"),
+          CustomList<OrderedFormEntity>(
+            items: service.clientIntakeForms ?? [],
+            separatorHeight: 8,
+            itemBuilder: (intake, _) => CustomCard(
+                margin: const EdgeInsets.all(0),
+                padding: const EdgeInsets.all(4),
+                child: ListTile(
+                  onTap: () {
+                    context.push(AppRoutes.ownerForms.byId(intake.form.id));
+                  },
+                  leading: const CircleAvatar(
+                    child: Icon(Icons.edit_square, color: Colors.blueAccent),
+                  ),
+                  title: Text(
+                    intake.form.title,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                )),
+          ),
+        }
       ],
     );
   }
