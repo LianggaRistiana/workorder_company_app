@@ -16,7 +16,7 @@ class OrderedFormModel extends OrderedFormEntity {
 
   Map<String, dynamic> toJson() {
     return {
-      "form": (form as FormModel).toJson(),
+      "formId": (form as FormModel).id,
       "order": order,
     };
   }

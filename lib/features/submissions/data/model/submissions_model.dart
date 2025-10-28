@@ -17,7 +17,9 @@ class SubmissionsModel extends SubmissionEntity {
       id: json['id'],
       formId: json['formId'],
       submissionType: FormType.fromString(json['submissionType']),
-      status: json['status'],
+      status: json['status'] != null
+          ? SubmissionStatus.fromString(json['status'])
+          : null,
       submittedBy: json['submittedBy'] != null
           ? UserModel.fromJson(json['submittedBy'])
           : null,
@@ -32,7 +34,7 @@ class SubmissionsModel extends SubmissionEntity {
       'id': id,
       'formId': formId,
       'submissionType': submissionType.toSnakeCase(),
-      'status': status,
+      'status': status?.toSnakeCase(),
       'submittedBy': (submittedBy as UserModel?)?.toJson(),
       'fieldsData':
           fieldsData?.map((e) => (e as FieldDataModel).toJson()).toList(),

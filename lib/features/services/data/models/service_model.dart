@@ -54,7 +54,7 @@ class ServiceModel extends ServiceEntity {
           .map((e) => (e as RequiredStaffModel).toJson())
           .toList(),
       'clientIntakeForms':
-          workOrderForms?.map((e) => (e as ServiceFormModel).toJson()).toList(),
+          clientIntakeForms?.map((e) => (e as OrderedFormModel).toJson()).toList(),
       'workOrderForms':
           workOrderForms?.map((e) => (e as ServiceFormModel).toJson()).toList(),
       'reportForms':

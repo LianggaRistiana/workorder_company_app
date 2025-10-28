@@ -6,7 +6,7 @@ class SubmissionEntity {
   final String id;
   final String formId;
   final FormType submissionType;
-  final String? status;
+  final SubmissionStatus? status;
   final UserEntity? submittedBy;
   final List<FieldDataEntity>? fieldsData;
 
@@ -23,7 +23,7 @@ class SubmissionEntity {
     String? id,
     String? formId,
     FormType? submissionType,
-    String? status,
+    SubmissionStatus? status,
     UserEntity? submittedBy,
     List<FieldDataEntity>? fieldsData,
   }) {

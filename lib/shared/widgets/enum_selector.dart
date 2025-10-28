@@ -8,7 +8,6 @@ class EnumSelector<T extends Enum> extends StatelessWidget {
   final String Function(T)? labelBuilder;
   final bool isMultiSelect;
 
-
   // Tambahkan Form Field seperti Drop down
   const EnumSelector({
     super.key,
@@ -43,13 +42,21 @@ class EnumSelector<T extends Enum> extends StatelessWidget {
               selected: isSelected,
               onSelected: (selected) {
                 List<T> updatedValues;
+                // if (isMultiSelect) {
+                //   updatedValues = selected
+                //       ? [...selectedValues, value]
+                //       : selectedValues.where((v) => v != value).toList();
+                // } else {
+                //   updatedValues = selected ? [value] : [];
+                // }
                 if (isMultiSelect) {
                   updatedValues = selected
-                      ? [...selectedValues, value]
+                      ? {...selectedValues, value}.toList()
                       : selectedValues.where((v) => v != value).toList();
                 } else {
-                  updatedValues = selected ? [value] : [];
+                  updatedValues = selected ? [value] : selectedValues;
                 }
+
                 onChanged(updatedValues);
               },
             );

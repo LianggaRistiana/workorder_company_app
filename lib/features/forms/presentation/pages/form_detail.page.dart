@@ -88,6 +88,10 @@ class _FormDetailPageState extends State<FormDetailPage> {
                         : form.description,
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
+                  Text(
+                    form.formType.displayName,
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
                   const SizedBox(height: 12),
                   const Divider(thickness: 0.6),
                 ],

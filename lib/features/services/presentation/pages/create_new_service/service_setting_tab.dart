@@ -53,11 +53,11 @@ extension ServiceSettingTab on CreateServicePageState {
       },
       onReorder: (oldIndex, newIndex) {
         setState(() {
-          selectedWorkOrderForms.reorderWithCallback(
+          selectedIntakeForms.reorderWithCallback(
             oldIndex,
             newIndex,
             (item, i) {
-              selectedWorkOrderForms[i] = item.copyWith(order: i + 1);
+              selectedIntakeForms[i] = item.copyWith(order: i + 1);
             },
           );
         });

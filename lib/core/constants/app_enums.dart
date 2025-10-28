@@ -203,7 +203,7 @@ enum SubmissionStatus {
   approved,
   rejected;
 
-  SubmissionStatus fromString(String value) {
+  static SubmissionStatus fromString(String value) {
     switch (value) {
       case 'drafted':
         return SubmissionStatus.drafted;
@@ -252,7 +252,7 @@ enum ClientServiceRequestStatus {
   workOrderCreated,
   completed;
 
-  ClientServiceRequestStatus fromString(String value) {
+  static ClientServiceRequestStatus fromString(String value) {
     switch (value) {
       case 'received':
         return ClientServiceRequestStatus.received;
