@@ -29,24 +29,34 @@ class CustomList<T> extends StatelessWidget {
     if (isReorderable && onReorder != null) {
       return ReorderableListView(
         shrinkWrap: true,
+        onReorderStart: (_) => FocusScope.of(context).unfocus(),
         physics: const NeverScrollableScrollPhysics(),
         onReorder: onReorder!,
+        // proxyDecorator: (child, index, animation) {
+        //   return Material(
+        //     color: Colors.transparent,
+        //     elevation: 0,
+        //     child: child,
+        //   );
+        // },
         proxyDecorator: (child, index, animation) {
-          return Material(
-            color: Colors.transparent,
-            elevation: 0,
-            child: child,
+          return RepaintBoundary(
+            child: Material(
+              color: Colors.transparent,
+              elevation: 0,
+              child: child,
+            ),
           );
         },
+
         children: [
           for (final item in items)
             KeyedSubtree(
               key: ValueKey(item),
               child: itemBuilder(item, items.indexOf(item)),
             ),
-          SizedBox(
-            key: ValueKey('__buttom_space__'),
-            height: emptyFooterHeight)
+          // TODO : Remove this
+          SizedBox(key: ValueKey('__buttom_space__'), height: emptyFooterHeight)
         ],
       );
     }
@@ -61,7 +71,7 @@ class CustomList<T> extends StatelessWidget {
       separatorBuilder: (_, __) => SizedBox(height: separatorHeight),
       itemBuilder: (context, index) {
         if (index == items.length) {
-          return SizedBox(height : emptyFooterHeight);
+          return SizedBox(height: emptyFooterHeight);
         }
         final item = items[index];
         return itemBuilder(item, index);

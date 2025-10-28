@@ -1,13 +1,13 @@
 import 'package:dartz/dartz.dart';
 import 'package:workorder_company_app/core/error/failures.dart';
 import 'package:workorder_company_app/core/utils/safe_call.dart';
-import 'package:workorder_company_app/features/company/data/datasources/company_local_datasource.dart';
+import 'package:workorder_company_app/features/company/data/datasources/company_remote_datasource.dart';
 import 'package:workorder_company_app/features/company/domain/entities/company_entity.dart';
 import 'package:workorder_company_app/features/company/domain/repositories/company_repository.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
 
 class CompanyRepositoryImpl implements CompanyRepository {
-  final CompanyLocalDatasource _companyLocalDatasource;
+  final CompanyRemoteDatasource _companyLocalDatasource;
 
   CompanyRepositoryImpl(this._companyLocalDatasource);
 

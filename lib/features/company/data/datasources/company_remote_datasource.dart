@@ -5,16 +5,16 @@ import 'package:workorder_company_app/core/utils/safe_mapper.dart';
 import 'package:workorder_company_app/features/company/data/models/company_model.dart';
 import 'package:workorder_company_app/features/services/data/models/service_model.dart';
 
-abstract class CompanyLocalDatasource {
+abstract class CompanyRemoteDatasource {
   Future<ApiResponse<CompanyModel>> getCompanyById(String id);
   Future<ApiResponse<List<CompanyModel>>> getCompanies();
   Future<ApiResponse<List<ServiceModel>>> getCompanyService(String id);
 }
 
-class CompanyLocalDatasourceImpl implements CompanyLocalDatasource {
+class CompanyRemoteDatasourceImpl implements CompanyRemoteDatasource {
   final ApiClient _apiClient;
 
-  CompanyLocalDatasourceImpl(this._apiClient);
+  CompanyRemoteDatasourceImpl(this._apiClient);
 
   @override
   Future<ApiResponse<List<CompanyModel>>> getCompanies() async {

@@ -45,7 +45,7 @@ class FormsRemoteDatasourceImpl implements FormsRemoteDatasource {
         await _apiClient.post(Endpoints.forms, data: form.toJson());
     return ApiResponse<FormModel>.fromJson(
       response,
-      (data) => FormModel.fromJson(data['form']),
+      (data) => FormModel.fromJson(data),
     );
   }
 

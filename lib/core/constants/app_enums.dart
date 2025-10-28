@@ -136,7 +136,10 @@ enum FieldType {
   date,
   time,
   multiSelect,
-  singleSelect;
+  singleSelect,
+  // file,
+  // phone,
+  email;
 
   static FieldType fromString(String value) {
     switch (value) {
@@ -154,6 +157,8 @@ enum FieldType {
         return FieldType.multiSelect;
       case 'single_select':
         return FieldType.singleSelect;
+      case 'email':
+        return FieldType.email;
       default:
         throw Exception('Unknown FieldType: $value');
     }
@@ -171,6 +176,8 @@ enum FieldType {
     switch (this) {
       case FieldType.text:
         return 'Text';
+      case FieldType.email:
+        return 'Email';
       case FieldType.textarea:
         return 'Paragraf';
       case FieldType.number:
@@ -195,6 +202,45 @@ enum SubmissionStatus {
   submitted,
   approved,
   rejected;
+
+  SubmissionStatus fromString(String value) {
+    switch (value) {
+      case 'drafted':
+        return SubmissionStatus.drafted;
+      case 'submitted':
+        return SubmissionStatus.submitted;
+      case 'approved':
+        return SubmissionStatus.approved;
+      case 'rejected':
+        return SubmissionStatus.rejected;
+      default:
+        throw Exception('Unknown SubmissionStatus: $value');
+    }
+  }
+
+  String toSnakeCase() {
+    return name.toSnakeCase();
+  }
+
+  String toKebabCase() {
+    return name.toKebabCase();
+  }
+
+  String get displayName {
+    switch (this) {
+      case SubmissionStatus.drafted:
+        return 'Draft';
+      case SubmissionStatus.submitted:
+        return 'Submitted';
+      case SubmissionStatus.approved:
+        return 'Approved';
+      case SubmissionStatus.rejected:
+        return 'Rejected';
+    }
+  }
+
+  @override
+  String toString() => displayName;
 }
 
 enum ClientServiceRequestStatus {
@@ -204,7 +250,58 @@ enum ClientServiceRequestStatus {
   underReview,
   approved,
   workOrderCreated,
-  completed
+  completed;
+
+  ClientServiceRequestStatus fromString(String value) {
+    switch (value) {
+      case 'received':
+        return ClientServiceRequestStatus.received;
+      case 'cancelled':
+        return ClientServiceRequestStatus.cancelled;
+      case 'rejected':
+        return ClientServiceRequestStatus.rejected;
+      case 'under_review':
+        return ClientServiceRequestStatus.underReview;
+      case 'approved':
+        return ClientServiceRequestStatus.approved;
+      case 'work_order_created':
+        return ClientServiceRequestStatus.workOrderCreated;
+      case 'completed':
+        return ClientServiceRequestStatus.completed;
+      default:
+        throw Exception('Unknown ClientServiceRequestStatus: $value');
+    }
+  }
+
+  String toSnakeCase() {
+    return name.toSnakeCase();
+  }
+
+  String toKebabCase() {
+    return name.toKebabCase();
+  }
+
+  String get displayName {
+    switch (this) {
+      case ClientServiceRequestStatus.received:
+        return 'Received';
+      case ClientServiceRequestStatus.cancelled:
+        return 'Cancelled';
+      case ClientServiceRequestStatus.rejected:
+        return 'Rejected';
+      case ClientServiceRequestStatus.underReview:
+        return 'Under Review';
+      case ClientServiceRequestStatus.approved:
+        return 'Approved';
+      case ClientServiceRequestStatus.workOrderCreated:
+        return 'Work Order Created';
+      case ClientServiceRequestStatus.completed:
+        return 'Completed';
+    }
+  }
+
+  @override
+  String toString() => displayName;
 }
 
 enum WorkOrderStatus { drafted, ready, inProgress, completed, cancelled }
