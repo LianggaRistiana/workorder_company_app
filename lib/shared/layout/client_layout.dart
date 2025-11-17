@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
+import 'package:workorder_company_app/features/client_service_request/presentation/bloc/public_client_service_request/csr_bloc.dart';
 import 'package:workorder_company_app/features/company/presentation/bloc/fetch_company/company_bloc.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/widgets/custom_navigation_bar.dart';
@@ -47,6 +48,7 @@ class _ClientLayoutState extends State<ClientLayout> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => sl<CompanyBloc>()),
+        BlocProvider(create: (_) => sl<CsrBloc>()),
       ],
       child: Scaffold(
         body: widget.child,

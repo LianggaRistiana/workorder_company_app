@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/features/auth/presentation/pages/profile_page.dart';
+import 'package:workorder_company_app/features/client_service_request/presentation/pages/public_csr_page.dart';
 import 'package:workorder_company_app/features/company/presentation/pages/companies_page.dart';
 import 'package:workorder_company_app/features/company/presentation/pages/company_detail_page.dart';
 import 'package:workorder_company_app/features/home/presentation/pages/homepage/client_homepage.dart';
@@ -32,6 +33,12 @@ final clientRouter = [
         builder: (context, state) {
           final id = state.pathParameters['id']!;
           return CompanyDetailPage(companyId: id);
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.clientServiceRequest,
+        builder: (context, state) {
+          return PublicCsrPage();
         },
       ),
     ],

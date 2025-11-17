@@ -8,7 +8,7 @@ class AppConfig {
     'development': 'http://10.0.2.2:3000',
     'development.device': 'https://liangga.gungindikusuma.xyz',
     'development.ngrok': 'http://172.16.153.108:3000',
-    'staging': 'https://staging.api.example.com/v1',
+    'staging': 'https://workorder-team.vercel.app/',
     'production': 'https://api.example.com/v1',
   };
 

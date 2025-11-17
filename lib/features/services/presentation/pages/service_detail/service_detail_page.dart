@@ -61,7 +61,7 @@ class ServiceDetailPageState extends State<ServiceDetailPage> {
                   pinned: true,
                   flexibleSpace: FlexibleSpaceBar(
                     centerTitle: true,
-                    expandedTitleScale: 1.5,
+                    expandedTitleScale: 1,
                     titlePadding: const EdgeInsets.only(bottom: 64),
                     title: Text(appBarTitle),
                   ),
