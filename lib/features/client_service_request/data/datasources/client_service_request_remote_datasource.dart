@@ -28,12 +28,6 @@ class ClientServiceRequestRemoteDatasourceImpl
   Future<ApiResponse<List<ClientServiceRequestModel>>>
       publicGetClientServiceRequests() async {
     final response = await _apiClient.get(Endpoints.publicClientServiceRequest);
-    // return ApiResponse.fromJson(
-    //     response,
-    //     (data) => (data as List<dynamic>? ?? [])
-    //         .map((e) =>
-    //             ClientServiceRequestModel.fromJson(e as Map<String, dynamic>))
-    //         .toList());
     return ApiResponse.fromJson(
       response,
       (data) => SafeMapper.mapList(
