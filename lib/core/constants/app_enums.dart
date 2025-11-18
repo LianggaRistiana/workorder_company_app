@@ -1,3 +1,4 @@
+import 'package:workorder_company_app/core/error/error.dart';
 import 'package:workorder_company_app/shared/utils/string_case_utils.dart';
 
 enum UserRole {
@@ -20,7 +21,7 @@ enum UserRole {
       case 'client':
         return UserRole.client;
       default:
-        throw Exception('Unknown UserRole: $value');
+        throw ParsingException('Unknown UserRole: $value');
     }
   }
 
@@ -65,7 +66,7 @@ enum ServiceAccessType {
       case 'internal':
         return ServiceAccessType.internal;
       default:
-        throw Exception('Unknown TypeAccess: $value');
+        throw ParsingException('Unknown TypeAccess: $value');
     }
   }
 
@@ -104,7 +105,7 @@ enum FormType {
       case 'intake':
         return FormType.intake;
       default:
-        throw Exception('Unknown FormType: $value');
+        throw ParsingException('Unknown FormType: $value');
     }
   }
 
@@ -160,7 +161,7 @@ enum FieldType {
       case 'email':
         return FieldType.email;
       default:
-        throw Exception('Unknown FieldType: $value');
+        throw ParsingException('Unknown FieldType: $value');
     }
   }
 
@@ -214,7 +215,7 @@ enum SubmissionStatus {
       case 'rejected':
         return SubmissionStatus.rejected;
       default:
-        throw Exception('Unknown SubmissionStatus: $value');
+        throw ParsingException('Unknown SubmissionStatus: $value');
     }
   }
 
@@ -269,7 +270,7 @@ enum ClientServiceRequestStatus {
       case 'completed':
         return ClientServiceRequestStatus.completed;
       default:
-        throw Exception('Unknown ClientServiceRequestStatus: $value');
+        throw ParsingException('Unknown ClientServiceRequestStatus: $value');
     }
   }
 

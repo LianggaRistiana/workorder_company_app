@@ -20,6 +20,19 @@ class CacheException implements Exception {
   String toString() => message ?? 'CacheException';
 }
 
+
+
+/// Exception for parsing
+class ParsingException implements Exception {
+  final String? message;
+
+  ParsingException([this.message]);
+
+  @override
+  String toString() => message ?? 'ParsingException';
+
+}
+
 /// Exception untuk error koneksi (misal no internet)
 class NetworkException implements Exception {
   final String? message;

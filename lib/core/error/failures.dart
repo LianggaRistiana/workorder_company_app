@@ -12,7 +12,7 @@ class ServerFailure extends Failure {
   const ServerFailure({super.message = "Server error occurred"});
 }
 class ParsingFailure extends Failure {
-  const ParsingFailure({super.message = "Parsing error occured"});
+  const ParsingFailure({super.message = "Terjadi kesalahan dalam data yang diterima"});
 }
 
 class CacheFailure extends Failure {

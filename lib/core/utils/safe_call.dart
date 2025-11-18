@@ -34,5 +34,17 @@ Failure _mapExceptionToFailure(dynamic error) {
     return ParsingFailure(message: "Invalid data format");
   }
 
+  if (error is CacheException) {
+    return CacheFailure(message: error.message ?? "Cache error");
+  }
+
+  if (error is NetworkException) {
+    return NetworkFailure(message: error.message ?? "No internet connection");
+  }
+
+  if (error is ParsingException) {
+    return ParsingFailure();
+  }
+
   return UnexpectedFailure(message: error.toString());
 }
