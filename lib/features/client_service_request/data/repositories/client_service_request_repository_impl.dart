@@ -16,8 +16,11 @@ class ClientServiceRequestRepositoryImpl
   @override
   Future<Either<Failure, ClientServiceRequestEntity>>
       publicGetClientServiceRequestById(String id) {
-    // TODO: implement publicGetClientServiceRequestById
-    throw UnimplementedError();
+    return safeCall(() async {
+      final payload = await _clientServiceRequestRemoteDatasource
+          .publicGetClientServiceRequestById(id);
+      return payload.data!;
+    });
   }
 
   @override

@@ -1,3 +1,4 @@
+import 'package:workorder_company_app/core/utils/safe_parse.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/option_entity.dart';
 
 class OptionModel extends OptionEntity {
@@ -8,8 +9,8 @@ class OptionModel extends OptionEntity {
 
   factory OptionModel.fromJson(Map<String, dynamic> json) {
     return OptionModel(
-      key: json["key"] ?? json.toString(),
-      value: json["value"] ?? json.toString(),
+      key: safeParse<String>(json, "key"),
+      value: safeParse<String>(json, "value"),
     );
   }
 

@@ -1,4 +1,5 @@
 import 'package:workorder_company_app/core/constants/app_enums.dart';
+import 'package:workorder_company_app/core/utils/safe_parse.dart';
 import 'package:workorder_company_app/features/forms/data/model/field_model.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
 
@@ -13,8 +14,10 @@ class FormModel extends FormEntity {
 
   factory FormModel.fromJson(Map<String, dynamic> json) { 
     return FormModel(
-      id: json["_id"].toString(),
-      title: json["title"].toString(),
+      // id: json["_id"].toString(),
+      // title: json["title"].toString(),
+      id: safeParse<String>(json, "_id"),
+      title: safeParse<String>(json, "title"),
       formType: FormType.fromString(json["formType"].toString()),
       description: json["description"]?.toString() ?? "",
       fields: (json["fields"] as List<dynamic>?)

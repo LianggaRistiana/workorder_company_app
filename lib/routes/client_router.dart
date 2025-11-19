@@ -1,5 +1,9 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features/auth/presentation/pages/profile_page.dart';
+import 'package:workorder_company_app/features/client_service_request/presentation/bloc/public_client_service_request/csr_detail_cubit.dart';
+import 'package:workorder_company_app/features/client_service_request/presentation/pages/public_csr_detail_page.dart';
 import 'package:workorder_company_app/features/client_service_request/presentation/pages/public_csr_page.dart';
 import 'package:workorder_company_app/features/company/presentation/pages/companies_page.dart';
 import 'package:workorder_company_app/features/company/presentation/pages/company_detail_page.dart';
@@ -50,4 +54,14 @@ final clientRouter = [
       return FillFormPage(serviceId: id);
     },
   ),
+  GoRoute(
+    path: '${AppRoutes.clientServiceRequest}/:id',
+    builder: (context, state) {
+      final id = state.pathParameters['id']!;
+      return BlocProvider(
+        create: (_) => sl<CsrDetailCubit>()..getCsrDetail(id),
+        child: CsrDetailPage(csrId: id),
+      );
+    },
+  )
 ];

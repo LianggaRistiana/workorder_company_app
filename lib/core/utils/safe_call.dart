@@ -6,13 +6,18 @@ Future<Either<Failure, T>> safeCall<T>(Future<T> Function() action) async {
   try {
     final result = await action();
     return Right(result);
-  } catch (error) {
+  } catch (error, stack) {
+    Logger().e(
+      '❌ ERROR in safeCall',
+      error: error,
+      stackTrace: stack,
+    );
     return Left(_mapExceptionToFailure(error));
   }
 }
 
 Failure _mapExceptionToFailure(dynamic error) {
-  Logger().e(error);
+  // Logger().e(error);
   if (error is ApiException) {
     return ServerFailure(message: error.message);
     //  TODO: Refactore all repo in data layer using this utils

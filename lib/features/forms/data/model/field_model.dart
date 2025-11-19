@@ -1,4 +1,5 @@
 import 'package:workorder_company_app/core/constants/app_enums.dart';
+import 'package:workorder_company_app/core/utils/safe_parse.dart';
 import 'package:workorder_company_app/features/forms/data/model/option_model.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/field_entity.dart';
 
@@ -16,10 +17,10 @@ class FieldModel extends FieldEntity {
 
   factory FieldModel.fromJson(Map<String, dynamic> json) {
     return FieldModel(
-      order: json["order"],
-      label: json["label"],
+      order: safeParse<int>(json, "order"),
+      label: safeParse<String>(json, "label"),
       type: FieldType.fromString(json["type"]),
-      required: json["required"],
+      required: safeParse<bool>(json, "required"),
       placeholder: json["placeholder"],
       min: json["min"],
       max: json["max"],

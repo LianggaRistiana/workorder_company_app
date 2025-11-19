@@ -1,4 +1,5 @@
 import 'package:workorder_company_app/core/constants/app_enums.dart';
+import 'package:workorder_company_app/core/utils/safe_parse.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 import 'package:workorder_company_app/features/positions/data/models/position_model.dart';
 
@@ -12,9 +13,9 @@ class UserModel extends UserEntity {
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      name: json['name'] as String,
-      email: json['email'] as String,
-      role: UserRole.fromString(json['role'] as String),
+      name: safeParse<String>(json, "name"),
+      email: safeParse<String>(json, "email"),
+      role: UserRole.fromString(safeParse<String>(json, "role")),
       position: json['position'] != null
           ? PositionModel.fromJson(json['position'])
           : null, // handle null

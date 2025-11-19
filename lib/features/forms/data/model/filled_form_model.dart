@@ -1,3 +1,4 @@
+import 'package:workorder_company_app/core/utils/safe_parse.dart';
 import 'package:workorder_company_app/features/forms/data/model/form_model.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/filled_form_entity.dart';
 import 'package:workorder_company_app/features/submissions/data/model/submissions_model.dart';
@@ -11,7 +12,7 @@ class FilledFormModel extends FilledFormEntity{
 
   factory FilledFormModel.fromJson(Map<String, dynamic> json) {
     return FilledFormModel(
-      order: json['order'] as int,
+      order: safeParse<int>(json, "order"),
       form: FormModel.fromJson(json['form']),
       submission: SubmissionsModel.fromJson(json['submission']),
     );

@@ -1,4 +1,5 @@
 import 'package:workorder_company_app/core/constants/app_enums.dart';
+import 'package:workorder_company_app/core/utils/safe_parse.dart';
 import 'package:workorder_company_app/features/auth/data/model/user_model.dart';
 import 'package:workorder_company_app/features/submissions/data/model/field_data_model.dart';
 import 'package:workorder_company_app/features/submissions/domain/entitties/submission_entity.dart';
@@ -14,15 +15,16 @@ class SubmissionsModel extends SubmissionEntity {
 
   factory SubmissionsModel.fromJson(Map<String, dynamic> json) {
     return SubmissionsModel(
-      id: json['id'],
-      formId: json['formId'],
+      id: safeParse<String>(json, "_id"),
+      formId:safeParse<String>(json, "formId"),
       submissionType: FormType.fromString(json['submissionType']),
       status: json['status'] != null
           ? SubmissionStatus.fromString(json['status'])
           : null,
-      submittedBy: json['submittedBy'] != null
-          ? UserModel.fromJson(json['submittedBy'])
-          : null,
+      // FIXME : fix on Mock
+      // submittedBy: json['submittedBy'] != null
+      //     ? UserModel.fromJson(json['submittedBy'])
+      //     : null,
       fieldsData: (json['fieldsData'] as List<dynamic>?)
           ?.map((e) => FieldDataModel.fromJson(e))
           .toList(),

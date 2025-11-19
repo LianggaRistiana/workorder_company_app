@@ -19,9 +19,11 @@ class ClientServiceRequestRemoteDatasourceImpl
 
   @override
   Future<ApiResponse<ClientServiceRequestModel>>
-      publicGetClientServiceRequestById(String id) {
-    // TODO: implement publicGetClientServiceRequestById
-    throw UnimplementedError();
+      publicGetClientServiceRequestById(String id) async {
+    final response =
+        await _apiClient.get(Endpoints.publicClientServiceRequest.byId(id));
+    return ApiResponse.fromJson(
+        response, (json) => ClientServiceRequestModel.fromJson(json));
   }
 
   @override

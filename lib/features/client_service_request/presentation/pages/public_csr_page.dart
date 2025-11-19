@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/features/client_service_request/domain/entitties/client_service_request_entity.dart';
 import 'package:workorder_company_app/features/client_service_request/presentation/bloc/public_client_service_request/csr_bloc.dart';
+import 'package:workorder_company_app/routes/app_routes.dart';
 
 class PublicCsrPage extends StatefulWidget {
   const PublicCsrPage({super.key});
@@ -120,52 +122,52 @@ class _CsrCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final dateFormatted = DateFormat("dd MMM yyyy").format(csr.createdAt);
 
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Service title
-            Text(
-              csr.service.title,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-
-            const SizedBox(height: 8),
-
-            // Client name + Date
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Oleh: ${csr.client.name}"),
-                Text(dateFormatted),
-              ],
-            ),
-
-            const SizedBox(height: 12),
-
-            // STATUS BADGE
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              decoration: BoxDecoration(
-                color: _statusColor(csr.status).withOpacity(0.15),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Text(
-                csr.status.displayName,
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: _statusColor(csr.status),
+    return InkWell(
+      borderRadius: BorderRadius.circular(12),
+      onTap: () {
+        context.push(AppRoutes.clientServiceRequestDetail(csr.id));
+      },
+      child: Card(
+        elevation: 2,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                csr.service.title,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-            )
-          ],
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Oleh: ${csr.client.name}"),
+                  Text(dateFormatted),
+                ],
+              ),
+              const SizedBox(height: 12),
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: _statusColor(csr.status).withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  csr.status.displayName,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: _statusColor(csr.status),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

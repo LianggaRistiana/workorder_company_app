@@ -7,7 +7,6 @@ enum CsrStateStatus {
   error,
 }
 
-
 class CsrState extends Equatable {
   final CsrStateStatus status;
   final List<ClientServiceRequestEntity> clientServiceRequests;
@@ -36,6 +35,37 @@ class CsrState extends Equatable {
   List<Object?> get props => [
         status,
         clientServiceRequests,
+        errorMessage,
+      ];
+}
+
+class CsrDetailState extends Equatable {
+  final CsrStateStatus status;
+  final ClientServiceRequestEntity? clientServiceRequest;
+  final String? errorMessage;
+
+  const CsrDetailState({
+    this.status = CsrStateStatus.initial,
+    this.clientServiceRequest,
+    this.errorMessage,
+  });
+
+  CsrDetailState copyWith({
+    CsrStateStatus? status,
+    ClientServiceRequestEntity? clientServiceRequest,
+    String? errorMessage,
+  }) {
+    return CsrDetailState(
+      status: status ?? this.status,
+      clientServiceRequest: clientServiceRequest ?? this.clientServiceRequest,
+      errorMessage: errorMessage ?? this.errorMessage,
+    );
+  }
+
+  @override
+  List<Object?> get props => [
+        status,
+        clientServiceRequest,
         errorMessage,
       ];
 }
