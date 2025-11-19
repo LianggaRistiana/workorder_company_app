@@ -1,4 +1,5 @@
 import 'package:workorder_company_app/core/constants/app_enums.dart';
+import 'package:workorder_company_app/core/utils/safe_parse.dart';
 import 'package:workorder_company_app/features/auth/data/model/user_model.dart';
 import 'package:workorder_company_app/features/client_service_request/domain/entitties/client_service_request_entity.dart';
 import 'package:workorder_company_app/features/forms/data/model/filled_form_model.dart';
@@ -39,10 +40,13 @@ class ClientServiceRequestModel extends ClientServiceRequestEntity {
     }).toList();
 
     return ClientServiceRequestModel(
-      id: json['_id'] as String,
+      // id: json['_id'] as String,
+      // companyId: json['companyId'] as String,
+      id : safeParse<String>(json, "_id"),
+      companyId: safeParse<String>(json, "companyId"),
+
       status: ClientServiceRequestStatus.fromString(json['status']),
       createdAt: DateTime.parse(json['createdAt']),
-      companyId: json['companyId'] as String,
       client: UserModel.fromJson(json['client']),
       service: ServiceModel.fromJson(json['service']),
       clientIntakeForms: filledForms,

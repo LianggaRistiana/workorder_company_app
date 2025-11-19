@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import 'package:logger/logger.dart';
 
 class SafeMapper {
   static List<T> mapList<T>(
@@ -27,9 +27,7 @@ class SafeMapper {
     }
 
     if (skipped > 0) {
-      debugPrint(
-        '[SafeMapper] ⚠️ $skipped $T item skipped during parsing.',
-      );
+      Logger().f('$skipped $T item skipped during parsing.');
     }
 
     return result;
