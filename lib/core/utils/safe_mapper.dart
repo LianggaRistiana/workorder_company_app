@@ -8,6 +8,8 @@ class SafeMapper {
 
     final result = <T>[];
     int skipped = 0;
+    List<String> error = [];
+
 
     for (final item in source) {
       if (item is Map<String, dynamic>) {
@@ -18,7 +20,8 @@ class SafeMapper {
           } else {
             skipped++;
           }
-        } catch (_) {
+        } catch (e) {
+          error.add("${e.toString()}\n");
           skipped++;
         }
       } else {
@@ -27,7 +30,7 @@ class SafeMapper {
     }
 
     if (skipped > 0) {
-      Logger().f('$skipped $T item skipped during parsing.');
+      Logger().f('$skipped $T item skipped during parsing.\nError :\n$error');
     }
 
     return result;
