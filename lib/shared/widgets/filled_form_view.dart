@@ -22,7 +22,7 @@ class FilledFormView extends StatelessWidget {
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         _answerWidget(context, field, answer),
-        const SizedBox(height: 16),
+        const SizedBox(height: 18),
       ],
     );
   }
@@ -81,8 +81,9 @@ class FilledFormView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        const SizedBox(height: 4),
         Text(answer),
-        const Divider(height: 2),
+        const Divider(height: 1),
       ],
     );
   }

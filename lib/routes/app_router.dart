@@ -6,6 +6,7 @@ import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/routes/client_router.dart';
 import 'package:workorder_company_app/routes/common_router.dart';
+import 'package:workorder_company_app/routes/manager_router.dart';
 import 'package:workorder_company_app/routes/owner_router.dart';
 
 final authBloc = sl<AuthBloc>();
@@ -23,7 +24,7 @@ final GoRouter appRouter = GoRouter(initialLocation: AppRoutes.home, routes: [
         case UserRole.ownerCompany:
           return AppRoutes.ownerHome;
         case UserRole.managerCompany:
-          return AppRoutes.login;
+          return AppRoutes.managerHome;
         case UserRole.staffCompany:
           return '/staff-company';
         case UserRole.staffUnssigned:
@@ -35,7 +36,8 @@ final GoRouter appRouter = GoRouter(initialLocation: AppRoutes.home, routes: [
   ),
   ...commonRouter,
   ...ownerRouter,
-  ...clientRouter
+  ...clientRouter,
+  ...managerRouter
 ]);
 
 // class StreamRefreshNotifier extends ChangeNotifier {

@@ -28,4 +28,11 @@ class AppRoutes {
   static const clientServiceForms = '/client/service-forms';
   static clientFillServiceForms(String id) => '$clientServiceForms/$id';
   // static const clientCompanyDetail = '/client/company-detail';
+
+
+  // Manager Role
+  static const managerHome = '/manager/home';
+  static const managerProfile = '/manager/profile';
+  static const managerCsr = '/manager/service-request';
+
 }

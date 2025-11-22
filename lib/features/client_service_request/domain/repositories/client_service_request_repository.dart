@@ -7,4 +7,8 @@ abstract class ClientServiceRequestRepository {
       publicGetClientServiceRequests();
   Future<Either<Failure, ClientServiceRequestEntity>>
       publicGetClientServiceRequestById(String id);
+  Future<Either<Failure, List<ClientServiceRequestEntity>>>
+      getClientServiceRequests();
+  Future<Either<Failure, ClientServiceRequestEntity>>
+      getClientServiceRequestById(String id);
 }

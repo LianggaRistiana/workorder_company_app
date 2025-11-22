@@ -9,6 +9,10 @@ abstract class ClientServiceRequestRemoteDatasource {
       publicGetClientServiceRequests();
   Future<ApiResponse<ClientServiceRequestModel>>
       publicGetClientServiceRequestById(String id);
+  Future<ApiResponse<List<ClientServiceRequestModel>>>
+      getClientServiceRequests();
+  Future<ApiResponse<ClientServiceRequestModel>> getClientServiceRequestById(
+      String id);
 }
 
 class ClientServiceRequestRemoteDatasourceImpl
@@ -37,5 +41,25 @@ class ClientServiceRequestRemoteDatasourceImpl
         (json) => ClientServiceRequestModel.fromJson(json),
       ),
     );
+  }
+
+  @override
+  Future<ApiResponse<ClientServiceRequestModel>> getClientServiceRequestById(
+      String id) async {
+    final response =
+        await _apiClient.get(Endpoints.clientServiceRequest.byId(id));
+    return ApiResponse.fromJson(
+        response, (json) => ClientServiceRequestModel.fromJson(json));
+  }
+
+  @override
+  Future<ApiResponse<List<ClientServiceRequestModel>>>
+      getClientServiceRequests() async {
+    final response = await _apiClient.get(Endpoints.clientServiceRequest);
+    return ApiResponse.fromJson(
+        response,
+        (data) => SafeMapper.mapList(
+            data as List?, (json) => ClientServiceRequestModel.fromJson(json)));
+    // return ApiResponse.fromJson(json, fromJsonT)
   }
 }

@@ -32,4 +32,24 @@ class ClientServiceRequestRepositoryImpl
       return payload.data ?? [];
     });
   }
+
+  @override
+  Future<Either<Failure, ClientServiceRequestEntity>>
+      getClientServiceRequestById(String id) {
+    return safeCall(() async {
+      final payload = await _clientServiceRequestRemoteDatasource
+          .getClientServiceRequestById(id);
+      return payload.data!;
+    });
+  }
+
+  @override
+  Future<Either<Failure, List<ClientServiceRequestEntity>>>
+      getClientServiceRequests() {
+    return safeCall(() async {
+      final payload = await _clientServiceRequestRemoteDatasource
+          .getClientServiceRequests();
+      return payload.data ?? [];
+    });
+  }
 }
