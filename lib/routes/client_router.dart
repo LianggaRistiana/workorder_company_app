@@ -60,7 +60,7 @@ final clientRouter = [
       final id = state.pathParameters['id']!;
       return BlocProvider(
         create: (_) => sl<CsrDetailCubit>()..getCsrDetail(id),
-        child: CsrDetailPage(csrId: id),
+        child: PublicCsrDetailPage(csrId: id),
       );
     },
   )

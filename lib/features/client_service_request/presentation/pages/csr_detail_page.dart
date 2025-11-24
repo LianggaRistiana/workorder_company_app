@@ -1,31 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/features/client_service_request/domain/entitties/client_service_request_entity.dart';
-import 'package:workorder_company_app/features/client_service_request/presentation/bloc/public_client_service_request/csr_bloc.dart';
-import 'package:workorder_company_app/features/client_service_request/presentation/bloc/public_client_service_request/csr_detail_cubit.dart';
+import 'package:workorder_company_app/features/client_service_request/presentation/bloc/internal_client_service_request/internal_csr_bloc.dart';
+import 'package:workorder_company_app/features/client_service_request/presentation/bloc/internal_client_service_request/internal_csr_detail_cubit.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/filled_form_view.dart';
 
-class PublicCsrDetailPage extends StatefulWidget {
+class CsrDetailPage extends StatefulWidget {
   final String csrId;
-  const PublicCsrDetailPage({super.key, required this.csrId});
+  const CsrDetailPage({required this.csrId, super.key});
 
   @override
-  State<PublicCsrDetailPage> createState() => _CsrDetailPageState();
+  State<CsrDetailPage> createState() => _CsrDetailPageState();
 }
 
-class _CsrDetailPageState extends State<PublicCsrDetailPage> {
+class _CsrDetailPageState extends State<CsrDetailPage> {
   @override
   void initState() {
     super.initState();
-    context.read<CsrDetailCubit>().getCsrDetail(widget.csrId);
+    context.read<InternalCsrDetailCubit>().getCsrDetail(widget.csrId);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("CSR Detail")),
-      body: BlocBuilder<CsrDetailCubit, CsrDetailState>(
+      body: BlocBuilder<InternalCsrDetailCubit, InternalCsrDetailState>(
         builder: (context, state) {
           if (state.status == CsrStateStatus.loading) {
             return const Center(child: CircularProgressIndicator());
@@ -40,7 +40,9 @@ class _CsrDetailPageState extends State<PublicCsrDetailPage> {
                   const SizedBox(height: 12),
                   ElevatedButton(
                     onPressed: () {
-                      context.read<CsrDetailCubit>().getCsrDetail(widget.csrId);
+                      context
+                          .read<InternalCsrDetailCubit>()
+                          .getCsrDetail(widget.csrId);
                     },
                     child: const Text("Retry"),
                   ),

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
+import 'package:workorder_company_app/core/network/endpoints.dart';
 import 'package:workorder_company_app/features/client_service_request/domain/entitties/client_service_request_entity.dart';
 import 'package:workorder_company_app/features/client_service_request/presentation/bloc/internal_client_service_request/internal_csr_bloc.dart';
+import 'package:workorder_company_app/routes/app_routes.dart';
 
 class CsrPage extends StatefulWidget {
   const CsrPage({super.key});
@@ -125,7 +128,7 @@ class _CsrCard extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(12),
       onTap: () {
-        // context.push(AppRoutes.clientServiceRequestDetail(csr.id));
+        context.push(AppRoutes.managerCsr.byId(csr.id));
       },
       child: Card(
         elevation: 2,
