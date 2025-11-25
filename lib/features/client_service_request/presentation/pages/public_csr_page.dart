@@ -103,8 +103,6 @@ class _CsrCard extends StatelessWidget {
     switch (status) {
       case ClientServiceRequestStatus.received:
         return Colors.grey;
-      case ClientServiceRequestStatus.underReview:
-        return Colors.blueGrey;
       case ClientServiceRequestStatus.approved:
         return Colors.blue;
       case ClientServiceRequestStatus.workOrderCreated:

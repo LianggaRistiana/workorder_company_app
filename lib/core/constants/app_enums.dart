@@ -248,7 +248,6 @@ enum ClientServiceRequestStatus {
   received,
   cancelled,
   rejected,
-  underReview,
   approved,
   workOrderCreated,
   completed;
@@ -261,8 +260,6 @@ enum ClientServiceRequestStatus {
         return ClientServiceRequestStatus.cancelled;
       case 'rejected':
         return ClientServiceRequestStatus.rejected;
-      case 'under_review':
-        return ClientServiceRequestStatus.underReview;
       case 'approved':
         return ClientServiceRequestStatus.approved;
       case 'work_order_created':
@@ -290,8 +287,6 @@ enum ClientServiceRequestStatus {
         return 'Cancelled';
       case ClientServiceRequestStatus.rejected:
         return 'Rejected';
-      case ClientServiceRequestStatus.underReview:
-        return 'Under Review';
       case ClientServiceRequestStatus.approved:
         return 'Approved';
       case ClientServiceRequestStatus.workOrderCreated:
