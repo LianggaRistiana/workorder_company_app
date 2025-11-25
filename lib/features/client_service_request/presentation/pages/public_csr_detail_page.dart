@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:workorder_company_app/features/client_service_request/domain/entitties/client_service_request_entity.dart';
 import 'package:workorder_company_app/features/client_service_request/presentation/bloc/public_client_service_request/csr_bloc.dart';
 import 'package:workorder_company_app/features/client_service_request/presentation/bloc/public_client_service_request/csr_detail_cubit.dart';
+import 'package:workorder_company_app/features/client_service_request/presentation/widgets/csr_status_step.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/filled_form_view.dart';
 
@@ -24,7 +26,7 @@ class _CsrDetailPageState extends State<PublicCsrDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("CSR Detail")),
+      appBar: AppBar(title: const Text("Pengajuan Layanan")),
       body: BlocBuilder<CsrDetailCubit, CsrDetailState>(
         builder: (context, state) {
           if (state.status == CsrStateStatus.loading) {
@@ -76,14 +78,25 @@ class _CsrDetailPageState extends State<PublicCsrDetailPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          csr.service.title,
-          style: Theme.of(context).textTheme.headlineSmall,
+        Row(
+          children: [
+            Text(
+              csr.service.title,
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontSize: 24,
+                  ),
+            ),
+            const Spacer(),
+            Text(
+              DateFormat('d MMM yyyy', 'id_ID').format(csr.createdAt),
+              textAlign: TextAlign.end,
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ],
         ),
         const SizedBox(height: 4),
-        Text("Client: ${csr.client.name}"),
+        CsrStatusStep(status: csr.status),
         const SizedBox(height: 12),
-        Chip(label: Text(csr.status.name.toUpperCase())),
       ],
     );
   }

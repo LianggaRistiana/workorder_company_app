@@ -282,17 +282,17 @@ enum ClientServiceRequestStatus {
   String get displayName {
     switch (this) {
       case ClientServiceRequestStatus.received:
-        return 'Received';
+        return 'Diterima';
       case ClientServiceRequestStatus.cancelled:
-        return 'Cancelled';
+        return 'Dibatalkan';
       case ClientServiceRequestStatus.rejected:
-        return 'Rejected';
+        return 'Ditolak';
       case ClientServiceRequestStatus.approved:
-        return 'Approved';
+        return 'Disetujui';
       case ClientServiceRequestStatus.workOrderCreated:
-        return 'Work Order Created';
+        return 'Diproses';
       case ClientServiceRequestStatus.completed:
-        return 'Completed';
+        return 'Selesai';
     }
   }
 
