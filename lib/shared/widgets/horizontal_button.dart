@@ -8,16 +8,17 @@ class HorizontalButton extends StatelessWidget {
   final VoidCallback? onTap;
   final EdgeInsetsGeometry padding;
   final EdgeInsetsGeometry? margin;
+  final bool isDanger;
 
-  const HorizontalButton({
-    super.key,
-    this.leadingIcon = Icons.settings, // default icon
-    required this.title,
-    this.description,
-    this.onTap,
-    this.padding = const EdgeInsets.all(8),
-    this.margin,
-  });
+  const HorizontalButton(
+      {super.key,
+      this.leadingIcon = Icons.settings, // default icon
+      required this.title,
+      this.description,
+      this.onTap,
+      this.padding = const EdgeInsets.all(8),
+      this.margin,
+      this.isDanger = false});
 
   @override
   Widget build(BuildContext context) {
@@ -25,19 +26,28 @@ class HorizontalButton extends StatelessWidget {
 
     return CustomCard(
         padding: const EdgeInsets.all(0),
+        borderColor: isDanger ? Theme.of(context).colorScheme.error : null,
         margin: margin,
         child: InkWell(
             borderRadius: BorderRadius.circular(12),
             onTap: onTap,
-            child: Padding(
+            child: Container(
               padding: padding,
+              decoration: BoxDecoration(
+                color: isDanger
+                    ? Theme.of(context).colorScheme.error.withAlpha(20)
+                    : null,
+                borderRadius: BorderRadius.circular(12),
+              ),
               child: Row(
                 children: [
                   // leading icon
                   Icon(
                     leadingIcon,
                     size: 28,
-                    color: Theme.of(context).colorScheme.primary,
+                    color: isDanger
+                        ? Theme.of(context).colorScheme.error
+                        : Theme.of(context).colorScheme.primary,
                   ),
                   const SizedBox(width: 12),
 
@@ -48,14 +58,33 @@ class HorizontalButton extends StatelessWidget {
                       children: [
                         Text(
                           title,
-                          style: Theme.of(context).textTheme.titleMedium,
+                          style: isDanger
+                              ? Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(
+                                      color:
+                                          Theme.of(context).colorScheme.error)
+                              : Theme.of(context).textTheme.titleMedium,
                         ),
                         if (hasDescription) ...[
                           const SizedBox(height: 4),
                           Text(
                             description!,
-                            style:
-                                Theme.of(context).textTheme.bodySmall?.copyWith(
+                            style: isDanger
+                                ? Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .error
+                                          .withAlpha(98),
+                                    )
+                                : Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(
                                       color: Colors.grey[600],
                                     ),
                           ),
@@ -64,7 +93,12 @@ class HorizontalButton extends StatelessWidget {
                     ),
                   ),
 
-                  const Icon(Icons.chevron_right, size: 24),
+                  Icon(
+                    Icons.chevron_right,
+                    size: 24,
+                    color:
+                        isDanger ? Theme.of(context).colorScheme.error : null,
+                  ),
                 ],
               ),
             )));

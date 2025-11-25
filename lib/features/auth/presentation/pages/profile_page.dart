@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:workorder_company_app/shared/widgets/custom_card.dart';
+import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -25,111 +27,112 @@ class ProfilePage extends StatelessWidget {
               child: Column(
                 children: [
                   // Avatar dan Info Pengguna
-                  Card(
-                    elevation: 3,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 24,
-                        horizontal: 16,
-                      ),
-                      child: Column(
-                        children: [
-                          CircleAvatar(
-                            radius: 45,
+                  CustomCard(
+                    padding: const EdgeInsets.all(16),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        // ----------------------
+                        // Avatar with shadow
+                        // ----------------------
+                        Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withAlpha(8),
+                                blurRadius: 10,
+                                offset: const Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          child: CircleAvatar(
+                            radius: 35,
                             backgroundColor: colorScheme.primaryContainer,
                             child: Text(
                               user.name.isNotEmpty
                                   ? user.name[0].toUpperCase()
-                                  : '?',
+                                  : "?",
                               style: TextStyle(
-                                fontSize: 32,
+                                fontSize: 26,
                                 fontWeight: FontWeight.bold,
                                 color: colorScheme.onPrimaryContainer,
                               ),
                             ),
                           ),
-                          const SizedBox(height: 16),
-                          Text(
-                            user.name,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleLarge
-                                ?.copyWith(fontWeight: FontWeight.bold),
+                        ),
+
+                        const SizedBox(width: 16),
+
+                        // ----------------------
+                        // Info (Name, email, role)
+                        // ----------------------
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                user.name,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.w700,
+                                      color: colorScheme.onSurface,
+                                    ),
+                              ),
+
+                              const SizedBox(height: 4),
+
+                              Text(
+                                user.email,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
+                                      color: colorScheme.onSurfaceVariant,
+                                    ),
+                              ),
+
+                              const SizedBox(height: 8),
+
+                              // Custom Chip
+                              // TODO : add positions using |
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 12, vertical: 5),
+                                decoration: BoxDecoration(
+                                  color: colorScheme.primary.withAlpha(15),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Text(
+                                  user.role.toReadableString(),
+                                  style: TextStyle(
+                                    color: colorScheme.primary,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                          const SizedBox(height: 4),
-                          Text(
-                            user.email,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(color: Colors.grey[600]),
-                          ),
-                          const SizedBox(height: 8),
-                          Chip(
-                            label: Text(
-                              user.role.toReadableString(),
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            backgroundColor: colorScheme.primary,
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-
+                  // TODO : add company info card later
+                  const SizedBox(height: 24),
+                  Divider(),
                   const SizedBox(height: 24),
 
-                  // Menu Section
-                  // Card(
-                  //   shape: RoundedRectangleBorder(
-                  //     borderRadius: BorderRadius.circular(16),
-                  //   ),
-                  //   child: Column(
-                  //     children: [
-                  //       ListTile(
-                  //         leading: const Icon(Icons.edit),
-                  //         title: const Text("Edit Profile"),
-                  //         trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-                  //         onTap: () {
-                  //           context.go('/owner/edit-profile');
-                  //         },
-                  //       ),
-                  //       const Divider(height: 0),
-                  //       ListTile(
-                  //         leading: const Icon(Icons.lock),
-                  //         title: const Text("Change Password"),
-                  //         trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-                  //         onTap: () {
-                  //           context.go('/owner/change-password');
-                  //         },
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-
-                  const SizedBox(height: 24),
-
-                  // Tombol Logout
-                  SizedBox(
-                    width: double.infinity,
-                    child: FilledButton.icon(
-                      icon: const Icon(Icons.logout),
-                      label: const Text("Logout"),
-                      style: FilledButton.styleFrom(
-                        backgroundColor: colorScheme.errorContainer,
-                        foregroundColor: colorScheme.onErrorContainer,
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      onPressed: () {
-                        context.read<AuthBloc>().add(LogoutRequested());
-                      },
-                    ),
+                  HorizontalButton(
+                    margin: const EdgeInsets.all(0),
+                    title: "Keluar",
+                    description: "Anda dapat masuk kembali kapan saja",
+                    leadingIcon: Icons.logout,
+                    isDanger: true,
+                    onTap: () {
+                      context.read<AuthBloc>().add(LogoutRequested());
+                    },
                   ),
                 ],
               ),
