@@ -14,17 +14,19 @@ class FilledFormView extends StatelessWidget {
   // FIELD WRAPPER
   // -------------------------------------------------------------
   Widget _filledField(BuildContext context, FieldEntity field, dynamic answer) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          field.label,
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-        _answerWidget(context, field, answer),
-        const SizedBox(height: 18),
-      ],
-    );
+    return CustomCard(
+        margin: const EdgeInsets.only(top: 4, bottom: 4),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              field.label,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            _answerWidget(context, field, answer),
+            // const SizedBox(height: 18),
+          ],
+        ));
   }
 
   // -------------------------------------------------------------
@@ -136,45 +138,99 @@ class FilledFormView extends StatelessWidget {
   // -------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
-    return CustomCard(
-      borderColor: Colors.black.withAlpha(50),
-      padding: const EdgeInsets.all(0),
-      margin: const EdgeInsets.only(bottom: 16, top: 4),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(12),
-                topRight: Radius.circular(12),
-              ),
-            ),
-            child: Text('${filledForm.order}. ${filledForm.form.title}',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: Colors.white,
-                    )),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ...filledForm.form.fields!.map(
-                  (field) => _filledField(
-                    context,
-                    field,
-                    _findAnswer(field.order.toString()),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CustomCard(
+            padding: const EdgeInsets.all(0),
+            margin: const EdgeInsets.only(bottom: 0, top: 16),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(12),
+                    topRight: Radius.circular(12),
                   ),
                 ),
-              ],
-            ),
-          )
-        ],
-      ),
+                child: const SizedBox(
+                  height: 0.1,
+                ),
+              ),
+              Container(
+                  padding: const EdgeInsets.all(8),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(12),
+                      topRight: Radius.circular(12),
+                    ),
+                  ),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('${filledForm.order}. ${filledForm.form.title}',
+                            style: Theme.of(context).textTheme.titleMedium),
+                        const SizedBox(height: 2),
+                        Text(filledForm.form.description,
+                            style: Theme.of(context).textTheme.bodyMedium),
+                      ])),
+            ])),
+        ...filledForm.form.fields!.map(
+          (field) => _filledField(
+            context,
+            field,
+            _findAnswer(field.order.toString()),
+          ),
+        ),
+      ],
     );
   }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   return CustomCard(
+  //     borderColor: Colors.black.withAlpha(50),
+  //     padding: const EdgeInsets.all(0),
+  //     margin: const EdgeInsets.only(bottom: 16, top: 4),
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: [
+  //         Container(
+  //           padding: const EdgeInsets.all(8),
+  //           width: double.infinity,
+  //           decoration: BoxDecoration(
+  //             color: Theme.of(context).primaryColor,
+  //             borderRadius: BorderRadius.only(
+  //               topLeft: Radius.circular(12),
+  //               topRight: Radius.circular(12),
+  //             ),
+  //           ),
+  //           child: Text('${filledForm.order}. ${filledForm.form.title}',
+  //               style: Theme.of(context).textTheme.titleMedium?.copyWith(
+  //                     color: Colors.white,
+  //                   )),
+  //         ),
+  //         Padding(
+  //           padding: const EdgeInsets.all(16),
+  //           child: Column(
+  //             crossAxisAlignment: CrossAxisAlignment.start,
+  //             children: [
+  //               ...filledForm.form.fields!.map(
+  //                 (field) => _filledField(
+  //                   context,
+  //                   field,
+  //                   _findAnswer(field.order.toString()),
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         )
+  //       ],
+  //     ),
+  //   );
+  // }
 }
