@@ -9,6 +9,8 @@ import 'package:workorder_company_app/features/auth/presentation/bloc/auth_bloc.
 import 'package:workorder_company_app/features/employees/presentation/bloc/employees_bloc.dart';
 import 'package:workorder_company_app/routes/app_router.dart';
 import 'package:workorder_company_app/core/di/injection.dart' as di;
+import 'package:intl/date_symbol_data_local.dart';
+
 
 // void main() async {
 //   WidgetsFlutterBinding.ensureInitialized();
@@ -30,6 +32,8 @@ void main() {
 
     // Inisialisasi dependency injection
     await di.init();
+
+    await initializeDateFormatting('id_ID', null);
 
     // Kurang bestpractice tapi cara tercepat
     final authRepo = di.sl<AuthRepository>();

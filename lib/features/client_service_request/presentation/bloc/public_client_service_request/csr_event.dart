@@ -4,4 +4,4 @@ sealed class CsrEvent {}
 
 class GetClientServiceRequestsRequested extends CsrEvent {}
 
-class GetClientServiceRequestDetailRequested extends CsrEvent {}
+// class GetClientServiceRequestDetailRequested extends CsrEvent {}

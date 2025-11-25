@@ -9,6 +9,7 @@ import 'package:workorder_company_app/features/forms/forms_injections.dart';
 import 'package:workorder_company_app/features/positions/positions_injections.dart';
 import 'package:workorder_company_app/features/services/services_injection.dart';
 import 'package:workorder_company_app/features/submissions/submissions_injection.dart';
+import 'package:workorder_company_app/features/workorder/workorder_injection.dart';
 
 final sl = GetIt.instance;
 
@@ -26,4 +27,5 @@ Future<void> init() async {
   await initCompanyFeature();
   await initSubmissionsFeature();
   await initClientServiceRequestFeature();
+  await initWorkorderFeature();
 }

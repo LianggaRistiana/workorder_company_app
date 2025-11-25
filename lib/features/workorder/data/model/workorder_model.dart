@@ -1,0 +1,71 @@
+import 'package:workorder_company_app/core/constants/app_enums.dart';
+import 'package:workorder_company_app/core/utils/safe_parse.dart';
+import 'package:workorder_company_app/features/auth/data/model/user_model.dart';
+import 'package:workorder_company_app/features/forms/data/model/filled_form_model.dart';
+import 'package:workorder_company_app/features/forms/data/model/ordered_form_model.dart';
+import 'package:workorder_company_app/features/services/data/models/service_model.dart';
+import 'package:workorder_company_app/features/submissions/data/model/submissions_model.dart';
+import 'package:workorder_company_app/features/workorder/domain/entitties/workorder__entity.dart';
+
+class WorkorderModel extends WorkorderEntity {
+  WorkorderModel({
+    required super.id,
+    required super.companyId,
+    required super.clientServiceRequestId,
+    required super.createdAt,
+    required super.service,
+    required super.status,
+    super.relatedWorkOrderId,
+    super.assignedStaffs,
+    super.startedAt,
+    super.completedAt,
+    super.workorderForms,
+    required super.createdBy,
+  });
+
+  factory WorkorderModel.fromJson(Map<String, dynamic> json) {
+    final orderedForms = safeParse<List<dynamic>?>(json, "workOrderForms",
+            requiredField: false)
+        ?.map((form) => OrderedFormModel.fromJson(form))
+        .toList();
+
+    final submissions = safeParse<List<dynamic>?>(json, "submissions",
+            requiredField: false)
+        ?.map((sub) => SubmissionsModel.fromJson(sub))
+        .toList();
+
+    final filledForms = orderedForms?.map((form) {
+      final matchedSubmission =
+          submissions?.where((sub) => sub.formId == form.form.id).firstOrNull;
+
+      return FilledFormModel(
+        order: form.order,
+        form: form.form,
+        submission: matchedSubmission,
+      );
+    }).toList();
+
+    return WorkorderModel(
+        id: safeParse<String>(json, "_id"),
+        companyId: safeParse<String>(json, "companyId"),
+        clientServiceRequestId:
+            safeParse<String>(json, "clientServiceRequestId"),
+        createdAt: DateTime.parse(safeParse<String>(json, "createdAt")),
+        service: ServiceModel.fromJson(json['service']),
+        status: WorkOrderStatus.fromString(json['status']),
+        createdBy: UserModel.fromJson(json['createdBy']),
+        assignedStaffs: safeParse<List<dynamic>?>(json, "assignedStaffs",
+                    requiredField: false)
+                ?.map((e) => UserModel.fromJson(e))
+                .toList() ??
+            [],
+        relatedWorkOrderId: safeParse<String?>(json, "relatedWorkOrderId",
+            requiredField: false),
+        startedAt:
+            safeParse<DateTime?>(json, "startedAt", requiredField: false),
+        completedAt:
+            safeParse<DateTime?>(json, "completedAt", requiredField: false),
+        workorderForms: filledForms
+        );
+  }
+}

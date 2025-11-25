@@ -34,5 +34,6 @@ class AppRoutes {
   static const managerHome = '/manager/home';
   static const managerProfile = '/manager/profile';
   static const managerCsr = '/manager/service-request';
+  static const managerWorkorder = '/manager/workorder';
 
 }

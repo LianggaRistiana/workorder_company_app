@@ -25,21 +25,24 @@ class Endpoints {
   // Service
   static const String services = "/services";
 
-  // Client Service Request 
+  // Client Service Request
   static const String clientServiceRequest = "/client-service-request";
+
+  // Workorder
+  static const String workorder = "/workorders";
 
   // Public Endpoint
   static const String publicCompanies = '$clientPrefix/companies';
   static const String publicServices = '$clientPrefix/services';
-  static const String publicClientServiceRequest = '$clientPrefix/client-service-request';
+  static const String publicClientServiceRequest =
+      '$clientPrefix/client-service-request';
   static publicCompanyServices(String id) =>
       '${publicCompanies.byId(id)}/services';
   static publicIntakeForms(String id) =>
       '${publicServices.byId(id)}/intake-forms';
-  
+
   // static publicClientServiceRequests(String id) =>
   //     '${publicClientServiceRequest.byId(id)}/intake-forms';
-  
 }
 
 extension EndpointIdExtension on String {

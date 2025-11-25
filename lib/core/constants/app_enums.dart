@@ -305,7 +305,45 @@ enum ClientServiceRequestStatus {
   String toString() => displayName;
 }
 
-enum WorkOrderStatus { drafted, ready, inProgress, completed, cancelled }
+enum WorkOrderStatus {
+  drafted,
+  ready,
+  inProgress,
+  completed,
+  cancelled;
+
+  static WorkOrderStatus fromString(String value) {
+    switch (value) {
+      case 'drafted':
+        return WorkOrderStatus.drafted;
+      case 'ready':
+        return WorkOrderStatus.ready;
+      case 'in_progress':
+        return WorkOrderStatus.inProgress;
+      case 'completed':
+        return WorkOrderStatus.completed;
+      case 'cancelled':
+        return WorkOrderStatus.cancelled;
+      default:
+        throw ParsingException('Unknown WorkOrderStatus: $value');
+    }
+  }
+
+  String get displayName {
+    switch (this) {
+      case WorkOrderStatus.drafted:
+        return 'Draft';
+      case WorkOrderStatus.ready:
+        return 'Siap';
+      case WorkOrderStatus.inProgress:
+        return 'Diproses';
+      case WorkOrderStatus.completed:
+        return 'Selesai';
+      case WorkOrderStatus.cancelled:
+        return 'Dibatalkan';
+    }
+  }
+}
 
 enum WorkReportStatus { inProgress, completed, cancelled }
 

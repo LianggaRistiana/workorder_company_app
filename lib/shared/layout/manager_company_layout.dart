@@ -17,7 +17,7 @@ class _ManagerCompanyState extends State<ManagerCompanyLayout> {
   final List<NavItem> _navItems = const [
     NavItem('Home', Icons.home_rounded, AppRoutes.managerHome),
     NavItem('Permintaan', Icons.inbox_rounded, AppRoutes.managerCsr),
-    NavItem('Work order', Icons.assignment_rounded, AppRoutes.managerHome),
+    NavItem('Work order', Icons.assignment_rounded, AppRoutes.managerWorkorder),
     NavItem('Profile', Icons.account_circle_rounded, AppRoutes.managerProfile),
   ];
 
