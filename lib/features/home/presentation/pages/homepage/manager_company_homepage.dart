@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-
+import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/widgets/menu_item.dart';
 
 class ManagerCompanyHomepage extends StatelessWidget {
   const ManagerCompanyHomepage({super.key});
 
-@override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -55,19 +57,25 @@ class ManagerCompanyHomepage extends StatelessWidget {
             GridView.count(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              crossAxisCount: 3,
+              crossAxisCount: 4,
               mainAxisSpacing: 12,
               crossAxisSpacing: 12,
-              childAspectRatio: 1,
+              childAspectRatio: 0.75,
               children: [
-                _buildMenuItem(Icons.assignment, "Dummy", () {}),
-                // _buildMenuItem(Icons.assignment, "Pengajuan Layanan Saya",
-                    // () => context.push(AppRoutes.clientServiceRequest)),
-                _buildMenuItem(Icons.receipt_long, "Dummy", () {}),
-                _buildMenuItem(Icons.chat, "Dummy", () {}),
-                _buildMenuItem(Icons.settings, "Dummy", () {}),
-                _buildMenuItem(Icons.notifications, "Dummy", () {}),
-                _buildMenuItem(Icons.help_outline, "Dummy", () {}),
+                MenuItem(
+                    icon: Icons.inbox_outlined,
+                    label: "Pengajuan Layanan",
+                    onTap: () {
+                      context.go(AppRoutes.managerCsr);
+                    }),
+                MenuItem(
+                    icon: Icons.assignment_outlined,
+                    label: "Workorder",
+                    onTap: () {
+                      context.go(AppRoutes.managerWorkorder);
+                    }),
+                MenuItem(icon: Icons.people_alt_outlined, label: "Pegawai", onTap: () {}),
+                MenuItem(icon: Icons.badge_outlined, label: "Posisi Pegawai", onTap: () {}),
               ],
             ),
           ],
@@ -75,30 +83,4 @@ class ManagerCompanyHomepage extends StatelessWidget {
       ),
     );
   }
-
-  Widget _buildMenuItem(IconData icon, String label, VoidCallback onTap) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.grey.shade300)),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, size: 28, color: Colors.blue),
-            const SizedBox(height: 8),
-            Text(
-              label,
-              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }
-

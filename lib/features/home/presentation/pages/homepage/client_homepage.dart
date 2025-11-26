@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/widgets/menu_item.dart';
 
 class ClientHomepage extends StatelessWidget {
   const ClientHomepage({super.key});
@@ -56,44 +57,15 @@ class ClientHomepage extends StatelessWidget {
             GridView.count(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              crossAxisCount: 3,
+              crossAxisCount: 4,
               mainAxisSpacing: 12,
               crossAxisSpacing: 12,
-              childAspectRatio: 1,
+              childAspectRatio: 0.75,
               children: [
-                _buildMenuItem(Icons.assignment, "Pengajuan Layanan Saya",
-                    () => context.push(AppRoutes.clientServiceRequest)),
-                _buildMenuItem(Icons.receipt_long, "Invoices", () {}),
-                _buildMenuItem(Icons.chat, "Chat", () {}),
-                _buildMenuItem(Icons.settings, "Settings", () {}),
-                _buildMenuItem(Icons.notifications, "Notifications", () {}),
-                _buildMenuItem(Icons.help_outline, "Help", () {}),
+                    MenuItem(icon: Icons.assignment_outlined, label:  "Pengajuan Layanan Saya", onTap: () => context.push(AppRoutes.clientServiceRequest)),
+                    MenuItem(icon: Icons.home_work_outlined, label: "Perusahaan langganan",onTap:  () {}),
+                    MenuItem(icon: Icons.help_outline_outlined, label: "Bantuan",onTap:  () {}),
               ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildMenuItem(IconData icon, String label, VoidCallback onTap) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.grey.shade300)),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, size: 28, color: Colors.blue),
-            const SizedBox(height: 8),
-            Text(
-              label,
-              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
-              textAlign: TextAlign.center,
             ),
           ],
         ),
