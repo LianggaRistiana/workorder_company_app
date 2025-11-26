@@ -5,6 +5,7 @@ import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/services_bloc.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
 import 'package:workorder_company_app/features/services/presentation/pages/services/services_skeleton.dart';
+import 'package:workorder_company_app/features/services/presentation/widgets/service_access_chip.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
@@ -43,7 +44,7 @@ class _ServicesPageState extends State<ServicesPage> {
             _servicesBloc, // <-- ini yang bikin BlocBuilder bisa menemukan bloc-nya
         child: Scaffold(
             appBar: AppBar(
-              title: const Text('Services'),
+              title: const Text('Layanan'),
             ),
             floatingActionButton: FloatingActionButton.extended(
               onPressed: () async {
@@ -130,9 +131,24 @@ class _ServicesPageState extends State<ServicesPage> {
 
   Widget _buildServiceCard(ServiceEntity service) {
     return CustomCard(
-      margin: const EdgeInsets.all(0),
+      margin: const EdgeInsets.all(4),
       padding: const EdgeInsets.all(0),
       child: ListTile(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        leading: Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.primaryContainer.withAlpha(80),
+            borderRadius: BorderRadius.circular(14),
+          ),
+          child: Icon(
+            Icons.build_circle_outlined,
+            size: 28,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+        ),
         contentPadding:
             const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         title: Text(
@@ -146,9 +162,7 @@ class _ServicesPageState extends State<ServicesPage> {
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
         ),
-        trailing: Chip(
-          label: Text(service.accessType.toString()),
-        ),
+        trailing: ServiceAccessChip(access: service.accessType),
         onTap: () {
           context.push(AppRoutes.ownerServiceDetail(service.id));
         },

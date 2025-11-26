@@ -24,7 +24,7 @@ class _PositionsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Positions'),
+        title: const Text('Posisi Pegawai'),
         centerTitle: true,
       ),
       body: BlocBuilder<PositionsBloc, PositionsState>(
@@ -50,22 +50,33 @@ class _PositionsView extends StatelessWidget {
                 ListView.separated(
                   padding: const EdgeInsets.all(16),
                   itemCount: positions.length,
-                  separatorBuilder: (_, __) => const SizedBox(height: 12),
+                  separatorBuilder: (_, __) => const SizedBox(height: 8),
                   itemBuilder: (context, index) {
                     final position = positions[index];
                     return CustomCard(
                       margin: const EdgeInsets.all(0),
                       padding: const EdgeInsets.all(0),
                       child: ListTile(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                         contentPadding: const EdgeInsets.symmetric(
                           horizontal: 16,
                           vertical: 12,
                         ),
-                        leading: CircleAvatar(
-                          backgroundColor: Colors.blue.shade50,
-                          child: const Icon(
-                            Icons.work_outline,
-                            color: Colors.blueAccent,
+                        leading: Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .primaryContainer
+                                .withAlpha(80),
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                          child: Icon(
+                            Icons.badge_outlined,
+                            size: 28,
+                            color: Theme.of(context).colorScheme.primary,
                           ),
                         ),
                         title: Text(

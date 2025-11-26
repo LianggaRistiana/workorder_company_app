@@ -40,7 +40,7 @@ class _FormsPageState extends State<FormsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Forms"),
+        title: const Text("Formulir"),
         centerTitle: true,
       ),
       body: BlocListener<FormsBloc, FormsState>(
@@ -119,40 +119,55 @@ class _FormsPageState extends State<FormsPage> {
             margin: const EdgeInsets.all(4),
             padding: const EdgeInsets.all(0),
             child: InkWell(
-              borderRadius: BorderRadius.circular(12),
-              onTap: () {
-                context.push(AppRoutes.ownerFormDetail(form.id));
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            form.title,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleLarge
-                                // ?.copyWith(fontWeight: FontWeight.w600),
-                          ),
+                borderRadius: BorderRadius.circular(12),
+                onTap: () {
+                  context.push(AppRoutes.ownerFormDetail(form.id));
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .primaryContainer
+                              .withAlpha(80),
+                          borderRadius: BorderRadius.circular(14),
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      form.description,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium
-                          // ?.copyWith(color: Colors.grey[700]),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+                        child: Icon(
+                          Icons.assignment_turned_in_outlined,
+                          size: 28,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+
+                      /// BAGIAN PERBAIKAN
+                      Flexible(
+                        fit: FlexFit.loose,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              form.title,
+                              style: Theme.of(context).textTheme.titleLarge,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              form.description,
+                              style: Theme.of(context).textTheme.bodyMedium,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                )),
           ),
         ));
   }
