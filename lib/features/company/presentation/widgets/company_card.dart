@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:workorder_company_app/features/company/domain/entities/company_entity.dart';
+import 'package:workorder_company_app/shared/widgets/active_status_chip.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 
 class CompanyCard extends StatelessWidget {
@@ -61,25 +62,7 @@ class CompanyCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 12),
-
-                  // Status aktif
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: Chip(
-                      label: Text(
-                        company.isActive ? "Active" : "Inactive",
-                        style: TextStyle(
-                          color: company.isActive
-                              ? Colors.green[800]
-                              : Colors.red[800],
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      backgroundColor: company.isActive
-                          ? Colors.green[100]
-                          : Colors.red[100],
-                    ),
-                  ),
+                  ActiveStatusChip(isActive: company.isActive, label: "Perusahaan",)
                 ],
               ))),
     );
