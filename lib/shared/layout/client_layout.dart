@@ -18,9 +18,8 @@ class _ClientLayoutState extends State<ClientLayout> {
   int _currentIndex = 0;
 
   final List<NavItem> _navItems = const [
-    NavItem('Home', Icons.home_rounded, AppRoutes.clientHome),
-    NavItem('Company', Icons.home_work_rounded, AppRoutes.clientCompanyPortal),
-    NavItem('Profile', Icons.account_circle_rounded, AppRoutes.clientProfile),
+    NavItem('Utama', Icons.home_rounded, AppRoutes.clientHome),
+    NavItem('Daftar Perusahaan', Icons.home_work_rounded, AppRoutes.clientCompanyPortal),
   ];
 
   void _onItemTapped(int index) {
