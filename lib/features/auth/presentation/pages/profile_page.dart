@@ -120,10 +120,21 @@ class ProfilePage extends StatelessWidget {
                     ),
                   ),
                   // TODO : add company info card later
-                  const SizedBox(height: 24),
-                  Divider(),
-                  const SizedBox(height: 24),
 
+                  Divider(),
+                  HorizontalButton(
+                    title: "Coba versi website",
+                    leadingIcon: Icons.public,
+                    description:
+                        "Versi website disarankan untuk penggunaan desktop",
+                    onTap: () {},
+                  ),
+                  HorizontalButton(
+                    title: "Bantuan",
+                    leadingIcon: Icons.help_outline,
+                    description: "Cari bantuan Anda di sini mengenai cara menggunakan aplikasi",
+                    onTap: () {},
+                  ),
                   HorizontalButton(
                     margin: const EdgeInsets.all(0),
                     title: "Keluar",
