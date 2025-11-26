@@ -144,8 +144,6 @@ class _FormsPageState extends State<FormsPage> {
                         ),
                       ),
                       const SizedBox(width: 12),
-
-                      /// BAGIAN PERBAIKAN
                       Flexible(
                         fit: FlexFit.loose,
                         child: Column(
