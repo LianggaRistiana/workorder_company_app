@@ -8,6 +8,7 @@ class MenuGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridView.count(
       shrinkWrap: true,
+      padding: EdgeInsets.zero,
       physics: const NeverScrollableScrollPhysics(),
       crossAxisCount: 4,
       mainAxisSpacing: 14,

@@ -104,14 +104,6 @@ class OwnerCompanyHomepage extends StatelessWidget {
                                 onTap: () {}),
                           ],
                         ),
-                        const SizedBox(height: 12),
-                        HorizontalButton(
-                          leadingIcon: Icons.build_rounded,
-                          title: "Menu lainnya",
-                          description:
-                              "Pengaturan umum seperti nama, alamat perusahaan dan lain sebagainya",
-                          onTap: () => context.go(AppRoutes.ownerCompany),
-                        ),
                         const SizedBox(height: 24),
                         const SectionTitle("Menu Operasional"),
                         const SizedBox(height: 12),
@@ -136,6 +128,14 @@ class OwnerCompanyHomepage extends StatelessWidget {
                                 label: "Bantuan",
                                 onTap: () {}),
                           ],
+                        ),
+                        const SizedBox(height: 24),
+                        HorizontalButton(
+                          leadingIcon: Icons.build_rounded,
+                          title: "Menu lainnya",
+                          description:
+                              "Pengaturan umum seperti nama, alamat perusahaan dan lain sebagainya",
+                          onTap: () => context.go(AppRoutes.ownerCompany),
                         ),
                       ],
                     ),

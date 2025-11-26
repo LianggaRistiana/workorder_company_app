@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/widgets/active_status_chip.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
+import 'package:workorder_company_app/shared/widgets/menu_grid.dart';
+import 'package:workorder_company_app/shared/widgets/menu_item.dart';
+import 'package:workorder_company_app/shared/widgets/section_title.dart';
 
 class OwnerCompanyPage extends StatelessWidget {
   const OwnerCompanyPage({super.key});
@@ -14,40 +18,9 @@ class OwnerCompanyPage extends StatelessWidget {
     final companyName = "PT Maju Jaya";
     final companyAddress = "Jl. Contoh No.123, Bali";
 
-    // Menu items
-    final menuItems = [
-      {
-        'icon': Icons.badge_rounded,
-        'label': 'Positions',
-        'route': AppRoutes.ownerPositions
-      },
-      {
-        'icon': Icons.home_repair_service_rounded,
-        'label': 'Services',
-        'route': AppRoutes.ownerServices
-      },
-      {
-        'icon': Icons.article_rounded,
-        'label': 'Forms',
-        'route': AppRoutes.ownerForms
-      },
-    ];
-
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Company"),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.edit_note_rounded),
-            tooltip: "Edit Company",
-            onPressed: () {
-              // TODO: Navigate to company edit page
-            },
-          ),
-        ],
-      ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 72),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -59,10 +32,10 @@ class OwnerCompanyPage extends StatelessWidget {
                   CircleAvatar(
                     radius: 32,
                     backgroundColor: theme.colorScheme.primaryContainer,
-                    child: const Icon(
+                    child: Icon(
                       Icons.apartment_rounded,
                       size: 36,
-                      color: Colors.white,
+                      color: theme.colorScheme.primary,
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -83,12 +56,10 @@ class OwnerCompanyPage extends StatelessWidget {
                               ?.copyWith(color: Colors.grey[700]),
                         ),
                         const SizedBox(height: 8),
-                        Chip(
-                          label: const Text('Active',
-                              style: TextStyle(color: Colors.white)),
-                          backgroundColor: Colors.green,
-                          visualDensity: VisualDensity.compact,
-                        ),
+                        ActiveStatusChip(
+                          isActive: true,
+                          label: "Perusahaan",
+                        )
                       ],
                     ),
                   ),
@@ -96,101 +67,86 @@ class OwnerCompanyPage extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 28),
-
-            /// --- Section Title ---
-            Text(
-              "Company Management",
-              style: theme.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: theme.colorScheme.primary,
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            /// --- Menu Grid ---
-            GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: menuItems.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-                childAspectRatio: 1.2,
-              ),
-              itemBuilder: (context, index) {
-                final item = menuItems[index];
-                return _DashboardCard(
-                  icon: item['icon'] as IconData,
-                  label: item['label'] as String,
-                  onTap: () => context.push(item['route'] as String),
-                );
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-/// --- Widget Kartu Menu Individual ---
-class _DashboardCard extends StatefulWidget {
-  final IconData icon;
-  final String label;
-  final VoidCallback onTap;
-
-  const _DashboardCard({
-    required this.icon,
-    required this.label,
-    required this.onTap,
-  });
-
-  @override
-  State<_DashboardCard> createState() => _DashboardCardState();
-}
-
-class _DashboardCardState extends State<_DashboardCard> {
-  bool _isHovered = false;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return InkWell(
-      borderRadius: BorderRadius.circular(16),
-      onTap: widget.onTap,
-      onHover: (hovering) => setState(() => _isHovered = hovering),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          color: _isHovered
-              ? theme.colorScheme.primary.withAlpha(10)
-              : theme.colorScheme.surfaceVariant.withAlpha(60),
-          boxShadow: _isHovered
-              ? [
-                  BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 8,
-                      offset: const Offset(0, 4))
-                ]
-              : [],
-        ),
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(widget.icon, size: 40, color: theme.colorScheme.primary),
+            // /// --- Section Title ---
+            SectionTitle("Menu Konfigurasi Perusahaan"),
             const SizedBox(height: 12),
-            Text(
-              widget.label,
-              style: theme.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w600,
-                color: theme.colorScheme.onSurface,
-              ),
-              textAlign: TextAlign.center,
+            MenuGrid(
+              items: [
+                MenuItem(
+                    icon: Icons.assignment_turned_in_outlined,
+                    label: "Formulir",
+                    onTap: () {
+                      context.push(AppRoutes.ownerForms);
+                    }),
+                MenuItem(
+                    icon: Icons.build_circle_outlined,
+                    label: "Layanan",
+                    onTap: () {
+                      context.push(AppRoutes.ownerServices);
+                    }),
+                MenuItem(
+                    icon: Icons.badge_outlined,
+                    label: "Posisi Pegawai",
+                    onTap: () {
+                      context.push(AppRoutes.ownerPositions);
+                    }),
+                MenuItem(
+                    icon: Icons.info_outline_rounded,
+                    label: "Informasi Perusahaan",
+                    onTap: () {
+                      context.push(AppRoutes.ownerForms);
+                    }),
+                MenuItem(
+                    icon: Icons.card_membership_outlined,
+                    label: "Kode Unik Pelanggan",
+                    onTap: () {}),
+                MenuItem(
+                    icon: Icons.check_circle_outline,
+                    label: "Status aktif perusahaan",
+                    onTap: () {}),
+                MenuItem(
+                    icon: Icons.help_outline_outlined,
+                    label: "Bantuan",
+                    onTap: () {}),
+              ],
+            ),
+
+            const SizedBox(height: 24),
+            const SectionTitle("Menu Operasional"),
+            const SizedBox(height: 12),
+            MenuGrid(
+              items: [
+                MenuItem(
+                    icon: Icons.inbox_outlined,
+                    label: "Pengajuan Layanan",
+                    onTap: () {}),
+                MenuItem(
+                    icon: Icons.assignment_outlined,
+                    label: "Workorder",
+                    onTap: () {}),
+                MenuItem(
+                    icon: Icons.people_outline,
+                    label: "Pegawai",
+                    onTap: () {
+                      context.push(AppRoutes.ownerEmployee);
+                    }),
+                MenuItem(
+                    icon: Icons.person_add_alt_1_outlined,
+                    label: "Riwayat Undangan Pegawai",
+                    onTap: () {
+                      context.push(AppRoutes.ownerEmployee);
+                    }),
+                MenuItem(
+                    icon: Icons.wallet_membership_outlined,
+                    label: "Pelanggan",
+                    onTap: () {
+                      context.push(AppRoutes.ownerEmployee);
+                    }),
+                MenuItem(
+                    icon: Icons.help_outline_outlined,
+                    label: "Bantuan",
+                    onTap: () {}),
+              ],
             ),
           ],
         ),

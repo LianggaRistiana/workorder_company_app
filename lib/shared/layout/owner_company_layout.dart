@@ -14,8 +14,8 @@ class _OwnerCompanyLayoutState extends State<OwnerCompanyLayout> {
   int _currentIndex = 0;
 
   final List<NavItem> _navItems = const [
-    NavItem('Home', Icons.home_rounded, AppRoutes.ownerHome),
-    NavItem('Company', Icons.home_work_rounded, AppRoutes.ownerCompany),
+    NavItem('Utama', Icons.home_rounded, AppRoutes.ownerHome),
+    NavItem('Perusahaan', Icons.home_work_rounded, AppRoutes.ownerCompany),
   ];
 
   void _onItemTapped(int index) {
