@@ -11,7 +11,7 @@ class CsrStatusStep extends StatelessWidget {
   Widget build(BuildContext context) {
     int currentStep = 1;
     Color activeColor = Theme.of(context).colorScheme.primary;
-    Color inActiveColor = Theme.of(context).colorScheme.shadow.withAlpha(50);
+    Color inActiveColor = Theme.of(context).disabledColor;
 
     switch (status) {
       case ClientServiceRequestStatus.received:

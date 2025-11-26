@@ -17,7 +17,7 @@ class AppTheme {
         surfaceContainerLow:
             const Color.fromARGB(255, 255, 255, 255), // dipakai card
         surface: AppColors.lightBackground),
-    // disabledColor: Colors.grey.shade300,
+    disabledColor: Colors.grey.shade300,
     // colorScheme: const ColorScheme.light(
     //   primary: Color(0xFF3F51B5), // warna utama
     //   onPrimary: Colors.white,
