@@ -25,7 +25,20 @@ class _WorkordersPageState extends State<WorkordersPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Workorders'),
+        title: const Text('Tugas Kerja'),
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(50),
+          child: Container(
+            padding: EdgeInsets.only(
+              left: AppSpacing.md,
+              right: AppSpacing.md,
+            ),
+            child: CustomInputField(
+              label: "Cari Tugas Kerja",
+              prefixIcon: const Icon(Icons.search),
+            ),
+          ),
+        ),
       ),
       body: BlocBuilder<WorkorderBloc, WorkorderState>(
         builder: (context, state) {
@@ -76,49 +89,31 @@ class _WorkordersPageState extends State<WorkordersPage> {
               onRefresh: () async {
                 context.read<WorkorderBloc>().add(GetWorkordersRequested());
               },
-              child: Padding(
-                  padding: const EdgeInsets.all(0),
-                  child: Column(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.only(
-                          left: AppSpacing.md,
-                          right: AppSpacing.md,
-                        ),
-                        child: CustomInputField(
-                          label: "Cari Workorder",
-                          prefixIcon: const Icon(Icons.search),
-                        ),
-                      ),
-
-                      // CustomCard(child: Column(
-                      //   children: [
-                      //     CustomInputField(
-                      //       label: "Cari Workorder",
-                      //       prefixIcon: const Icon(Icons.search),
-                      //     ),
-                      //     const SizedBox(height: 12),
-                      //   ]
-                      // )),
-                      HorizontalButton(
-                        margin: const EdgeInsets.all(AppSpacing.md),
-                        title: "Riwayat Workorder",
-                        description:
-                            "Lihat Workorder yang dibatalkan dan telah selesai",
-                        leadingIcon: Icons.history,
-                        onTap: () {},
-                      ),
-                      CustomList(
-                        scrollable: true,
-                        separatorHeight: 0,
-                        items: state.workorders,
-                        itemBuilder: (item, _) => WorkorderItem(
-                          workorder: item,
+              child: SingleChildScrollView(
+                child: Padding(
+                    padding: const EdgeInsets.all(0),
+                    child: Column(
+                      children: [
+                        HorizontalButton(
+                          margin: const EdgeInsets.all(AppSpacing.md),
+                          title: "Riwayat Workorder",
+                          description:
+                              "Lihat Workorder yang dibatalkan dan telah selesai",
+                          leadingIcon: Icons.history,
                           onTap: () {},
                         ),
-                      ),
-                    ],
-                  )));
+                        CustomList(
+                          scrollable: false,
+                          separatorHeight: 0,
+                          items: state.workorders,
+                          itemBuilder: (item, _) => WorkorderItem(
+                            workorder: item,
+                            onTap: () {},
+                          ),
+                        ),
+                      ],
+                    )),
+              ));
         },
       ),
     );

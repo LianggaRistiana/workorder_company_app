@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
-import 'package:workorder_company_app/core/constants/app_enums.dart';
-import 'package:workorder_company_app/features/client_service_request/domain/entitties/client_service_request_entity.dart';
+import 'package:workorder_company_app/core/network/endpoints.dart';
+import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/client_service_request/presentation/bloc/public_client_service_request/csr_bloc.dart';
+import 'package:workorder_company_app/features/client_service_request/presentation/widgets/csr_item.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
+import 'package:workorder_company_app/shared/widgets/custom_list.dart';
+import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
 
 class PublicCsrPage extends StatefulWidget {
   const PublicCsrPage({super.key});
@@ -26,6 +29,19 @@ class _PublicCsrPageState extends State<PublicCsrPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Pengajuan Layanan"),
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(50),
+          child: Container(
+            padding: EdgeInsets.only(
+              left: AppSpacing.md,
+              right: AppSpacing.md,
+            ),
+            child: CustomInputField(
+              label: "Cari Pengajuan",
+              prefixIcon: const Icon(Icons.search),
+            ),
+          ),
+        ),
       ),
       body: BlocBuilder<CsrBloc, CsrState>(
         builder: (context, state) {
@@ -75,98 +91,40 @@ class _PublicCsrPageState extends State<PublicCsrPage> {
 
           // LOADED — WITH PULL TO REFRESH
           return RefreshIndicator(
-            onRefresh: () async {
-              context.read<CsrBloc>().add(GetClientServiceRequestsRequested());
-            },
-            child: ListView.separated(
-              padding: const EdgeInsets.all(16),
-              itemCount: state.clientServiceRequests.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 12),
-              itemBuilder: (context, index) {
-                final csr = state.clientServiceRequests[index];
-                return _CsrCard(csr: csr);
+              onRefresh: () async {
+                context
+                    .read<CsrBloc>()
+                    .add(GetClientServiceRequestsRequested());
               },
-            ),
-          );
+              child: SingleChildScrollView(
+                child: Padding(
+                    padding: const EdgeInsets.all(0),
+                    child: Column(
+                      children: [
+                        HorizontalButton(
+                          margin: const EdgeInsets.all(AppSpacing.md),
+                          title: "Riwayat Pengajuan",
+                          description:
+                              "Lihat Pengajuan yang dibatalkan, ditolak, dan telah selesai",
+                          leadingIcon: Icons.history,
+                          onTap: () {},
+                        ),
+                        CustomList(
+                          scrollable: false,
+                          separatorHeight: 0,
+                          items: state.clientServiceRequests,
+                          itemBuilder: (item, _) => CsrItem(
+                            csr: item,
+                            onTap: () {
+                              context.push(
+                                  AppRoutes.clientServiceRequest.byId(item.id));
+                            },
+                          ),
+                        ),
+                      ],
+                    )),
+              ));
         },
-      ),
-    );
-  }
-}
-
-class _CsrCard extends StatelessWidget {
-  final ClientServiceRequestEntity csr;
-
-  const _CsrCard({required this.csr});
-
-  Color _statusColor(ClientServiceRequestStatus status) {
-    switch (status) {
-      case ClientServiceRequestStatus.received:
-        return Colors.grey;
-      case ClientServiceRequestStatus.approved:
-        return Colors.blue;
-      case ClientServiceRequestStatus.workOrderCreated:
-        return Colors.orange;
-      case ClientServiceRequestStatus.completed:
-        return Colors.green;
-      case ClientServiceRequestStatus.rejected:
-        return Colors.red;
-      case ClientServiceRequestStatus.cancelled:
-        return Colors.redAccent;
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final dateFormatted = DateFormat("dd MMM yyyy").format(csr.createdAt);
-
-    return InkWell(
-      borderRadius: BorderRadius.circular(12),
-      onTap: () {
-        context.push(AppRoutes.clientServiceRequestDetail(csr.id));
-      },
-      child: Card(
-        elevation: 2,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                csr.service.title,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Oleh: ${csr.client.name}"),
-                  Text(dateFormatted),
-                ],
-              ),
-              const SizedBox(height: 12),
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: _statusColor(csr.status).withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  csr.status.displayName,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: _statusColor(csr.status),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }

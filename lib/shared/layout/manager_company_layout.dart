@@ -16,7 +16,7 @@ class _ManagerCompanyState extends State<ManagerCompanyLayout> {
 
   final List<NavItem> _navItems = const [
     NavItem('Utama', Icons.home_rounded, AppRoutes.managerHome),
-    NavItem('Permintaan', Icons.inbox_rounded, AppRoutes.managerCsr),
+    NavItem('Pengajuan Layanan', Icons.inbox_rounded, AppRoutes.managerCsr),
     NavItem('Tugas Kerja', Icons.assignment_rounded, AppRoutes.managerWorkorder),
   ];
 
@@ -50,19 +50,5 @@ class _ManagerCompanyState extends State<ManagerCompanyLayout> {
         onItemTapped: _onItemTapped,
       ),
     );
-    // return MultiBlocProvider(
-    //   providers: [
-    //     BlocProvider(create: (_) => sl<CompanyBloc>()),
-    //     BlocProvider(create: (_) => sl<CsrBloc>()),
-    //   ],
-    //   child: Scaffold(
-    //     body: widget.child,
-    //     bottomNavigationBar: CustomNavigationBar(
-    //       items: _navItems,
-    //       currentIndex: _currentIndex,
-    //       onItemTapped: _onItemTapped,
-    //     ),
-    //   ),
-    // );
   }
 }

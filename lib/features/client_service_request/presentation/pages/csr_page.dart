@@ -29,6 +29,19 @@ class _CsrPageState extends State<CsrPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Pengajuan Layanan"),
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(50),
+          child: Container(
+            padding: EdgeInsets.only(
+              left: AppSpacing.md,
+              right: AppSpacing.md,
+            ),
+            child: CustomInputField(
+              label: "Cari Pengajuan",
+              prefixIcon: const Icon(Icons.search),
+            ),
+          ),
+        ),
       ),
       body: BlocBuilder<InternalCsrBloc, InternalCsrState>(
         builder: (context, state) {
@@ -79,43 +92,37 @@ class _CsrPageState extends State<CsrPage> {
           // LOADED — WITH PULL TO REFRESH
           return RefreshIndicator(
               onRefresh: () async {
-                context.read<InternalCsrBloc>().add(GetClientServiceRequestsRequested());
+                context
+                    .read<InternalCsrBloc>()
+                    .add(GetClientServiceRequestsRequested());
               },
-              child: Padding(
-                  padding: const EdgeInsets.all(0),
-                  child: Column(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.only(
-                          left: AppSpacing.md,
-                          right: AppSpacing.md,
+              child: SingleChildScrollView(
+                child: Padding(
+                    padding: const EdgeInsets.all(0),
+                    child: Column(
+                      children: [
+                        HorizontalButton(
+                          margin: const EdgeInsets.all(AppSpacing.md),
+                          title: "Riwayat Pengajuan",
+                          description:
+                              "Lihat Pengajuan yang dibatalkan, ditolak, dan telah selesai",
+                          leadingIcon: Icons.history,
+                          onTap: () {},
                         ),
-                        child: CustomInputField(
-                          label: "Cari Pengajuan Layanan",
-                          prefixIcon: const Icon(Icons.search),
+                        CustomList(
+                          scrollable: false,
+                          separatorHeight: 0,
+                          items: state.clientServiceRequests,
+                          itemBuilder: (item, _) => CsrItem(
+                            csr: item,
+                            onTap: () {
+                              context.push(AppRoutes.managerCsr.byId(item.id));
+                            },
+                          ),
                         ),
-                      ),
-                      HorizontalButton(
-                        margin: const EdgeInsets.all(AppSpacing.md),
-                        title: "Riwayat Pengajuan",
-                        description:
-                            "Lihat Pengajuan yang dibatalkan, ditolak, dan telah selesai",
-                        leadingIcon: Icons.history,
-                        onTap: () {},
-                      ),
-                      CustomList(
-                        scrollable: true,
-                        separatorHeight: 0,
-                        items: state.clientServiceRequests,
-                        itemBuilder: (item, _) => CsrItem(
-                          csr: item,
-                          onTap: () {
-                            context.push(AppRoutes.managerCsr.byId(item.id));
-                          },
-                        ),
-                      ),
-                    ],
-                  )));
+                      ],
+                    )),
+              ));
         },
       ),
     );
