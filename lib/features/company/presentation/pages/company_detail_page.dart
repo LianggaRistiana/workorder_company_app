@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/company/domain/entities/company_entity.dart';
 import 'package:workorder_company_app/features/company/presentation/bloc/fetch_company/company_bloc.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
+import 'package:workorder_company_app/features/services/presentation/widgets/service_item.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
+import 'package:workorder_company_app/shared/widgets/section_title.dart';
 
 class CompanyDetailPage extends StatefulWidget {
   final String companyId;
@@ -30,7 +34,6 @@ class _CompanyDetailPageState extends State<CompanyDetailPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Company Details"),
       ),
       body: BlocBuilder<CompanyBloc, CompanyState>(
         builder: (context, state) {
@@ -57,9 +60,8 @@ class _CompanyDetailPageState extends State<CompanyDetailPage> {
                       const SizedBox(height: 16),
                       ElevatedButton.icon(
                         onPressed: () {
-                          context
-                              .read<CompanyBloc>()
-                              .add(GetCompanyWithServiceRequested(widget.companyId));
+                          context.read<CompanyBloc>().add(
+                              GetCompanyWithServiceRequested(widget.companyId));
                         },
                         icon: const Icon(Icons.refresh),
                         label: const Text("Retry"),
@@ -73,8 +75,10 @@ class _CompanyDetailPageState extends State<CompanyDetailPage> {
               final companyData = state.selectedCompany;
               final servicesData = state.selectedCompanyServices;
 
-              if (companyData == null ) return EmptyStateWidget(text: "Perusahaan tidak ditemukan");
-              return _buildCompanyContent(context, companyData, servicesData?? []);
+              if (companyData == null)
+                return EmptyStateWidget(text: "Perusahaan tidak ditemukan");
+              return _buildCompanyContent(
+                  context, companyData, servicesData ?? []);
 
             default:
               return const SizedBox.shrink();
@@ -84,42 +88,76 @@ class _CompanyDetailPageState extends State<CompanyDetailPage> {
     );
   }
 
-  Widget _buildCompanyContent(
-      BuildContext context, CompanyEntity companyDetail, List<ServiceEntity> serviceData) {
+  Widget _buildCompanyContent(BuildContext context, CompanyEntity companyDetail,
+      List<ServiceEntity> serviceData) {
     final theme = Theme.of(context);
     final company = companyDetail;
     final services = serviceData;
     // final services = data.services;
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Company name
-          Text(
-            company.name,
-            style: theme.textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 8),
-
-          // Address
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Icon(Icons.location_on_outlined, size: 16, color: Colors.grey),
-              const SizedBox(width: 4),
+              // Icon
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primaryContainer.withAlpha(80),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: Icon(
+                  Icons.home_work_outlined,
+                  size: 28,
+                  color: theme.colorScheme.primary,
+                ),
+              ),
+              const SizedBox(width: 12),
+
+              // Nama & Alamat
               Expanded(
-                child: Text(
-                  company.address,
-                  style: theme.textTheme.bodyMedium
-                      ?.copyWith(color: Colors.grey[700]),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Nama Perusahaan
+                    Text(
+                      company.name,
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                      maxLines: 2, // optional, agar tidak terlalu tinggi
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 4),
+
+                    // Alamat Perusahaan
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Icon(Icons.location_on_outlined,
+                            size: 16, color: Colors.grey),
+                        const SizedBox(width: 4),
+                        Expanded(
+                          child: Text(
+                            company.address,
+                            style: theme.textTheme.bodyMedium
+                                ?.copyWith(color: Colors.grey[700]),
+                            maxLines: 3, // optional
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 18),
 
           // Description
           Text(
@@ -129,81 +167,21 @@ class _CompanyDetailPageState extends State<CompanyDetailPage> {
           const SizedBox(height: 20),
 
           // Services section
-          Text(
-            "Services",
-            style: theme.textTheme.titleLarge
-                ?.copyWith(fontWeight: FontWeight.w600),
-          ),
+          SectionTitle("Layanan Perusahaan"),
           const SizedBox(height: 8),
-
-          if (services.isEmpty)
-            const Text("No services available.")
-          else
-            ...services.map((s) => _ServiceCard(service: s)),
+          CustomList(
+              items: services,
+              emptyFooterHeight: 20,
+              separatorHeight: AppSpacing.sm,
+              scrollable: false,
+              isReorderable: false,
+              itemBuilder: (service, _) => ServiceItem(
+                  service: service,
+                  onTap: () {
+                    context.push(AppRoutes.clientFillServiceForms(service.id));
+                  })),
         ],
       ),
     );
   }
 }
-class _ServiceCard extends StatelessWidget {
-  final ServiceEntity service;
-
-  const _ServiceCard({
-    required this.service,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return InkWell(
-      borderRadius: BorderRadius.circular(12),
-      onTap: () => context.push(AppRoutes.clientFillServiceForms(service.id)),
-      child: Card(
-        margin: const EdgeInsets.only(bottom: 12),
-        elevation: 1,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                service.title,
-                style: theme.textTheme.titleMedium
-                    ?.copyWith(fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                service.description,
-                style: theme.textTheme.bodyMedium,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-              const SizedBox(height: 8),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: Chip(
-                  label: Text(
-                    service.isActive ? "Active" : "Inactive",
-                    style: TextStyle(
-                      color: service.isActive
-                          ? Colors.green[800]
-                          : Colors.red[800],
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  backgroundColor:
-                      service.isActive ? Colors.green[100] : Colors.red[100],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-

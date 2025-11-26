@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
+import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/services_bloc.dart';
-import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
 import 'package:workorder_company_app/features/services/presentation/pages/services/services_skeleton.dart';
-import 'package:workorder_company_app/features/services/presentation/widgets/service_access_chip.dart';
+import 'package:workorder_company_app/features/services/presentation/widgets/service_item.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
-import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
 
@@ -112,14 +111,21 @@ class _ServicesPageState extends State<ServicesPage> {
                           }
 
                           return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: AppSpacing.md),
                             child: CustomList(
                                 items: services,
                                 emptyFooterHeight: 20,
+                                separatorHeight: AppSpacing.sm,
                                 scrollable: true,
                                 isReorderable: false,
-                                itemBuilder: (service, _) =>
-                                    _buildServiceCard(service)),
+                                itemBuilder: (service, _) => ServiceItem(
+                                    service: service,
+                                    isPublic: false,
+                                    onTap: () {
+                                      context.push(AppRoutes.ownerServiceDetail(
+                                          service.id));
+                                    })),
                           );
                         }
                         return SizedBox.shrink();
@@ -127,46 +133,5 @@ class _ServicesPageState extends State<ServicesPage> {
                 },
               ),
             )));
-  }
-
-  Widget _buildServiceCard(ServiceEntity service) {
-    return CustomCard(
-      margin: const EdgeInsets.all(4),
-      padding: const EdgeInsets.all(0),
-      child: ListTile(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        leading: Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primaryContainer.withAlpha(80),
-            borderRadius: BorderRadius.circular(14),
-          ),
-          child: Icon(
-            Icons.build_circle_outlined,
-            size: 28,
-            color: Theme.of(context).colorScheme.primary,
-          ),
-        ),
-        contentPadding:
-            const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-        title: Text(
-          service.title,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        subtitle: Text(
-          service.description,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-        ),
-        trailing: ServiceAccessChip(access: service.accessType),
-        onTap: () {
-          context.push(AppRoutes.ownerServiceDetail(service.id));
-        },
-      ),
-    );
   }
 }

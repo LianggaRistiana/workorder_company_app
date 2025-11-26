@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/forms_bloc.dart';
 import 'package:workorder_company_app/features/forms/presentation/pages/forms/forms_skeleton.dart';
@@ -109,7 +110,7 @@ class _FormsPageState extends State<FormsPage> {
 
   Widget _buildMainContent(List<FormEntity> forms) {
     return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
         child: CustomList(
           items: forms,
           emptyFooterHeight: 20,
