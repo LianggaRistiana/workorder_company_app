@@ -42,7 +42,7 @@ class OwnerCompanyHomepage extends StatelessWidget {
                 width: double.infinity,
                 height: 220,
                 child: Image.asset(
-                  "assets/images/header-internal-home.png",
+                  "assets/images/internal-header-home.png",
                   fit: BoxFit.cover,
                 ),
               ),
