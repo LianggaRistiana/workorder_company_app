@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:workorder_company_app/core/constants/app_enums.dart';
-import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
-import 'package:workorder_company_app/features/home/presentation/widget/user_chip.dart';
+import 'package:workorder_company_app/features/auth/presentation/widgets/current_user_chip.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
 import 'package:workorder_company_app/shared/widgets/menu_grid.dart';
@@ -17,14 +15,11 @@ class ClientHomepage extends StatelessWidget {
     return Scaffold(
         // appBar bisa tetap
         appBar: AppBar(
-          title: UserChip(
-              user: const UserEntity(
-                  name: "Guest",
-                  email: "guest@example.com",
-                  role: UserRole.client),
-              onTap: () {
-                context.push(AppRoutes.clientProfile);
-              }),
+          title: CurrentUserChip(
+            onTap: () {
+              context.push(AppRoutes.clientProfile);
+            },
+          ),
           actions: [
             IconButton(
                 onPressed: () {}, icon: Icon(Icons.notifications_outlined))

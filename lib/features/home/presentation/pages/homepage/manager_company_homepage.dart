@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:workorder_company_app/core/constants/app_enums.dart';
-import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
-import 'package:workorder_company_app/features/home/presentation/widget/user_chip.dart';
+import 'package:workorder_company_app/features/auth/presentation/widgets/current_user_chip.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
 import 'package:workorder_company_app/shared/widgets/menu_grid.dart';
@@ -17,14 +15,11 @@ class ManagerCompanyHomepage extends StatelessWidget {
     return Scaffold(
         // appBar bisa tetap
         appBar: AppBar(
-          title: UserChip(
-              user: const UserEntity(
-                  name: "Guest",
-                  email: "guest@example.com",
-                  role: UserRole.managerCompany),
-              onTap: () {
-                context.push(AppRoutes.managerProfile);
-              }),
+          title: CurrentUserChip(
+            onTap: () {
+              context.push(AppRoutes.managerProfile);
+            },
+          ),
           actions: [
             IconButton(
                 onPressed: () {}, icon: Icon(Icons.notifications_outlined))
@@ -41,7 +36,6 @@ class ManagerCompanyHomepage extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 height: 220,
-                
                 child: Image.asset(
                   "assets/images/internal-header-home.png",
                   fit: BoxFit.cover,
@@ -80,7 +74,8 @@ class ManagerCompanyHomepage extends StatelessWidget {
                         HorizontalButton(
                           leadingIcon: Icons.assignment_add,
                           title: "Buat Tugas Kerja Baru",
-                          description: "Buat tugas kerja baru khusus untuk internal perusahaan",
+                          description:
+                              "Buat tugas kerja baru khusus untuk internal perusahaan",
                           onTap: () {},
                         ),
                         const SizedBox(height: 8),
@@ -109,8 +104,7 @@ class ManagerCompanyHomepage extends StatelessWidget {
                             MenuItem(
                                 icon: Icons.card_membership,
                                 label: "Pelanggan Perusahaan",
-                                onTap: () {
-                                }),
+                                onTap: () {}),
                             MenuItem(
                                 icon: Icons.history_outlined,
                                 label: "Riwayat Pengajuan",
