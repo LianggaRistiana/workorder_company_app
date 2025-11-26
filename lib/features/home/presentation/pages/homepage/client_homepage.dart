@@ -72,7 +72,7 @@ class ClientHomepage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         HorizontalButton(
-                          leadingIcon: Icons.send_outlined,
+                          leadingIcon: Icons.send_rounded,
                           title: "Ajukan Permintaan Layanan",
                           description:
                               "Pilih perusahaan kemudiaan ajukan permintaan layanan",

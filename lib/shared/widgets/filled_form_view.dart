@@ -109,7 +109,7 @@ class FilledFormView extends StatelessWidget {
             Icon(
               isSelected ? Icons.check_box : Icons.check_box_outline_blank,
               size: 20,
-              color: isSelected ? Theme.of(context).primaryColor : null,
+              color: isSelected ? Theme.of(context).colorScheme.primary : null,
             ),
             const SizedBox(width: 8),
             Expanded(child: Text(opt.value)),
@@ -150,7 +150,7 @@ class FilledFormView extends StatelessWidget {
                 padding: const EdgeInsets.all(8),
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
+                  color: Theme.of(context).colorScheme.primary.withAlpha(90),
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(12),
                     topRight: Radius.circular(12),

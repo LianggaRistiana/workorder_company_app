@@ -13,7 +13,7 @@ class MenuGrid extends StatelessWidget {
       crossAxisCount: 4,
       mainAxisSpacing: 14,
       crossAxisSpacing: 14,
-      childAspectRatio: 0.78,
+      childAspectRatio: 0.70,
       children: items,
     );
   }
