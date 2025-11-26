@@ -115,7 +115,7 @@ class OwnerCompanyHomepage extends StatelessWidget {
                                 onTap: () {}),
                             MenuItem(
                                 icon: Icons.assignment_outlined,
-                                label: "Workorder",
+                                label: "Tugas Kerja",
                                 onTap: () {}),
                             MenuItem(
                                 icon: Icons.people_outline,
