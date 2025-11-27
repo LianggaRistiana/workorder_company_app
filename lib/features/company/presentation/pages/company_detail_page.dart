@@ -107,7 +107,7 @@ class _CompanyDetailPageState extends State<CompanyDetailPage> {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.primaryContainer.withAlpha(80),
+                  color: theme.colorScheme.primaryContainer,
                   borderRadius: BorderRadius.circular(14),
                 ),
                 child: Icon(
