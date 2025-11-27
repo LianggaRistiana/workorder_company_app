@@ -36,8 +36,10 @@ class AppTheme {
       foregroundColor: Colors.black,
       elevation: 0,
     ),
-    bottomNavigationBarTheme: BottomNavigationBarThemeData(
-
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(),
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      backgroundColor: AppColors.lightPrimary,
+      foregroundColor: Colors.white,
     ),
 
     textTheme: TextTheme(
@@ -88,6 +90,10 @@ class AppTheme {
       // primary: AppColors.darkPrimary
       primaryContainer: AppColors.darkPrimary.withAlpha(20),
       // onPrimaryContainer: AppColors.lightPrimary,
+    ),
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      backgroundColor: AppColors.darkPrimary,
+      foregroundColor: Colors.white,
     ),
     scaffoldBackgroundColor: AppColors.darkBackground,
     appBarTheme: AppBarTheme(

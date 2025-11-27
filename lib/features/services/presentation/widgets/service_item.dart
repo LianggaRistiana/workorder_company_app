@@ -23,7 +23,7 @@ class ServiceItem extends StatelessWidget {
         leading: Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primaryContainer.withAlpha(80),
+            color: Theme.of(context).colorScheme.primaryContainer,
             borderRadius: BorderRadius.circular(14),
           ),
           child: Icon(

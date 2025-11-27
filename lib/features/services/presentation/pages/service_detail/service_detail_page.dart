@@ -8,8 +8,10 @@ import 'package:workorder_company_app/features/services/domain/entities/service_
 import 'package:workorder_company_app/features/forms/domain/entities/service_form_entity.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/services_bloc.dart';
 import 'package:workorder_company_app/features/services/presentation/pages/service_detail/service_detail_skeleton.dart';
+import 'package:workorder_company_app/features/services/presentation/widgets/service_access_chip.dart';
 import 'package:workorder_company_app/features/services/presentation/widgets/service_form_card.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/widgets/active_status_chip.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';

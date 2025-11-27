@@ -22,18 +22,11 @@ extension ServiceDetailWidgetBuilder on ServiceDetailPageState {
       children: [
         Row(
           children: [
-            _buildAccessTypeChip(service.accessType.toString()),
+            ServiceAccessChip(access: service.accessType),
             const SizedBox(width: 8),
-            Chip(
-              label: Text(service.isActive ? "Active" : "Inactive"),
-              backgroundColor: service.isActive
-                  ? Colors.green.shade50
-                  : Colors.grey.shade200,
-              avatar: Icon(
-                service.isActive ? Icons.check_circle : Icons.cancel,
-                color: service.isActive ? Colors.green : Colors.grey.shade600,
-              ),
-            ),
+            ActiveStatusChip(
+              label: "Layanan",
+              isActive: service.isActive)
           ],
         ),
         _buildSectionTitle("Description"),
@@ -89,35 +82,6 @@ extension ServiceDetailWidgetBuilder on ServiceDetailPageState {
           ),
         }
       ],
-    );
-  }
-
-  Widget _buildAccessTypeChip(String accessType) {
-    IconData icon;
-    Color bgColor;
-
-    switch (accessType.toLowerCase()) {
-      case "public":
-        icon = Icons.public;
-        bgColor = Colors.blue.shade50;
-        break;
-      case "member-only":
-        icon = Icons.group;
-        bgColor = Colors.orange.shade50;
-        break;
-      case "internal":
-        icon = Icons.business;
-        bgColor = Colors.purple.shade50;
-        break;
-      default:
-        icon = Icons.lock;
-        bgColor = Colors.grey.shade200;
-    }
-
-    return Chip(
-      avatar: Icon(icon, size: 18),
-      label: Text(accessType),
-      backgroundColor: bgColor,
     );
   }
 
