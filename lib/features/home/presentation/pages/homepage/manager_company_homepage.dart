@@ -37,7 +37,7 @@ class ManagerCompanyHomepage extends StatelessWidget {
                 width: double.infinity,
                 height: 220,
                 child: Image.asset(
-                  "assets/images/internal-header-home.png",
+                  "assets/images/home-header-internal.png",
                   fit: BoxFit.cover,
                 ),
               ),

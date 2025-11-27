@@ -14,6 +14,8 @@ class AppTheme {
       brightness: Brightness.light,
     ).copyWith(
         primary: AppColors.lightPrimary,
+        // primaryContainer: AppColors.lightPrimary.withAlpha(20),
+        // onPrimaryContainer: AppColors.lightPrimary,
         surfaceContainerLow:
             const Color.fromARGB(255, 255, 255, 255), // dipakai card
         surface: AppColors.lightBackground),
@@ -82,8 +84,10 @@ class AppTheme {
       seedColor: _seedDark,
       brightness: Brightness.dark,
     ).copyWith(
-        // primary: AppColors.darkPrimary
-        ),
+      // primary: AppColors.darkPrimary
+      // primaryContainer: AppColors.darkPrimary.withAlpha(20),
+      // onPrimaryContainer: AppColors.lightPrimary,
+    ),
     scaffoldBackgroundColor: AppColors.darkBackground,
     appBarTheme: AppBarTheme(
       backgroundColor: AppColors.darkBackground,
