@@ -14,7 +14,7 @@ class AppTheme {
       brightness: Brightness.light,
     ).copyWith(
         primary: AppColors.lightPrimary,
-        // primaryContainer: AppColors.lightPrimary.withAlpha(20),
+        primaryContainer: AppColors.lightPrimary.withAlpha(20),
         // onPrimaryContainer: AppColors.lightPrimary,
         surfaceContainerLow:
             const Color.fromARGB(255, 255, 255, 255), // dipakai card
@@ -36,9 +36,10 @@ class AppTheme {
       foregroundColor: Colors.black,
       elevation: 0,
     ),
-    // bottomNavigationBarTheme: BottomNavigationBarThemeData(
-    //   backgroundColor: Colors.black
-    // ),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+
+    ),
+
     textTheme: TextTheme(
         titleLarge: AppTextStyles.titleLarge.copyWith(
           color: AppColors.lightTextPrimary,
@@ -85,7 +86,7 @@ class AppTheme {
       brightness: Brightness.dark,
     ).copyWith(
       // primary: AppColors.darkPrimary
-      // primaryContainer: AppColors.darkPrimary.withAlpha(20),
+      primaryContainer: AppColors.darkPrimary.withAlpha(20),
       // onPrimaryContainer: AppColors.lightPrimary,
     ),
     scaffoldBackgroundColor: AppColors.darkBackground,

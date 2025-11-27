@@ -25,7 +25,7 @@ class MenuItem extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: colorScheme.primaryContainer.withAlpha(80),
+              color: colorScheme.primaryContainer,
               borderRadius: BorderRadius.circular(14),
             ),
             child: Icon(
