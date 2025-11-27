@@ -69,8 +69,7 @@ class _PositionsView extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: Theme.of(context)
                                 .colorScheme
-                                .primaryContainer
-                                .withAlpha(80),
+                                .primaryContainer,
                             borderRadius: BorderRadius.circular(14),
                           ),
                           child: Icon(

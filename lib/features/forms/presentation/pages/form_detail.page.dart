@@ -33,19 +33,18 @@ class _FormDetailPageState extends State<FormDetailPage> {
     return BlocBuilder<FormsBloc, FormsState>(
       bloc: _formsBloc,
       builder: (context, state) {
-        String appBarTitle = "Form Detail";
-        if (state is FormsLoaded && state.selectedForm != null) {
-          appBarTitle = state.selectedForm!.title;
-        }
-
         return Scaffold(
-          body: _buildBody(context, state, appBarTitle),
+          appBar: AppBar(
+            // title: Text(appBarTitle),
+            centerTitle: true,
+          ),
+          body: _buildBody(context, state),
         );
       },
     );
   }
 
-  Widget _buildBody(BuildContext context, FormsState state, String title) {
+  Widget _buildBody(BuildContext context, FormsState state) {
     if (state is FormsLoading || state is FormsInitial) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -64,54 +63,78 @@ class _FormDetailPageState extends State<FormDetailPage> {
         return _buildErrorState(state.errorMessage ?? "Form not found");
       }
 
-      return CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            expandedHeight: 140,
-            pinned: true,
-            flexibleSpace: FlexibleSpaceBar(
-              centerTitle: true,
-              expandedTitleScale: 1.5,
-              titlePadding: const EdgeInsets.only(bottom: 16),
-              title: Text(title),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    form.description.isEmpty
-                        ? 'Tidak ada deskripsi'
-                        : form.description,
-                    style: Theme.of(context).textTheme.bodyLarge,
+      return SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // Icon
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primaryContainer,
+                    borderRadius: BorderRadius.circular(14),
                   ),
-                  Text(
-                    form.formType.displayName,
-                    style: Theme.of(context).textTheme.bodyLarge,
+                  child: Icon(
+                    Icons.assignment_turned_in_outlined,
+                    size: 28,
+                    color: Theme.of(context).colorScheme.primary,
                   ),
-                  const SizedBox(height: 12),
-                  const Divider(thickness: 0.6),
-                ],
-              ),
+                ),
+                const SizedBox(width: 12),
+
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        form.title,
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 4),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
+            const SizedBox(height: 12),
+
+            // ---- Description ----
+            Text(
+              form.description.isEmpty
+                  ? 'Tidak ada deskripsi'
+                  : form.description,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+            Text(
+              form.formType.displayName,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+            const SizedBox(height: 12),
+            const Divider(thickness: 0.6),
+
+            // ---- Fields ----
+            ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: form.fields?.length ?? 0,
+              itemBuilder: (context, index) {
                 final field = form.fields![index];
                 return Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: const EdgeInsets.symmetric(vertical: 4),
                   child: FormFieldCard(field: field),
                 );
               },
-              childCount: form.fields?.length ?? 0,
             ),
-          ),
-        ],
+          ],
+        ),
       );
     }
 
