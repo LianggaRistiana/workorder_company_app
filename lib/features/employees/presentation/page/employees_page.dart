@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 import 'package:workorder_company_app/features/employees/presentation/bloc/employees_bloc.dart';
 import 'package:workorder_company_app/features/home/presentation/widget/user_chip.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
-import 'package:workorder_company_app/shared/widgets/modern_app_bar.dart';
+import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 
 class EmployeesPage extends StatelessWidget {
   const EmployeesPage({super.key});
@@ -14,6 +15,9 @@ class EmployeesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Karyawan'),
+      ),
       body: BlocBuilder<EmployeesBloc, EmployeesState>(
         builder: (context, state) {
           if (state is EmployeesLoading) {
@@ -23,43 +27,22 @@ class EmployeesPage extends StatelessWidget {
           if (state is EmployeesLoaded) {
             final List<UserEntity> employees = state.employees;
 
-            return NestedScrollView(
-              headerSliverBuilder: (context, innerBoxIsScrolled) {
-                return [
-                  ModernAppBar(
-                    title: "Karyawan",
-                    expandedHeight: 100,
-                  ),
-                ];
-              },
-              body: employees.isEmpty
-                  ? const Padding(
-                      padding: EdgeInsets.only(top: 100),
-                      child: Center(
-                        child: Text(
-                          "Belum ada karyawan.",
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                      ),
-                    )
-                  : RefreshIndicator(
-                      onRefresh: () async {
-                        context
-                            .read<EmployeesBloc>()
-                            .add(GetEmployeesRequested());
-                      },
-                      child: ListView.separated(
-                        physics: const AlwaysScrollableScrollPhysics(),
-                        shrinkWrap: true,
+            return RefreshIndicator(
+              child: CustomList(
+                  scrollable: true,
+                  items: employees,
+                  itemBuilder: (item, _) {
+                    return CustomCard(
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: AppSpacing.md, vertical: AppSpacing.xs),
                         padding: const EdgeInsets.all(16),
-                        itemCount: employees.length,
-                        separatorBuilder: (_, __) => const SizedBox(height: 12),
-                        itemBuilder: (context, index) {
-                          final employee = employees[index];
-                          return _buildEmployeeCard(context, employee);
-                        },
-                      ),
-                    ),
+                        child: UserChip(
+                          user: item,
+                        ));
+                  }),
+              onRefresh: () async {
+                context.read<EmployeesBloc>().add(GetEmployeesRequested());
+              },
             );
           }
 
@@ -85,14 +68,5 @@ class EmployeesPage extends StatelessWidget {
         icon: const Icon(Icons.person_add_alt_1),
       ),
     );
-  }
-
-  Widget _buildEmployeeCard(BuildContext context, UserEntity employee) {
-    return CustomCard(
-        margin: const EdgeInsets.all(0),
-        padding: const EdgeInsets.all(16),
-        child: UserChip(
-          user: employee,
-        ));
   }
 }
