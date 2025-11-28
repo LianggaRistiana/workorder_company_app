@@ -34,7 +34,7 @@ class RequiredPositionsSetting extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text("Posisi", style: Theme.of(context).textTheme.titleMedium),
+                Text("Posisi diperlukan", style: Theme.of(context).textTheme.titleMedium),
                 const Spacer(),
                 PositionsSelector(
                   onAdd: onAdd,
@@ -54,7 +54,7 @@ class RequiredPositionsSetting extends StatelessWidget {
                 text: 'Tidak ada posisi Ditugaskan',
                 size: 40,
                 icon: Icons.warning_amber_rounded,
-                backgroundColor: Theme.of(context).colorScheme.error.withValues(alpha: 0.1),
+                // backgroundColor: Theme.of(context).colorScheme.errorContainer,
               ),
             ),
           ],

@@ -40,7 +40,7 @@ class EmptyStateWidget extends StatelessWidget {
           style: textStyle ??
               Theme.of(context)
                   .textTheme
-                  .titleMedium
+                  .bodyMedium
                   ?.copyWith(color: Theme.of(context).disabledColor),
           textAlign: TextAlign.center,
         ),

@@ -105,8 +105,8 @@ class CreateServicePageState extends State<CreateServicePage>
                     currentStep: _tabController.index,
                     steps: const [
                       'Pengaturan Layanan',
-                      'Form WO',
-                      'Form Laporan'
+                      'Formulir Tugas Kerja',
+                      'Formulir Laporan'
                     ],
                   ),
                 ),

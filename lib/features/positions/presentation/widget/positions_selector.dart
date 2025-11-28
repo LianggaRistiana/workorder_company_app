@@ -61,7 +61,7 @@ class PositionsSelector extends StatelessWidget {
   }
 
   Widget _buildButton(BuildContext context, List<PositionEntity> availablePositions, bool isLoading) {
-    return OutlinedButton.icon(
+    return TextButton.icon(
       icon: const Icon(Icons.add),
       label: isLoading
           ? const SizedBox(
