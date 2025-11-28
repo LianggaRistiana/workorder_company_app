@@ -2,19 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
+import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/field_entity.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/option_entity.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/forms_bloc.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/positions_bloc.dart';
 import 'package:workorder_company_app/shared/utils/reorder_helper_util.dart';
+import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_dropdown.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/custom_step_indicator.dart';
 import 'package:workorder_company_app/shared/widgets/enum_selector.dart';
 import 'package:workorder_company_app/shared/widgets/step_navigation_bar.dart';
-
 
 part 'create_form_widget_builder.dart';
 part 'create_form_ui_logic.dart';
@@ -68,7 +69,7 @@ class CreateNewFormPageState extends State<CreateNewFormPage>
   final _titleController = TextEditingController();
   final _descController = TextEditingController();
   final List<EditableField> _fields = [];
-  
+
   FormType _formType = FormType.workOrder;
 
   @override
@@ -115,7 +116,7 @@ class CreateNewFormPageState extends State<CreateNewFormPage>
           length: 2,
           child: Scaffold(
             appBar: AppBar(
-              title: const Text('Buat Form'),
+              title: const Text('Buat Formulir'),
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(72),
                 child: SizedBox(
@@ -123,7 +124,7 @@ class CreateNewFormPageState extends State<CreateNewFormPage>
                   child: CustomStepIndicator(
                     currentStep: _tabController.index,
                     steps: const [
-                      'Pengaturan Form',
+                      'Pengaturan Formulir',
                       'Pertanyaan',
                     ],
                   ),
@@ -142,6 +143,8 @@ class CreateNewFormPageState extends State<CreateNewFormPage>
                   return ElevatedButton(
                     onPressed: isLoading ? null : _submitForm,
                     style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 12),
                     ),
@@ -154,8 +157,11 @@ class CreateNewFormPageState extends State<CreateNewFormPage>
                           )
                         : Row(
                             mainAxisSize: MainAxisSize.min,
-                            children: const [
-                              Icon(Icons.upload),
+                            children: [
+                              Icon(
+                                Icons.upload,
+                                color: Theme.of(context).colorScheme.onPrimary,
+                              ),
                               SizedBox(width: 8),
                               Text('Simpan Form'),
                             ],
@@ -164,7 +170,6 @@ class CreateNewFormPageState extends State<CreateNewFormPage>
                 },
               ),
             ),
-            
             body: BlocBuilder<FormsBloc, FormsState>(
               buildWhen: (previous, current) {
                 if (previous is FormsLoaded && current is FormsLoaded) {
