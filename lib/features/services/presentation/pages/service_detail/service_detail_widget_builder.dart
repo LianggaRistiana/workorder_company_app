@@ -24,12 +24,10 @@ extension ServiceDetailWidgetBuilder on ServiceDetailPageState {
           children: [
             ServiceAccessChip(access: service.accessType),
             const SizedBox(width: 8),
-            ActiveStatusChip(
-              label: "Layanan",
-              isActive: service.isActive)
+            ActiveStatusChip(label: "Layanan", isActive: service.isActive)
           ],
         ),
-        _buildSectionTitle("Description"),
+        _buildSectionTitle("Deskripsi"),
         CustomCard(
           elevation: 0,
           child: Text(
@@ -38,7 +36,7 @@ extension ServiceDetailWidgetBuilder on ServiceDetailPageState {
           ),
         ),
         const SizedBox(height: 8),
-        _buildSectionTitle("Required Staff"),
+        _buildSectionTitle("Pegawai yang Diperlukan"),
         CustomList(
           items: service.requiredStaff,
           separatorHeight: 8,
@@ -58,22 +56,20 @@ extension ServiceDetailWidgetBuilder on ServiceDetailPageState {
                 ),
               )),
         ),
-        if (service.clientIntakeForms != null ||
-            service.clientIntakeForms!.isNotEmpty) ...{
-          _buildSectionTitle("Intake Forms"),
+        if (service.accessType != ServiceAccessType.internal) ...{
+          _buildSectionTitle("Formulir Pengajuan"),
           CustomList<OrderedFormEntity>(
             items: service.clientIntakeForms ?? [],
             separatorHeight: 8,
             itemBuilder: (intake, _) => CustomCard(
                 margin: const EdgeInsets.all(0),
-                padding: const EdgeInsets.all(4),
+                padding: const EdgeInsets.all(AppSpacing.md),
                 child: ListTile(
+                  //TODO : wrap into inkwell and fix padding
                   onTap: () {
                     context.push(AppRoutes.ownerForms.byId(intake.form.id));
                   },
-                  leading: const CircleAvatar(
-                    child: Icon(Icons.edit_square, color: Colors.blueAccent),
-                  ),
+                  leading: IconBox(icon: Icons.assignment_turned_in_outlined),
                   title: Text(
                     intake.form.title,
                     style: const TextStyle(fontWeight: FontWeight.bold),

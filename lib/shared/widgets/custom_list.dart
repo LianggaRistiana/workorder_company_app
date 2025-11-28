@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
 
 class CustomList<T> extends StatelessWidget {
   final List<T> items;
@@ -16,8 +17,11 @@ class CustomList<T> extends StatelessWidget {
     required this.itemBuilder,
     this.isReorderable = false,
     this.onReorder,
-    this.separatorHeight = 2, // default 2
-    this.emptyWidget = const Text('Tidak ada item'), // default
+    this.separatorHeight = 2,
+    this.emptyWidget = const EmptyStateWidget(
+      size: 60,
+      text: "Tidak ada item",
+    ),
     this.scrollable = false,
     this.emptyFooterHeight = 0,
   });

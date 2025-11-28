@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/network/endpoints.dart';
+import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/ordered_form_entity.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/service_form_entity.dart';
@@ -15,9 +17,9 @@ import 'package:workorder_company_app/shared/widgets/active_status_chip.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
+import 'package:workorder_company_app/shared/widgets/icon_box.dart';
 
 part 'service_detail_widget_builder.dart';
-
 
 class ServiceDetailPage extends StatefulWidget {
   final String serviceId;
@@ -49,36 +51,60 @@ class ServiceDetailPageState extends State<ServiceDetailPage> {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
+        appBar: AppBar(
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(120),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                BlocBuilder<ServicesBloc, ServicesState>(
+                    bloc: _servicesBloc,
+                    builder: (context, state) {
+                      String appBarTitle = "";
+                      if (state is ServicesLoaded &&
+                          state.selectedService != null) {
+                        appBarTitle = state.selectedService!.title;
+                      }
+
+                      return Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 8),
+                          child: Row(
+                            children: [
+                              IconBox(
+                                paddingSize: AppSpacing.md,
+                                icon: Icons.build_circle_outlined),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Text(
+                                  appBarTitle,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleLarge,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ));
+                    }),
+                // TabBar
+                const TabBar(
+                  dividerColor: Colors.transparent,
+                  tabs: [
+                    Tab(text: "Konfigurasi"),
+                    Tab(text: "Tugas Kerja"),
+                    Tab(text: "Laporan"),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
         body: BlocBuilder<ServicesBloc, ServicesState>(
           bloc: _servicesBloc,
           builder: (context, state) {
-            String appBarTitle = "Service Detail";
-            if (state is ServicesLoaded && state.selectedService != null) {
-              appBarTitle = state.selectedService!.title;
-            }
-            return NestedScrollView(
-              headerSliverBuilder: (context, _) => [
-                SliverAppBar(
-                  expandedHeight: 160,
-                  pinned: true,
-                  flexibleSpace: FlexibleSpaceBar(
-                    centerTitle: true,
-                    expandedTitleScale: 1,
-                    titlePadding: const EdgeInsets.only(bottom: 64),
-                    title: Text(appBarTitle),
-                  ),
-                  bottom: const TabBar(
-                    dividerColor: Colors.transparent,
-                    tabs: [
-                      Tab(text: "Overview"),
-                      Tab(text: "Work Forms"),
-                      Tab(text: "Report Forms"),
-                    ],
-                  ),
-                ),
-              ],
-              body: _buildBody(state),
-            );
+            return _buildBody(state);
           },
         ),
       ),

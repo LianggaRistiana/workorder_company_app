@@ -11,7 +11,7 @@ class EmptyStateWidget extends StatelessWidget {
     super.key,
     this.text = 'Tidak ada item',
     this.icon = Icons.inbox_outlined,
-    this.backgroundColor , // abu pudar
+    this.backgroundColor, // abu pudar
     this.size = 80,
     this.textStyle,
   });
@@ -25,20 +25,23 @@ class EmptyStateWidget extends StatelessWidget {
           width: size,
           height: size,
           decoration: BoxDecoration(
-          color: backgroundColor?? Theme.of(context).cardColor,
+            color: backgroundColor ?? Theme.of(context).disabledColor.withAlpha(50),
             shape: BoxShape.circle,
           ),
           child: Icon(
             icon,
             size: size * 0.5,
-            color: Colors.grey.shade600,
+            color: Theme.of(context).disabledColor,
           ),
         ),
         const SizedBox(height: 12),
         Text(
           text,
           style: textStyle ??
-              Theme.of(context).textTheme.titleMedium,
+              Theme.of(context)
+                  .textTheme
+                  .titleMedium
+                  ?.copyWith(color: Theme.of(context).disabledColor),
           textAlign: TextAlign.center,
         ),
       ],
