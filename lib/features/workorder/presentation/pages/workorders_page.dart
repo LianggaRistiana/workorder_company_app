@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/network/endpoints.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_bloc.dart';
 import 'package:workorder_company_app/features/workorder/presentation/widgets/workorder_item.dart';
+import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
@@ -108,7 +111,10 @@ class _WorkordersPageState extends State<WorkordersPage> {
                           items: state.workorders,
                           itemBuilder: (item, _) => WorkorderItem(
                             workorder: item,
-                            onTap: () {},
+                            onTap: () {
+                              context.push(
+                                  AppRoutes.managerWorkorder.byId(item.id));
+                            },
                           ),
                         ),
                       ],

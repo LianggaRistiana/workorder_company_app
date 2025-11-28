@@ -8,6 +8,7 @@ import 'package:workorder_company_app/features/client_service_request/presentati
 import 'package:workorder_company_app/features/client_service_request/presentation/pages/csr_page.dart';
 import 'package:workorder_company_app/features/home/presentation/pages/homepage/manager_company_homepage.dart';
 import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_bloc.dart';
+import 'package:workorder_company_app/features/workorder/presentation/pages/workorder_detail_page.dart';
 import 'package:workorder_company_app/features/workorder/presentation/pages/workorders_page.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/layout/manager_company_layout.dart';
@@ -54,6 +55,13 @@ final managerRouter = [
               create: (_) => sl<InternalCsrDetailCubit>(),
               child: CsrDetailPage(csrId: id),
             );
+          },
+        ),
+        GoRoute(
+          path: "${AppRoutes.managerWorkorder}/:id",
+          builder: (_, state) {
+            final id = state.pathParameters['id']!;
+            return WorkorderDetailPage(workorderId: id);
           },
         ),
       ])
