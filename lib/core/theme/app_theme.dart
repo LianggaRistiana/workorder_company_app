@@ -14,7 +14,8 @@ class AppTheme {
       brightness: Brightness.light,
     ).copyWith(
         primary: AppColors.lightPrimary,
-        primaryContainer: AppColors.lightPrimary.withAlpha(20),
+        primaryContainer: AppColors.lightPrimaryContainer,
+        // primaryContainer: AppColors.lightPrimary.withAlpha(20),
         // onPrimaryContainer: AppColors.lightPrimary,
         surfaceContainerLow:
             const Color.fromARGB(255, 255, 255, 255), // dipakai card
@@ -38,8 +39,9 @@ class AppTheme {
     ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: AppColors.lightPrimary,
-      foregroundColor: Colors.white,
+      backgroundColor: const Color.fromARGB(255, 142, 192, 253),
+      // backgroundColor: AppColors.lightPrimary,
+      foregroundColor: Colors.black,
     ),
 
     textTheme: TextTheme(
@@ -92,8 +94,8 @@ class AppTheme {
       // onPrimaryContainer: AppColors.lightPrimary,
     ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: AppColors.darkPrimary,
-      foregroundColor: Colors.white,
+      backgroundColor: AppColors.darkPrimaryFabBackground,
+      foregroundColor: AppColors.darkPrimaryFabForeground,
     ),
     scaffoldBackgroundColor: AppColors.darkBackground,
     appBarTheme: AppBarTheme(

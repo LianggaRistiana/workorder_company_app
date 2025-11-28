@@ -8,11 +8,14 @@ class AppColors {
   // === Light Colors ===
   // static const Color lightPrimary = Color.fromARGB(255, 0, 126, 230);
   static const Color lightPrimary = Color(0xFF0978FE);
+  static const Color lightPrimaryContainer = Color(0xFFEBF4FF);
   // static const Color lightBackground = Color.fromARGB(255, 243, 243, 245);
   static const Color lightBackground = Color.fromARGB(255, 255, 255, 255);
 
   // === Dark Colors ===
   static const Color darkPrimary = seedColorDark;
+  static const Color darkPrimaryFabForeground = Color.fromARGB(255, 190, 209, 249);
+  static const Color darkPrimaryFabBackground = Color(0xFF304579);
   static const Color darkBackground = Color(0xFF121212);
 
   // === Dynamic Getters (tergantung ThemeMode) ===

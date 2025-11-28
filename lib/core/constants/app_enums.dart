@@ -118,11 +118,11 @@ enum FormType {
   String get displayName {
     switch (this) {
       case FormType.workOrder:
-        return 'Work Order';
+        return 'Tugas Kerja';
       case FormType.report:
-        return 'Report';
+        return 'Laporan';
       case FormType.intake:
-        return 'Intake';
+        return 'Pengajuan';
     }
   }
 
