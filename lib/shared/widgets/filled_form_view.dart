@@ -28,37 +28,6 @@ class FilledFormView extends StatelessWidget {
           ],
         ));
   }
-  // Widget _filledField(
-  //     BuildContext context, FieldEntity field, dynamic answer, bool isLast) {
-  //   return Row(
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children: [
-  //       // Garis kiri
-  //       SizedBox(
-  //         width: 32,
-  //         height: 70, // sesuaikan biar pas
-  //         child: CustomPaint(
-  //           painter: LineConnectorPainter(isLast: isLast),
-  //         ),
-  //       ),
-
-  //       // Card kamu
-  //       Expanded(
-  //         child: CustomCard(
-  //           margin: const EdgeInsets.only(top: 4, bottom: 4),
-  //           child: Column(
-  //             crossAxisAlignment: CrossAxisAlignment.start,
-  //             children: [
-  //               Text(field.label,
-  //                   style: const TextStyle(fontWeight: FontWeight.bold)),
-  //               _answerWidget(context, field, answer),
-  //             ],
-  //           ),
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
 
   // -------------------------------------------------------------
   // ANSWER WIDGET
@@ -174,7 +143,7 @@ class FilledFormView extends StatelessWidget {
       children: [
         CustomCard(
             padding: const EdgeInsets.all(0),
-            margin: const EdgeInsets.only(bottom: 0, top: 16),
+            margin: const EdgeInsets.all(0),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Container(
@@ -220,48 +189,4 @@ class FilledFormView extends StatelessWidget {
       ],
     );
   }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return CustomCard(
-  //     borderColor: Colors.black.withAlpha(50),
-  //     padding: const EdgeInsets.all(0),
-  //     margin: const EdgeInsets.only(bottom: 16, top: 4),
-  //     child: Column(
-  //       crossAxisAlignment: CrossAxisAlignment.start,
-  //       children: [
-  //         Container(
-  //           padding: const EdgeInsets.all(8),
-  //           width: double.infinity,
-  //           decoration: BoxDecoration(
-  //             color: Theme.of(context).primaryColor,
-  //             borderRadius: BorderRadius.only(
-  //               topLeft: Radius.circular(12),
-  //               topRight: Radius.circular(12),
-  //             ),
-  //           ),
-  //           child: Text('${filledForm.order}. ${filledForm.form.title}',
-  //               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-  //                     color: Colors.white,
-  //                   )),
-  //         ),
-  //         Padding(
-  //           padding: const EdgeInsets.all(16),
-  //           child: Column(
-  //             crossAxisAlignment: CrossAxisAlignment.start,
-  //             children: [
-  //               ...filledForm.form.fields!.map(
-  //                 (field) => _filledField(
-  //                   context,
-  //                   field,
-  //                   _findAnswer(field.order.toString()),
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //         )
-  //       ],
-  //     ),
-  //   );
-  // }
 }

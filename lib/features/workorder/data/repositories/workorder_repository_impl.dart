@@ -12,15 +12,16 @@ class WorkorderRepositoryImpl implements WorkorderRepository {
 
   @override
   Future<Either<Failure, WorkorderEntity>> getWorkorderById(String id) {
-    // TODO: implement getWorkorderById
-    throw UnimplementedError();
+    return safeCall(() async {
+      final payload = await _workorderRemoteDatasource.getWorkorderById(id);
+      return payload.data!;
+    });
   }
 
   @override
   Future<Either<Failure, List<WorkorderEntity>>> getWorkorders() {
     return safeCall(() async {
-      final payload = await _workorderRemoteDatasource
-          .getWorkorders();
+      final payload = await _workorderRemoteDatasource.getWorkorders();
       return payload.data ?? [];
     });
   }

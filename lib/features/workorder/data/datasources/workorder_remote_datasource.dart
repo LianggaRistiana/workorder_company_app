@@ -15,9 +15,12 @@ class WorkorderRemoteDatasourceImpl implements WorkorderRemoteDatasource {
   WorkorderRemoteDatasourceImpl(this._apiClient);
 
   @override
-  Future<ApiResponse<WorkorderModel>> getWorkorderById(String id) {
-    // TODO: implement getWorkorderById
-    throw UnimplementedError();
+  Future<ApiResponse<WorkorderModel>> getWorkorderById(String id) async {
+    final response = await _apiClient.get(Endpoints.workorder.byId(id));
+    return ApiResponse.fromJson(
+      response,
+      (json) => WorkorderModel.fromJson(json),
+    );
   }
 
   @override

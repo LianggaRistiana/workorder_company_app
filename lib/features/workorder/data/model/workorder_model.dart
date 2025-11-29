@@ -24,7 +24,7 @@ class WorkorderModel extends WorkorderEntity {
   });
 
   factory WorkorderModel.fromJson(Map<String, dynamic> json) {
-    final orderedForms = safeParse<List<dynamic>?>(json, "workOrderForms",
+    final orderedForms = safeParse<List<dynamic>?>(json, "workorderForms",
             requiredField: false)
         ?.map((form) => OrderedFormModel.fromJson(form))
         .toList();

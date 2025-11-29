@@ -91,6 +91,8 @@ class _CsrDetailPageState extends State<CsrDetailPage> {
                 if (csr.clientIntakeForms != null &&
                     csr.clientIntakeForms!.isNotEmpty)
                   CustomList(
+                      scrollable: false,
+                      separatorHeight: 16,
                       items: csr.clientIntakeForms!,
                       itemBuilder: (item, _) =>
                           FilledFormView(filledForm: item))

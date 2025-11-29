@@ -7,6 +7,36 @@ enum WorkorderStateStatus {
   error,
 }
 
+class WorkorderDetailState extends Equatable {
+  final WorkorderStateStatus status;
+  final WorkorderEntity? workorder;
+  final String? errorMessage;
+
+  const WorkorderDetailState(
+      {this.status = WorkorderStateStatus.initial,
+      this.workorder,
+      this.errorMessage});
+
+  WorkorderDetailState copyWith({
+    WorkorderStateStatus? status,
+    WorkorderEntity? workorder,
+    String? errorMessage,
+  }) {
+    return WorkorderDetailState(
+      status: status ?? this.status,
+      workorder: workorder ?? this.workorder,
+      errorMessage: errorMessage ?? this.errorMessage,
+    );
+  }
+
+  @override
+  List<Object?> get props => [
+        status,
+        workorder,
+        errorMessage,
+      ];
+}
+
 class WorkorderState extends Equatable {
   final WorkorderStateStatus status;
   final List<WorkorderEntity> workorders;
@@ -31,7 +61,6 @@ class WorkorderState extends Equatable {
   }
 
   @override
-  // TODO: implement props
   List<Object?> get props => [
         status,
         workorders,
