@@ -15,7 +15,7 @@ class FilledFormView extends StatelessWidget {
   // -------------------------------------------------------------
   Widget _filledField(BuildContext context, FieldEntity field, dynamic answer) {
     return CustomCard(
-        margin: const EdgeInsets.only(top: 4, bottom: 4),
+        margin: const EdgeInsets.only(top: 4, bottom: 4, left: 32),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -28,6 +28,37 @@ class FilledFormView extends StatelessWidget {
           ],
         ));
   }
+  // Widget _filledField(
+  //     BuildContext context, FieldEntity field, dynamic answer, bool isLast) {
+  //   return Row(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: [
+  //       // Garis kiri
+  //       SizedBox(
+  //         width: 32,
+  //         height: 70, // sesuaikan biar pas
+  //         child: CustomPaint(
+  //           painter: LineConnectorPainter(isLast: isLast),
+  //         ),
+  //       ),
+
+  //       // Card kamu
+  //       Expanded(
+  //         child: CustomCard(
+  //           margin: const EdgeInsets.only(top: 4, bottom: 4),
+  //           child: Column(
+  //             crossAxisAlignment: CrossAxisAlignment.start,
+  //             children: [
+  //               Text(field.label,
+  //                   style: const TextStyle(fontWeight: FontWeight.bold)),
+  //               _answerWidget(context, field, answer),
+  //             ],
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   // -------------------------------------------------------------
   // ANSWER WIDGET

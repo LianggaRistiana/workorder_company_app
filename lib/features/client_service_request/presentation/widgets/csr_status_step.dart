@@ -30,7 +30,7 @@ class CsrStatusStep extends StatelessWidget {
       return Expanded(
           child: Container(
               color: currentStep <= step ? inActiveColor : activeColor,
-              height: 3));
+              height: 2));
     }
 
     Widget stepBuilder(int step) {

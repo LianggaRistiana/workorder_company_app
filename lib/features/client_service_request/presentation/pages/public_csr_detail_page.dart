@@ -60,6 +60,22 @@ class _CsrDetailPageState extends State<PublicCsrDetailPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _header(csr),
+                // SizedBox(
+                //   child: Stepper(
+                //     type: StepperType.vertical,
+                //     controlsBuilder: (context, details) => const SizedBox.shrink(),
+                //     currentStep: 1,
+                //     stepIconBuilder: (stepIndex, stepState) => stepState > stepIndex ? Colors.blue : Colors.black,
+
+                //     onStepTapped: (index) {},
+                //     steps: [
+                //       Step(title: Text('Step 1'), content: const SizedBox.shrink()),
+                //       Step(title: Text('Step '), content: const SizedBox.shrink()),
+                //       Step(title: Text('Step 2'), content: const SizedBox.shrink()),
+                //       Step(title: Text('Step 3'), content: const SizedBox.shrink()),
+                //     ],
+                //   ),
+                // ),
                 if (csr.clientIntakeForms != null &&
                     csr.clientIntakeForms!.isNotEmpty)
                   CustomList(
