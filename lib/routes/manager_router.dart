@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features/auth/presentation/pages/profile_page.dart';
+import 'package:workorder_company_app/features/client_service_request/presentation/bloc/internal_client_service_request/internal_csr_actions_cubit.dart';
 import 'package:workorder_company_app/features/client_service_request/presentation/bloc/internal_client_service_request/internal_csr_bloc.dart';
 import 'package:workorder_company_app/features/client_service_request/presentation/bloc/internal_client_service_request/internal_csr_detail_cubit.dart';
 import 'package:workorder_company_app/features/client_service_request/presentation/pages/csr_detail_page.dart';
@@ -51,10 +52,18 @@ final managerRouter = [
       ]),
   GoRoute(
     path: "${AppRoutes.managerCsr}/:id",
-    builder: (_, state) {
+    builder: (context, state) {
       final id = state.pathParameters['id']!;
-      return BlocProvider(
-        create: (_) => sl<InternalCsrDetailCubit>(),
+
+      return MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (_) => sl<InternalCsrDetailCubit>()..getCsrDetail(id),
+          ),
+          BlocProvider(
+            create: (_) => sl<InternalCsrActionsCubit>(),
+          ),
+        ],
         child: CsrDetailPage(csrId: id),
       );
     },

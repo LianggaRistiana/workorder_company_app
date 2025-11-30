@@ -11,4 +11,8 @@ abstract class ClientServiceRequestRepository {
       getClientServiceRequests();
   Future<Either<Failure, ClientServiceRequestEntity>>
       getClientServiceRequestById(String id);
+
+  Future<Either<Failure, String>> approveClientServiceRequest(String id);
+  Future<Either<Failure, void>> rejectClientServiceRequest(String id);
+  Future<Either<Failure, void>> cancelClientServiceRequest(String id);
 }

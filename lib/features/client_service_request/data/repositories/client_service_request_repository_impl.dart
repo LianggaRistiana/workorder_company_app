@@ -52,4 +52,25 @@ class ClientServiceRequestRepositoryImpl
       return payload.data ?? [];
     });
   }
+
+  @override
+  Future<Either<Failure, String>> approveClientServiceRequest(String id) {
+    return safeCall(() async {
+      final payload = await _clientServiceRequestRemoteDatasource
+          .approveClientServiceRequest(id);
+      return payload.data!.id;
+    });
+  }
+
+  @override
+  Future<Either<Failure, void>> cancelClientServiceRequest(String id) {
+    // TODO: implement cancelClientServiceRequest
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, void>> rejectClientServiceRequest(String id) {
+    // TODO: implement rejectClientServiceRequest
+    throw UnimplementedError();
+  }
 }

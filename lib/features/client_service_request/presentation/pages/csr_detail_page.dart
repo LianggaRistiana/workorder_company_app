@@ -5,10 +5,10 @@ import 'package:workorder_company_app/features/client_service_request/domain/ent
 import 'package:workorder_company_app/features/client_service_request/presentation/bloc/internal_client_service_request/internal_csr_bloc.dart';
 import 'package:workorder_company_app/features/client_service_request/presentation/bloc/internal_client_service_request/internal_csr_detail_cubit.dart';
 import 'package:workorder_company_app/features/client_service_request/presentation/widgets/client_name_chip.dart';
+import 'package:workorder_company_app/features/client_service_request/presentation/widgets/csr_actions_button.dart';
 import 'package:workorder_company_app/features/client_service_request/presentation/widgets/csr_status_chip.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/filled_form_view.dart';
-import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
 
 class CsrDetailPage extends StatefulWidget {
   final String csrId;
@@ -27,79 +27,74 @@ class _CsrDetailPageState extends State<CsrDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Detail Pengajuan Layanan")),
-      body: BlocBuilder<InternalCsrDetailCubit, InternalCsrDetailState>(
-        builder: (context, state) {
-          if (state.status == CsrStateStatus.loading) {
-            return const Center(child: CircularProgressIndicator());
-          }
+    return BlocBuilder<InternalCsrDetailCubit, InternalCsrDetailState>(
+      builder: (context, state) {
+        final csr = state.clientServiceRequest;
 
-          if (state.status == CsrStateStatus.error) {
-            return Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(state.errorMessage ?? "Terjadi kesalahan"),
-                  const SizedBox(height: 12),
-                  ElevatedButton(
-                    onPressed: () {
-                      context
-                          .read<InternalCsrDetailCubit>()
-                          .getCsrDetail(widget.csrId);
-                    },
-                    child: const Text("Retry"),
-                  ),
-                ],
-              ),
-            );
-          }
+        return Scaffold(
+          appBar: AppBar(title: const Text("Detail Pengajuan Layanan")),
 
-          final csr = state.clientServiceRequest;
-          if (csr == null) return const SizedBox();
-
-          return SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _header(csr),
-                const SizedBox(height: 8),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Flexible(
-                      fit: FlexFit.loose,
-                      child: HorizontalButton(
-                          title: "Setujui Pengajuan", 
-                          leadingIcon: Icons.check,
-                          onTap: () {}
-                          ),
-                    ),
-                    SizedBox(width: 12),
-                    Flexible(
-                      fit: FlexFit.loose,
-                      child: HorizontalButton(
-                        leadingIcon: Icons.cancel,
-                        title: "Tolak Pengajuan",
-                        isDanger: true,
-                        onTap: () {}
-                      ),
-                    ),
-                  ],
+          // ⬇️ pakai state untuk bottom nav bar
+          bottomNavigationBar: csr == null
+              ? const SizedBox.shrink()
+              : CsrActionsButton(
+                  csrStatus: csr.status,
+                  csrId: widget.csrId,
                 ),
-                if (csr.clientIntakeForms != null &&
-                    csr.clientIntakeForms!.isNotEmpty)
-                  CustomList(
-                      scrollable: false,
-                      separatorHeight: 16,
-                      items: csr.clientIntakeForms!,
-                      itemBuilder: (item, _) =>
-                          FilledFormView(filledForm: item))
-              ],
+
+          body: _buildBody(state),
+        );
+      },
+    );
+  }
+
+  Widget _buildBody(InternalCsrDetailState state) {
+    if (state.status == CsrStateStatus.loading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (state.status == CsrStateStatus.error) {
+      return Center(
+        // mainAxisSize: MainAxisSize.min,
+        child: Column(
+          children: [
+            Text(state.errorMessage ?? "Terjadi kesalahan"),
+            const SizedBox(height: 12),
+            ElevatedButton(
+              onPressed: () => context
+                  .read<InternalCsrDetailCubit>()
+                  .getCsrDetail(widget.csrId),
+              child: const Text("Retry"),
             ),
-          );
-        },
+          ],
+        ),
+      );
+    }
+
+    final csr = state.clientServiceRequest;
+    if (csr == null) return const SizedBox();
+
+    return _buildContent(csr);
+  }
+
+  Widget _buildContent(ClientServiceRequestEntity csr) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _header(csr),
+          const SizedBox(height: 8),
+
+          if (csr.clientIntakeForms != null &&
+              csr.clientIntakeForms!.isNotEmpty)
+            CustomList(
+              scrollable: false,
+              separatorHeight: 16,
+              items: csr.clientIntakeForms!,
+              itemBuilder: (item, _) => FilledFormView(filledForm: item),
+            ),
+        ],
       ),
     );
   }
@@ -125,11 +120,13 @@ class _CsrDetailPageState extends State<CsrDetailPage> {
           ],
         ),
         const SizedBox(height: 4),
-        Row(children: [
-          ClientNameChip(name: csr.client.name),
-          const Spacer(),
-          CsrStatusChip(status: csr.status, showIcon: true)
-        ]),
+        Row(
+          children: [
+            ClientNameChip(name: csr.client.name),
+            const Spacer(),
+            CsrStatusChip(status: csr.status, showIcon: true),
+          ],
+        ),
         const SizedBox(height: 12),
       ],
     );

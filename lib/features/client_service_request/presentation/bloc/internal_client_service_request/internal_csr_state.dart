@@ -69,3 +69,34 @@ class InternalCsrDetailState extends Equatable {
         errorMessage,
       ];
 }
+
+class InternalCsrActionsState extends Equatable {
+  final String? workorderId;
+  final String? errorMessage;
+  final CsrStateStatus status;
+
+  const InternalCsrActionsState({
+    this.workorderId,
+    this.errorMessage,
+    this.status = CsrStateStatus.initial,
+  });
+
+  InternalCsrActionsState copyWith({
+    String? workorderId,
+    String? errorMessage,
+    CsrStateStatus? status,
+  }) {
+    return InternalCsrActionsState(
+      workorderId: workorderId ?? this.workorderId,
+      errorMessage: errorMessage ?? this.errorMessage,
+      status: status ?? this.status,
+    );
+  }
+
+  @override
+  List<Object?> get props => [
+        workorderId,
+        errorMessage,
+        status,
+      ];
+}

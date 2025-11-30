@@ -3,6 +3,7 @@ import 'package:workorder_company_app/core/network/api_response.dart';
 import 'package:workorder_company_app/core/network/endpoints.dart';
 import 'package:workorder_company_app/core/utils/safe_mapper.dart';
 import 'package:workorder_company_app/features/client_service_request/data/model/client_service_request_model.dart';
+import 'package:workorder_company_app/features/workorder/data/model/workorder_model.dart';
 
 abstract class ClientServiceRequestRemoteDatasource {
   Future<ApiResponse<List<ClientServiceRequestModel>>>
@@ -12,6 +13,11 @@ abstract class ClientServiceRequestRemoteDatasource {
   Future<ApiResponse<List<ClientServiceRequestModel>>>
       getClientServiceRequests();
   Future<ApiResponse<ClientServiceRequestModel>> getClientServiceRequestById(
+      String id);
+  Future<ApiResponse<WorkorderModel>> approveClientServiceRequest(String id);
+  Future<ApiResponse<ClientServiceRequestModel>> rejectClientServiceRequest(
+      String id);
+  Future<ApiResponse<ClientServiceRequestModel>> cancelClientServiceRequest(
       String id);
 }
 
@@ -61,5 +67,30 @@ class ClientServiceRequestRemoteDatasourceImpl
         (data) => SafeMapper.mapList(
             data as List?, (json) => ClientServiceRequestModel.fromJson(json)));
     // return ApiResponse.fromJson(json, fromJsonT)
+  }
+
+  @override
+  Future<ApiResponse<WorkorderModel>> approveClientServiceRequest(
+      String id) async {
+    final response =
+        await _apiClient.put('${Endpoints.clientServiceRequest.byId(id)}/approve');
+    return ApiResponse.fromJson(
+      response,
+      (data) => WorkorderModel.fromJson(data),
+    );
+  }
+
+  @override
+  Future<ApiResponse<ClientServiceRequestModel>> cancelClientServiceRequest(
+      String id) {
+    // TODO: implement cancelClientServiceRequest
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<ApiResponse<ClientServiceRequestModel>> rejectClientServiceRequest(
+      String id) {
+    // TODO: implement rejectClientServiceRequest
+    throw UnimplementedError();
   }
 }
