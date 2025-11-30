@@ -5,6 +5,7 @@ enum CsrStateStatus {
   loading,
   loaded,
   error,
+  rejected
 }
 
 class InternalCsrState extends Equatable {

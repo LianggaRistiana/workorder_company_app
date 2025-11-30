@@ -72,8 +72,8 @@ class ClientServiceRequestRemoteDatasourceImpl
   @override
   Future<ApiResponse<WorkorderModel>> approveClientServiceRequest(
       String id) async {
-    final response =
-        await _apiClient.put('${Endpoints.clientServiceRequest.byId(id)}/approve');
+    final response = await _apiClient
+        .put('${Endpoints.clientServiceRequest.byId(id)}/approve');
     return ApiResponse.fromJson(
       response,
       (data) => WorkorderModel.fromJson(data),
@@ -89,8 +89,12 @@ class ClientServiceRequestRemoteDatasourceImpl
 
   @override
   Future<ApiResponse<ClientServiceRequestModel>> rejectClientServiceRequest(
-      String id) {
-    // TODO: implement rejectClientServiceRequest
-    throw UnimplementedError();
+      String id) async {
+    final response = await _apiClient
+        .put('${Endpoints.clientServiceRequest.byId(id)}/reject');
+    return ApiResponse.fromJson(
+      response,
+      (data) => ClientServiceRequestModel.fromJson(data),
+    );
   }
 }

@@ -70,7 +70,10 @@ class ClientServiceRequestRepositoryImpl
 
   @override
   Future<Either<Failure, void>> rejectClientServiceRequest(String id) {
-    // TODO: implement rejectClientServiceRequest
-    throw UnimplementedError();
+    return safeCall(() async {
+      await _clientServiceRequestRemoteDatasource
+          .rejectClientServiceRequest(id);
+      return ;
+    });
   }
 }

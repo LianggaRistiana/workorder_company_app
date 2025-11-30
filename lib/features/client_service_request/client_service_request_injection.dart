@@ -7,6 +7,7 @@ import 'package:workorder_company_app/features/client_service_request/domain/use
 import 'package:workorder_company_app/features/client_service_request/domain/usecases/get_csr_usecase.dart';
 import 'package:workorder_company_app/features/client_service_request/domain/usecases/public_get_csr_usecase.dart';
 import 'package:workorder_company_app/features/client_service_request/domain/usecases/public_get_detail_csr_usecase.dart';
+import 'package:workorder_company_app/features/client_service_request/domain/usecases/reject_csr_usecase.dart';
 import 'package:workorder_company_app/features/client_service_request/presentation/bloc/internal_client_service_request/internal_csr_actions_cubit.dart';
 import 'package:workorder_company_app/features/client_service_request/presentation/bloc/internal_client_service_request/internal_csr_bloc.dart';
 import 'package:workorder_company_app/features/client_service_request/presentation/bloc/internal_client_service_request/internal_csr_detail_cubit.dart';
@@ -31,8 +32,8 @@ Future<void> initClientServiceRequestFeature() async {
   sl.registerLazySingleton<GetCsrDetailUsecase>(
       () => GetCsrDetailUsecase(sl()));
 
-  sl.registerLazySingleton<ApproveCsrUsecase>(
-      () => ApproveCsrUsecase(sl()));
+  sl.registerLazySingleton<ApproveCsrUsecase>(() => ApproveCsrUsecase(sl()));
+  sl.registerLazySingleton<RejectCsrUsecase>(() => RejectCsrUsecase(sl()));
 
   sl.registerFactory<InternalCsrBloc>(() => InternalCsrBloc(usecase: sl()));
   sl.registerFactory<InternalCsrDetailCubit>(
@@ -40,5 +41,6 @@ Future<void> initClientServiceRequestFeature() async {
 
   sl.registerFactory<CsrBloc>(() => CsrBloc(publicGetCsrUsecase: sl()));
   sl.registerFactory<CsrDetailCubit>(() => CsrDetailCubit(sl()));
-  sl.registerFactory<InternalCsrActionsCubit>(() => InternalCsrActionsCubit(sl()));
+  sl.registerFactory<InternalCsrActionsCubit>(
+      () => InternalCsrActionsCubit(sl(), sl()));
 }

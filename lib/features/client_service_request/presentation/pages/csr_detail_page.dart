@@ -40,6 +40,9 @@ class _CsrDetailPageState extends State<CsrDetailPage> {
               : CsrActionsButton(
                   csrStatus: csr.status,
                   csrId: widget.csrId,
+                  onRefresh: () => context
+                      .read<InternalCsrDetailCubit>()
+                      .getCsrDetail(widget.csrId),
                 ),
 
           body: _buildBody(state),
@@ -85,7 +88,6 @@ class _CsrDetailPageState extends State<CsrDetailPage> {
         children: [
           _header(csr),
           const SizedBox(height: 8),
-
           if (csr.clientIntakeForms != null &&
               csr.clientIntakeForms!.isNotEmpty)
             CustomList(

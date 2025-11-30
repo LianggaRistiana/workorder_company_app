@@ -10,12 +10,14 @@ import 'package:workorder_company_app/routes/app_routes.dart';
 
 class CsrActionsButton extends StatelessWidget {
   final ClientServiceRequestStatus csrStatus;
+  final VoidCallback? onRefresh;
   final String csrId;
 
   const CsrActionsButton({
     super.key,
     required this.csrStatus,
     required this.csrId,
+    this.onRefresh,
   });
 
   @override
@@ -32,6 +34,10 @@ class CsrActionsButton extends StatelessWidget {
                   content: Text(state.errorMessage ?? "Terjadi kesalahan"),
                 ),
               );
+            }
+
+            if (state.status == CsrStateStatus.rejected) {
+              onRefresh?.call();
             }
 
             if (state.status == CsrStateStatus.loaded &&
@@ -66,7 +72,13 @@ class CsrActionsButton extends StatelessWidget {
                         Icons.cancel_outlined,
                         color: Theme.of(context).colorScheme.error,
                       ),
-                      onPressed: isLoading ? null : () {},
+                      onPressed: isLoading
+                          ? null
+                          : () {
+                              context
+                                  .read<InternalCsrActionsCubit>()
+                                  .rejectCsr(csrId);
+                            },
                     ),
 
                     // SETUJUI
@@ -103,4 +115,3 @@ class CsrActionsButton extends StatelessWidget {
     }
   }
 }
-
