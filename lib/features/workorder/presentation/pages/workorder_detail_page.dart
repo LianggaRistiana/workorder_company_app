@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:logger/logger.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
+import 'package:workorder_company_app/core/network/endpoints.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 import 'package:workorder_company_app/features/client_service_request/presentation/widgets/client_name_chip.dart';
@@ -10,6 +11,7 @@ import 'package:workorder_company_app/features/services/domain/entities/required
 import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_bloc.dart';
 import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_detail_cubit.dart';
 import 'package:workorder_company_app/features/workorder/presentation/widgets/workorder_status_chip.dart';
+import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/filled_form_view.dart';
@@ -48,7 +50,7 @@ class _WorkorderDetailPageState extends State<WorkorderDetailPage> {
           }
 
           final workorder = state.workorder;
-          Logger().i(workorder?.workorderForms?.toString() ?? "null");
+          // Logger().i(workorder?.workorderForms?.toString() ?? "null");
           if (workorder == null) return const SizedBox();
 
           return SingleChildScrollView(
@@ -70,7 +72,15 @@ class _WorkorderDetailPageState extends State<WorkorderDetailPage> {
                   leadingIcon: Icons.person_add,
                   description:
                       "pegawai yang betugas harus sesuai dengan posisi yang dibutuhkan layanan",
-                  onTap: () {},
+                  onTap: () {
+                    context.push(
+                        AppRoutes.managerWorkorderStaffConfig
+                            .byId(workorder.id),
+                        extra: {
+                          'requiredStaff': workorder.service.requiredStaff,
+                          'assignedStaff': workorder.assignedStaffs
+                        });
+                  },
                 ),
                 _woAssignedStaff(workorder.service.requiredStaff,
                     workorder.assignedStaffs ?? []),

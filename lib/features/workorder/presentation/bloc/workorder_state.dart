@@ -1,10 +1,39 @@
 part of 'workorder_bloc.dart';
 
-enum WorkorderStateStatus {
-  initial,
-  loading,
-  loaded,
-  error,
+enum WorkorderStateStatus { initial, loading, loaded, error, success }
+
+class WorkorderStaffState extends Equatable {
+  final WorkorderStateStatus status;
+  final List<UserEntity> staffs;
+  final String? errorMessage;
+
+  const WorkorderStaffState(
+      {this.status = WorkorderStateStatus.initial,
+      this.staffs = const [],
+      this.errorMessage});
+
+  WorkorderStaffState copyWith({
+    WorkorderStateStatus? status,
+    List<UserEntity>? staffs,
+    String? errorMessage,
+  }) {
+    return WorkorderStaffState(
+      status: status ?? this.status,
+      staffs: staffs ?? this.staffs,
+      errorMessage: errorMessage ?? this.errorMessage,
+    );
+  }
+
+  List<UserEntity> staffByPositionId(String positionId) {
+    return staffs.where((staff) => staff.position?.id == positionId).toList();
+  }
+
+  @override
+  List<Object?> get props => [
+        status,
+        staffs,
+        errorMessage,
+      ];
 }
 
 class WorkorderDetailState extends Equatable {

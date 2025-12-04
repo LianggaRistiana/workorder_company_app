@@ -72,20 +72,20 @@ class _WorkordersPageState extends State<WorkordersPage> {
             );
           }
 
-          // EMPTY
-          if (state.workorders.isEmpty) {
-            return RefreshIndicator(
-              onRefresh: () async {
-                context.read<WorkorderBloc>().add(GetWorkordersRequested());
-              },
-              child: ListView(
-                children: const [
-                  SizedBox(height: 200),
-                  Center(child: Text("Belum ada pengajuan layanan.")),
-                ],
-              ),
-            );
-          }
+          // // EMPTY
+          // if (state.workorders.isEmpty) {
+          //   return RefreshIndicator(
+          //     onRefresh: () async {
+          //       context.read<WorkorderBloc>().add(GetWorkordersRequested());
+          //     },
+          //     child: ListView(
+          //       children: const [
+          //         SizedBox(height: 200),
+          //         Center(child: Text("Belum ada pengajuan layanan.")),
+          //       ],
+          //     ),
+          //   );
+          // }
 
           // LOADED — WITH PULL TO REFRESH
           return RefreshIndicator(

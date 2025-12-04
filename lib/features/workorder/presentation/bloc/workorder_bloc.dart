@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 import 'package:workorder_company_app/features/workorder/domain/entitties/workorder__entity.dart';
 import 'package:workorder_company_app/features/workorder/domain/usecases/get_workorders_usecases.dart';
 

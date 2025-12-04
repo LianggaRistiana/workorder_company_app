@@ -6,6 +6,8 @@ import 'package:workorder_company_app/features/workorder/data/model/workorder_mo
 
 abstract class WorkorderRemoteDatasource {
   Future<ApiResponse<List<WorkorderModel>>> getWorkorders();
+  Future<ApiResponse<WorkorderModel>> setAssignedStaffs(
+      List<String> staffEmail, String workorderId);
   Future<ApiResponse<WorkorderModel>> getWorkorderById(String id);
 }
 
@@ -32,6 +34,18 @@ class WorkorderRemoteDatasourceImpl implements WorkorderRemoteDatasource {
         data,
         (json) => WorkorderModel.fromJson(json),
       ),
+    );
+  }
+
+  @override
+  Future<ApiResponse<WorkorderModel>> setAssignedStaffs(
+      List<String> staffEmail, String workorderId) async {
+    final response = await _apiClient.put(
+        Endpoints.workorderSetAssignedStaff(workorderId),
+        data: {"staffEmail": staffEmail});
+    return ApiResponse.fromJson(
+      response,
+      (json) => WorkorderModel.fromJson(json),
     );
   }
 }
