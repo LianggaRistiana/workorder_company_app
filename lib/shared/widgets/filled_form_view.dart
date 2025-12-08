@@ -45,6 +45,9 @@ class FilledFormView extends StatelessWidget {
         return _textAnswer(answer.toString());
 
       case FieldType.email:
+        if (answer == null || answer.toString().isEmpty) {
+          return _textAnswer('-');
+        }
         return GestureDetector(
           onTap: () {},
           child: Text(

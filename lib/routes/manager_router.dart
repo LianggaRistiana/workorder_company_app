@@ -11,11 +11,13 @@ import 'package:workorder_company_app/features/client_service_request/presentati
 import 'package:workorder_company_app/features/employees/presentation/bloc/employees_bloc.dart';
 import 'package:workorder_company_app/features/home/presentation/pages/homepage/manager_company_homepage.dart';
 import 'package:workorder_company_app/features/services/domain/entities/required_staff_entity.dart';
+import 'package:workorder_company_app/features/workorder/presentation/bloc/workoder_submissions_forms_cubit.dart';
 import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_assigned_staff_cubit.dart';
 import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_bloc.dart';
 import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_detail_cubit.dart';
 import 'package:workorder_company_app/features/workorder/presentation/pages/workorder_detail_page.dart';
 import 'package:workorder_company_app/features/workorder/presentation/pages/workorder_staff_config_page.dart';
+import 'package:workorder_company_app/features/workorder/presentation/pages/workorder_submission_page.dart';
 import 'package:workorder_company_app/features/workorder/presentation/pages/workorders_page.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/layout/manager_company_layout.dart';
@@ -73,15 +75,39 @@ final managerRouter = [
       );
     },
   ),
-  GoRoute(
-    path: "${AppRoutes.managerWorkorder}/:id",
-    builder: (_, state) {
-      final id = state.pathParameters['id']!;
+  // GoRoute(
+  //   path: "${AppRoutes.managerWorkorder}/:id",
+  //   builder: (_, state) {
+  //     final id = state.pathParameters['id']!;
+  //     return BlocProvider(
+  //         create: (_) => sl<WorkorderDetailCubit>(),
+  //         child: WorkorderDetailPage(workorderId: id));
+  //   },
+  // ),
+  ShellRoute(
+    builder: (context, state, child) {
+      // final id = state.pathParameters['id']!;
       return BlocProvider(
-          create: (_) => sl<WorkorderDetailCubit>(),
-          child: WorkorderDetailPage(workorderId: id));
+        create: (_) => sl<WorkorderDetailCubit>(),
+        child: child,
+      );
     },
+    routes: [
+      GoRoute(
+          path: AppRoutes.managerWorkorderSubmissions,
+          builder: (_, __) => BlocProvider(
+              create: (_) => sl<WorkoderSubmissionsFormsCubit>(),
+              child: const WorkorderSubmissionPage())),
+      GoRoute(
+        path: "${AppRoutes.managerWorkorder}/:id",
+        builder: (_, state) {
+          final id = state.pathParameters['id']!;
+          return WorkorderDetailPage(workorderId: id);
+        },
+      ),
+    ],
   ),
+
   GoRoute(
     path: "${AppRoutes.managerWorkorderStaffConfig}/:id",
     builder: (_, state) {

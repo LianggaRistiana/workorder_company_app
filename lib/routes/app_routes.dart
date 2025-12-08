@@ -1,3 +1,4 @@
+
 class AppRoutes {
   static const login = '/login';
   static const home = '/home';
@@ -36,5 +37,7 @@ class AppRoutes {
   static const managerCsr = '/manager/service-request';
   static const managerWorkorder = '/manager/workorder';
   static const managerWorkorderStaffConfig = '/manager/workorder/staff-config';
+  static const managerWorkorderSubmissions = '/manager/workorder/submissions';
+  // static static managerWorkorderSubmissions(String id) => '${managerWorkorder.byId(id)}';
 
 }

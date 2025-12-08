@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:workorder_company_app/core/error/error.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
+import 'package:workorder_company_app/features/submissions/domain/entitties/submission_entity.dart';
 import 'package:workorder_company_app/features/workorder/domain/entitties/workorder__entity.dart';
 
 abstract class WorkorderRepository {
@@ -8,4 +9,6 @@ abstract class WorkorderRepository {
   Future<Either<Failure, WorkorderEntity>> getWorkorderById(String id);
   Future<Either<Failure, WorkorderEntity>> setAssignedStaffs(
       String id, List<UserEntity> staffs);
+  Future<Either<Failure, WorkorderEntity>> setSubmissions(
+      String id, List<SubmissionEntity> submissions);
 }

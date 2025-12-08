@@ -2,6 +2,32 @@ part of 'workorder_bloc.dart';
 
 enum WorkorderStateStatus { initial, loading, loaded, error, success }
 
+class WorkorderSubmissionsState extends Equatable {
+  final WorkorderStateStatus status;
+  final String? errorMessage;
+
+  const WorkorderSubmissionsState({
+    this.status = WorkorderStateStatus.initial,
+    this.errorMessage,
+  });
+
+  WorkorderSubmissionsState copyWith({
+    WorkorderStateStatus? status,
+    String? errorMessage,
+  }) {
+    return WorkorderSubmissionsState(
+      status: status ?? this.status,
+      errorMessage: errorMessage ?? this.errorMessage,
+    );
+  }
+
+  @override
+  List<Object?> get props => [
+        status,
+        errorMessage,
+      ];
+}
+
 class WorkorderStaffState extends Equatable {
   final WorkorderStateStatus status;
   final List<UserEntity> staffs;

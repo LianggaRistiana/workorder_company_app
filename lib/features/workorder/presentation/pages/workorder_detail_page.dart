@@ -36,80 +36,100 @@ class _WorkorderDetailPageState extends State<WorkorderDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(),
-        body: BlocBuilder<WorkorderDetailCubit, WorkorderDetailState>(
-            builder: (context, state) {
-          if (state.status == WorkorderStateStatus.loading) {
-            return const Center(child: CircularProgressIndicator());
-          }
+    return Scaffold(appBar: AppBar(
+      leading: BackButton(onPressed: () {
+        context.pop();
+      }),
+    ), body: BlocBuilder<WorkorderDetailCubit, WorkorderDetailState>(
+        builder: (context, state) {
+      if (state.status == WorkorderStateStatus.loading) {
+        return const Center(child: CircularProgressIndicator());
+      }
 
-          if (state.status == WorkorderStateStatus.error) {
-            return Center(
-                child: Text(state.errorMessage ?? "Terjadi kesalahan"));
-          }
+      if (state.status == WorkorderStateStatus.error) {
+        return Center(child: Text(state.errorMessage ?? "Terjadi kesalahan"));
+      }
 
-          final workorder = state.workorder;
-          // Logger().i(workorder?.workorderForms?.toString() ?? "null");
-          if (workorder == null) return const SizedBox();
+      final workorder = state.workorder;
+      // Logger().i(workorder?.workorderForms?.toString() ?? "null");
+      if (workorder == null) return const SizedBox();
 
-          return SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _woServiceName(workorder.service.title),
-                const SizedBox(height: AppSpacing.xs),
-                _woStatusAndCreatedTime(
-                    workorder.createdBy, workorder.status, workorder.createdAt),
-                const SizedBox(height: AppSpacing.md),
+      return SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _woServiceName(workorder.service.title),
+            const SizedBox(height: AppSpacing.xs),
+            _woStatusAndCreatedTime(
+                workorder.createdBy, workorder.status, workorder.createdAt),
+            const SizedBox(height: AppSpacing.md),
 
-                // Employee worked
-                Text("Pegawai bertugas",
-                    style: Theme.of(context).textTheme.titleMedium),
-                HorizontalButton(
-                  title: "Edit pegawai yang bertugas",
-                  leadingIcon: Icons.person_add,
-                  description:
-                      "pegawai yang betugas harus sesuai dengan posisi yang dibutuhkan layanan",
-                  onTap: () {
-                    context.push(
-                        AppRoutes.managerWorkorderStaffConfig
-                            .byId(workorder.id),
-                        extra: {
-                          'requiredStaff': workorder.service.requiredStaff,
-                          'assignedStaff': workorder.assignedStaffs
-                        });
-                  },
-                ),
-                _woAssignedStaff(workorder.service.requiredStaff,
-                    workorder.assignedStaffs ?? []),
+            // Employee worked
+            Text("Pegawai bertugas",
+                style: Theme.of(context).textTheme.titleMedium),
+            HorizontalButton(
+              title: "Edit pegawai yang bertugas",
+              leadingIcon: Icons.person_add,
+              description:
+                  "pegawai yang betugas harus sesuai dengan posisi yang dibutuhkan layanan",
+              onTap: () async {
+                final result = await context.push(
+                    AppRoutes.managerWorkorderStaffConfig.byId(workorder.id),
+                    extra: {
+                      'requiredStaff': workorder.service.requiredStaff,
+                      'assignedStaff': workorder.assignedStaffs
+                    });
 
-                // Work order filled form
-                const SizedBox(height: AppSpacing.md),
-                Text("Formulir Tugas Kerja",
-                    style: Theme.of(context).textTheme.titleMedium),
-                HorizontalButton(
-                  title: "Edit Formulir Tugas Kerja",
-                  leadingIcon: Icons.assignment_outlined,
-                  description:
-                      "Anda dapat mengedit tugas kerja selama tugas kerja belum berstatus Siap",
-                  onTap: () {},
-                ),
+                if (!context.mounted) return;
+                if (result == true) {
+                  context
+                      .read<WorkorderDetailCubit>()
+                      .getWorkorderDetail(widget.workorderId);
 
-                if (workorder.workorderForms != null &&
-                    workorder.workorderForms!.isNotEmpty)
-                  CustomList(
-                    scrollable: false,
-                    separatorHeight: 16,
-                    items: workorder.workorderForms!,
-                    itemBuilder: (item, _) => FilledFormView(filledForm: item),
-                  ),
-                const SizedBox(height: AppSpacing.md),
-              ],
+                  // ScaffoldMessenger.of(context).showSnackBar(
+                  //   const SnackBar(content: Text('Berhasil menyimpan')),
+                  // );
+                }
+              },
             ),
-          );
-        }));
+            _woAssignedStaff(workorder.service.requiredStaff,
+                workorder.assignedStaffs ?? []),
+
+            // Work order filled form
+            const SizedBox(height: AppSpacing.md),
+            Text("Formulir Tugas Kerja",
+                style: Theme.of(context).textTheme.titleMedium),
+            HorizontalButton(
+              title: "Edit Formulir Tugas Kerja",
+              leadingIcon: Icons.assignment_outlined,
+              description:
+                  "Anda dapat mengedit tugas kerja selama tugas kerja belum berstatus Siap ",
+              onTap: () async {
+                final result =
+                    await context.push(AppRoutes.managerWorkorderSubmissions);
+                if (!context.mounted) return;
+                if (result == true) {
+                  context
+                      .read<WorkorderDetailCubit>()
+                      .getWorkorderDetail(widget.workorderId);
+                }
+              },
+            ),
+
+            if (workorder.workorderForms != null &&
+                workorder.workorderForms!.isNotEmpty)
+              CustomList(
+                scrollable: false,
+                separatorHeight: 16,
+                items: workorder.workorderForms!,
+                itemBuilder: (item, _) => FilledFormView(filledForm: item),
+              ),
+            const SizedBox(height: AppSpacing.md),
+          ],
+        ),
+      );
+    }));
   }
 
   Widget _woServiceName(String name) {
@@ -222,46 +242,3 @@ class _WorkorderDetailPageState extends State<WorkorderDetailPage> {
   }
 }
 
-// final dummyPosition = [
-//   PositionEntity(id: "1", name: "Tukang"),
-//   PositionEntity(id: "2", name: "IT Suprot"),
-// ];
-
-// final dummyUsers = [
-//   UserEntity(
-//     name: "Aldo Pratama",
-//     email: "aldo@example.com",
-//     role: UserRole.managerCompany,
-//     position: dummyPosition.firstWhere((p) => p.id == "1"),
-//   ),
-//   UserEntity(
-//     name: "Sinta Lestari",
-//     email: "sinta@example.com",
-//     role: UserRole.staffCompany,
-//     position: dummyPosition.firstWhere((p) => p.id == "1"),
-//   ),
-//   UserEntity(
-//     name: "Bagus Saputra",
-//     email: "bagus@example.com",
-//     role: UserRole.staffCompany,
-//     position: dummyPosition.firstWhere((p) => p.id == "1"),
-//   ),
-//   UserEntity(
-//     name: "Dewi Ayu",
-//     email: "dewi@example.com",
-//     role: UserRole.staffCompany,
-//     position: dummyPosition.firstWhere((p) => p.id == "1"),
-//   ),
-//   UserEntity(
-//     name: "Rifki Hidayat",
-//     email: "rifki@example.com",
-//     role: UserRole.staffCompany,
-//     position: dummyPosition.firstWhere((p) => p.id == "1"),
-//   ),
-//   UserEntity(
-//     name: "Melati Rahma",
-//     email: "melati@example.com",
-//     role: UserRole.staffCompany,
-//     position: dummyPosition.firstWhere((p) => p.id == "2"),
-//   ),
-// ];

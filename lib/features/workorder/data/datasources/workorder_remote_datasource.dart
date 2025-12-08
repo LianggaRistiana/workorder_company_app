@@ -2,6 +2,7 @@ import 'package:workorder_company_app/core/network/api_client.dart';
 import 'package:workorder_company_app/core/network/api_response.dart';
 import 'package:workorder_company_app/core/network/endpoints.dart';
 import 'package:workorder_company_app/core/utils/safe_mapper.dart';
+import 'package:workorder_company_app/features/submissions/data/model/submissions_model.dart';
 import 'package:workorder_company_app/features/workorder/data/model/workorder_model.dart';
 
 abstract class WorkorderRemoteDatasource {
@@ -9,6 +10,8 @@ abstract class WorkorderRemoteDatasource {
   Future<ApiResponse<WorkorderModel>> setAssignedStaffs(
       List<String> staffEmail, String workorderId);
   Future<ApiResponse<WorkorderModel>> getWorkorderById(String id);
+  Future<ApiResponse<WorkorderModel>> setSubmissions(
+      String id, List<SubmissionsModel> submissions);
 }
 
 class WorkorderRemoteDatasourceImpl implements WorkorderRemoteDatasource {
@@ -43,6 +46,17 @@ class WorkorderRemoteDatasourceImpl implements WorkorderRemoteDatasource {
     final response = await _apiClient.put(
         Endpoints.workorderSetAssignedStaff(workorderId),
         data: {"staffEmail": staffEmail});
+    return ApiResponse.fromJson(
+      response,
+      (json) => WorkorderModel.fromJson(json),
+    );
+  }
+
+  @override
+  Future<ApiResponse<WorkorderModel>> setSubmissions(
+      String id, List<SubmissionsModel> submissions) async {
+    final response = await _apiClient.put(Endpoints.workorderSetSubmissions(id),
+        data: {"submissions": submissions});
     return ApiResponse.fromJson(
       response,
       (json) => WorkorderModel.fromJson(json),

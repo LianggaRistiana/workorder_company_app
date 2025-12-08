@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 import 'package:workorder_company_app/features/employees/presentation/bloc/employees_bloc.dart';
@@ -17,17 +18,18 @@ class WorkorderStaffConfigPage extends StatefulWidget {
   final List<UserEntity> assignedStaffs;
   final List<RequiredStaffEntity> requiredStaff;
 
-  const WorkorderStaffConfigPage(
-      {super.key,
-      required this.workorderId,
-      required this.assignedStaffs,
-      required this.requiredStaff});
+  const WorkorderStaffConfigPage({
+    super.key,
+    required this.workorderId,
+    required this.assignedStaffs,
+    required this.requiredStaff,
+  });
 
   @override
-  State<WorkorderStaffConfigPage> createState() => _WorkoredrStaffConfigState();
+  State<WorkorderStaffConfigPage> createState() => _WorkorderStaffConfigState();
 }
 
-class _WorkoredrStaffConfigState extends State<WorkorderStaffConfigPage> {
+class _WorkorderStaffConfigState extends State<WorkorderStaffConfigPage> {
   @override
   void initState() {
     super.initState();
@@ -39,67 +41,107 @@ class _WorkoredrStaffConfigState extends State<WorkorderStaffConfigPage> {
 
   @override
   Widget build(BuildContext context) {
-    final employeesBloc = context.watch<EmployeesBloc>();
-    final employeesState = employeesBloc.state;
-
+    final employeesState = context.watch<EmployeesBloc>().state;
     final employees = employeesState is EmployeesLoaded
         ? employeesState.employees
         : <UserEntity>[];
 
     List<UserEntity> employeeByPositionId(String positionId) {
-      return employees
-          .where((staff) => staff.position?.id == positionId)
-          .toList();
+      return employees.where((u) => u.position?.id == positionId).toList();
     }
 
-    return BlocBuilder<WorkorderAssignedStaffCubit, WorkorderStaffState>(
-        builder: (context, state) {
-      return Scaffold(
+    return BlocConsumer<WorkorderAssignedStaffCubit, WorkorderStaffState>(
+      listener: (context, state) {
+        if (state.status == WorkorderStateStatus.success) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Berhasil menyimpan Pegawai yang bertugas')),
+          );
+          context.pop(true);
+        }
+
+        if (state.status == WorkorderStateStatus.error) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(state.errorMessage ?? "Terjadi kesalahan")),
+          );
+        }
+      },
+      builder: (context, state) {
+        final isLoading = state.status == WorkorderStateStatus.loading;
+
+        return Scaffold(
           appBar: AppBar(),
           floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              context
-                  .read<WorkorderAssignedStaffCubit>()
-                  .submitStaff(widget.workorderId);
-            },
-            child: const Icon(Icons.save),
+            onPressed: isLoading
+                ? null
+                : () {
+                    context
+                        .read<WorkorderAssignedStaffCubit>()
+                        .submitStaff(widget.workorderId);
+                  },
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 250),
+              child: isLoading
+                  ? const SizedBox(
+                      key: ValueKey("fab_loading"),
+                      width: 24,
+                      height: 24,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2.4,
+                        color: Colors.white,
+                      ),
+                    )
+                  : const Icon(Icons.save, key: ValueKey("fab_icon")),
+            ),
           ),
           body: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
             child: CustomList(
-                separatorHeight: 8,
-                items: widget.requiredStaff,
-                itemBuilder: (item, _) => Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+              separatorHeight: 8,
+              items: widget.requiredStaff,
+              itemBuilder: (requiredItem, _) {
+                final assigned =
+                    state.staffByPositionId(requiredItem.position.id);
+
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Header posisi + quota
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(item.position.name,
-                                style: Theme.of(context).textTheme.titleMedium),
-                            StaffQuotaChip(
-                                currentCount: state
-                                    .staffByPositionId(item.position.id)
-                                    .length,
-                                min: item.minimumStaff,
-                                max: item.maximumStaff),
-                          ],
+                        Text(
+                          requiredItem.position.name,
+                          style: Theme.of(context).textTheme.titleMedium,
                         ),
-                        const SizedBox(height: 8),
-                        CustomCard(
-                            child: assignedStaffList(
-                                item,
-                                employeeByPositionId(item.position.id),
-                                state.staffByPositionId(item.position.id),
-                                (user) {
-                          context
-                              .read<WorkorderAssignedStaffCubit>()
-                              .removeAssignStaff(user);
-                        })),
+                        StaffQuotaChip(
+                          currentCount: assigned.length,
+                          min: requiredItem.minimumStaff,
+                          max: requiredItem.maximumStaff,
+                        ),
                       ],
-                    )),
-          ));
-    });
+                    ),
+
+                    const SizedBox(height: 8),
+
+                    // List staff assigned
+                    CustomCard(
+                      child: assignedStaffList(
+                        requiredItem,
+                        employeeByPositionId(requiredItem.position.id),
+                        assigned,
+                        (user) => context
+                            .read<WorkorderAssignedStaffCubit>()
+                            .removeAssignStaff(user),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        );
+      },
+    );
   }
 
   Widget assignedStaffList(
@@ -111,37 +153,35 @@ class _WorkoredrStaffConfigState extends State<WorkorderStaffConfigPage> {
     return Column(
       children: [
         CustomList(
-            scrollable: false,
-            separatorHeight: 4,
-            items: staffs,
-            itemBuilder: (item, _) => Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    UserChip(
-                      user: item,
-                    ),
-                    IconButton(
-                        onPressed: () => onPressed?.call(item),
-                        icon: Icon(
-                          Icons.remove_circle,
-                          color: Colors.red,
-                        ))
-                  ],
-                )),
+          scrollable: false,
+          separatorHeight: 4,
+          items: staffs,
+          itemBuilder: (item, _) => Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              UserChip(user: item),
+              IconButton(
+                onPressed: () => onPressed?.call(item),
+                icon: const Icon(Icons.remove_circle, color: Colors.red),
+              ),
+            ],
+          ),
+        ),
         Row(
           children: [
             EmployeeSelector(
-                title: requiredStaff.position.name,
-                availableEmployees: availableEmployees,
-                onAdd: (user) {
-                  context
-                      .read<WorkorderAssignedStaffCubit>()
-                      .addAssignStaff(user);
-                },
-                isLoading: false,
-                selectedEmployees: staffs),
+              title: requiredStaff.position.name,
+              availableEmployees: availableEmployees,
+              onAdd: (user) {
+                context
+                    .read<WorkorderAssignedStaffCubit>()
+                    .addAssignStaff(user);
+              },
+              isLoading: false,
+              selectedEmployees: staffs,
+            ),
           ],
-        )
+        ),
       ],
     );
   }
