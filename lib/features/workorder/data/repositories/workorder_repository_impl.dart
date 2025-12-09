@@ -50,4 +50,24 @@ class WorkorderRepositoryImpl implements WorkorderRepository {
       return payload.data!;
     });
   }
+
+  @override
+  Future<Either<Failure, void>> setToReady(String id) {
+    return safeCall(() async {
+      await _workorderRemoteDatasource.setToReady(id);
+      return;
+    });
+  }
+
+  @override
+  Future<Either<Failure, void>> setToComplete(String id) {
+    // TODO: implement setToComplete
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, void>> setToStart(String id) {
+    // TODO: implement setToStart
+    throw UnimplementedError();
+  }
 }

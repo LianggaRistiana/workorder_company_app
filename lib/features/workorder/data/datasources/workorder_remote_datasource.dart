@@ -12,6 +12,10 @@ abstract class WorkorderRemoteDatasource {
   Future<ApiResponse<WorkorderModel>> getWorkorderById(String id);
   Future<ApiResponse<WorkorderModel>> setSubmissions(
       String id, List<SubmissionsModel> submissions);
+  Future<ApiResponse<WorkorderModel>> setToReady(String id);
+  Future<ApiResponse<WorkorderModel>> setToStart(String id);
+  Future<ApiResponse<WorkorderModel>> setToCancel(String id);
+  Future<ApiResponse<WorkorderModel>> setToComplete(String id);
 }
 
 class WorkorderRemoteDatasourceImpl implements WorkorderRemoteDatasource {
@@ -61,5 +65,32 @@ class WorkorderRemoteDatasourceImpl implements WorkorderRemoteDatasource {
       response,
       (json) => WorkorderModel.fromJson(json),
     );
+  }
+
+  @override
+  Future<ApiResponse<WorkorderModel>> setToCancel(String id) {
+    // TODO: implement setToCancel
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<ApiResponse<WorkorderModel>> setToComplete(String id) {
+    // TODO: implement setToComplete
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<ApiResponse<WorkorderModel>> setToReady(String id) async {
+    final response = await _apiClient.put(Endpoints.workorderSetToReady(id));
+    return ApiResponse.fromJson(
+      response,
+      (json) => WorkorderModel.fromJson(json),
+    );
+  }
+
+  @override
+  Future<ApiResponse<WorkorderModel>> setToStart(String id) {
+    // TODO: implement setToStart
+    throw UnimplementedError();
   }
 }

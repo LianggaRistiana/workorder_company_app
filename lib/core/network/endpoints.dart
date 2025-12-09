@@ -32,6 +32,7 @@ class Endpoints {
   static const String workorder = "/workorders";
   static  workorderSetAssignedStaff(String id) => "${workorder.byId(id)}/assign-staffs";
   static  workorderSetSubmissions(String id) => "${workorder.byId(id)}/submissions";
+  static  workorderSetToReady(String id) => "${workorder.byId(id)}/ready";
 
   // Public Endpoint
   static const String publicCompanies = '$clientPrefix/companies';

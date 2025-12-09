@@ -11,4 +11,7 @@ abstract class WorkorderRepository {
       String id, List<UserEntity> staffs);
   Future<Either<Failure, WorkorderEntity>> setSubmissions(
       String id, List<SubmissionEntity> submissions);
+  Future<Either<Failure, void>> setToReady(String id);
+  Future<Either<Failure, void>> setToComplete(String id);
+  Future<Either<Failure, void>> setToStart(String id);
 }

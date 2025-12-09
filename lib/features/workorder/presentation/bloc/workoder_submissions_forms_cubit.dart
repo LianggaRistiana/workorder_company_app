@@ -4,6 +4,8 @@ import 'package:workorder_company_app/features/submissions/domain/entitties/subm
 import 'package:workorder_company_app/features/workorder/domain/usecases/set_workorder_submissions_usecase.dart';
 import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_bloc.dart';
 
+
+// FIXME : fix the typo of this file
 class WorkoderSubmissionsFormsCubit extends Cubit<WorkorderSubmissionsState> {
   final SetWorkorderSubmissionsUsecase _setWorkorderSubmissionsUsecase;
 
