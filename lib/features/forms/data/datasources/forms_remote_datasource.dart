@@ -1,6 +1,7 @@
 import 'package:workorder_company_app/core/network/api_client.dart';
 import 'package:workorder_company_app/core/network/api_response.dart';
 import 'package:workorder_company_app/core/network/endpoints.dart';
+import 'package:workorder_company_app/core/utils/safe_mapper.dart';
 import 'package:workorder_company_app/features/forms/data/model/form_model.dart';
 import 'package:workorder_company_app/features/forms/data/model/ordered_form_model.dart';
 import 'package:workorder_company_app/features/submissions/data/model/submissions_model.dart';
@@ -25,9 +26,17 @@ class FormsRemoteDatasourceImpl implements FormsRemoteDatasource {
 
     return ApiResponse.fromJson(
       response,
-      (data) =>
-          (data as List? ?? []).map((e) => FormModel.fromJson(e)).toList(),
+      (data) => SafeMapper.mapList(
+        data,
+        (json) => FormModel.fromJson(json),
+      ),
     );
+
+    // return ApiResponse.fromJson(
+    //   response,
+    //   (data) =>
+    //       (data as List? ?? []).map((e) => FormModel.fromJson(e)).toList(),
+    // );
   }
 
   @override

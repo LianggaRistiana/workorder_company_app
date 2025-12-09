@@ -17,7 +17,7 @@ class UserModel extends UserEntity {
       email: safeParse<String>(json, "email"),
       role: UserRole.fromString(safeParse<String>(json, "role")),
       position: json['position'] != null
-          ? PositionModel.fromJson(json['position'])
+          ? PositionModel.fromJson(safeParse<Map<String, dynamic>>(json, "position"))
           : null, // handle null
     );
   }

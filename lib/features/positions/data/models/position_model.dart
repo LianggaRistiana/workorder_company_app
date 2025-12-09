@@ -1,3 +1,4 @@
+import 'package:workorder_company_app/core/utils/safe_parse.dart';
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
 
 class PositionModel extends PositionEntity {
@@ -8,8 +9,8 @@ class PositionModel extends PositionEntity {
 
   factory PositionModel.fromJson(Map<String, dynamic> json) {
     return PositionModel(
-      id: json['_id'] as String,
-      name: json['name'] as String,
+      id: safeParse<String>(json, "_id"),
+      name: safeParse<String>(json, "name"),
     );
   }
 
