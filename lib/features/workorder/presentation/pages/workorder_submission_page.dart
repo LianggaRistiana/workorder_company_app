@@ -14,7 +14,8 @@ class WorkorderSubmissionPage extends StatefulWidget {
   const WorkorderSubmissionPage({super.key});
 
   @override
-  State<WorkorderSubmissionPage> createState() => _WorkorderSubmissionPageState();
+  State<WorkorderSubmissionPage> createState() =>
+      _WorkorderSubmissionPageState();
 }
 
 class _WorkorderSubmissionPageState extends State<WorkorderSubmissionPage> {
@@ -28,7 +29,8 @@ class _WorkorderSubmissionPageState extends State<WorkorderSubmissionPage> {
     if (index == -1) return;
 
     final submission = updated[index];
-    final updatedFields = List<FieldDataEntity>.from(submission.fieldsData ?? []);
+    final updatedFields =
+        List<FieldDataEntity>.from(submission.fieldsData ?? []);
     final fieldIndex = updatedFields.indexWhere((f) => f.order == order);
 
     if (fieldIndex != -1) {
@@ -61,10 +63,7 @@ class _WorkorderSubmissionPageState extends State<WorkorderSubmissionPage> {
 
   @override
   Widget build(BuildContext context) {
-    final workorder = context
-        .watch<WorkorderDetailCubit>()
-        .state
-        .workorder;
+    final workorder = context.watch<WorkorderDetailCubit>().state.workorder;
 
     if (workorder == null) {
       return const Scaffold(
@@ -92,18 +91,23 @@ class _WorkorderSubmissionPageState extends State<WorkorderSubmissionPage> {
       initialized = true;
     }
 
-    return BlocConsumer<WorkoderSubmissionsFormsCubit, WorkorderSubmissionsState>(
+    return BlocConsumer<WorkoderSubmissionsFormsCubit,
+        WorkorderSubmissionsState>(
       listener: (context, state) {
         if (state.status == WorkorderStateStatus.success) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Berhasil menyimpan formulir tugas kerja')),
+            const SnackBar(
+                behavior: SnackBarBehavior.floating,
+                content: Text('Berhasil menyimpan formulir tugas kerja')),
           );
           context.pop(true);
         }
 
         if (state.status == WorkorderStateStatus.error) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.errorMessage ?? 'Terjadi kesalahan')),
+            SnackBar(
+                behavior: SnackBarBehavior.floating,
+                content: Text(state.errorMessage ?? 'Terjadi kesalahan')),
           );
         }
       },
@@ -117,7 +121,8 @@ class _WorkorderSubmissionPageState extends State<WorkorderSubmissionPage> {
                 ? null
                 : () {
                     // Logger().i(submissions);
-                    context.read<WorkoderSubmissionsFormsCubit>()
+                    context
+                        .read<WorkoderSubmissionsFormsCubit>()
                         .submitSubmissions(workorder.id, submissions);
                   },
             child: const Icon(Icons.save),
@@ -138,4 +143,3 @@ class _WorkorderSubmissionPageState extends State<WorkorderSubmissionPage> {
     );
   }
 }
-

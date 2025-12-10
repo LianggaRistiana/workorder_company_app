@@ -54,14 +54,18 @@ class _WorkorderStaffConfigState extends State<WorkorderStaffConfigPage> {
       listener: (context, state) {
         if (state.status == WorkorderStateStatus.success) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Berhasil menyimpan Pegawai yang bertugas')),
+            const SnackBar(
+                behavior: SnackBarBehavior.floating,
+                content: Text('Berhasil menyimpan Pegawai yang bertugas')),
           );
           context.pop(true);
         }
 
         if (state.status == WorkorderStateStatus.error) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.errorMessage ?? "Terjadi kesalahan")),
+            SnackBar(
+                behavior: SnackBarBehavior.floating,
+                content: Text(state.errorMessage ?? "Terjadi kesalahan")),
           );
         }
       },

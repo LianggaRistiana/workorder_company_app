@@ -6,7 +6,9 @@ import 'package:workorder_company_app/features/workorder/domain/usecases/get_det
 import 'package:workorder_company_app/features/workorder/domain/usecases/get_workorders_usecases.dart';
 import 'package:workorder_company_app/features/workorder/domain/usecases/set_assigned_staff_usecase.dart';
 import 'package:workorder_company_app/features/workorder/domain/usecases/set_workorder_submissions_usecase.dart';
+import 'package:workorder_company_app/features/workorder/domain/usecases/set_workorder_to_ready_usecase.dart';
 import 'package:workorder_company_app/features/workorder/presentation/bloc/workoder_submissions_forms_cubit.dart';
+import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_actions_cubit.dart';
 import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_assigned_staff_cubit.dart';
 import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_bloc.dart';
 import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_detail_cubit.dart';
@@ -30,10 +32,16 @@ Future<void> initWorkorderFeature() async {
   sl.registerLazySingleton<SetWorkorderSubmissionsUsecase>(
       () => SetWorkorderSubmissionsUsecase(sl()));
 
+
+  sl.registerLazySingleton<SetWorkorderToReadyUsecase>(
+      () => SetWorkorderToReadyUsecase(sl()));
+
   sl.registerFactory<WorkorderBloc>(
       () => WorkorderBloc(getWorkordersUsecases: sl()));
 
   sl.registerFactory<WorkorderDetailCubit>(() => WorkorderDetailCubit(sl()));
+
+  sl.registerFactory<WorkorderActionsCubit>(() => WorkorderActionsCubit(sl()));
 
   sl.registerFactory<WorkoderSubmissionsFormsCubit>(
       () => WorkoderSubmissionsFormsCubit(sl()));

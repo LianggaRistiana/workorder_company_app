@@ -12,6 +12,7 @@ import 'package:workorder_company_app/features/employees/presentation/bloc/emplo
 import 'package:workorder_company_app/features/home/presentation/pages/homepage/manager_company_homepage.dart';
 import 'package:workorder_company_app/features/services/domain/entities/required_staff_entity.dart';
 import 'package:workorder_company_app/features/workorder/presentation/bloc/workoder_submissions_forms_cubit.dart';
+import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_actions_cubit.dart';
 import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_assigned_staff_cubit.dart';
 import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_bloc.dart';
 import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_detail_cubit.dart';
@@ -86,11 +87,14 @@ final managerRouter = [
   // ),
   ShellRoute(
     builder: (context, state, child) {
-      // final id = state.pathParameters['id']!;
-      return BlocProvider(
-        create: (_) => sl<WorkorderDetailCubit>(),
-        child: child,
-      );
+      return MultiBlocProvider(providers: [
+        BlocProvider(
+          create: (_) => sl<WorkorderDetailCubit>(),
+        ),
+        BlocProvider(
+          create: (_) => sl<WorkorderActionsCubit>(),
+        ),
+      ], child: child);
     },
     routes: [
       GoRoute(
