@@ -4,6 +4,7 @@ import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_actions_cubit.dart';
 import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_bloc.dart';
+import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 
 class WorkorderActionButtons extends StatelessWidget {
   final WorkOrderStatus workorderStatus;
@@ -24,21 +25,11 @@ class WorkorderActionButtons extends StatelessWidget {
             listenWhen: (prev, curr) => prev.status != curr.status,
             listener: (context, state) {
               if (state.status == WorkorderStateStatus.error) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    behavior: SnackBarBehavior.floating,
-                    content: Text(state.errorMessage ?? "Terjadi kesalahan"),
-                  ),
-                );
+                context.showError(state.errorMessage ?? "Terjadi kesalahan");
               }
 
               if (state.status == WorkorderStateStatus.success) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    behavior: SnackBarBehavior.floating,
-                    content: Text("Berhasil Menyimpan Tugas Kerja"),
-                  ),
-                );
+                context.showSuccess("Berhasil menyimpan tugas kerja");
 
                 onRefresh?.call();
               }
@@ -108,12 +99,13 @@ class WorkorderActionButtons extends StatelessWidget {
               }
 
               if (state.status == WorkorderStateStatus.success) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    behavior: SnackBarBehavior.floating,
-                    content: Text("Berhasil Menyimpan Tugas Kerja"),
-                  ),
-                );
+                context.showSuccess("Berhasil menyimpan tugas kerja");
+                // ScaffoldMessenger.of(context).showSnackBar(
+                //   SnackBar(
+                //     behavior: SnackBarBehavior.floating,
+                //     content: Text("Berhasil Menyimpan Tugas Kerja"),
+                //   ),
+                // );
 
                 onRefresh?.call();
               }

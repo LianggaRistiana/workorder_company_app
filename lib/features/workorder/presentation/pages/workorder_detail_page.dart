@@ -14,6 +14,7 @@ import 'package:workorder_company_app/features/workorder/presentation/bloc/worko
 import 'package:workorder_company_app/features/workorder/presentation/widgets/workorder_action_buttons.dart';
 import 'package:workorder_company_app/features/workorder/presentation/widgets/workorder_status_chip.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/filled_form_view.dart';
@@ -42,12 +43,13 @@ class _WorkorderDetailPageState extends State<WorkorderDetailPage> {
         listenWhen: (prev, curr) => prev.status != curr.status,
         listener: (context, state) {
           if (state.status == WorkorderStateStatus.error) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                behavior: SnackBarBehavior.floating,
-                content: Text(state.errorMessage ?? "Terjadi kesalahan"),
-              ),
-            );
+            context.showError(state.errorMessage ?? "Terjadi kesalahan");
+            // ScaffoldMessenger.of(context).showSnackBar(
+            //   SnackBar(
+            //     behavior: SnackBarBehavior.floating,
+            //     content: Text(state.errorMessage ?? "Terjadi kesalahan"),
+            //   ),
+            // );
           }
         },
         builder: (context, state) {

@@ -9,6 +9,7 @@ import 'package:workorder_company_app/features/submissions/presentation/widgets/
 import 'package:workorder_company_app/features/workorder/presentation/bloc/workoder_submissions_forms_cubit.dart';
 import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_bloc.dart';
 import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_detail_cubit.dart';
+import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 
 class WorkorderSubmissionPage extends StatefulWidget {
   const WorkorderSubmissionPage({super.key});
@@ -95,20 +96,23 @@ class _WorkorderSubmissionPageState extends State<WorkorderSubmissionPage> {
         WorkorderSubmissionsState>(
       listener: (context, state) {
         if (state.status == WorkorderStateStatus.success) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-                behavior: SnackBarBehavior.floating,
-                content: Text('Berhasil menyimpan formulir tugas kerja')),
-          );
+          // ScaffoldMessenger.of(context).showSnackBar(
+          //   const SnackBar(
+          //       behavior: SnackBarBehavior.floating,
+          //       content: Text('Berhasil menyimpan formulir tugas kerja')),
+          // );
+          context.showSuccess('Berhasil menyimpan formulir tugas kerja');
           context.pop(true);
         }
 
         if (state.status == WorkorderStateStatus.error) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-                behavior: SnackBarBehavior.floating,
-                content: Text(state.errorMessage ?? 'Terjadi kesalahan')),
-          );
+          context.showError(state.errorMessage ?? 'Terjadi kesalahan');
+
+          // ScaffoldMessenger.of(context).showSnackBar(
+          //   SnackBar(
+          //       behavior: SnackBarBehavior.floating,
+          //       content: Text(state.errorMessage ?? 'Terjadi kesalahan')),
+          // );
         }
       },
       builder: (context, state) {
