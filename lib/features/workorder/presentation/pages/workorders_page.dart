@@ -111,9 +111,17 @@ class _WorkordersPageState extends State<WorkordersPage> {
                           items: state.workorders,
                           itemBuilder: (item, _) => WorkorderItem(
                             workorder: item,
-                            onTap: () {
-                              context.push(
+                            onTap: () async {
+                              final result = await context.push(
                                   AppRoutes.managerWorkorder.byId(item.id));
+                              // Logger().d(result);
+
+                              if (!context.mounted) return;
+                              if (result == true) {
+                                context
+                                    .read<WorkorderBloc>()
+                                    .add(GetWorkordersRequested());
+                              }
                             },
                           ),
                         ),

@@ -9,7 +9,8 @@ extension ContextSnackbar on BuildContext {
         margin: const EdgeInsets.all(16),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
-            side: BorderSide(color: Colors.green)),
+            side: BorderSide(color: Theme.of(this).dividerColor.withAlpha(50))
+            ),
         content: Row(
           children: [
             const Icon(Icons.check_circle, color: Colors.green),

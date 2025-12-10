@@ -37,6 +37,13 @@ class _WorkorderDetailPageState extends State<WorkorderDetailPage> {
     context.read<WorkorderDetailCubit>().getWorkorderDetail(widget.workorderId);
   }
 
+  bool isDataUpdated = false;
+
+  void _refresh() {
+    isDataUpdated = true;
+    context.read<WorkorderDetailCubit>().getWorkorderDetail(widget.workorderId);
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<WorkorderDetailCubit, WorkorderDetailState>(
@@ -44,12 +51,6 @@ class _WorkorderDetailPageState extends State<WorkorderDetailPage> {
         listener: (context, state) {
           if (state.status == WorkorderStateStatus.error) {
             context.showError(state.errorMessage ?? "Terjadi kesalahan");
-            // ScaffoldMessenger.of(context).showSnackBar(
-            //   SnackBar(
-            //     behavior: SnackBarBehavior.floating,
-            //     content: Text(state.errorMessage ?? "Terjadi kesalahan"),
-            //   ),
-            // );
           }
         },
         builder: (context, state) {
@@ -57,7 +58,7 @@ class _WorkorderDetailPageState extends State<WorkorderDetailPage> {
           return Scaffold(
             appBar: AppBar(
               leading: BackButton(onPressed: () {
-                context.pop();
+                context.pop(isDataUpdated);
               }),
             ),
             bottomNavigationBar: workorder == null
@@ -66,9 +67,7 @@ class _WorkorderDetailPageState extends State<WorkorderDetailPage> {
                     workorderStatus: workorder.status,
                     workorderId: widget.workorderId,
                     onRefresh: () {
-                      context
-                          .read<WorkorderDetailCubit>()
-                          .getWorkorderDetail(widget.workorderId);
+                      _refresh();
                     },
                   ),
             body: workorder == null
@@ -111,10 +110,9 @@ class _WorkorderDetailPageState extends State<WorkorderDetailPage> {
                     });
 
                 if (!context.mounted) return;
+
                 if (result == true) {
-                  context
-                      .read<WorkorderDetailCubit>()
-                      .getWorkorderDetail(widget.workorderId);
+                  _refresh();
                 }
               },
             ),
@@ -137,9 +135,7 @@ class _WorkorderDetailPageState extends State<WorkorderDetailPage> {
                     await context.push(AppRoutes.managerWorkorderSubmissions);
                 if (!context.mounted) return;
                 if (result == true) {
-                  context
-                      .read<WorkorderDetailCubit>()
-                      .getWorkorderDetail(widget.workorderId);
+                  _refresh();
                 }
               },
             ),
@@ -157,103 +153,6 @@ class _WorkorderDetailPageState extends State<WorkorderDetailPage> {
       ),
     );
   }
-
-  // @override
-  // Widget buildMainContent(BuildContext context) {
-  //   return Scaffold(appBar: AppBar(
-  //     leading: BackButton(onPressed: () {
-  //       context.pop();
-  //     }),
-  //   ), body: BlocBuilder<WorkorderDetailCubit, WorkorderDetailState>(
-  //       builder: (context, state) {
-  //     if (state.status == WorkorderStateStatus.loading) {
-  //       return const Center(child: CircularProgressIndicator());
-  //     }
-
-  //     if (state.status == WorkorderStateStatus.error) {
-  //       return Center(child: Text(state.errorMessage ?? "Terjadi kesalahan"));
-  //     }
-
-  //     final workorder = state.workorder;
-  //     if (workorder == null) return const SizedBox();
-
-  //     return SingleChildScrollView(
-  //       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-  //       child: Column(
-  //         crossAxisAlignment: CrossAxisAlignment.start,
-  //         children: [
-  //           _woServiceName(workorder.service.title),
-  //           const SizedBox(height: AppSpacing.xs),
-  //           _woStatusAndCreatedTime(
-  //               workorder.createdBy, workorder.status, workorder.createdAt),
-  //           const SizedBox(height: AppSpacing.md),
-
-  //           // Employee worked
-  //           Text("Pegawai bertugas",
-  //               style: Theme.of(context).textTheme.titleMedium),
-  //           HorizontalButton(
-  //             title: "Edit pegawai yang bertugas",
-  //             leadingIcon: Icons.person_add,
-  //             description:
-  //                 "pegawai yang betugas harus sesuai dengan posisi yang dibutuhkan layanan",
-  //             onTap: () async {
-  //               final result = await context.push(
-  //                   AppRoutes.managerWorkorderStaffConfig.byId(workorder.id),
-  //                   extra: {
-  //                     'requiredStaff': workorder.service.requiredStaff,
-  //                     'assignedStaff': workorder.assignedStaffs
-  //                   });
-
-  //               if (!context.mounted) return;
-  //               if (result == true) {
-  //                 context
-  //                     .read<WorkorderDetailCubit>()
-  //                     .getWorkorderDetail(widget.workorderId);
-
-  //                 // ScaffoldMessenger.of(context).showSnackBar(
-  //                 //   const SnackBar(content: Text('Berhasil menyimpan')),
-  //                 // );
-  //               }
-  //             },
-  //           ),
-  //           _woAssignedStaff(workorder.service.requiredStaff,
-  //               workorder.assignedStaffs ?? []),
-
-  //           // Work order filled form
-  //           const SizedBox(height: AppSpacing.md),
-  //           Text("Formulir Tugas Kerja",
-  //               style: Theme.of(context).textTheme.titleMedium),
-  //           HorizontalButton(
-  //             title: "Edit Formulir Tugas Kerja",
-  //             leadingIcon: Icons.assignment_outlined,
-  //             description:
-  //                 "Anda dapat mengedit tugas kerja selama tugas kerja belum berstatus Siap ",
-  //             onTap: () async {
-  //               final result =
-  //                   await context.push(AppRoutes.managerWorkorderSubmissions);
-  //               if (!context.mounted) return;
-  //               if (result == true) {
-  //                 context
-  //                     .read<WorkorderDetailCubit>()
-  //                     .getWorkorderDetail(widget.workorderId);
-  //               }
-  //             },
-  //           ),
-
-  //           if (workorder.workorderForms != null &&
-  //               workorder.workorderForms!.isNotEmpty)
-  //             CustomList(
-  //               scrollable: false,
-  //               separatorHeight: 16,
-  //               items: workorder.workorderForms!,
-  //               itemBuilder: (item, _) => FilledFormView(filledForm: item),
-  //             ),
-  //           const SizedBox(height: AppSpacing.md),
-  //         ],
-  //       ),
-  //     );
-  //   }));
-  // }
 
   Widget _woServiceName(String name) {
     return Row(
