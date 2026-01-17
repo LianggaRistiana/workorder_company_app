@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:workorder_company_app/shared/utils/confirm_dialog.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
 
@@ -132,7 +133,8 @@ class ProfilePage extends StatelessWidget {
                   HorizontalButton(
                     title: "Bantuan",
                     leadingIcon: Icons.help_outline,
-                    description: "Cari bantuan Anda di sini mengenai cara menggunakan aplikasi",
+                    description:
+                        "Cari bantuan Anda di sini mengenai cara menggunakan aplikasi",
                     onTap: () {},
                   ),
                   HorizontalButton(
@@ -141,7 +143,17 @@ class ProfilePage extends StatelessWidget {
                     description: "Anda dapat masuk kembali kapan saja",
                     leadingIcon: Icons.logout,
                     isDanger: true,
-                    onTap: () {
+                    onTap: () async {
+                      final confirm = await showConfirmDialog(
+                        context: context,
+                        title: "Keluar",
+                        message: "Anda yakin ingin keluar?",
+                        icon: Icons.logout,
+                        confirmText: "Logout",
+                      );
+
+                      if (confirm == false) return;
+                      if (!context.mounted) return;
                       context.read<AuthBloc>().add(LogoutRequested());
                     },
                   ),

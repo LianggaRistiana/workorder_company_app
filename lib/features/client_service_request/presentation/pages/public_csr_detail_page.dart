@@ -99,8 +99,10 @@ class _CsrDetailPageState extends State<PublicCsrDetailPage> {
             Text(
               csr.service.title,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontSize: 24,
+                    fontSize: 18,
                   ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
             const Spacer(),
             Text(
