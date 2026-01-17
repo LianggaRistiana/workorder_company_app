@@ -29,50 +29,106 @@ class StaffQuotaChip extends StatelessWidget {
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
         color: color.withAlpha(15),
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(50),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, color: color, size: 16),
-          const SizedBox(width: 12),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          Container(
+            padding: const EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              color: color.withAlpha(50),
+              borderRadius: BorderRadius.circular(32),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(icon, color: color, size: 16),
+                const SizedBox(width: 4),
+                Text(
+                  "$currentCount",
+                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                        fontWeight: FontWeight.w800,
+                        color: color
+                      ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 4),
+          Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                "$currentCount Pegawai",
-                style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                      color: color,
-                      fontWeight: FontWeight.w800,
-                    ),
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (min == max)
-                    Text(
-                      "Kuota $min Pegawai",
-                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                            color: color,
-                          ),
-                    ),
-                  if (min != max)
-                    Text(
-                      "Kuota $min - $max Pegawai",
-                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                            color: color,
-                          ),
-                    ),
-                ],
-              ),
+              if (min == max)
+                Text(
+                  "Kuota $min Pegawai",
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: color,
+                      ),
+                ),
+              if (min != max)
+                Text(
+                  "Kuota $min - $max Pegawai",
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: color,
+                      ),
+                ),
             ],
           ),
           const SizedBox(width: 6),
         ],
       ),
     );
+
+    // return Container(
+    //   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+    //   decoration: BoxDecoration(
+    //     color: color.withAlpha(15),
+    //     borderRadius: BorderRadius.circular(24),
+    //   ),
+    //   child: Row(
+    //     mainAxisSize: MainAxisSize.min,
+    //     children: [
+    //       Icon(icon, color: color, size: 16),
+    //       const SizedBox(width: 12),
+    //       Column(
+    //         crossAxisAlignment: CrossAxisAlignment.start,
+    //         children: [
+    //           Text(
+    //             "$currentCount Pegawai",
+    //             style: Theme.of(context).textTheme.labelMedium?.copyWith(
+    //                   color: color,
+    //                   fontWeight: FontWeight.w800,
+    //                 ),
+    //           ),
+    //           Row(
+    //             mainAxisSize: MainAxisSize.min,
+    //             children: [
+    //               if (min == max)
+    //                 Text(
+    //                   "Kuota $min Pegawai",
+    //                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
+    //                         color: color,
+    //                       ),
+    //                 ),
+    //               if (min != max)
+    //                 Text(
+    //                   "Kuota $min - $max Pegawai",
+    //                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
+    //                         color: color,
+    //                       ),
+    //                 ),
+    //             ],
+    //           ),
+    //         ],
+    //       ),
+    //       const SizedBox(width: 6),
+    //     ],
+    //   ),
+    // );
   }
 }
