@@ -17,6 +17,7 @@ import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
+import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
 import 'package:workorder_company_app/shared/widgets/filled_form_view.dart';
 import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
@@ -239,6 +240,10 @@ class _WorkorderDetailPageState extends State<WorkorderDetailPage> {
                     // staff yang cocok posisi
                     CustomList(
                       scrollable: false,
+                      emptyWidget: EmptyStateWidget(
+                        size: 40,
+                        text: "Tidak ada Pegawai",
+                      ),
                       separatorHeight: 4,
                       items: filteredStaff,
                       itemBuilder: (item, _) => ClientNameChip(name: item.name),
@@ -253,6 +258,13 @@ class _WorkorderDetailPageState extends State<WorkorderDetailPage> {
           // Jika requiredStaff kosong → tampilkan semua staff
           if (requiredStaff.isEmpty)
             CustomList(
+              emptyWidget: SizedBox(
+                width: double.infinity,
+                child: EmptyStateWidget(
+                  size: 40,
+                  text: "Tidak ada Pegawai",
+                ),
+              ),
               scrollable: false,
               separatorHeight: 4,
               items: staff,

@@ -23,6 +23,8 @@ Failure _mapExceptionToFailure(dynamic error) {
     //  TODO: Refactore all repo in data layer using this utils
     // ApiException biasanya punya code + message
     switch (error.statusCode) {
+      case 400:
+        return ServerFailure(message:  error.message);
       case 401:
         return AuthFailure(message:  "Unauthorized");
       case 403:
