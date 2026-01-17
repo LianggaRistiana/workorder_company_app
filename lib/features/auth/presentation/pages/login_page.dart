@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:workorder_company_app/core/theme/app_radius.dart';
 import 'package:workorder_company_app/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
+import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 
 
 class LoginPage extends StatefulWidget {
@@ -29,9 +30,10 @@ class _LoginPageState extends State<LoginPage> {
             context.go("/home");
 
           } else if (state is AuthError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
-            );
+            context.showError(state.message);
+            // ScaffoldMessenger.of(context).showSnackBar(
+            //   SnackBar(content: Text(state.message)),
+            // );
           }
         },
         builder: (context, state) {
@@ -45,29 +47,17 @@ class _LoginPageState extends State<LoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  TextField(
+                  CustomInputField(
                     controller: _emailController,
-                    decoration: const InputDecoration(
-                      labelText: 'Email',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(AppRadius.large),
-                        ),
-                      ),
-                    ),
+                    label: "Email",
+                    prefixIcon: Icon(Icons.email),
                   ),
                   const SizedBox(height: 16),
-                  TextField(
+                  CustomInputField(
                     controller: _passwordController,
                     obscureText: true,
-                    decoration: const InputDecoration(
-                      labelText: 'Password',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(AppRadius.large),
-                        ),
-                      ),
-                    ),
+                    label: "Kata Sandi",
+                    prefixIcon: Icon(Icons.lock),
                   ),
                   const SizedBox(height: 32),
                   ElevatedButton(
@@ -78,10 +68,11 @@ class _LoginPageState extends State<LoginPage> {
                             final password = _passwordController.text.trim();
 
                             if (email.isEmpty || password.isEmpty) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text("Email dan password wajib diisi")),
-                              );
+                              context.showError("Email dan password wajib diisi");
+                              // ScaffoldMessenger.of(context).showSnackBar(
+                              //   const SnackBar(
+                              //       content: Text("Email dan password wajib diisi")),
+                              // );
                               return;
                             }
 
@@ -102,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                                   Colors.white),
                             ),
                           )
-                        : const Text('Login'),
+                        : const Text('Masuk'),
                   ),
                 ],
               ),

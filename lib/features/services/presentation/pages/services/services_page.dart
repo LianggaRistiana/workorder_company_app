@@ -7,6 +7,7 @@ import 'package:workorder_company_app/features/services/presentation/bloc/servic
 import 'package:workorder_company_app/features/services/presentation/pages/services/services_skeleton.dart';
 import 'package:workorder_company_app/features/services/presentation/widgets/service_item.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
 
@@ -59,12 +60,7 @@ class _ServicesPageState extends State<ServicesPage> {
             body: BlocListener<ServicesBloc, ServicesState>(
               listener: (context, state) {
                 if (state is ServicesError) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(state.message),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
+                  context.showError(state.message);
                 }
               },
               child: BlocBuilder<ServicesBloc, ServicesState>(

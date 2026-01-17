@@ -7,6 +7,7 @@ import 'package:workorder_company_app/features/forms/domain/entities/form_entity
 import 'package:workorder_company_app/features/forms/presentation/bloc/forms_bloc.dart';
 import 'package:workorder_company_app/features/forms/presentation/pages/forms/forms_skeleton.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
@@ -48,8 +49,10 @@ class _FormsPageState extends State<FormsPage> {
         bloc: _formBloc,
         listener: (context, state) {
           if (state is FormsError) {
-            ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text(state.message)));
+            // showError
+            context.showError(state.message);
+            // ScaffoldMessenger.of(context)
+            //     .showSnackBar(SnackBar(content: Text(state.message)));
           }
         },
         child: BlocBuilder<FormsBloc, FormsState>(
