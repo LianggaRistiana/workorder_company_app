@@ -17,7 +17,7 @@ class _ManagerCompanyState extends State<ManagerCompanyLayout> {
   final List<NavItem> _navItems = const [
     NavItem('Utama', Icons.home_rounded, AppRoutes.managerHome),
     NavItem('Pengajuan Layanan', Icons.inbox_rounded, AppRoutes.managerCsr),
-    NavItem('Tugas Kerja', Icons.assignment_rounded, AppRoutes.managerWorkorder),
+    NavItem('Perintah Kerja', Icons.assignment_rounded, AppRoutes.managerWorkorder),
   ];
 
   void _onItemTapped(int index) {

@@ -2,13 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/features/auth/presentation/widgets/current_user_chip.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/utils/orientation_helper.dart';
 import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
 import 'package:workorder_company_app/shared/widgets/menu_grid.dart';
 import 'package:workorder_company_app/shared/widgets/menu_item.dart';
 import 'package:workorder_company_app/shared/widgets/section_title.dart';
 
-class ClientHomepage extends StatelessWidget {
+class ClientHomepage extends StatefulWidget {
   const ClientHomepage({super.key});
+
+  @override
+  State<ClientHomepage> createState() => _ClientHomepageState();
+}
+
+class _ClientHomepageState extends State<ClientHomepage> {
+  @override
+  void initState() {
+    super.initState();
+    OrientationHelper.portraitOnly();
+  }
+
+  @override
+  void dispose() {
+    OrientationHelper.all();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

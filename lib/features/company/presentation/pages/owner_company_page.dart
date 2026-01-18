@@ -1,14 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/utils/orientation_helper.dart';
 import 'package:workorder_company_app/shared/widgets/active_status_chip.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/menu_grid.dart';
 import 'package:workorder_company_app/shared/widgets/menu_item.dart';
 import 'package:workorder_company_app/shared/widgets/section_title.dart';
 
-class OwnerCompanyPage extends StatelessWidget {
+class OwnerCompanyPage extends StatefulWidget {
   const OwnerCompanyPage({super.key});
+
+  @override
+  State<OwnerCompanyPage> createState() => _OwnerCompanyPageState();
+}
+
+class _OwnerCompanyPageState extends State<OwnerCompanyPage> {
+  @override
+  void initState() {
+    super.initState();
+    OrientationHelper.portraitOnly();
+  }
+
+  @override
+  void dispose() {
+    OrientationHelper.all();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

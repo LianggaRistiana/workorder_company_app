@@ -2,13 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/features/auth/presentation/widgets/current_user_chip.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/utils/orientation_helper.dart';
 import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
 import 'package:workorder_company_app/shared/widgets/menu_grid.dart';
 import 'package:workorder_company_app/shared/widgets/menu_item.dart';
 import 'package:workorder_company_app/shared/widgets/section_title.dart';
 
-class ManagerCompanyHomepage extends StatelessWidget {
+class ManagerCompanyHomepage extends StatefulWidget {
   const ManagerCompanyHomepage({super.key});
+
+  @override
+  State<ManagerCompanyHomepage> createState() => _ManagerCompanyHomepageState();
+}
+
+class _ManagerCompanyHomepageState extends State<ManagerCompanyHomepage> {
+  @override
+  void initState() {
+    super.initState();
+    OrientationHelper.portraitOnly();
+  }
+
+  @override
+  void dispose() {
+    OrientationHelper.all();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +109,7 @@ class ManagerCompanyHomepage extends StatelessWidget {
                                 }),
                             MenuItem(
                                 icon: Icons.assignment_outlined,
-                                label: "Tugas Kerja",
+                                label: "Perintah Kerja",
                                 onTap: () {
                                   context.go(AppRoutes.managerWorkorder);
                                 }),
