@@ -25,10 +25,12 @@ final GoRouter appRouter = GoRouter(
           builder: (context, state, child) {
             return AppLayout(child: child);
           },
-          routes: [
-            ...homeRouter, 
-            ...workorderRouter]),
-      ...commonRouter
+          routes: [...homeRouter, ...workorderRouter]),
+      ...commonRouter,
+      GoRoute(
+        path: "/",
+        redirect: (context, state) => AppRoutes.home,
+      )
     ]);
 
 

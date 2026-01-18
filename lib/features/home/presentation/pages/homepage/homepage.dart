@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/constants/app_enums.dart';
+import 'package:workorder_company_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:workorder_company_app/features/auth/presentation/widgets/current_user_chip.dart';
+import 'package:workorder_company_app/features/home/presentation/widget/client_content.dart';
+import 'package:workorder_company_app/features/home/presentation/widget/manager_content.dart';
+import 'package:workorder_company_app/features/home/presentation/widget/owner_content.dart';
+import 'package:workorder_company_app/features/home/presentation/widget/staff_content.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/orientation_helper.dart';
-import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
-import 'package:workorder_company_app/shared/widgets/menu_grid.dart';
-import 'package:workorder_company_app/shared/widgets/menu_item.dart';
-import 'package:workorder_company_app/shared/widgets/section_title.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -30,6 +33,30 @@ class _Homepage extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
+    final authState = context.watch<AuthBloc>().state;
+    if (authState is! Authenticated) {
+      return const SizedBox.shrink();
+    }
+
+    final role = authState.user.role;
+
+    Widget content;
+    switch (role) {
+      case UserRole.ownerCompany:
+        content = OwnerContent();
+        break;
+      case UserRole.managerCompany:
+        content = ManagerContent();
+        break;
+      case UserRole.staffCompany:
+        content = StaffContent();
+        break;
+      case UserRole.client:
+      default:
+        content = ClientContent();
+        break;
+    }
+
     return Scaffold(
         // appBar bisa tetap
         appBar: AppBar(
@@ -86,14 +113,11 @@ class _Homepage extends State<Homepage> {
                   ),
 
                   child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SectionTitle("Menu Konfigurasi Perusahaan"),
-                        const SizedBox(height: 12),
-                        
-                      ],
-                    ),
+                    child: content,
+                    // child: Column(
+                    //   crossAxisAlignment: CrossAxisAlignment.start,
+                    //   children: [],
+                    // ),
                   ),
                 ),
               )
