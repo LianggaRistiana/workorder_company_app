@@ -3,18 +3,19 @@ import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/features/auth/presentation/widgets/current_user_chip.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/orientation_helper.dart';
+import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
 import 'package:workorder_company_app/shared/widgets/menu_grid.dart';
 import 'package:workorder_company_app/shared/widgets/menu_item.dart';
 import 'package:workorder_company_app/shared/widgets/section_title.dart';
 
-class StaffCompanyHomepage extends StatefulWidget {
-  const StaffCompanyHomepage({super.key});
+class Homepage extends StatefulWidget {
+  const Homepage({super.key});
 
   @override
-  State<StaffCompanyHomepage> createState() => _StaffCompanyHomepageState();
+  State<Homepage> createState() => _Homepage();
 }
 
-class _StaffCompanyHomepageState extends State<StaffCompanyHomepage> {
+class _Homepage extends State<Homepage> {
   @override
   void initState() {
     super.initState();
@@ -34,7 +35,7 @@ class _StaffCompanyHomepageState extends State<StaffCompanyHomepage> {
         appBar: AppBar(
           title: CurrentUserChip(
             onTap: () {
-              context.push(AppRoutes.managerProfile);
+              context.push(AppRoutes.profile);
             },
           ),
           actions: [
@@ -54,7 +55,7 @@ class _StaffCompanyHomepageState extends State<StaffCompanyHomepage> {
                 width: double.infinity,
                 height: 220,
                 child: Image.asset(
-                  "assets/images/home-header-internal.png",
+                  "assets/images/header-home.png",
                   fit: BoxFit.cover,
                 ),
               ),
@@ -68,7 +69,7 @@ class _StaffCompanyHomepageState extends State<StaffCompanyHomepage> {
                 right: 0,
                 bottom: 0,
                 child: Container(
-                  height: double.infinity,
+                  height: double.infinity, // WAJIB untuk memenuhi area
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.surface,
@@ -88,35 +89,9 @@ class _StaffCompanyHomepageState extends State<StaffCompanyHomepage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 8),
-                        const SectionTitle("Menu Operasional"),
+                        const SectionTitle("Menu Konfigurasi Perusahaan"),
                         const SizedBox(height: 12),
-                        MenuGrid(
-                          items: [
-                            MenuItem(
-                                icon: Icons.assignment_outlined,
-                                label: "Perintah Kerja",
-                                onTap: () {
-                                  context.go(AppRoutes.managerWorkorder);
-                                }),
-                            MenuItem(
-                                icon: Icons.card_membership,
-                                label: "Pelanggan Perusahaan",
-                                onTap: () {}),
-                            MenuItem(
-                                icon: Icons.history_outlined,
-                                label: "Riwayat Pengajuan",
-                                onTap: () {}),
-                            MenuItem(
-                                icon: Icons.history_outlined,
-                                label: "Riwayat Workorder",
-                                onTap: () {}),
-                            MenuItem(
-                                icon: Icons.help_outline_outlined,
-                                label: "Bantuan",
-                                onTap: () {}),
-                          ],
-                        ),
+                        
                       ],
                     ),
                   ),

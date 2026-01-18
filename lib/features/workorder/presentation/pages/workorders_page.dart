@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/authorization/feature/workorder_permission.dart';
+import 'package:workorder_company_app/core/authorization/widget/permission_gate.dart';
 import 'package:workorder_company_app/core/network/endpoints.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_bloc.dart';
@@ -41,6 +43,14 @@ class _WorkordersPageState extends State<WorkordersPage> {
               prefixIcon: const Icon(Icons.search),
             ),
           ),
+        ),
+      ),
+      floatingActionButton: PermissionGate(
+        permission: WorkOrderPermissions.create,
+        child: FloatingActionButton.extended(
+          onPressed: () => {},
+          label: const Text("Tambah Perintah kerja"),
+          icon: const Icon(Icons.add),
         ),
       ),
       body: BlocBuilder<WorkorderBloc, WorkorderState>(

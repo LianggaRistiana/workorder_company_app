@@ -5,7 +5,7 @@ enum UserRole {
   ownerCompany,
   managerCompany,
   staffCompany,
-  staffUnssigned,
+  staffUnassigned,
   client;
 
   static UserRole fromString(String value) {
@@ -16,8 +16,8 @@ enum UserRole {
         return UserRole.managerCompany;
       case 'staff_company':
         return UserRole.staffCompany;
-      case 'staff_unssigned':
-        return UserRole.staffUnssigned;
+      case 'staff_unassigned':
+        return UserRole.staffUnassigned;
       case 'client':
         return UserRole.client;
       default:
@@ -40,10 +40,25 @@ enum UserRole {
         return 'Manager';
       case UserRole.staffCompany:
         return 'Staff';
-      case UserRole.staffUnssigned:
+      case UserRole.staffUnassigned:
         return 'Unassigned Staff';
       case UserRole.client:
         return 'Client';
+    }
+  }
+
+  String get routePrefix {
+    switch (this) {
+      case UserRole.ownerCompany:
+        return 'owner';
+      case UserRole.managerCompany:
+        return 'manager';
+      case UserRole.staffCompany:
+        return 'staff';
+      case UserRole.staffUnassigned:
+        return 'unassigned-staff';
+      case UserRole.client:
+        return 'client';
     }
   }
 
