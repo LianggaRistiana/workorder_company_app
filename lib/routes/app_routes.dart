@@ -8,11 +8,42 @@ class AppRoutes {
   static const profile = '/profile';
   static const forbidden = '/forbidden';
 
+  // Internal Company
+  static const company = '/company';
+
+  // Public Company
+  static const publicCompanies = '/companies';
+  static const publicCompaniesServices = '/companies/:id/services';
+
+  // Positions
+  static const positions = '/positions';
+  static const positionsCreate = '/positions/create';
+  static const positionsUpdate = '/positions/update';
+  static const positionsDetail = '/positions/:id';
+
+  // Form
+  static const forms = '/forms';
+  static const formsCreate = '/forms/create';
+  static const formsUpdate = '/forms/update';
+  static const formsDetail = '/forms/:id';
+
+  // Form
+  static const services = '/services';
+  static const servicesCreate = '/services/create';
+  static const servicesUpdate = '/services/update';
+  static const servicesDetail = '/services/:id';
+
+  // Employee
+  static const employee = '/employee';
+  static const employeeInvite = '/employee/invite';
+  static const employeeDetail = '/employee/:id';
+
   // Work Order
   static const workorders = '/workorders';
   static const workordersAssignStaff = '/workorders/assign-staff';
   static const workordersSubmission = '/workorders/submissions';
   static const workordersDetail = '/workorders/:id';
+
   
 
 

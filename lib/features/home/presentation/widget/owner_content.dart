@@ -60,7 +60,7 @@ class OwnerContent extends StatelessWidget {
                 icon: Icons.people_outline,
                 label: "Pegawai",
                 onTap: () {
-                  context.push(AppRoutes.ownerEmployee);
+                  context.push(AppRoutes.employee);
                 }),
             MenuItem(
                 icon: Icons.help_outline_outlined,

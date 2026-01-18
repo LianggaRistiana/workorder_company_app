@@ -6,6 +6,7 @@ import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/routes/client_router.dart';
 import 'package:workorder_company_app/routes/common_router.dart';
+import 'package:workorder_company_app/routes/feature_routes.dart/employee.dart';
 import 'package:workorder_company_app/routes/feature_routes.dart/home_route.dart';
 import 'package:workorder_company_app/routes/feature_routes.dart/workorders_route.dart';
 import 'package:workorder_company_app/routes/guards/auth_guard.dart';
@@ -25,7 +26,10 @@ final GoRouter appRouter = GoRouter(
           builder: (context, state, child) {
             return AppLayout(child: child);
           },
-          routes: [...homeRouter, ...workorderRouter]),
+          routes: [
+            ...homeRouter, 
+            ...employeeRouter, 
+            ...workorderRouter]),
       ...commonRouter,
       GoRoute(
         path: "/",

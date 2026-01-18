@@ -42,7 +42,7 @@ class ManagerContent extends StatelessWidget {
                 icon: Icons.people_outline,
                 label: "Pegawai",
                 onTap: () {
-                  // context.push(AppRoutes.manager);
+                  context.push(AppRoutes.employee);
                 }),
             MenuItem(
                 icon: Icons.card_membership,
