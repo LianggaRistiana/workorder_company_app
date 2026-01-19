@@ -75,15 +75,6 @@ class _WorkorderDetailPageState extends State<WorkorderDetailPage> {
                         _refresh();
                       },
                     )),
-                : PermissionGate(
-                    permission: WorkOrderPermissions.update,
-                    child: WorkorderActionButtons(
-                      workorderStatus: workorder.status,
-                      workorderId: widget.workorderId,
-                      onRefresh: () {
-                        _refresh();
-                      },
-                    )),
             body: workorder == null
                 ? SizedBox.shrink()
                 : _mainContent(workorder, context),
@@ -125,30 +116,6 @@ class _WorkorderDetailPageState extends State<WorkorderDetailPage> {
                           'requiredStaff': workorder.service.requiredStaff,
                           'assignedStaff': workorder.assignedStaffs
                         });
-            PermissionGate(
-                permission: WorkOrderPermissions.update,
-                child: HorizontalButton(
-                  title: "Edit pegawai yang bertugas",
-                  leadingIcon: Icons.person_add,
-                  description:
-                      "pegawai yang betugas harus sesuai dengan posisi yang dibutuhkan layanan",
-                  onTap: () async {
-                    final result = await context.push(
-                        AppRoutes.workordersAssignStaff
-                            .fillId(workorder.id),
-                        extra: {
-                          'requiredStaff': workorder.service.requiredStaff,
-                          'assignedStaff': workorder.assignedStaffs
-                        });
-
-                    if (!context.mounted) return;
-                    if (!context.mounted) return;
-
-                    if (result == true) {
-                      _refresh();
-                    }
-                  },
-                )),
                     if (result == true) {
                       _refresh();
                     }
