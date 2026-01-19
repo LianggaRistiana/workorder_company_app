@@ -23,7 +23,7 @@ class OwnerContent extends StatelessWidget {
                 icon: Icons.assignment_turned_in_outlined,
                 label: "Formulir",
                 onTap: () {
-                  context.push(AppRoutes.ownerForms);
+                  context.push(AppRoutes.forms);
                 }),
             MenuItem(
                 icon: Icons.build_circle_outlined,

@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/authorization/feature/form_permission.dart';
+import 'package:workorder_company_app/core/authorization/widget/permission_gate.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/forms_bloc.dart';
 import 'package:workorder_company_app/features/forms/presentation/pages/forms/forms_skeleton.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
+import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
+import 'package:workorder_company_app/shared/widgets/custom_back_buttom.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
@@ -20,22 +23,19 @@ class FormsPage extends StatefulWidget {
 }
 
 class _FormsPageState extends State<FormsPage> {
-  late final FormsBloc _formBloc;
-
   @override
   void initState() {
     super.initState();
-    _formBloc = GetIt.I<FormsBloc>()..add(GetFormsRequested());
+    context.read<FormsBloc>().add(GetFormsRequested());
   }
 
   @override
   void dispose() {
-    _formBloc.close();
     super.dispose();
   }
 
   Future<void> _onRefresh() async {
-    _formBloc.add(GetFormsRequested());
+    context.read<FormsBloc>().add(GetFormsRequested());
   }
 
   @override
@@ -43,10 +43,9 @@ class _FormsPageState extends State<FormsPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Formulir"),
-        centerTitle: true,
+        leading: CustomBackButton(),
       ),
       body: BlocListener<FormsBloc, FormsState>(
-        bloc: _formBloc,
         listener: (context, state) {
           if (state is FormsError) {
             // showError
@@ -56,7 +55,6 @@ class _FormsPageState extends State<FormsPage> {
           }
         },
         child: BlocBuilder<FormsBloc, FormsState>(
-          bloc: _formBloc,
           builder: (context, state) {
             return RefreshIndicator(
               onRefresh: _onRefresh,
@@ -103,11 +101,13 @@ class _FormsPageState extends State<FormsPage> {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => context.push(AppRoutes.ownerNewForm),
-        label: const Text("Tambah Form"),
-        icon: const Icon(Icons.add),
-      ),
+      floatingActionButton: PermissionGate(
+          permission: FormPermission.create,
+          child: FloatingActionButton.extended(
+            onPressed: () => context.push(AppRoutes.formsCreate),
+            label: const Text("Tambah Form"),
+            icon: const Icon(Icons.add),
+          )),
     );
   }
 
@@ -125,7 +125,7 @@ class _FormsPageState extends State<FormsPage> {
             child: InkWell(
                 borderRadius: BorderRadius.circular(12),
                 onTap: () {
-                  context.push(AppRoutes.ownerFormDetail(form.id));
+                  context.push(AppRoutes.formsDetail.fillId(form.id));
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(16),
@@ -135,9 +135,7 @@ class _FormsPageState extends State<FormsPage> {
                       Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .primaryContainer,
+                          color: Theme.of(context).colorScheme.primaryContainer,
                           borderRadius: BorderRadius.circular(14),
                         ),
                         child: Icon(
