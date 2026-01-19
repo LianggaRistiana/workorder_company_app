@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:workorder_company_app/core/authorization/feature/employee_permission.dart';
+import 'package:workorder_company_app/core/authorization/feature/invitation_permission.dart';
 import 'package:workorder_company_app/core/authorization/widget/permission_gate.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
@@ -64,10 +64,10 @@ class EmployeesPage extends StatelessWidget {
 
         // ✅ FloatingActionButton tetap
         floatingActionButton: PermissionGate(
-          permission: EmployeePermission.create,
+          permission: InvitationPermission.create,
           child: FloatingActionButton.extended(
             onPressed: () {
-              context.push(AppRoutes.ownerInviteEmployees);
+              context.push(AppRoutes.employeeInvite);
             },
             label: const Text('Tambah Karyawan'),
             icon: const Icon(Icons.person_add_alt_1),

@@ -2,6 +2,7 @@ import 'package:workorder_company_app/core/authorization/feature/company_permiss
 import 'package:workorder_company_app/core/authorization/feature/csr_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/employee_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/form_permission.dart';
+import 'package:workorder_company_app/core/authorization/feature/invitation_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/positions_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/service_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/workreport_permission.dart';
@@ -21,7 +22,8 @@ extension UserRolePermissions on UserRole {
           ...ServicePermission.all,
           ...CsrPermission.admin,
           ...WorkOrderPermissions.all,
-          ...WorkReportPermissions.all
+          ...WorkReportPermissions.all,
+          ...InvitationPermission.admin
         };
       case UserRole.managerCompany:
         return {
@@ -46,9 +48,7 @@ extension UserRolePermissions on UserRole {
       case UserRole.client:
         return {...CsrPermission.client};
       case UserRole.staffUnassigned:
-        return {
-          
-        };
+        return {...InvitationPermission.unassigned};
     }
   }
 }
