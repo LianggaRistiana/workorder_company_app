@@ -40,7 +40,7 @@ class AppRoutes {
 
   // Work Order
   static const workorders = '/workorders';
-  static const workordersAssignStaff = '/workorders/assign-staff';
+  static const workordersAssignStaff = '/workorders/assign-staff/:id';
   static const workordersSubmission = '/workorders/submissions';
   static const workordersDetail = '/workorders/:id';
 

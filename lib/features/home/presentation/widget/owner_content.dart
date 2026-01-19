@@ -55,7 +55,9 @@ class OwnerContent extends StatelessWidget {
             MenuItem(
                 icon: Icons.assignment_outlined,
                 label: "Tugas Kerja",
-                onTap: () {}),
+                onTap: () {
+                  context.push(AppRoutes.workorders);
+                }),
             MenuItem(
                 icon: Icons.people_outline,
                 label: "Pegawai",

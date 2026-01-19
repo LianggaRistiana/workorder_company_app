@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:workorder_company_app/core/authorization/feature/workorder_permission.dart';
+import 'package:workorder_company_app/core/authorization/widget/permission_gate.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
-import 'package:workorder_company_app/core/network/endpoints.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 import 'package:workorder_company_app/features/client_service_request/presentation/widgets/client_name_chip.dart';
@@ -15,6 +16,7 @@ import 'package:workorder_company_app/features/workorder/presentation/widgets/wo
 import 'package:workorder_company_app/features/workorder/presentation/widgets/workorder_status_chip.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
+import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
@@ -64,13 +66,15 @@ class _WorkorderDetailPageState extends State<WorkorderDetailPage> {
             ),
             bottomNavigationBar: workorder == null
                 ? const SizedBox.shrink()
-                : WorkorderActionButtons(
-                    workorderStatus: workorder.status,
-                    workorderId: widget.workorderId,
-                    onRefresh: () {
-                      _refresh();
-                    },
-                  ),
+                : PermissionGate(
+                    permission: WorkOrderPermissions.update,
+                    child: WorkorderActionButtons(
+                      workorderStatus: workorder.status,
+                      workorderId: widget.workorderId,
+                      onRefresh: () {
+                        _refresh();
+                      },
+                    )),
             body: workorder == null
                 ? SizedBox.shrink()
                 : _mainContent(workorder, context),
@@ -97,26 +101,29 @@ class _WorkorderDetailPageState extends State<WorkorderDetailPage> {
               style: Theme.of(context).textTheme.titleMedium),
 
           if (woStatus == WorkOrderStatus.drafted)
-            HorizontalButton(
-              title: "Edit pegawai yang bertugas",
-              leadingIcon: Icons.person_add,
-              description:
-                  "pegawai yang betugas harus sesuai dengan posisi yang dibutuhkan layanan",
-              onTap: () async {
-                final result = await context.push(
-                    AppRoutes.managerWorkorderStaffConfig.byId(workorder.id),
-                    extra: {
-                      'requiredStaff': workorder.service.requiredStaff,
-                      'assignedStaff': workorder.assignedStaffs
-                    });
+            PermissionGate(
+                permission: WorkOrderPermissions.update,
+                child: HorizontalButton(
+                  title: "Edit pegawai yang bertugas",
+                  leadingIcon: Icons.person_add,
+                  description:
+                      "pegawai yang betugas harus sesuai dengan posisi yang dibutuhkan layanan",
+                  onTap: () async {
+                    final result = await context.push(
+                        AppRoutes.workordersAssignStaff
+                            .fillId(workorder.id),
+                        extra: {
+                          'requiredStaff': workorder.service.requiredStaff,
+                          'assignedStaff': workorder.assignedStaffs
+                        });
 
-                if (!context.mounted) return;
+                    if (!context.mounted) return;
 
-                if (result == true) {
-                  _refresh();
-                }
-              },
-            ),
+                    if (result == true) {
+                      _refresh();
+                    }
+                  },
+                )),
           _woAssignedStaff(
               workorder.service.requiredStaff, workorder.assignedStaffs ?? []),
 
@@ -126,20 +133,22 @@ class _WorkorderDetailPageState extends State<WorkorderDetailPage> {
               style: Theme.of(context).textTheme.titleMedium),
 
           if (woStatus == WorkOrderStatus.drafted)
-            HorizontalButton(
-              title: "Edit Formulir Tugas Kerja",
-              leadingIcon: Icons.assignment_outlined,
-              description:
-                  "Anda dapat mengedit tugas kerja selama tugas kerja belum berstatus Siap ",
-              onTap: () async {
-                final result =
-                    await context.push(AppRoutes.managerWorkorderSubmissions);
-                if (!context.mounted) return;
-                if (result == true) {
-                  _refresh();
-                }
-              },
-            ),
+            PermissionGate(
+                permission: WorkOrderPermissions.update,
+                child: HorizontalButton(
+                  title: "Edit Formulir Tugas Kerja",
+                  leadingIcon: Icons.assignment_outlined,
+                  description:
+                      "Anda dapat mengedit tugas kerja selama tugas kerja belum berstatus Siap ",
+                  onTap: () async {
+                    final result = await context
+                        .push(AppRoutes.workordersSubmission);
+                    if (!context.mounted) return;
+                    if (result == true) {
+                      _refresh();
+                    }
+                  },
+                )),
 
           if (workorder.workorderForms != null &&
               workorder.workorderForms!.isNotEmpty)
