@@ -8,7 +8,7 @@ class NavConfig {
     switch (role) {
       case UserRole.ownerCompany:
         return const [
-          NavItem('Utama', Icons.home_rounded, AppRoutes.ownerHome),
+          NavItem('Utama', Icons.home_rounded, AppRoutes.home),
           NavItem(
               'Perusahaan', Icons.home_work_rounded, AppRoutes.ownerCompany),
         ];
@@ -31,7 +31,7 @@ class NavConfig {
 
       case UserRole.client:
         return const [
-          NavItem('Utama', Icons.home_rounded, AppRoutes.clientHome),
+          NavItem('Utama', Icons.home_rounded, AppRoutes.home),
           NavItem('Daftar Perusahaan', Icons.home_work_rounded,
               AppRoutes.clientCompanyPortal),
         ];

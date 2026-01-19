@@ -2,13 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:workorder_company_app/core/constants/app_enums.dart';
+// import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:workorder_company_app/features/client_service_request/presentation/bloc/internal_client_service_request/internal_csr_bloc.dart';
-import 'package:workorder_company_app/features/client_service_request/presentation/bloc/public_client_service_request/csr_bloc.dart';
-import 'package:workorder_company_app/features/employees/presentation/bloc/employees_bloc.dart';
-import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_bloc.dart';
+// import 'package:workorder_company_app/features/client_service_request/presentation/bloc/internal_client_service_request/internal_csr_bloc.dart';
+// import 'package:workorder_company_app/features/client_service_request/presentation/bloc/public_client_service_request/csr_bloc.dart';
+// import 'package:workorder_company_app/features/employees/presentation/bloc/employees_bloc.dart';
+import 'package:workorder_company_app/features/forms/presentation/bloc/forms_bloc.dart';
+// import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_bloc.dart';
 import 'package:workorder_company_app/shared/layout/navigation/app_navigantion_bar.dart';
 
 class AppLayout extends StatelessWidget {
@@ -29,7 +30,7 @@ class AppLayout extends StatelessWidget {
     return MultiBlocProvider(
       // providers: _providersByRole(role),
       providers: [
-        BlocProvider(create: (_) => sl<WorkorderBloc>()),
+        BlocProvider(create: (_) => sl<FormsBloc>()),
       ],
       child: Scaffold(
         body: child,
@@ -38,60 +39,61 @@ class AppLayout extends StatelessWidget {
     );
   }
 
-  List<BlocProvider> _providersByRole(UserRole role) {
-    final providers = <BlocProvider>[];
+// TODO : Thinks Later
+  // List<BlocProvider> _providersByRole(UserRole role) {
+  //   final providers = <BlocProvider>[];
 
-    // Global (all roles)
-    // providers.add(
-    //   BlocProvider(create: (_) => sl<NotificationBloc>()),
-    // );
+  //   // Global (all roles)
+  //   // providers.add(
+  //   //   BlocProvider(create: (_) => sl<NotificationBloc>()),
+  //   // );
 
-    switch (role) {
-      case UserRole.ownerCompany:
-        providers.add(
-          BlocProvider(create: (_) => sl<WorkorderBloc>()),
-        );
-        providers.add(
-          BlocProvider(create: (_) => sl<EmployeesBloc>()),
-        );
-        providers.add(
-          BlocProvider(create: (_) => sl<InternalCsrBloc>()),
-        );
-        // providers.add(
-        //   BlocProvider(create: (_) => sl<FormsBloc>()),
-        // );
-        // providers.add(
-        //   BlocProvider(create: (_) => sl<ServicesBloc>()),
-        // );
-        break;
-      case UserRole.managerCompany:
-        providers.add(
-          BlocProvider(create: (_) => sl<WorkorderBloc>()),
-        );
-        providers.add(
-          BlocProvider(create: (_) => sl<EmployeesBloc>()),
-        );
-        providers.add(
-          BlocProvider(create: (_) => sl<InternalCsrBloc>()),
-        );
-        break;
+  //   switch (role) {
+  //     case UserRole.ownerCompany:
+  //       providers.add(
+  //         BlocProvider(create: (_) => sl<WorkorderBloc>()),
+  //       );
+  //       providers.add(
+  //         BlocProvider(create: (_) => sl<EmployeesBloc>()),
+  //       );
+  //       providers.add(
+  //         BlocProvider(create: (_) => sl<InternalCsrBloc>()),
+  //       );
+  //       // providers.add(
+  //       //   BlocProvider(create: (_) => sl<FormsBloc>()),
+  //       // );
+  //       // providers.add(
+  //       //   BlocProvider(create: (_) => sl<ServicesBloc>()),
+  //       // );
+  //       break;
+  //     case UserRole.managerCompany:
+  //       providers.add(
+  //         BlocProvider(create: (_) => sl<WorkorderBloc>()),
+  //       );
+  //       providers.add(
+  //         BlocProvider(create: (_) => sl<EmployeesBloc>()),
+  //       );
+  //       providers.add(
+  //         BlocProvider(create: (_) => sl<InternalCsrBloc>()),
+  //       );
+  //       break;
 
-      case UserRole.staffCompany:
-        providers.add(
-          BlocProvider(create: (_) => sl<WorkorderBloc>()),
-        );
-        break;
+  //     case UserRole.staffCompany:
+  //       providers.add(
+  //         BlocProvider(create: (_) => sl<WorkorderBloc>()),
+  //       );
+  //       break;
 
-      case UserRole.client:
-        providers.add(
-          BlocProvider(create: (_) => sl<CsrBloc>()),
-        );
-        break;
+  //     case UserRole.client:
+  //       providers.add(
+  //         BlocProvider(create: (_) => sl<CsrBloc>()),
+  //       );
+  //       break;
 
-      default:
-        break;
-    }
+  //     default:
+  //       break;
+  //   }
 
-    return providers;
-  }
+  //   return providers;
+  // }
 }

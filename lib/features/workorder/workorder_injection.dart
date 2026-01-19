@@ -7,7 +7,7 @@ import 'package:workorder_company_app/features/workorder/domain/usecases/get_wor
 import 'package:workorder_company_app/features/workorder/domain/usecases/set_assigned_staff_usecase.dart';
 import 'package:workorder_company_app/features/workorder/domain/usecases/set_workorder_submissions_usecase.dart';
 import 'package:workorder_company_app/features/workorder/domain/usecases/set_workorder_to_ready_usecase.dart';
-import 'package:workorder_company_app/features/workorder/presentation/bloc/workoder_submissions_forms_cubit.dart';
+import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_submissions_forms_cubit.dart';
 import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_actions_cubit.dart';
 import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_assigned_staff_cubit.dart';
 import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_bloc.dart';
@@ -43,8 +43,8 @@ Future<void> initWorkorderFeature() async {
 
   sl.registerFactory<WorkorderActionsCubit>(() => WorkorderActionsCubit(sl()));
 
-  sl.registerFactory<WorkoderSubmissionsFormsCubit>(
-      () => WorkoderSubmissionsFormsCubit(sl()));
+  sl.registerFactory<WorkorderSubmissionsFormsCubit>(
+      () => WorkorderSubmissionsFormsCubit(sl()));
 
   sl.registerFactory<WorkorderAssignedStaffCubit>(
       () => WorkorderAssignedStaffCubit(sl()));

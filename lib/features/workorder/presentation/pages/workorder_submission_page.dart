@@ -6,7 +6,7 @@ import 'package:workorder_company_app/features/forms/domain/entities/ordered_for
 import 'package:workorder_company_app/features/submissions/domain/entitties/field_data_entity.dart';
 import 'package:workorder_company_app/features/submissions/domain/entitties/submission_entity.dart';
 import 'package:workorder_company_app/features/submissions/presentation/widgets/form_renderer.dart';
-import 'package:workorder_company_app/features/workorder/presentation/bloc/workoder_submissions_forms_cubit.dart';
+import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_submissions_forms_cubit.dart';
 import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_bloc.dart';
 import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_detail_cubit.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
@@ -92,7 +92,7 @@ class _WorkorderSubmissionPageState extends State<WorkorderSubmissionPage> {
       initialized = true;
     }
 
-    return BlocConsumer<WorkoderSubmissionsFormsCubit,
+    return BlocConsumer<WorkorderSubmissionsFormsCubit,
         WorkorderSubmissionsState>(
       listener: (context, state) {
         if (state.status == WorkorderStateStatus.success) {
@@ -126,7 +126,7 @@ class _WorkorderSubmissionPageState extends State<WorkorderSubmissionPage> {
                 : () {
                     // Logger().i(submissions);
                     context
-                        .read<WorkoderSubmissionsFormsCubit>()
+                        .read<WorkorderSubmissionsFormsCubit>()
                         .submitSubmissions(workorder.id, submissions);
                   },
             child: const Icon(Icons.save),

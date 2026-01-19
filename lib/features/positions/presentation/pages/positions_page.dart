@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:workorder_company_app/core/authorization/feature/positions_permission.dart';
+import 'package:workorder_company_app/core/authorization/widget/permission_gate.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/positions_bloc.dart';
 import 'package:workorder_company_app/features/positions/presentation/widget/add_position_widget.dart';
+import 'package:workorder_company_app/shared/widgets/custom_back_buttom.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 
 class PositionsPage extends StatelessWidget {
@@ -25,7 +28,7 @@ class _PositionsView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Posisi Pegawai'),
-        centerTitle: true,
+        leading: CustomBackButton()
       ),
       body: BlocBuilder<PositionsBloc, PositionsState>(
         builder: (context, state) {
@@ -67,9 +70,8 @@ class _PositionsView extends StatelessWidget {
                         leading: Container(
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .primaryContainer,
+                            color:
+                                Theme.of(context).colorScheme.primaryContainer,
                             borderRadius: BorderRadius.circular(14),
                           ),
                           child: Icon(
@@ -119,25 +121,27 @@ class _PositionsView extends StatelessWidget {
           return const SizedBox.shrink();
         },
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () async {
-          final result = await showModalBottomSheet<String>(
-            context: context,
-            isScrollControlled: true,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-            ),
-            builder: (_) => const AddPositionBottomSheet(),
-          );
+      floatingActionButton: PermissionGate(
+          permission: PositionsPermission.create,
+          child: FloatingActionButton.extended(
+            onPressed: () async {
+              final result = await showModalBottomSheet<String>(
+                context: context,
+                isScrollControlled: true,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+                ),
+                builder: (_) => const AddPositionBottomSheet(),
+              );
 
-          if (result != null) {
-            // TODO: handle hasilnya
-            // context.read<PositionsBloc>().add(AddPositionRequested(result));
-          }
-        },
-        icon: const Icon(Icons.add),
-        label: const Text('Tambah Posisi'),
-      ),
+              if (result != null) {
+                // TODO: handle hasilnya
+                // context.read<PositionsBloc>().add(AddPositionRequested(result));
+              }
+            },
+            icon: const Icon(Icons.add),
+            label: const Text('Tambah Posisi'),
+          )),
     );
   }
 }

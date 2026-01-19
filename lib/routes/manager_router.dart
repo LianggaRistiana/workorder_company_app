@@ -11,7 +11,7 @@ import 'package:workorder_company_app/features/client_service_request/presentati
 import 'package:workorder_company_app/features/employees/presentation/bloc/employees_bloc.dart';
 import 'package:workorder_company_app/features/home/presentation/pages/homepage/manager_company_homepage.dart';
 import 'package:workorder_company_app/features/services/domain/entities/required_staff_entity.dart';
-import 'package:workorder_company_app/features/workorder/presentation/bloc/workoder_submissions_forms_cubit.dart';
+import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_submissions_forms_cubit.dart';
 import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_actions_cubit.dart';
 import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_assigned_staff_cubit.dart';
 import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_bloc.dart';
@@ -100,7 +100,7 @@ final managerRouter = [
       GoRoute(
           path: AppRoutes.managerWorkorderSubmissions,
           builder: (_, __) => BlocProvider(
-              create: (_) => sl<WorkoderSubmissionsFormsCubit>(),
+              create: (_) => sl<WorkorderSubmissionsFormsCubit>(),
               child: const WorkorderSubmissionPage())),
       GoRoute(
         path: "${AppRoutes.managerWorkorder}/:id",

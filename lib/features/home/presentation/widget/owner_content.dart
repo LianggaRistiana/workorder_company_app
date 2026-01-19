@@ -35,7 +35,7 @@ class OwnerContent extends StatelessWidget {
                 icon: Icons.badge_outlined,
                 label: "Posisi Pegawai",
                 onTap: () {
-                  context.push(AppRoutes.ownerPositions);
+                  context.push(AppRoutes.positions);
                 }),
             MenuItem(
                 icon: Icons.help_outline_outlined,
@@ -54,8 +54,10 @@ class OwnerContent extends StatelessWidget {
                 onTap: () {}),
             MenuItem(
                 icon: Icons.assignment_outlined,
-                label: "Tugas Kerja",
-                onTap: () {}),
+                label: "Perintah Kerja",
+                onTap: () {
+                  context.push(AppRoutes.workorders);
+                }),
             MenuItem(
                 icon: Icons.people_outline,
                 label: "Pegawai",

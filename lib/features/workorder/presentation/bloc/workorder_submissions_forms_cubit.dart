@@ -5,11 +5,10 @@ import 'package:workorder_company_app/features/workorder/domain/usecases/set_wor
 import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_bloc.dart';
 
 
-// FIXME : fix the typo of this file
-class WorkoderSubmissionsFormsCubit extends Cubit<WorkorderSubmissionsState> {
+class WorkorderSubmissionsFormsCubit extends Cubit<WorkorderSubmissionsState> {
   final SetWorkorderSubmissionsUsecase _setWorkorderSubmissionsUsecase;
 
-  WorkoderSubmissionsFormsCubit(this._setWorkorderSubmissionsUsecase)
+  WorkorderSubmissionsFormsCubit(this._setWorkorderSubmissionsUsecase)
       : super(WorkorderSubmissionsState());
 
   Future<void> submitSubmissions(
