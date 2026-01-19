@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/forms_bloc.dart';
 import 'package:workorder_company_app/features/forms/presentation/widgets/form_field_card.dart';
+import 'package:workorder_company_app/shared/widgets/custom_back_buttom.dart';
 
 class FormDetailPage extends StatefulWidget {
   final String formId;
@@ -37,6 +38,7 @@ class _FormDetailPageState extends State<FormDetailPage> {
           appBar: AppBar(
             // title: Text(appBarTitle),
             centerTitle: true,
+            leading: CustomBackButton(),
           ),
           body: _buildBody(context, state),
         );

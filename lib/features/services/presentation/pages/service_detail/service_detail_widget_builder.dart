@@ -67,7 +67,7 @@ extension ServiceDetailWidgetBuilder on ServiceDetailPageState {
                 child: ListTile(
                   //TODO : wrap into inkwell and fix padding
                   onTap: () {
-                    context.push(AppRoutes.ownerForms.byId(intake.form.id));
+                    context.push(AppRoutes.formsDetail.fillId(intake.form.id));
                   },
                   leading: IconBox(icon: Icons.assignment_turned_in_outlined),
                   title: Text(

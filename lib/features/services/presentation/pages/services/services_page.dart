@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/authorization/feature/service_permission.dart';
+import 'package:workorder_company_app/core/authorization/widget/permission_gate.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/services_bloc.dart';
@@ -8,6 +10,7 @@ import 'package:workorder_company_app/features/services/presentation/pages/servi
 import 'package:workorder_company_app/features/services/presentation/widgets/service_item.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
+import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
 
@@ -19,6 +22,7 @@ class ServicesPage extends StatefulWidget {
 }
 
 class _ServicesPageState extends State<ServicesPage> {
+  // TODO : Remove inject bloc here
   late final ServicesBloc _servicesBloc;
 
   @override
@@ -46,16 +50,19 @@ class _ServicesPageState extends State<ServicesPage> {
             appBar: AppBar(
               title: const Text('Layanan'),
             ),
-            floatingActionButton: FloatingActionButton.extended(
-              onPressed: () async {
-                final result = await context.push(AppRoutes.ownerNewService);
-                if (result == true && context.mounted) {
-                  // TODO: pindahkan bloc ke multi prov global agar bisa auto refresh
-                  // context.read<ServicesBloc>().add(GetServicesRequested());
-                }
-              },
-              label: const Text("Tambah Layanan"),
-              icon: const Icon(Icons.add),
+            floatingActionButton: PermissionGate(
+              permission: ServicePermission.create,
+              child: FloatingActionButton.extended(
+                onPressed: () async {
+                  final result = await context.push(AppRoutes.servicesCreate);
+                  if (result == true && context.mounted) {
+                    // TODO: pindahkan bloc ke multi prov global agar bisa auto refresh
+                    // context.read<ServicesBloc>().add(GetServicesRequested());
+                  }
+                },
+                label: const Text("Tambah Layanan"),
+                icon: const Icon(Icons.add),
+              ),
             ),
             body: BlocListener<ServicesBloc, ServicesState>(
               listener: (context, state) {
@@ -119,8 +126,8 @@ class _ServicesPageState extends State<ServicesPage> {
                                     service: service,
                                     isPublic: false,
                                     onTap: () {
-                                      context.push(AppRoutes.ownerServiceDetail(
-                                          service.id));
+                                      context.push(AppRoutes.servicesDetail
+                                          .fillId(service.id));
                                     })),
                           );
                         }

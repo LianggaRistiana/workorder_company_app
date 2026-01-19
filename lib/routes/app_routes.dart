@@ -27,7 +27,7 @@ class AppRoutes {
   static const formsUpdate = '/forms/update';
   static const formsDetail = '/forms/:id';
 
-  // Form
+  // Service
   static const services = '/services';
   static const servicesCreate = '/services/create';
   static const servicesUpdate = '/services/update';

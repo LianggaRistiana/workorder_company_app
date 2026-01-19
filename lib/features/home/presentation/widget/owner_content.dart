@@ -29,7 +29,7 @@ class OwnerContent extends StatelessWidget {
                 icon: Icons.build_circle_outlined,
                 label: "Layanan",
                 onTap: () {
-                  context.push(AppRoutes.ownerServices);
+                  context.push(AppRoutes.services);
                 }),
             MenuItem(
                 icon: Icons.badge_outlined,

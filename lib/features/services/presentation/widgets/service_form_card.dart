@@ -4,6 +4,7 @@ import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/service_form_entity.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 
@@ -29,7 +30,7 @@ class ServiceFormCard extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
         onTap: () {
-          context.push(AppRoutes.ownerFormDetail(serviceForm.form.id));
+          context.push(AppRoutes.formsDetail.fillId(serviceForm.form.id));
         },
         child: Padding(
           padding: const EdgeInsets.all(12), // beri padding manual
