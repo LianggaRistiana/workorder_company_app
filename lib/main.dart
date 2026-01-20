@@ -6,7 +6,6 @@ import 'package:workorder_company_app/core/constants/app_config.dart';
 import 'package:workorder_company_app/core/theme/app_theme.dart';
 import 'package:workorder_company_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:workorder_company_app/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:workorder_company_app/features/employees/presentation/bloc/employees_bloc.dart';
 import 'package:workorder_company_app/routes/app_router.dart';
 import 'package:workorder_company_app/core/di/injection.dart' as di;
 import 'package:intl/date_symbol_data_local.dart';
@@ -79,10 +78,10 @@ class MyApp extends StatelessWidget {
         BlocProvider<AuthBloc>(
           create: (_) => di.sl<AuthBloc>()..add(AuthCheckStatus()),
         ),
-        BlocProvider(
-          create: (context) =>
-              di.sl<EmployeesBloc>()..add(GetEmployeesRequested()),
-        ),
+        // BlocProvider(
+        //   create: (context) =>
+        //       di.sl<EmployeesBloc>()..add(GetEmployeesRequested()),
+        // ),
         // Tambahkan bloc lain jika ada
       ],
       child: MaterialApp.router(

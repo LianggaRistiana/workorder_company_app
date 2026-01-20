@@ -8,17 +8,31 @@ import 'package:workorder_company_app/features/auth/domain/entities/user_entity.
 import 'package:workorder_company_app/features/employees/presentation/bloc/employees_bloc.dart';
 import 'package:workorder_company_app/features/home/presentation/widget/user_chip.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/widgets/custom_back_buttom.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
+import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
 
-class EmployeesPage extends StatelessWidget {
+class EmployeesPage extends StatefulWidget {
   const EmployeesPage({super.key});
+
+  @override
+  State<EmployeesPage> createState() => _EmployeesPageState();
+}
+
+class _EmployeesPageState extends State<EmployeesPage> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<EmployeesBloc>().add(GetEmployeesRequested());
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Pegawai'),
+          leading: CustomBackButton(),
         ),
         body: BlocBuilder<EmployeesBloc, EmployeesState>(
           builder: (context, state) {
@@ -30,19 +44,42 @@ class EmployeesPage extends StatelessWidget {
               final List<UserEntity> employees = state.employees;
 
               return RefreshIndicator(
-                child: CustomList(
-                    scrollable: true,
-                    items: employees,
-                    itemBuilder: (item, _) {
-                      return CustomCard(
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: AppSpacing.md,
-                              vertical: AppSpacing.xs),
-                          padding: const EdgeInsets.all(16),
-                          child: UserChip(
-                            user: item,
-                          ));
-                    }),
+                child: SingleChildScrollView(
+                  child: CustomList(
+                      scrollable: false,
+                      items: employees,
+                      emptyFooterHeight: 40,
+                      emptyWidget: Center(
+                        child: EmptyStateWidget(
+                          icon: Icons.group_off_outlined,
+                          text: "Tidak ada Pegawai",
+                        ),
+                      ),
+                      itemBuilder: (item, _) {
+                        return CustomCard(
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: AppSpacing.md,
+                                vertical: AppSpacing.xs),
+                            padding: const EdgeInsets.all(16),
+                            child: UserChip(
+                              user: item,
+                            ));
+                      }),
+                ),
+
+                // child: CustomList(
+                //     scrollable: false,
+                //     items: employees,
+                //     itemBuilder: (item, _) {
+                //       return CustomCard(
+                //           margin: const EdgeInsets.symmetric(
+                //               horizontal: AppSpacing.md,
+                //               vertical: AppSpacing.xs),
+                //           padding: const EdgeInsets.all(16),
+                //           child: UserChip(
+                //             user: item,
+                //           ));
+                //     }),
                 onRefresh: () async {
                   context.read<EmployeesBloc>().add(GetEmployeesRequested());
                 },
