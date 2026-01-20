@@ -39,6 +39,13 @@ class AppLayout extends StatelessWidget {
   }
 }
 
+final Map<UserRole, List<String>> _roleMainPages = {
+  UserRole.ownerCompany: [AppRoutes.home],
+  UserRole.managerCompany: [AppRoutes.home, AppRoutes.serviceRequest, AppRoutes.workorders],
+  UserRole.staffCompany: [AppRoutes.home, AppRoutes.workorders],
+  UserRole.staffUnassigned: [AppRoutes.home],
+  UserRole.client: [AppRoutes.home],
+};
 // ===================== WIHT ANIMATE ==============================
 // class AppLayout extends StatefulWidget {
 //   final Widget child;
@@ -115,13 +122,6 @@ class AppLayout extends StatelessWidget {
 //   }
 // }
 
-final Map<UserRole, List<String>> _roleMainPages = {
-  UserRole.ownerCompany: [AppRoutes.home],
-  UserRole.managerCompany: [AppRoutes.home, AppRoutes.workorders],
-  UserRole.staffCompany: [AppRoutes.home, AppRoutes.workorders],
-  UserRole.staffUnassigned: [AppRoutes.home],
-  UserRole.client: [AppRoutes.home],
-};
 
 // TODO : Thinks Later
 

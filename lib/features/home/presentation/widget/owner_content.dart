@@ -51,7 +51,9 @@ class OwnerContent extends StatelessWidget {
             MenuItem(
                 icon: Icons.inbox_outlined,
                 label: "Pengajuan Layanan",
-                onTap: () {}),
+                onTap: () {
+                  context.push(AppRoutes.serviceRequest);
+                }),
             MenuItem(
                 icon: Icons.assignment_outlined,
                 label: "Perintah Kerja",

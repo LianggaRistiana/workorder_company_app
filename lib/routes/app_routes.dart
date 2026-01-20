@@ -44,13 +44,15 @@ class AppRoutes {
   static const workordersSubmission = '/workorders/submissions';
   static const workordersDetail = '/workorders/:id';
 
+  // internal side client service request 
+  static const serviceRequest = '/service-request';
+  static const serviceRequestDetail = '/service-request/:id';
+
+  // client side  client service request 
+  static const serviceRequestClientSide = '/client-service-request';
+  static const serviceRequestDetailClientSide = '/client-service-request/:id';
+
   
-
-
-
-
-
-
 
   // ======= OLD ROUTES ================
 

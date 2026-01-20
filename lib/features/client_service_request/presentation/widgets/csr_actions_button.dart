@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
-import 'package:workorder_company_app/core/network/endpoints.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/client_service_request/presentation/bloc/internal_client_service_request/internal_csr_actions_cubit.dart';
 import 'package:workorder_company_app/features/client_service_request/presentation/bloc/internal_client_service_request/internal_csr_bloc.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
 
 class CsrActionsButton extends StatelessWidget {
   final ClientServiceRequestStatus csrStatus;
@@ -43,8 +43,9 @@ class CsrActionsButton extends StatelessWidget {
             if (state.status == CsrStateStatus.loaded &&
                 state.workorderId != null &&
                 state.workorderId!.isNotEmpty) {
+              // FIXME : When accept and move to wo detail page, and back again it will shows old data (received its must be approve)
               context.push(
-                AppRoutes.managerWorkorder.byId(state.workorderId!),
+                AppRoutes.workorders.fillId(state.workorderId!),
               );
             }
           },

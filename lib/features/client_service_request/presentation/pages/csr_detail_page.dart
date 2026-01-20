@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:workorder_company_app/core/authorization/feature/csr_permission.dart';
+import 'package:workorder_company_app/core/authorization/widget/permission_gate.dart';
 import 'package:workorder_company_app/features/client_service_request/domain/entitties/client_service_request_entity.dart';
 import 'package:workorder_company_app/features/client_service_request/presentation/bloc/internal_client_service_request/internal_csr_bloc.dart';
 import 'package:workorder_company_app/features/client_service_request/presentation/bloc/internal_client_service_request/internal_csr_detail_cubit.dart';
@@ -37,13 +39,15 @@ class _CsrDetailPageState extends State<CsrDetailPage> {
           // ⬇️ pakai state untuk bottom nav bar
           bottomNavigationBar: csr == null
               ? const SizedBox.shrink()
-              : CsrActionsButton(
-                  csrStatus: csr.status,
-                  csrId: widget.csrId,
-                  onRefresh: () => context
-                      .read<InternalCsrDetailCubit>()
-                      .getCsrDetail(widget.csrId),
-                ),
+              : PermissionGate(
+                  permission: CsrPermission.action,
+                  child: CsrActionsButton(
+                    csrStatus: csr.status,
+                    csrId: widget.csrId,
+                    onRefresh: () => context
+                        .read<InternalCsrDetailCubit>()
+                        .getCsrDetail(widget.csrId),
+                  )),
 
           body: _buildBody(state),
         );

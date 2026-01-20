@@ -4,7 +4,7 @@ enum PermissionAction {
   update,
   delete,
   approve,
-  assign,
+  action,
   cancel,
   reject,
   fill

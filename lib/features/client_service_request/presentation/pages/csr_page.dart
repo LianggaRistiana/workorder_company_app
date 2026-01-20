@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:workorder_company_app/core/network/endpoints.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/client_service_request/presentation/bloc/internal_client_service_request/internal_csr_bloc.dart';
 import 'package:workorder_company_app/features/client_service_request/presentation/widgets/csr_item.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
+import 'package:workorder_company_app/shared/widgets/custom_back_buttom.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
@@ -29,6 +30,7 @@ class _CsrPageState extends State<CsrPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Pengajuan Layanan"),
+        leading: context.canPop() ? CustomBackButton() : null,
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(50),
           child: Container(
@@ -116,7 +118,7 @@ class _CsrPageState extends State<CsrPage> {
                           itemBuilder: (item, _) => CsrItem(
                             csr: item,
                             onTap: () {
-                              context.push(AppRoutes.managerCsr.byId(item.id));
+                              context.push(AppRoutes.serviceRequestDetail.fillId(item.id));
                             },
                           ),
                         ),

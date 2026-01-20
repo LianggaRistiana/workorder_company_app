@@ -30,7 +30,7 @@ class ManagerContent extends StatelessWidget {
                 icon: Icons.inbox_outlined,
                 label: "Pengajuan Layanan",
                 onTap: () {
-                  context.go(AppRoutes.managerCsr);
+                  context.go(AppRoutes.serviceRequest);
                 }),
             MenuItem(
                 icon: Icons.assignment_outlined,

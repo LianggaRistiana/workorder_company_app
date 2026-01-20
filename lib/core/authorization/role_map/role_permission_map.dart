@@ -20,7 +20,7 @@ extension UserRolePermissions on UserRole {
           ...EmployeePermission.all,
           ...FormPermission.all,
           ...ServicePermission.all,
-          ...CsrPermission.admin,
+          ...CsrPermission.all,
           ...WorkOrderPermissions.all,
           ...WorkReportPermissions.all,
           ...InvitationPermission.admin
@@ -31,7 +31,7 @@ extension UserRolePermissions on UserRole {
           EmployeePermission.view,
           FormPermission.view,
           ServicePermission.view,
-          ...CsrPermission.admin,
+          ...CsrPermission.all,
           ...WorkOrderPermissions.all,
           ...WorkReportPermissions.all
         };
@@ -46,7 +46,7 @@ extension UserRolePermissions on UserRole {
           ...WorkReportPermissions.all
         };
       case UserRole.client:
-        return {...CsrPermission.client};
+        return {CsrPermission.view};
       case UserRole.staffUnassigned:
         return {...InvitationPermission.unassigned};
     }
