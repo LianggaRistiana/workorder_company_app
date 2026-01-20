@@ -11,6 +11,7 @@ import 'package:workorder_company_app/features/services/presentation/widgets/ser
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
+import 'package:workorder_company_app/shared/widgets/custom_back_buttom.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
 
@@ -49,6 +50,7 @@ class _ServicesPageState extends State<ServicesPage> {
         child: Scaffold(
             appBar: AppBar(
               title: const Text('Layanan'),
+              leading: CustomBackButton(),
             ),
             floatingActionButton: PermissionGate(
               permission: ServicePermission.create,

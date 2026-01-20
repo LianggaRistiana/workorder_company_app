@@ -26,7 +26,7 @@ class StepNavigationBar extends StatelessWidget {
     return SafeArea(
       top: false,
       child: Padding(
-        padding: const EdgeInsets.only(top: 2, left: 16, right: 16, bottom: 16),
+        padding: const EdgeInsets.only(top: 2, left: 16, right: 16, bottom: 0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
