@@ -1,73 +1,99 @@
-import 'package:workorder_company_app/core/authorization/enums/app_feature.dart';
 import 'package:workorder_company_app/core/authorization/model/app_permission.dart';
-import 'package:workorder_company_app/core/authorization/enums/permission_action.dart';
 import 'package:workorder_company_app/core/authorization/role_map/role_permission_map.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 
-/// Extension that provides reusable helpers for checking
-/// authorization / permission based on [UserRole].
+/// Permission checker for [UserRole].
 ///
-/// This extension is designed to:
-/// - Centralize permission-checking logic
-/// - Avoid permission logic scattered across UI, routing, or use cases
-/// - Support scalability for multiple features and modules
-/// - Keep the API simple and expressive
+/// -------------------------------------------------------------
+/// DESIGN PRINCIPLES
+/// -------------------------------------------------------------
+/// - `has*` → LOW-LEVEL capability check (data ownership)
+/// - `can*` → PUBLIC authorization API (policy-aware, future-proof)
 ///
-/// Example usage:
-/// ```dart
-/// if (user.role.canPermission(WorkOrderPermissions.assign)) {
-///   // User is allowed to assign a work order
-/// }
+/// RULES:
+/// - UI, Route, Guard, Rule MUST ONLY use `can*`
+/// - `has*` is INTERNAL and must NOT be used outside this layer
 ///
-/// if (user.role.can(AppFeature.workOrder, PermissionAction.assign)) {
-///   // User is allowed to perform assign action on work order feature
-/// }
-/// ```
-extension PermissionCheck on UserRole {
+/// TODAY:
+/// - `can*` is a thin wrapper around `has*`
+///
+/// FUTURE:
+/// - `can*` may include:
+///   - account suspension / blocking
+///   - ownership validation
+///   - resource or workflow status
+///   - time-based access
+///   - policy / business rule evaluation
+///
+/// This separation allows future authorization rules
+/// without breaking UI, routes, or guards.
+/// -------------------------------------------------------------
+extension PermissionChecker on UserRole {
 
-  /// Checks whether the role owns a specific [AppPermission].
-  ///
-  /// This method verifies if the given [permission] exists
-  /// in the permission set associated with the [UserRole].
-  ///
-  /// Recommended usage:
-  /// - When permissions are defined as constants
-  ///   (e.g. `WorkOrderPermissions.assign`)
-  /// - Inside UI widgets such as `PermissionGate`
-  /// - When you want to avoid recreating permission objects repeatedly
+  // =============================================================
+  // LOW LEVEL — PERMISSION OWNERSHIP
+  // (INTERNAL — DO NOT USE IN UI / ROUTE / GUARD)
+  // =============================================================
+
+  /// Checks whether the role *structurally owns* a permission.
   ///
   /// Example:
-  /// ```dart
-  /// user.role.canPermission(WorkOrderPermissions.assign);
-  /// ```
-  bool canPermission(AppPermission permission) {
+  /// - Manager HAS `workorder.assign`
+  /// - Staff DOES NOT have `employee.delete`
+  bool has(AppPermission permission) {
     return permissions.contains(permission);
   }
 
-  /// Checks permission using a combination of [AppFeature]
-  /// and [PermissionAction].
+  /// Checks whether the role owns ALL given permissions.
+  bool hasAll(Iterable<AppPermission> permissions) {
+    return permissions.every(has);
+  }
+
+  /// Checks whether the role owns ANY of the given permissions.
+  bool hasAny(Iterable<AppPermission> permissions) {
+    return permissions.any(has);
+  }
+
+  // =============================================================
+  // PUBLIC API — POLICY AWARE AUTHORIZATION
+  // (USE THIS EVERYWHERE)
+  // =============================================================
+
+  /// Checks whether the role is allowed to perform an action.
   ///
-  /// This method is a convenience wrapper around [canPermission],
-  /// allowing permission checks without importing feature-specific
-  /// permission definitions.
+  /// This is the **SINGLE ENTRY POINT** for permission checks
+  /// outside the authorization layer.
   ///
-  /// Recommended usage:
-  /// - In domain layer or use cases
-  /// - For dynamic permission checks
-  /// - When feature and action are determined at runtime
+  /// TODAY:
+  /// - `canPermission` == `has`
   ///
-  /// Internally, this method creates an [AppPermission]
-  /// instance and delegates the validation to [canPermission].
+  /// FUTURE PLAN:
+  /// - Account or user suspension
+  /// - Ownership / contextual validation
+  /// - Resource status (e.g. WorkOrder state)
+  /// - Time-based or environment-based rules
+  /// - Centralized policy evaluation
   ///
-  /// Example:
+  /// Example future implementation:
   /// ```dart
-  /// user.role.can(
-  ///   AppFeature.workOrder,
-  ///   PermissionAction.assign,
-  /// );
+  /// bool canPermission(AppPermission permission) {
+  ///   if (isSuspended) return false;
+  ///   if (!has(permission)) return false;
+  ///   // additional policy checks
+  ///   return true;
+  /// }
   /// ```
-  bool can(AppFeature feature, PermissionAction action) {
-    return canPermission(AppPermission(feature, action));
+  bool canPermission(AppPermission permission) {
+    return has(permission);
+  }
+
+  /// Checks whether the role is allowed to perform ALL permissions.
+  bool canAll(Iterable<AppPermission> permissions) {
+    return permissions.every(canPermission);
+  }
+
+  /// Checks whether the role is allowed to perform ANY permission.
+  bool canAny(Iterable<AppPermission> permissions) {
+    return permissions.any(canPermission);
   }
 }
-
