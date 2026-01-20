@@ -10,5 +10,5 @@ enum AppFeature {
   company,
   employee,
   publicCompanies,
-  companyServices
+  publicClientServiceRequest,
 }

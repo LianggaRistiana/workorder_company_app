@@ -44,7 +44,7 @@ final Map<UserRole, List<String>> _roleMainPages = {
   UserRole.managerCompany: [AppRoutes.home, AppRoutes.serviceRequest, AppRoutes.workorders],
   UserRole.staffCompany: [AppRoutes.home, AppRoutes.workorders],
   UserRole.staffUnassigned: [AppRoutes.home],
-  UserRole.client: [AppRoutes.home],
+  UserRole.client: [AppRoutes.home, AppRoutes.publicCompanies],
 };
 // ===================== WIHT ANIMATE ==============================
 // class AppLayout extends StatefulWidget {

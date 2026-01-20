@@ -33,7 +33,7 @@ class NavConfig {
         return const [
           NavItem('Utama', Icons.home_rounded, AppRoutes.home),
           NavItem('Daftar Perusahaan', Icons.home_work_rounded,
-              AppRoutes.clientCompanyPortal),
+              AppRoutes.publicCompanies),
         ];
 
       default:

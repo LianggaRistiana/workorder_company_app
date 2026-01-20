@@ -11,6 +11,8 @@ import 'package:workorder_company_app/features/services/domain/entities/service_
 part 'company_state.dart';
 part 'company_event.dart';
 
+
+// TODO : fix name of this bloc
 class CompanyBloc extends Bloc<CompanyEvent, CompanyState> {
   final PublicGetCompaniesUsecase getCompaniesUsecase;
   final PublicGetCompanyDetailUsecase getCompanyDetailUsecase;

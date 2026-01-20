@@ -4,6 +4,7 @@ import 'package:workorder_company_app/core/authorization/feature/employee_permis
 import 'package:workorder_company_app/core/authorization/feature/form_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/invitation_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/positions_permission.dart';
+import 'package:workorder_company_app/core/authorization/feature/public_companies.dart';
 import 'package:workorder_company_app/core/authorization/feature/service_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/workreport_permission.dart';
 import 'package:workorder_company_app/core/authorization/model/app_permission.dart';
@@ -46,7 +47,10 @@ extension UserRolePermissions on UserRole {
           ...WorkReportPermissions.all
         };
       case UserRole.client:
-        return {CsrPermission.view};
+        return {
+          PublicCompanies.view,
+          CsrPermission.view
+          };
       case UserRole.staffUnassigned:
         return {...InvitationPermission.unassigned};
     }

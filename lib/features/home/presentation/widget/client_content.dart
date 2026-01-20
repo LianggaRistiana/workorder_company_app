@@ -19,7 +19,7 @@ class ClientContent extends StatelessWidget {
           title: "Ajukan Permintaan Layanan",
           description: "Pilih perusahaan kemudiaan ajukan permintaan layanan",
           onTap: () {
-            context.go(AppRoutes.clientCompanyPortal);
+            context.go(AppRoutes.publicCompanies);
           },
         ),
         const SizedBox(height: 8),
@@ -30,7 +30,7 @@ class ClientContent extends StatelessWidget {
             MenuItem(
                 icon: Icons.assignment_outlined,
                 label: "Pengajuan Layanan Saya",
-                onTap: () => context.push(AppRoutes.clientServiceRequest)),
+                onTap: () => context.push(AppRoutes.serviceRequestClientSide)),
             MenuItem(
                 icon: Icons.home_work_outlined,
                 label: "Perusahaan langganan",

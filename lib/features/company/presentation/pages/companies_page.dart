@@ -5,6 +5,7 @@ import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/company/presentation/bloc/fetch_company/company_bloc.dart';
 import 'package:workorder_company_app/features/company/presentation/widgets/company_card.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
@@ -14,6 +15,7 @@ class CompaniesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // FIXME: it will Rebuild whole widget when refresh
     // Ambil bloc yang sudah disediakan di parent
     final bloc = context.read<CompanyBloc>();
 
@@ -84,8 +86,7 @@ class CompaniesPage extends StatelessWidget {
                         HorizontalButton(
                           margin: const EdgeInsets.all(AppSpacing.md),
                           title: "Perusahaan Langganan",
-                          description:
-                              "Perusahaan dimana saya berlangganan",
+                          description: "Perusahaan dimana saya berlangganan",
                           leadingIcon: Icons.home_work_outlined,
                           onTap: () {},
                         ),
@@ -94,9 +95,9 @@ class CompaniesPage extends StatelessWidget {
                             items: state.companies,
                             itemBuilder: (company, _) => CompanyCard(
                                   company: company,
-                                  onTap: () => context.push(
-                                      AppRoutes.clientCompanyDetail(
-                                          company.id)),
+                                  onTap: () => context.push(AppRoutes
+                                      .publicCompaniesDetail
+                                      .fillId(company.id)),
                                 ))
                       ],
                     ),

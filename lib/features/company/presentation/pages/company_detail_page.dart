@@ -7,6 +7,7 @@ import 'package:workorder_company_app/features/company/presentation/bloc/fetch_c
 import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
 import 'package:workorder_company_app/features/services/presentation/widgets/service_item.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
 import 'package:workorder_company_app/shared/widgets/section_title.dart';
@@ -178,7 +179,7 @@ class _CompanyDetailPageState extends State<CompanyDetailPage> {
               itemBuilder: (service, _) => ServiceItem(
                   service: service,
                   onTap: () {
-                    context.push(AppRoutes.clientFillServiceForms(service.id));
+                    context.push(AppRoutes.publicServiceDetail.fillId(service.id));
                   })),
         ],
       ),

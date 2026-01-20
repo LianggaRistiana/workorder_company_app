@@ -1,4 +1,3 @@
-
 class AppRoutes {
   static const login = '/login';
   static const home = '/home';
@@ -10,10 +9,6 @@ class AppRoutes {
 
   // Internal Company
   static const company = '/company';
-
-  // Public Company
-  static const publicCompanies = '/companies';
-  static const publicCompaniesServices = '/companies/:id/services';
 
   // Positions
   static const positions = '/positions';
@@ -44,18 +39,20 @@ class AppRoutes {
   static const workordersSubmission = '/workorders/submissions';
   static const workordersDetail = '/workorders/:id';
 
-  // internal side client service request 
+  // internal side client service request
   static const serviceRequest = '/service-request';
   static const serviceRequestDetail = '/service-request/:id';
 
-  // client side  client service request 
+  // client side  client service request
   static const serviceRequestClientSide = '/client-service-request';
   static const serviceRequestDetailClientSide = '/client-service-request/:id';
 
-  
+  // client side companies
+  static const publicCompanies = '/public-companies';
+  static const publicCompaniesDetail = '/public-companies/:id';
+  static const publicServiceDetail = '/public-companies/service/:id';
 
   // ======= OLD ROUTES ================
-
   static const ownerPrefix = '/owner';
   static const managerPrefix = '/manager';
   static const staffPrefix = '/staff';
@@ -92,17 +89,15 @@ class AppRoutes {
   static const managerProfile = '$managerPrefix/profile';
   static const managerCsr = '$managerPrefix/service-request';
   static const managerWorkorder = '$managerPrefix/workorders';
-  static const managerWorkorderStaffConfig = '$managerPrefix/workorder/staff-config';
-  static const managerWorkorderSubmissions = '$managerPrefix/workorder/submissions';
+  static const managerWorkorderStaffConfig =
+      '$managerPrefix/workorder/staff-config';
+  static const managerWorkorderSubmissions =
+      '$managerPrefix/workorder/submissions';
   // static static managerWorkorderSubmissions(String id) => '${managerWorkorder.byId(id)}';
 
   // Staff Role
   static const staffHome = '$staffPrefix/home';
   static const staffProfile = '$staffPrefix/profile';
 
-
-
   // static workordersDetail(UserRole role) => '/${role.routePrefix}/workorders';
-  
-
 }
