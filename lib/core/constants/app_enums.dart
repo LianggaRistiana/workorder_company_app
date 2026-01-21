@@ -297,7 +297,7 @@ enum ClientServiceRequestStatus {
   String get displayName {
     switch (this) {
       case ClientServiceRequestStatus.received:
-        return 'Diterima';
+        return 'Menunggu';
       case ClientServiceRequestStatus.cancelled:
         return 'Dibatalkan';
       case ClientServiceRequestStatus.rejected:

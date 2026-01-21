@@ -16,8 +16,8 @@ class RoutePermissions {
     ...RouteInvitationPermissions.route,
     ...RoutePositionPermissions.route,
     ...RoutePublicCsrPermissions.route,
-    
     ...RouteServicePermissions.route,
     ...RouteWorkorderPermissions.route,
+    
   };
 }
