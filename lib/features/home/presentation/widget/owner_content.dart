@@ -77,7 +77,7 @@ class OwnerContent extends StatelessWidget {
           title: "Menu lainnya",
           description:
               "Pengaturan umum seperti nama, alamat perusahaan dan lain sebagainya",
-          onTap: () => context.go(AppRoutes.ownerCompany),
+          onTap: () => context.go(AppRoutes.companyManageMenu),
         ),
       ],
     );

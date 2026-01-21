@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/features/company/presentation/widgets/internal_company_card.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/orientation_helper.dart';
-import 'package:workorder_company_app/shared/widgets/active_status_chip.dart';
-import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/menu_grid.dart';
 import 'package:workorder_company_app/shared/widgets/menu_item.dart';
 import 'package:workorder_company_app/shared/widgets/section_title.dart';
@@ -30,7 +29,7 @@ class _OwnerCompanyPageState extends State<OwnerCompanyPage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    // final theme = Theme.of(context);
 
     // Dummy data
     final companyName = "PT Maju Jaya";
@@ -43,48 +42,51 @@ class _OwnerCompanyPageState extends State<OwnerCompanyPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             /// --- Company Card ---
-            CustomCard(
-              child: Row(
-                children: [
-                  // Company Logo / Avatar
-                  CircleAvatar(
-                    radius: 32,
-                    backgroundColor: theme.colorScheme.primaryContainer,
-                    child: Icon(
-                      Icons.apartment_rounded,
-                      size: 36,
-                      color: theme.colorScheme.primary,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  // Company Info
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          companyName,
-                          style: theme.textTheme.titleLarge
-                              ?.copyWith(fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          companyAddress,
-                          style: theme.textTheme.bodyMedium
-                              ?.copyWith(color: Colors.grey[700]),
-                        ),
-                        const SizedBox(height: 8),
-                        ActiveStatusChip(
-                          isActive: true,
-                          label: "Perusahaan",
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            
+            InternalCompanyCard(companyName: companyName, companyAddress: companyAddress),
+            // CustomCard(
+            //   child: Row(
+            //     children: [
+            //       // Company Logo / Avatar
+            //       CircleAvatar(
+            //         radius: 32,
+            //         backgroundColor: theme.colorScheme.primaryContainer,
+            //         child: Icon(
+            //           Icons.apartment_rounded,
+            //           size: 36,
+            //           color: theme.colorScheme.primary,
+            //         ),
+            //       ),
+            //       const SizedBox(width: 16),
+            //       // Company Info
+            //       Expanded(
+            //         child: Column(
+            //           crossAxisAlignment: CrossAxisAlignment.start,
+            //           children: [
+            //             Text(
+            //               companyName,
+            //               style: theme.textTheme.titleLarge
+            //                   ?.copyWith(fontWeight: FontWeight.bold),
+            //             ),
+            //             const SizedBox(height: 4),
+            //             Text(
+            //               companyAddress,
+            //               style: theme.textTheme.bodyMedium
+            //                   ?.copyWith(color: Colors.grey[700]),
+            //             ),
+            //             const SizedBox(height: 8),
+            //             ActiveStatusChip(
+            //               isActive: true,
+            //               label: "Perusahaan",
+            //             )
+            //           ],
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
 
+            const SizedBox(height: 12),
             // /// --- Section Title ---
             SectionTitle("Menu Konfigurasi Perusahaan"),
             const SizedBox(height: 12),
