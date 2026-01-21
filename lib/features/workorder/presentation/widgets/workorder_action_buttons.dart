@@ -100,12 +100,6 @@ class WorkorderActionButtons extends StatelessWidget {
 
               if (state.status == WorkorderStateStatus.success) {
                 context.showSuccess("Berhasil menyimpan tugas kerja");
-                // ScaffoldMessenger.of(context).showSnackBar(
-                //   SnackBar(
-                //     behavior: SnackBarBehavior.floating,
-                //     content: Text("Berhasil Menyimpan Tugas Kerja"),
-                //   ),
-                // );
 
                 onRefresh?.call();
               }
@@ -151,9 +145,9 @@ class WorkorderActionButtons extends StatelessWidget {
                         onPressed: isLoading
                             ? null
                             : () {
-                                // context
-                                //     .read<WorkorderActionsCubit>()
-                                //     .setToReady(workorderId);
+                                context
+                                    .read<WorkorderActionsCubit>()
+                                    .setToStart(workorderId);
                               },
                       ),
                     ),
@@ -161,7 +155,75 @@ class WorkorderActionButtons extends StatelessWidget {
                 ),
               );
             });
+      case WorkOrderStatus.inProgress:
+        return BlocConsumer<WorkorderActionsCubit, WorkorderActionsState>(
+            listenWhen: (prev, curr) => prev.status != curr.status,
+            listener: (context, state) {
+              if (state.status == WorkorderStateStatus.error) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    behavior: SnackBarBehavior.floating,
+                    content: Text(state.errorMessage ?? "Terjadi kesalahan"),
+                  ),
+                );
+              }
 
+              if (state.status == WorkorderStateStatus.success) {
+                context.showSuccess("Berhasil menyimpan tugas kerja");
+
+                onRefresh?.call();
+              }
+            },
+            builder: (context, state) {
+              final isLoading = state.status == WorkorderStateStatus.loading;
+              return Container(
+                margin: EdgeInsets.only(
+                  left: AppSpacing.md,
+                  right: AppSpacing.md,
+                  bottom: AppSpacing.lg,
+                ),
+                child: Row(
+                  children: [
+                    // TOLAK
+                    TextButton.icon(
+                      label: Text(
+                        "Batalkan",
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.error,
+                        ),
+                      ),
+                      icon: Icon(
+                        Icons.cancel_outlined,
+                        color: Theme.of(context).colorScheme.error,
+                      ),
+                      onPressed: isLoading ? null : () {},
+                    ),
+                    // SETUJUI
+                    Expanded(
+                      child: FilledButton.icon(
+                        icon: isLoading
+                            ? SizedBox(
+                                width: 16,
+                                height: 16,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : Icon(Icons.check_circle_rounded),
+                        label: Text("Selesaikan Tugas Kerja"),
+                        onPressed: isLoading
+                            ? null
+                            : () {
+                                // context
+                                //     .read<WorkorderActionsCubit>()
+                                //     .setToStart(workorderId);
+                              },
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            });
       default:
         return SizedBox.shrink();
     }

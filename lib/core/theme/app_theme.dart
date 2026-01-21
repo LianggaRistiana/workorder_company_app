@@ -39,9 +39,9 @@ class AppTheme {
     ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: const Color.fromARGB(255, 142, 192, 253),
-      // backgroundColor: AppColors.lightPrimary,
-      foregroundColor: Colors.black,
+      // backgroundColor: const Color.fromARGB(255, 0, 81, 255),
+      backgroundColor: AppColors.lightPrimary,
+      foregroundColor: Colors.white,
     ),
 
     textTheme: TextTheme(
@@ -94,8 +94,8 @@ class AppTheme {
       // onPrimaryContainer: AppColors.lightPrimary,
     ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: AppColors.darkPrimaryFabBackground,
-      foregroundColor: AppColors.darkPrimaryFabForeground,
+      backgroundColor: AppColors.darkPrimary,
+      foregroundColor: const Color.fromARGB(255, 255, 255, 255),
     ),
     scaffoldBackgroundColor: AppColors.darkBackground,
     appBarTheme: AppBarTheme(

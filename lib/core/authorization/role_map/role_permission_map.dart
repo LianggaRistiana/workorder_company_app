@@ -28,6 +28,7 @@ extension UserRolePermissions on UserRole {
         };
       case UserRole.managerCompany:
         return {
+          CompanyPermission.view,
           PositionsPermission.view,
           EmployeePermission.view,
           FormPermission.view,
@@ -38,6 +39,7 @@ extension UserRolePermissions on UserRole {
         };
       case UserRole.staffCompany:
         return {
+          CompanyPermission.view,
           PositionsPermission.view,
           EmployeePermission.view,
           FormPermission.view,
@@ -47,10 +49,7 @@ extension UserRolePermissions on UserRole {
           ...WorkReportPermissions.all
         };
       case UserRole.client:
-        return {
-          PublicCompanies.view,
-          CsrPermission.view
-          };
+        return {PublicCompanies.view, CsrPermission.view};
       case UserRole.staffUnassigned:
         return {...InvitationPermission.unassigned};
     }

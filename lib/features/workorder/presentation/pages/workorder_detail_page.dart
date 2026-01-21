@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:workorder_company_app/core/authorization/feature/workorder_permission.dart';
+import 'package:workorder_company_app/core/authorization/feature/workreport_permission.dart';
 import 'package:workorder_company_app/core/authorization/widget/permission_gate.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
@@ -64,6 +65,15 @@ class _WorkorderDetailPageState extends State<WorkorderDetailPage> {
                 context.pop(isDataUpdated);
               }),
             ),
+            floatingActionButton:
+                workorder?.status == WorkOrderStatus.inProgress
+                    ? PermissionGate(
+                        permission: WorkReportPermissions.view,
+                        child: FloatingActionButton.extended(
+                            label: Text("Laporan"),
+                            icon: Icon(Icons.assignment_turned_in_outlined),
+                            onPressed: () {}))
+                    : null,
             bottomNavigationBar: workorder == null
                 ? const SizedBox.shrink()
                 : PermissionGate(
@@ -110,8 +120,7 @@ class _WorkorderDetailPageState extends State<WorkorderDetailPage> {
                       "pegawai yang betugas harus sesuai dengan posisi yang dibutuhkan layanan",
                   onTap: () async {
                     final result = await context.push(
-                        AppRoutes.workordersAssignStaff
-                            .fillId(workorder.id),
+                        AppRoutes.workordersAssignStaff.fillId(workorder.id),
                         extra: {
                           'requiredStaff': workorder.service.requiredStaff,
                           'assignedStaff': workorder.assignedStaffs
@@ -138,8 +147,8 @@ class _WorkorderDetailPageState extends State<WorkorderDetailPage> {
                   description:
                       "Anda dapat mengedit perintah kerja selama perintah kerja belum berstatus Siap ",
                   onTap: () async {
-                    final result = await context
-                        .push(AppRoutes.workordersSubmission);
+                    final result =
+                        await context.push(AppRoutes.workordersSubmission);
                     if (!context.mounted) return;
                     if (result == true) {
                       _refresh();

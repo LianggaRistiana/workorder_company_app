@@ -121,6 +121,11 @@ class ProfilePage extends StatelessWidget {
                     ),
                   ),
                   // TODO : add company info card later
+                  // PermissionGate(
+                  //     permission: CompanyPermission.view,
+                  //     child: InternalCompanyCard(
+                  //         companyName: "Company Name",
+                  //         companyAddress: "Company Address")),
 
                   Divider(),
                   HorizontalButton(

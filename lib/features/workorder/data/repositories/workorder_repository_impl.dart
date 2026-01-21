@@ -67,7 +67,9 @@ class WorkorderRepositoryImpl implements WorkorderRepository {
 
   @override
   Future<Either<Failure, void>> setToStart(String id) {
-    // TODO: implement setToStart
-    throw UnimplementedError();
+    return safeCall(() async {
+      await _workorderRemoteDatasource.setToStart(id);
+      return;
+    });
   }
 }
