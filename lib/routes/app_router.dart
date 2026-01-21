@@ -6,6 +6,7 @@ import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 // import 'package:workorder_company_app/routes/client_router.dart';
 import 'package:workorder_company_app/routes/common_router.dart';
+import 'package:workorder_company_app/routes/feature_routes.dart/company_route.dart';
 import 'package:workorder_company_app/routes/feature_routes.dart/csr_route.dart';
 import 'package:workorder_company_app/routes/feature_routes.dart/employees_route.dart';
 import 'package:workorder_company_app/routes/feature_routes.dart/forms_route.dart';
@@ -34,14 +35,15 @@ final GoRouter appRouter = GoRouter(
           },
           routes: [
             ...homeRouter,
+            ...companyRouter,
             ...positionsRouter,
             ...employeesRouter,
             ...formsRouter,
             ...serviceRoute,
             ...publicCompaniesRouter,
             ...csrRoute,
+            ...publicCsrRouter,
             ...workorderRouter,
-            ...publicCsrRouter
           ]),
       ...commonRouter,
       GoRoute(

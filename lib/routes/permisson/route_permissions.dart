@@ -1,4 +1,5 @@
 import 'package:workorder_company_app/core/authorization/model/app_permission.dart';
+import 'package:workorder_company_app/routes/permisson/route_company_permissions.dart';
 import 'package:workorder_company_app/routes/permisson/route_csr_permissions.dart';
 import 'package:workorder_company_app/routes/permisson/route_employee_permissions.dart';
 import 'package:workorder_company_app/routes/permisson/route_form_permissions.dart';
@@ -18,6 +19,7 @@ class RoutePermissions {
     ...RoutePublicCsrPermissions.route,
     ...RouteServicePermissions.route,
     ...RouteWorkorderPermissions.route,
+    ...RouteCompanyPermissions.route
     
   };
 }

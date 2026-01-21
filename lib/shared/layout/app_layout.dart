@@ -40,7 +40,7 @@ class AppLayout extends StatelessWidget {
 }
 
 final Map<UserRole, List<String>> _roleMainPages = {
-  UserRole.ownerCompany: [AppRoutes.home],
+  UserRole.ownerCompany: [AppRoutes.home, AppRoutes.companyManageMenu],
   UserRole.managerCompany: [AppRoutes.home, AppRoutes.serviceRequest, AppRoutes.workorders],
   UserRole.staffCompany: [AppRoutes.home, AppRoutes.workorders],
   UserRole.staffUnassigned: [AppRoutes.home],

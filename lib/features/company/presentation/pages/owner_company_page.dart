@@ -94,25 +94,25 @@ class _OwnerCompanyPageState extends State<OwnerCompanyPage> {
                     icon: Icons.assignment_turned_in_outlined,
                     label: "Formulir",
                     onTap: () {
-                      context.push(AppRoutes.ownerForms);
+                      context.push(AppRoutes.forms);
                     }),
                 MenuItem(
                     icon: Icons.build_circle_outlined,
                     label: "Layanan",
                     onTap: () {
-                      context.push(AppRoutes.ownerServices);
+                      context.push(AppRoutes.services);
                     }),
                 MenuItem(
                     icon: Icons.badge_outlined,
                     label: "Posisi Pegawai",
                     onTap: () {
-                      context.push(AppRoutes.ownerPositions);
+                      context.push(AppRoutes.positions);
                     }),
                 MenuItem(
                     icon: Icons.info_outline_rounded,
                     label: "Informasi Perusahaan",
                     onTap: () {
-                      context.push(AppRoutes.ownerForms);
+                      
                     }),
                 MenuItem(
                     icon: Icons.card_membership_outlined,
@@ -137,28 +137,28 @@ class _OwnerCompanyPageState extends State<OwnerCompanyPage> {
                 MenuItem(
                     icon: Icons.inbox_outlined,
                     label: "Pengajuan Layanan",
-                    onTap: () {}),
+                    onTap: () {context.push(AppRoutes.serviceRequest);}),
                 MenuItem(
                     icon: Icons.assignment_outlined,
                     label: "Tugas Kerja",
-                    onTap: () {}),
+                    onTap: () {context.push(AppRoutes.workorders);}),
                 MenuItem(
                     icon: Icons.people_outline,
                     label: "Pegawai",
                     onTap: () {
-                      context.push(AppRoutes.ownerEmployee);
+                      context.push(AppRoutes.employee);
                     }),
                 MenuItem(
                     icon: Icons.person_add_alt_1_outlined,
                     label: "Riwayat Undangan Pegawai",
                     onTap: () {
-                      context.push(AppRoutes.ownerEmployee);
+                      
                     }),
                 MenuItem(
                     icon: Icons.wallet_membership_outlined,
                     label: "Pelanggan",
                     onTap: () {
-                      context.push(AppRoutes.ownerEmployee);
+                      
                     }),
                 MenuItem(
                     icon: Icons.help_outline_outlined,
