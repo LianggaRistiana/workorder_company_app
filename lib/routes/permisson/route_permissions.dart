@@ -8,6 +8,7 @@ import 'package:workorder_company_app/routes/permisson/route_position_permission
 import 'package:workorder_company_app/routes/permisson/route_public_csr_permissions.dart';
 import 'package:workorder_company_app/routes/permisson/route_service_permissions.dart';
 import 'package:workorder_company_app/routes/permisson/route_workorder_permissions.dart';
+import 'package:workorder_company_app/routes/permisson/route_workreport_permissions.dart';
 
 class RoutePermissions {
   static final Map<String, AppPermission> map = {
@@ -19,7 +20,7 @@ class RoutePermissions {
     ...RoutePublicCsrPermissions.route,
     ...RouteServicePermissions.route,
     ...RouteWorkorderPermissions.route,
-    ...RouteCompanyPermissions.route
-    
+    ...RouteCompanyPermissions.route,
+    ...RouteWorkreportPermissions.route,
   };
 }

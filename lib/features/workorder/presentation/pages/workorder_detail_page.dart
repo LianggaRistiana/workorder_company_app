@@ -18,6 +18,7 @@ import 'package:workorder_company_app/features/workorder/presentation/widgets/wo
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
+import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
@@ -65,15 +66,18 @@ class _WorkorderDetailPageState extends State<WorkorderDetailPage> {
                 context.pop(isDataUpdated);
               }),
             ),
-            floatingActionButton:
-                workorder?.status == WorkOrderStatus.inProgress
-                    ? PermissionGate(
-                        permission: WorkReportPermissions.view,
-                        child: FloatingActionButton.extended(
-                            label: Text("Laporan"),
-                            icon: Icon(Icons.assignment_turned_in_outlined),
-                            onPressed: () {}))
-                    : null,
+            floatingActionButton: (workorder != null &&
+                    workorder.status == WorkOrderStatus.inProgress)
+                ? PermissionGate(
+                    permission: WorkReportPermissions.view,
+                    child: FloatingActionButton.extended(
+                        label: Text("Laporan"),
+                        icon: Icon(Icons.assignment_turned_in_outlined),
+                        onPressed: () {
+                          context
+                              .push(AppRoutes.workreports.fillId(workorder.id));
+                        }))
+                : null,
             bottomNavigationBar: workorder == null
                 ? const SizedBox.shrink()
                 : PermissionGate(
@@ -87,7 +91,9 @@ class _WorkorderDetailPageState extends State<WorkorderDetailPage> {
                     )),
             body: workorder == null
                 ? SizedBox.shrink()
-                : _mainContent(workorder, context),
+                : state.status == WorkorderStateStatus.loading
+                    ? const Center(child: AppLoading(message: "Memuat Perintah Kerja...",))
+                    : _mainContent(workorder, context),
           );
         });
   }

@@ -40,6 +40,10 @@ class AppRoutes {
   static const workordersSubmission = '/workorders/submissions';
   static const workordersDetail = '/workorders/:id';
 
+  // Work Report
+  static const workreports = '/workorders/:id/report';
+  static const workreportsSubmit = '/workorders/:id/report/submit';
+
   // internal side client service request
   static const serviceRequest = '/service-request';
   static const serviceRequestDetail = '/service-request/:id';

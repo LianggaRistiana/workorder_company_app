@@ -124,10 +124,11 @@ class _WorkorderSubmissionPageState extends State<WorkorderSubmissionPage> {
             onPressed: isLoading
                 ? null
                 : () {
-                    // Logger().i(submissions);
-                    context
-                        .read<WorkorderSubmissionsFormsCubit>()
-                        .submitSubmissions(workorder.id, submissions);
+                    if (_formKey.currentState?.validate() ?? false) {
+                      context
+                          .read<WorkorderSubmissionsFormsCubit>()
+                          .submitSubmissions(workorder.id, submissions);
+                    }
                   },
             child: const Icon(Icons.save),
           ),

@@ -5,6 +5,7 @@ import 'package:workorder_company_app/features/submissions/domain/entitties/fiel
 import 'package:workorder_company_app/features/submissions/presentation/widgets/multi_select_field_widget.dart';
 import 'package:workorder_company_app/features/submissions/presentation/widgets/number_form_field_widget.dart';
 import 'package:workorder_company_app/features/submissions/presentation/widgets/single_select_field_widget.dart';
+import 'package:workorder_company_app/features/submissions/presentation/widgets/text_area_field_widget.dart';
 import 'package:workorder_company_app/features/submissions/presentation/widgets/text_form_field_widget.dart';
 
 class FieldRenderer extends StatelessWidget {
@@ -35,6 +36,12 @@ class FieldRenderer extends StatelessWidget {
       //   field: field,
       //   onChanged: (val) => onChanged(formId, field.order.toString(), val),
       // );
+      case FieldType.textarea:
+        return TextAreaFieldWidget(
+          field: field,
+          value: value?.value as String?,
+          onChanged: (val) => onChanged(formId, field.order.toString(), val),
+        );
 
       case FieldType.number:
         return NumberFormFieldWidget(

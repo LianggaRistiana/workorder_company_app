@@ -35,6 +35,10 @@ class Endpoints {
   static  workorderSetToReady(String id) => "${workorder.byId(id)}/ready";
   static  workorderStart(String id) => "${workorder.byId(id)}/start";
 
+  // WorkReport
+  static  workorderReport(String id) => "${workorder.byId(id)}/report";
+  static  workorderReportSubmissions(String id) => "${workorder.byId(id)}/report/submissions";
+
   // Public Endpoint
   static const String publicCompanies = '$clientPrefix/companies';
   static const String publicServices = '$clientPrefix/services';
