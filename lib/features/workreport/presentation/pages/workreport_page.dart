@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/authorization/feature/workreport_permission.dart';
+import 'package:workorder_company_app/core/authorization/widget/permission_gate.dart';
 import 'package:workorder_company_app/features/workreport/presentation/bloc/get_work_report_cubit.dart';
 import 'package:workorder_company_app/features/workreport/presentation/bloc/work_report_state.dart';
 import 'package:workorder_company_app/features/workreport/presentation/widgets/workreport_main_content.dart';
+import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
+import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 
 class WorkreportPage extends StatefulWidget {
@@ -19,6 +23,10 @@ class _WorkreportPageState extends State<WorkreportPage> {
   @override
   void initState() {
     super.initState();
+    context.read<GetWorkReportCubit>().getWorkReport(widget.workorderId);
+  }
+
+  void _refresh() {
     context.read<GetWorkReportCubit>().getWorkReport(widget.workorderId);
   }
 
@@ -40,7 +48,23 @@ class _WorkreportPageState extends State<WorkreportPage> {
             ),
             body: state.status == WorkReportStateStatus.loading
                 ? const Center(child: AppLoading())
-                : WorkreportMainContent(workReport: state.workReport,),
+                : WorkreportMainContent(
+                    workReport: state.workReport,
+                  ),
+            bottomNavigationBar: PermissionGate(
+                permission: WorkReportPermissions.update,
+                child: FilledButton.icon(
+                    label: Text("Isi Formulir Laporan"),
+                    onPressed: () async {
+                      final result = await context.push(AppRoutes
+                          .workreportsSubmit
+                          .fillId(widget.workorderId));
+                      if (!context.mounted) return;
+                      if (result == true) {
+                        _refresh();
+                      }
+                    },
+                    icon: Icon(Icons.edit_document))),
           );
         });
   }

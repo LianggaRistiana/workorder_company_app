@@ -7,7 +7,7 @@ class AppConfig {
   static const Map<String, String> baseApiUrls = {
     'development': 'http://10.0.2.2:3000',
     'development.device': 'http://127.0.0.1:3000',
-    'development.linx': 'http://192.168.1.11:3000',
+    'development.linx': 'http://192.168.1.10:3000',
     'development.rama': 'http://192.168.1.11:3000',
     'development.dede': 'http://192.168.1.193:3000',
     'development.ngrok': 'http://172.16.153.108:3000',

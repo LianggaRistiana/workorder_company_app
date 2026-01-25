@@ -1,11 +1,13 @@
 import 'package:workorder_company_app/core/network/api_client.dart';
 import 'package:workorder_company_app/core/network/api_response.dart';
 import 'package:workorder_company_app/core/network/endpoints.dart';
+import 'package:workorder_company_app/features/submissions/data/model/submissions_model.dart';
 import 'package:workorder_company_app/features/workreport/data/model/work_report_model.dart';
 
 abstract class WorkReportRemoteDatasource {
   Future<ApiResponse<WorkReportModel>> getWorkReportByWorkorderId(String id);
-  Future<ApiResponse<WorkReportModel>> submitWorkReportByWorkorderId(String id);
+  Future<ApiResponse<WorkReportModel>> submitWorkReportByWorkorderId(
+      String id, List<SubmissionsModel> submissions);
 }
 
 class WorkReportRemoteDatasourceImpl implements WorkReportRemoteDatasource {
@@ -25,8 +27,13 @@ class WorkReportRemoteDatasourceImpl implements WorkReportRemoteDatasource {
 
   @override
   Future<ApiResponse<WorkReportModel>> submitWorkReportByWorkorderId(
-      String id) {
-    // TODO: implement submitWorkreportByWorkorderId
-    throw UnimplementedError();
+      String id, List<SubmissionsModel> submissions) async {
+    final response = await _apiClient.put(
+        Endpoints.workorderReportSubmissions(id),
+        data: {"submissions": submissions});
+    return ApiResponse.fromJson(
+      response,
+      (json) => WorkReportModel.fromJson(json),
+    );
   }
 }

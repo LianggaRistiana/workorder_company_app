@@ -3,7 +3,9 @@ import 'package:workorder_company_app/features/workreport/data/datasources/work_
 import 'package:workorder_company_app/features/workreport/data/repositories/work_report_repository_impl.dart';
 import 'package:workorder_company_app/features/workreport/domain/repositories/work_report_repository.dart';
 import 'package:workorder_company_app/features/workreport/domain/usecases/get_work_report_usecase.dart';
+import 'package:workorder_company_app/features/workreport/domain/usecases/submit_work_report_usecase.dart';
 import 'package:workorder_company_app/features/workreport/presentation/bloc/get_work_report_cubit.dart';
+import 'package:workorder_company_app/features/workreport/presentation/bloc/submit_work_report_cubit.dart';
 
 Future<void> intiWorkRerportFeature() async {
   sl.registerLazySingleton<WorkReportRemoteDatasource>(
@@ -15,5 +17,9 @@ Future<void> intiWorkRerportFeature() async {
   sl.registerLazySingleton<GetWorkReportUsecase>(
       () => GetWorkReportUsecase(sl()));
 
+  sl.registerLazySingleton<SubmitWorkReportUsecase>(
+      () => SubmitWorkReportUsecase(sl()));
+
   sl.registerFactory<GetWorkReportCubit>(() => GetWorkReportCubit(sl()));
+  sl.registerFactory<SubmitWorkReportCubit>(() => SubmitWorkReportCubit(sl()));
 }

@@ -39,3 +39,29 @@ class WorkReportState extends Equatable {
         errorMessage,
       ];
 }
+
+class WorkReportSubmitState extends Equatable {
+  final WorkReportStateStatus status;
+  final String? errorMessage;
+
+  const WorkReportSubmitState({
+    this.status = WorkReportStateStatus.initial,
+    this.errorMessage,
+  });
+
+  WorkReportSubmitState copyWith({
+    WorkReportStateStatus? status,
+    String? errorMessage,
+  }) {
+    return WorkReportSubmitState(
+      status: status ?? this.status,
+      errorMessage: errorMessage ?? this.errorMessage,
+    );
+  }
+
+  @override
+  List<Object?> get props => [
+        status,
+        errorMessage,
+      ];
+}

@@ -9,7 +9,7 @@ class GetWorkReportCubit extends Cubit<WorkReportState> {
 
   Future<void> getWorkReport(String id) async {
     emit(state.copyWith(status: WorkReportStateStatus.loading));
-    final result = await _getWorkReportUsecase.call(id);
+    final result = await _getWorkReportUsecase(id);
     result.fold(
       (fail) => emit(state.copyWith(
           status: WorkReportStateStatus.error, errorMessage: fail.message)),
