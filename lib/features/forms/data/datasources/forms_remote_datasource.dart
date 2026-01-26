@@ -75,7 +75,7 @@ class FormsRemoteDatasourceImpl implements FormsRemoteDatasource {
   Future<ApiResponse<void>> publicSubmitIntakeForms(
       String id, List<SubmissionsModel> submissions) async {
     final response = await _apiClient.post(Endpoints.publicIntakeForms(id),
-        data: submissions);
+        data: {"submissions" : submissions});
     return ApiResponse<void>.fromJson(
       response,
       (data) => {},

@@ -121,7 +121,7 @@ class _WorkorderDetailPageState extends State<WorkorderDetailPage> {
                 permission: WorkOrderPermissions.update,
                 child: HorizontalButton(
                   title: "Edit pegawai yang bertugas",
-                  leadingIcon: Icons.person_add,
+                  leadingIcon: Icons.person_add_outlined,
                   description:
                       "pegawai yang betugas harus sesuai dengan posisi yang dibutuhkan layanan",
                   onTap: () async {

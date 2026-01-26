@@ -42,7 +42,7 @@ class OwnerContent extends StatelessWidget {
                 onTap: () {}),
           ],
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: 12),
         const SectionTitle("Menu Operasional"),
         const SizedBox(height: 12),
         MenuGrid(
@@ -73,7 +73,7 @@ class OwnerContent extends StatelessWidget {
         ),
         const SizedBox(height: 24),
         HorizontalButton(
-          leadingIcon: Icons.build_rounded,
+          leadingIcon: Icons.dashboard_outlined,
           title: "Menu lainnya",
           description:
               "Pengaturan umum seperti nama, alamat perusahaan dan lain sebagainya",

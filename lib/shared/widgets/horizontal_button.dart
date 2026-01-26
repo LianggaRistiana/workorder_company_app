@@ -34,20 +34,33 @@ class HorizontalButton extends StatelessWidget {
             child: Container(
               padding: padding,
               decoration: BoxDecoration(
-                color: isDanger
-                    ? Theme.of(context).colorScheme.error.withAlpha(20)
-                    : null,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(
                 children: [
                   // leading icon
-                  Icon(
-                    leadingIcon,
-                    size: 28,
-                    color: isDanger
-                        ? Theme.of(context).colorScheme.error
-                        : Theme.of(context).colorScheme.primary,
+                  // Icon(
+                  //   leadingIcon,
+                  //   size: 28,
+                  //   color: isDanger
+                  //       ? Theme.of(context).colorScheme.error
+                  //       : Theme.of(context).colorScheme.primary,
+                  // ),
+                  Container(
+                    padding: const EdgeInsets.all(18),
+                    decoration: BoxDecoration(
+                      color: isDanger
+                          ? Theme.of(context).colorScheme.errorContainer
+                          : Theme.of(context).colorScheme.primaryContainer,
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: Icon(
+                      leadingIcon,
+                      size: 24,
+                      color: isDanger
+                          ? Theme.of(context).colorScheme.error
+                          : Theme.of(context).colorScheme.primary,
+                    ),
                   ),
                   const SizedBox(width: 12),
 

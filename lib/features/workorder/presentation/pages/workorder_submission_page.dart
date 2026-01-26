@@ -119,7 +119,21 @@ class _WorkorderSubmissionPageState extends State<WorkorderSubmissionPage> {
                           .submitSubmissions(workorder.id, submissions);
                     }
                   },
-            child: const Icon(Icons.save),
+            // TODO : Implement animatedswitcher to all button
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 250),
+              child: isLoading
+                  ? const SizedBox(
+                      key: ValueKey("fab_loading"),
+                      width: 24,
+                      height: 24,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2.4,
+                        color: Colors.white,
+                      ),
+                    )
+                  : const Icon(Icons.save, key: ValueKey("fab_icon")),
+            ),
           ),
           body: Form(
             key: _formKey,

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 
+
+// TODO : Remove this widget
+@Deprecated("Use FieldTypeIcon instead")
 class FieldTypeChip extends StatelessWidget {
   final FieldType type;
   final bool showLabel;

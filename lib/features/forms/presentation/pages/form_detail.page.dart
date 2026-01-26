@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/forms_bloc.dart';
 import 'package:workorder_company_app/features/forms/presentation/widgets/form_field_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_back_buttom.dart';
+import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 
 class FormDetailPage extends StatefulWidget {
   final String formId;
@@ -109,30 +110,60 @@ class _FormDetailPageState extends State<FormDetailPage> {
             const SizedBox(height: 12),
 
             // ---- Description ----
+            CustomCard(
+                child: Column(
+              children: [
+                Container(
+                  width: double.infinity,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primaryContainer,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.info_outline_rounded,
+                          color: Theme.of(context).colorScheme.primary,
+                          size: 18),
+                      const SizedBox(width: 8),
+                      Text(
+                        'Formulir ${form.formType.displayName}',
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  form.description.isEmpty
+                      ? 'Tidak ada deskripsi'
+                      : form.description,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              ],
+            )),
             Text(
-              form.description.isEmpty
-                  ? 'Tidak ada deskripsi'
-                  : form.description,
-              style: Theme.of(context).textTheme.bodyLarge,
+              'Pertanyaan',
+              style: Theme.of(context).textTheme.titleMedium,
             ),
-            Text(
-              form.formType.displayName,
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-            const SizedBox(height: 12),
-            const Divider(thickness: 0.6),
 
-            // ---- Fields ----
+            const Divider(thickness: 1),
+
+            // TODO : refactor using custom list
             ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: form.fields?.length ?? 0,
               itemBuilder: (context, index) {
                 final field = form.fields![index];
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4),
-                  child: FormFieldCard(field: field),
-                );
+                return FormFieldCard(field: field);
+                // return Padding(
+                //   padding: const EdgeInsets.symmetric(vertical: 4),
+                //   child: FormFieldCard(field: field),
+                // );
               },
             ),
           ],

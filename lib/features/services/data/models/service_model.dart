@@ -23,7 +23,7 @@ class ServiceModel extends ServiceEntity {
       id: json['_id'] ?? json['id'] ?? '',
       title: json['title'] ?? '',
       description: json['description'] ?? '',
-      requiredStaff: (json['requiredStaff'] as List<dynamic>?)
+      requiredStaff: (json['requiredStaffs'] as List<dynamic>?)
               ?.map((e) => RequiredStaffModel.fromJson(e))
               .toList() ??
           [],
@@ -51,7 +51,7 @@ class ServiceModel extends ServiceEntity {
       '_id': id,
       'title': title,
       'description': description,
-      'requiredStaff': requiredStaff
+      'requiredStaffs': requiredStaff
           .map((e) => (e as RequiredStaffModel).toJson())
           .toList(),
       'clientIntakeForms':

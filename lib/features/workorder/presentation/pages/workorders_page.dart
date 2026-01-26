@@ -127,6 +127,7 @@ class _WorkordersPageState extends State<WorkordersPage> {
                               final result = await context.push(
                                   AppRoutes.workordersDetail.fillId(item.id));
                               if (!context.mounted) return;
+                              // TODO : trigger refresh from refresh indicator rather than nothing interact to user
                               if (result == true) {
                                 context
                                     .read<WorkorderBloc>()

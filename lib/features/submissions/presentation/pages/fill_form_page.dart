@@ -10,10 +10,10 @@ import 'package:workorder_company_app/features/submissions/presentation/bloc/sub
 import 'package:workorder_company_app/features/submissions/presentation/widgets/multi_select_field_widget.dart';
 import 'package:workorder_company_app/features/submissions/presentation/widgets/number_form_field_widget.dart';
 import 'package:workorder_company_app/features/submissions/presentation/widgets/single_select_field_widget.dart';
+import 'package:workorder_company_app/features/submissions/presentation/widgets/text_area_field_widget.dart';
 import 'package:workorder_company_app/features/submissions/presentation/widgets/text_form_field_widget.dart';
 
-
-// TODO : FIX this name
+// TODO : FIX this name, make this reusable
 class FillFormPage extends StatefulWidget {
   final String serviceId;
 
@@ -155,6 +155,12 @@ class _FillFormPageState extends State<FillFormPage> {
           onChanged: (val) =>
               _onFieldChanged(formId, field.order.toString(), val),
         );
+      case FieldType.textarea:
+        return TextAreaFieldWidget(
+          field: field,
+          onChanged: (val) => _onFieldChanged(formId, field.order.toString(), val),
+        );
+
       case FieldType.number:
         return NumberFormFieldWidget(
           field: field,

@@ -15,7 +15,8 @@ class FieldDataModel extends FieldDataEntity {
 
   Map<String, dynamic> toJson() {
     return {
-      'order': order,
+      'order' : int.tryParse(order),
+      // 'order': order,
       'value': value,
     };
   }

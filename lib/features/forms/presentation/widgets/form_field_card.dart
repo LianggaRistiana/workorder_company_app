@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/field_entity.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/option_entity.dart';
 import 'package:workorder_company_app/features/forms/presentation/widgets/field_option_item.dart';
+import 'package:workorder_company_app/features/forms/presentation/widgets/field_type_icon.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
-import 'package:workorder_company_app/shared/widgets/field_type_chip.dart';
 
 class FormFieldCard extends StatelessWidget {
   final FieldEntity field;
@@ -18,20 +18,27 @@ class FormFieldCard extends StatelessWidget {
 
     return CustomCard(
       // elevation: 1.5,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.all(12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           /// === Header: Field label + type chip ===
+          FieldTypeIcon(type: field.type),
+          const SizedBox(height: 12),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const SizedBox(width: 36),
               Expanded(
-                child: Text(field.label, style: textTheme.titleMedium),
+                child: Text(field.label,
+                    style: textTheme.bodyMedium?.copyWith(
+                      fontStyle: FontStyle.italic,
+                    )),
               ),
-              FieldTypeChip(type: field.type),
             ],
           ),
+
+          const SizedBox(height: 16),
 
           /// === Range info (if any) ===
           if (field.min != null || field.max != null) ...[
@@ -73,8 +80,9 @@ class FormFieldCard extends StatelessWidget {
 
           /// === Options list (for select fields) ===
           if ((field.options ?? []).isNotEmpty) ...[
-            // const SizedBox(height: 12),
-            Divider(color: Colors.grey.shade300, height: 20),
+            Text("Opsi :", style: textTheme.bodyMedium),
+            const SizedBox(height: 8),
+            // Divider(color: Colors.grey.shade300, height: 20),
             CustomList<OptionEntity>(
                 separatorHeight: 6,
                 isReorderable: false,
@@ -82,33 +90,42 @@ class FormFieldCard extends StatelessWidget {
                 itemBuilder: (option, index) =>
                     // Text(field.options![index].value)
                     FieldOptionItem(value: option.value)),
-            Divider(color: Colors.grey.shade300, height: 20),
+            // Divider(color: Colors.grey.shade300, height: 20),
           ],
 
           /// === Info: required or optional ===
           const SizedBox(height: 8),
-          Row(
-            children: [
-              Icon(
-                field.required
-                    ? Icons.warning_rounded
-                    : Icons.info_outline_rounded,
-                color:
-                    field.required ? colorScheme.primary : Colors.grey.shade500,
-                size: 18,
-              ),
-              const SizedBox(width: 6),
-              Text(
-                field.required ? "Wajib diisi" : "Opsional",
-                style: textTheme.labelSmall?.copyWith(
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              color:
+                  Theme.of(context).colorScheme.surfaceContainer.withAlpha(80),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  field.required
+                      ? Icons.warning_amber_outlined
+                      : Icons.info_outline_rounded,
                   color: field.required
                       ? colorScheme.primary
-                      : colorScheme.onSurface,
-                  fontWeight:
-                      field.required ? FontWeight.w600 : FontWeight.normal,
+                      : Colors.grey.shade500,
+                  size: 18,
                 ),
-              ),
-            ],
+                const SizedBox(width: 6),
+                Text(
+                  field.required ? "Wajib diisi" : "Opsional",
+                  style: textTheme.labelSmall?.copyWith(
+                    color: field.required
+                        ? colorScheme.primary
+                        : colorScheme.onSurface,
+                    fontWeight:
+                        field.required ? FontWeight.w600 : FontWeight.normal,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
