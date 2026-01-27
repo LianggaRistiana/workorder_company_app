@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
+import 'package:workorder_company_app/shared/widgets/icon_box.dart';
 
 class FieldTypeIcon extends StatelessWidget {
   final FieldType type;
@@ -29,20 +30,13 @@ class FieldTypeIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
     return Row(
       children: [
-        Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: colorScheme.primaryContainer,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Icon(
-            _getIcon(type),
-            size: 18,
-            color: colorScheme.primary,
-          ),
+        IconBox(
+          icon: _getIcon(type),
+          paddingSize: 8,
+          borderRadius: 8,
+          iconSize: 18,
         ),
         const SizedBox(width: 4),
         Text(type.displayName, style: Theme.of(context).textTheme.titleSmall)

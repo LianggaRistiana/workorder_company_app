@@ -5,6 +5,8 @@ import 'package:workorder_company_app/features/forms/presentation/bloc/forms_blo
 import 'package:workorder_company_app/features/forms/presentation/widgets/form_field_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_back_buttom.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
+import 'package:workorder_company_app/shared/widgets/icon_box.dart';
+import 'package:workorder_company_app/shared/widgets/information_block.dart';
 
 class FormDetailPage extends StatefulWidget {
   final String formId;
@@ -75,20 +77,8 @@ class _FormDetailPageState extends State<FormDetailPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 // Icon
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primaryContainer,
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  child: Icon(
-                    Icons.assignment_turned_in_outlined,
-                    size: 28,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                ),
+                IconBox(icon: Icons.assignment_turned_in_outlined),
                 const SizedBox(width: 12),
-
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -112,30 +102,10 @@ class _FormDetailPageState extends State<FormDetailPage> {
             // ---- Description ----
             CustomCard(
                 child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  width: double.infinity,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primaryContainer,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(Icons.info_outline_rounded,
-                          color: Theme.of(context).colorScheme.primary,
-                          size: 18),
-                      const SizedBox(width: 8),
-                      Text(
-                        'Formulir ${form.formType.displayName}',
-                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                      ),
-                    ],
-                  ),
-                ),
+                InformationBlock(
+                    message: 'Formulir ${form.formType.displayName}'),
                 const SizedBox(height: 12),
                 Text(
                   form.description.isEmpty
@@ -160,10 +130,6 @@ class _FormDetailPageState extends State<FormDetailPage> {
               itemBuilder: (context, index) {
                 final field = form.fields![index];
                 return FormFieldCard(field: field);
-                // return Padding(
-                //   padding: const EdgeInsets.symmetric(vertical: 4),
-                //   child: FormFieldCard(field: field),
-                // );
               },
             ),
           ],
