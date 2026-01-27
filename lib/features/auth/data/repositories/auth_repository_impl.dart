@@ -80,6 +80,8 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
+
+  // TODO : move logic bussiness to usecase
   @override
   Future<Either<Failure, void>> logOut() async {
     try {

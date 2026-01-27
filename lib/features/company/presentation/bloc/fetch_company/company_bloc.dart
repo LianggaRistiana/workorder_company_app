@@ -51,7 +51,7 @@ class CompanyBloc extends Bloc<CompanyEvent, CompanyState> {
     );
   }
 
-  // TODO: Sperate this function diffrent bloc
+  // TODO: Move This Logic to Usecase
   Future<void> _onCompanyWithServiceRequested(
     GetCompanyWithServiceRequested event,
     Emitter<CompanyState> emit,

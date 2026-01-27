@@ -40,6 +40,9 @@ extension ServiceDetailWidgetBuilder on ServiceDetailPageState {
         CustomList(
           items: service.requiredStaff,
           separatorHeight: 8,
+          emptyWidget: InformationBlock.empty(
+            "Tidak ada pegawai yang diperlukan",
+          ),
           itemBuilder: (staff, _) => CustomCard(
               margin: const EdgeInsets.all(0),
               padding: const EdgeInsets.all(4),
@@ -56,8 +59,14 @@ extension ServiceDetailWidgetBuilder on ServiceDetailPageState {
                 ),
               )),
         ),
+        const SizedBox(height: 12),
         if (service.accessType != ServiceAccessType.internal) ...{
           _buildSectionTitle("Formulir Pengajuan"),
+          InformationBlock(
+            message:
+                "Formulir ini akan diisi oleh kustomer yang ingin mengajukan layanan ini, dan hanya bisa dilihat hasilnya oleh manager",
+          ),
+          const SizedBox(height: 8),
           CustomList<OrderedFormEntity>(
             items: service.clientIntakeForms ?? [],
             separatorHeight: 8,
