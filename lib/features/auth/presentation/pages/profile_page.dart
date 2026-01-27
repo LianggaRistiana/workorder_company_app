@@ -98,19 +98,24 @@ class ProfilePage extends StatelessWidget {
                               const SizedBox(height: 8),
 
                               // Custom Chip
-                              // TODO : add positions using |
                               Container(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 12, vertical: 5),
+                                    horizontal: 12, vertical: 4),
                                 decoration: BoxDecoration(
-                                  color: colorScheme.primary.withAlpha(15),
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .primary
+                                      .withAlpha(15),
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 child: Text(
-                                  user.role.toReadableString(),
+                                  user.position != null
+                                      ? '${user.role.displayName} | ${user.position!.name}'
+                                      : user.role.displayName,
                                   style: TextStyle(
-                                    color: colorScheme.primary,
-                                    fontWeight: FontWeight.w600,
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                    fontSize: 12,
                                   ),
                                 ),
                               ),

@@ -3,17 +3,25 @@ part of 'service_detail_page.dart';
 extension ServiceDetailWidgetBuilder on ServiceDetailPageState {
   Widget _buildFormsTab(List<ServiceFormEntity>? serviceForms, String title) {
     return Padding(
-      padding: const EdgeInsets.all(8),
-      child: CustomList(
-        items: serviceForms ?? [],
-        separatorHeight: 8,
-        emptyWidget: EmptyStateWidget(
-          text: "Tidak ada $title",
-        ),
-        itemBuilder: (serviceForm, _) =>
-            ServiceFormCard(serviceForm: serviceForm),
-      ),
-    );
+        padding: const EdgeInsets.all(8),
+        child: Column(
+          children: [
+            if (serviceForms?.isNotEmpty ?? false)
+              InformationBlock(
+                  message:
+                      "Tekan dan tahan formulir yang dipilih untuk melihat detail formulir"),
+            const SizedBox(height: 8),
+            CustomList(
+              items: serviceForms ?? [],
+              separatorHeight: AppSpacing.sm,
+              emptyWidget: EmptyStateWidget(
+                text: "Tidak ada $title",
+              ),
+              itemBuilder: (serviceForm, _) =>
+                  ServiceFormCard(serviceForm: serviceForm),
+            ),
+          ],
+        ));
   }
 
   Widget _buildOverviewTab(ServiceEntity service) {
