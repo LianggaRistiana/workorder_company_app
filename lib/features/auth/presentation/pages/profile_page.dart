@@ -5,6 +5,7 @@ import 'package:workorder_company_app/features/auth/presentation/bloc/auth_bloc.
 import 'package:workorder_company_app/shared/utils/confirm_dialog.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
+import 'package:workorder_company_app/shared/widgets/info_bottom_sheet.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -134,18 +135,63 @@ class ProfilePage extends StatelessWidget {
 
                   Divider(),
                   HorizontalButton(
+                    title: "Notifikasi",
+                    leadingIcon: Icons.notifications_none_outlined,
+                    description:
+                        "Dapatkan informasi terbaru melalui notifikasi",
+                    onTap: () {
+                      showAppBottomSheet(context,
+                          content: SizedBox(
+                            height: 200,
+                            child: Center(
+                              child: Text("Fitur ini belum tersedia"),
+                            ),
+                          ));
+                    },
+                  ),
+                  HorizontalButton(
+                    title: "Petunjuk",
+                    leadingIcon: Icons.info_outline,
+                    description: "Tampilkan petunjuk penggunaan aplikasi Anda",
+                    onTap: () {
+                      showAppBottomSheet(context,
+                          content: SizedBox(
+                            height: 200,
+                            child: Center(
+                              child: Text("Fitur ini belum tersedia"),
+                            ),
+                          ));
+                    },
+                  ),
+                  HorizontalButton(
                     title: "Coba versi website",
                     leadingIcon: Icons.public,
                     description:
                         "Versi website disarankan untuk penggunaan desktop",
-                    onTap: () {},
+                    onTap: () {
+                      showAppBottomSheet(context,
+                          content: SizedBox(
+                            height: 200,
+                            child: Center(
+                              child: Text("Fitur ini belum tersedia"),
+                            ),
+                          ));
+                    },
                   ),
                   HorizontalButton(
                     title: "Bantuan",
                     leadingIcon: Icons.help_outline,
                     description:
                         "Cari bantuan Anda di sini mengenai cara menggunakan aplikasi",
-                    onTap: () {},
+                    onTap: () {
+                      showAppBottomSheet(context,
+                          content: SizedBox(
+                            height: 200,
+                            child: Center(
+                              child: Text("Fitur ini belum tersedia"),
+                            ),
+                          ));
+                    },
                   ),
                   HorizontalButton(
                     margin: const EdgeInsets.all(0),

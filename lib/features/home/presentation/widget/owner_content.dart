@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
+import 'package:workorder_company_app/shared/widgets/info_bottom_sheet.dart';
 import 'package:workorder_company_app/shared/widgets/menu_grid.dart';
 import 'package:workorder_company_app/shared/widgets/menu_item.dart';
 import 'package:workorder_company_app/shared/widgets/section_title.dart';
@@ -39,7 +40,15 @@ class OwnerContent extends StatelessWidget {
             MenuItem(
                 icon: Icons.help_outline_outlined,
                 label: "Bantuan",
-                onTap: () {}),
+                onTap: () {
+                  showAppBottomSheet(context,
+                      content: SizedBox(
+                        height: 200,
+                        child: Center(
+                          child: Text("Fitur ini belum tersedia"),
+                        ),
+                      ));
+                }),
           ],
         ),
         const SizedBox(height: 12),
@@ -68,7 +77,15 @@ class OwnerContent extends StatelessWidget {
             MenuItem(
                 icon: Icons.help_outline_outlined,
                 label: "Bantuan",
-                onTap: () {}),
+                onTap: () {
+                  showAppBottomSheet(context,
+                      content: SizedBox(
+                        height: 200,
+                        child: Center(
+                          child: Text("Fitur ini belum tersedia"),
+                        ),
+                      ));
+                }),
           ],
         ),
         const SizedBox(height: 24),

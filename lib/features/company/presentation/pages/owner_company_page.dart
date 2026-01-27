@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/features/company/presentation/widgets/internal_company_card.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/orientation_helper.dart';
+import 'package:workorder_company_app/shared/widgets/info_bottom_sheet.dart';
 import 'package:workorder_company_app/shared/widgets/menu_grid.dart';
 import 'package:workorder_company_app/shared/widgets/menu_item.dart';
 import 'package:workorder_company_app/shared/widgets/section_title.dart';
@@ -42,8 +43,9 @@ class _OwnerCompanyPageState extends State<OwnerCompanyPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             /// --- Company Card ---
-            
-            InternalCompanyCard(companyName: companyName, companyAddress: companyAddress),
+
+            InternalCompanyCard(
+                companyName: companyName, companyAddress: companyAddress),
             // CustomCard(
             //   child: Row(
             //     children: [
@@ -114,20 +116,50 @@ class _OwnerCompanyPageState extends State<OwnerCompanyPage> {
                     icon: Icons.info_outline_rounded,
                     label: "Informasi Perusahaan",
                     onTap: () {
-                      
+                      showAppBottomSheet(context,
+                          content: SizedBox(
+                            height: 200,
+                            child: Center(
+                              child: Text("Fitur ini belum tersedia"),
+                            ),
+                          ));
                     }),
                 MenuItem(
                     icon: Icons.card_membership_outlined,
                     label: "Kode Unik Pelanggan",
-                    onTap: () {}),
+                    onTap: () {
+                      showAppBottomSheet(context,
+                          content: SizedBox(
+                            height: 200,
+                            child: Center(
+                              child: Text("Fitur ini belum tersedia"),
+                            ),
+                          ));
+                    }),
                 MenuItem(
                     icon: Icons.check_circle_outline,
                     label: "Status aktif perusahaan",
-                    onTap: () {}),
+                    onTap: () {
+                      showAppBottomSheet(context,
+                          content: SizedBox(
+                            height: 200,
+                            child: Center(
+                              child: Text("Fitur ini belum tersedia"),
+                            ),
+                          ));
+                    }),
                 MenuItem(
                     icon: Icons.help_outline_outlined,
                     label: "Bantuan",
-                    onTap: () {}),
+                    onTap: () {
+                      showAppBottomSheet(context,
+                          content: SizedBox(
+                            height: 200,
+                            child: Center(
+                              child: Text("Fitur ini belum tersedia"),
+                            ),
+                          ));
+                    }),
               ],
             ),
 
@@ -139,11 +171,15 @@ class _OwnerCompanyPageState extends State<OwnerCompanyPage> {
                 MenuItem(
                     icon: Icons.inbox_outlined,
                     label: "Pengajuan Layanan",
-                    onTap: () {context.push(AppRoutes.serviceRequest);}),
+                    onTap: () {
+                      context.push(AppRoutes.serviceRequest);
+                    }),
                 MenuItem(
                     icon: Icons.assignment_outlined,
                     label: "Tugas Kerja",
-                    onTap: () {context.push(AppRoutes.workorders);}),
+                    onTap: () {
+                      context.push(AppRoutes.workorders);
+                    }),
                 MenuItem(
                     icon: Icons.people_outline,
                     label: "Pegawai",
@@ -154,18 +190,38 @@ class _OwnerCompanyPageState extends State<OwnerCompanyPage> {
                     icon: Icons.person_add_alt_1_outlined,
                     label: "Riwayat Undangan Pegawai",
                     onTap: () {
-                      
+                      showAppBottomSheet(context,
+                          content: SizedBox(
+                            height: 200,
+                            child: Center(
+                              child: Text("Fitur ini belum tersedia"),
+                            ),
+                          ));
                     }),
                 MenuItem(
                     icon: Icons.wallet_membership_outlined,
                     label: "Pelanggan",
                     onTap: () {
-                      
+                      showAppBottomSheet(context,
+                          content: SizedBox(
+                            height: 200,
+                            child: Center(
+                              child: Text("Fitur ini belum tersedia"),
+                            ),
+                          ));
                     }),
                 MenuItem(
                     icon: Icons.help_outline_outlined,
                     label: "Bantuan",
-                    onTap: () {}),
+                    onTap: () {
+                      showAppBottomSheet(context,
+                          content: SizedBox(
+                            height: 200,
+                            child: Center(
+                              child: Text("Fitur ini belum tersedia"),
+                            ),
+                          ));
+                    }),
               ],
             ),
           ],
