@@ -6,6 +6,7 @@ import 'package:workorder_company_app/core/constants/app_config.dart';
 import 'package:workorder_company_app/core/theme/app_theme.dart';
 import 'package:workorder_company_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:workorder_company_app/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:workorder_company_app/features/notification/presentation/bloc/notification_cubit.dart';
 import 'package:workorder_company_app/routes/app_router.dart';
 import 'package:workorder_company_app/core/di/injection.dart' as di;
 import 'package:intl/date_symbol_data_local.dart';
@@ -77,6 +78,9 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider<AuthBloc>(
           create: (_) => di.sl<AuthBloc>()..add(AuthCheckStatus()),
+        ),
+        BlocProvider<NotificationCubit>(
+          create: (_) => di.sl()
         ),
         // BlocProvider(
         //   create: (context) =>

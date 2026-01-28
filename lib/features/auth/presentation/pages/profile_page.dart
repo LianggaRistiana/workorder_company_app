@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:workorder_company_app/features/notification/presentation/widgets/notification_toggle.dart';
 import 'package:workorder_company_app/shared/utils/confirm_dialog.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
+import 'package:workorder_company_app/shared/widgets/horizontal_switch.dart';
 import 'package:workorder_company_app/shared/widgets/info_bottom_sheet.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -134,34 +136,13 @@ class ProfilePage extends StatelessWidget {
                   //         companyAddress: "Company Address")),
 
                   Divider(),
-                  HorizontalButton(
-                    title: "Notifikasi",
-                    leadingIcon: Icons.notifications_none_outlined,
-                    description:
-                        "Dapatkan informasi terbaru melalui notifikasi",
-                    onTap: () {
-                      showAppBottomSheet(context,
-                          content: SizedBox(
-                            height: 200,
-                            child: Center(
-                              child: Text("Fitur ini belum tersedia"),
-                            ),
-                          ));
-                    },
-                  ),
-                  HorizontalButton(
+                  NotificationToggle(),
+                  HorizontalSwitch(
                     title: "Petunjuk",
                     leadingIcon: Icons.info_outline,
                     description: "Tampilkan petunjuk penggunaan aplikasi Anda",
-                    onTap: () {
-                      showAppBottomSheet(context,
-                          content: SizedBox(
-                            height: 200,
-                            child: Center(
-                              child: Text("Fitur ini belum tersedia"),
-                            ),
-                          ));
-                    },
+                    value: false,
+                    onChanged: (_) {},
                   ),
                   HorizontalButton(
                     title: "Coba versi website",
@@ -230,14 +211,14 @@ class ProfilePage extends StatelessWidget {
   }
 }
 
-extension on Object {
-  String toReadableString() {
-    if (toString().contains('.')) {
-      return toString().split('.').last.replaceAllMapped(
-            RegExp(r'([a-z])([A-Z])'),
-            (m) => '${m[1]} ${m[2]}',
-          );
-    }
-    return toString();
-  }
-}
+// extension on Object {
+//   String toReadableString() {
+//     if (toString().contains('.')) {
+//       return toString().split('.').last.replaceAllMapped(
+//             RegExp(r'([a-z])([A-Z])'),
+//             (m) => '${m[1]} ${m[2]}',
+//           );
+//     }
+//     return toString();
+//   }
+// }
