@@ -164,9 +164,10 @@ class _WorkorderStaffConfigState extends State<WorkorderStaffConfigPage> {
           separatorHeight: 4,
           items: staffs,
           itemBuilder: (item, _) => Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              StaffChip(user: item),
+              Expanded(
+                child: StaffChip(user: item),
+              ),
               IconButton(
                 onPressed: () => onPressed?.call(item),
                 icon: const Icon(Icons.remove_circle, color: Colors.red),

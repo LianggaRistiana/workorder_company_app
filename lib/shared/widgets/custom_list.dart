@@ -66,6 +66,7 @@ class CustomList<T> extends StatelessWidget {
     }
 
     return ListView.separated(
+      // key: ValueKey(items),
       shrinkWrap: true,
       padding: EdgeInsets.only(bottom: emptyFooterHeight),
       physics: scrollable

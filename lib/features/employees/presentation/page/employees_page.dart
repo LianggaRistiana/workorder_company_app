@@ -6,7 +6,7 @@ import 'package:workorder_company_app/core/authorization/widget/permission_gate.
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 import 'package:workorder_company_app/features/employees/presentation/bloc/employees_bloc.dart';
-import 'package:workorder_company_app/features/home/presentation/widget/user_chip.dart';
+import 'package:workorder_company_app/features/workorder/presentation/widgets/staff_chip.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/widgets/custom_back_buttom.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
@@ -56,13 +56,14 @@ class _EmployeesPageState extends State<EmployeesPage> {
                         ),
                       ),
                       itemBuilder: (item, _) {
-                        return CustomCard(
+                        return CustomCard( 
                             margin: const EdgeInsets.symmetric(
                                 horizontal: AppSpacing.md,
                                 vertical: AppSpacing.xs),
                             padding: const EdgeInsets.all(16),
-                            child: UserChip(
+                            child: StaffChip(
                               user: item,
+                              showPosition: true,
                             ));
                       }),
                 ),

@@ -24,15 +24,31 @@ class WorkorderModel extends WorkorderEntity {
   });
 
   factory WorkorderModel.fromJson(Map<String, dynamic> json) {
-    final orderedForms = safeParse<List<dynamic>?>(json, "workorderForms",
-            requiredField: false)
-        ?.map((form) => OrderedFormModel.fromJson(form))
-        .toList();
+    final orderedForms =
+        safeParse<List<dynamic>?>(json, "workorderForms", requiredField: false)
+            ?.map((form) => OrderedFormModel.fromJson(form))
+            .toList();
 
-    final submissions = safeParse<List<dynamic>?>(json, "submissions",
-            requiredField: false)
-        ?.map((sub) => SubmissionsModel.fromJson(sub))
-        .toList();
+    // final submissions =
+    //     safeParse<List<dynamic>?>(json, "submissions", requiredField: false)
+    //         ?.map((sub) => SubmissionsModel.fromJson(sub))
+    //         .toList();
+    final submissions =
+        safeParse<List<dynamic>?>(json, "submissions", requiredField: false)
+            ?.map((sub) => SubmissionsModel.fromJson(sub))
+            .toList()
+          ?..sort((a, b) {
+            final aDate = a.createdAt;
+            final bDate = b.createdAt;
+
+            // null dianggap paling lama → taruh di bawah
+            if (aDate == null && bDate == null) return 0;
+            if (aDate == null) return 1;
+            if (bDate == null) return -1;
+
+            // DESC: paling baru dulu
+            return bDate.compareTo(aDate);
+          });
 
     final filledForms = orderedForms?.map((form) {
       final matchedSubmission =
@@ -61,11 +77,18 @@ class WorkorderModel extends WorkorderEntity {
             [],
         relatedWorkOrderId: safeParse<String?>(json, "relatedWorkOrderId",
             requiredField: false),
-        startedAt:
-            safeParse<DateTime?>(json, "startedAt", requiredField: false),
-        completedAt:
-            safeParse<DateTime?>(json, "completedAt", requiredField: false),
-        workorderForms: filledForms
-        );
+        startedAt: safeParse<DateTime?>(
+          json,
+          'startedAt',
+          requiredField: false,
+          parser: (value) => DateTime.parse(value as String),
+        ),
+        completedAt: safeParse<DateTime?>(
+          json,
+          "completedAt",
+          requiredField: false,
+          parser: (value) => DateTime.parse(value as String),
+        ),
+        workorderForms: filledForms);
   }
 }

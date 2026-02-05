@@ -11,7 +11,10 @@ class SubmissionsModel extends SubmissionEntity {
       required super.submissionType,
       super.status,
       super.submittedBy,
-      super.fieldsData});
+      super.fieldsData,
+      super.createdAt,
+      // super.updatedAt,
+      });
 
   factory SubmissionsModel.fromJson(Map<String, dynamic> json) {
     return SubmissionsModel(
@@ -28,6 +31,9 @@ class SubmissionsModel extends SubmissionEntity {
       fieldsData: (json['fieldsData'] as List<dynamic>?)
           ?.map((e) => FieldDataModel.fromJson(e))
           .toList(),
+      createdAt: json['createdAt'] != null
+          ? DateTime.parse(json['createdAt'])
+          : null,
     );
   }
 

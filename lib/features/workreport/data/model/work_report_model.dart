@@ -21,10 +21,27 @@ class WorkReportModel extends WorkReportEntity {
             ?.map((form) => OrderedFormModel.fromJson(form))
             .toList();
 
+    // final submissions =
+    //     safeParse<List<dynamic>?>(json, "submissions", requiredField: false)
+    //         ?.map((sub) => SubmissionsModel.fromJson(sub))
+    //         .toList();
+
     final submissions =
         safeParse<List<dynamic>?>(json, "submissions", requiredField: false)
             ?.map((sub) => SubmissionsModel.fromJson(sub))
-            .toList();
+            .toList()
+          ?..sort((a, b) {
+            final aDate = a.createdAt;
+            final bDate = b.createdAt;
+
+            // null dianggap paling lama → taruh di bawah
+            if (aDate == null && bDate == null) return 0;
+            if (aDate == null) return 1;
+            if (bDate == null) return -1;
+
+            // DESC: paling baru dulu
+            return bDate.compareTo(aDate);
+          });
 
     final filledForms = orderedForms?.map((form) {
       final matchedSubmission =
@@ -40,6 +57,7 @@ class WorkReportModel extends WorkReportEntity {
     return WorkReportModel(
         id: safeParse<String>(json, "_id"),
         workOrderId: safeParse<String>(json, "workOrderId"),
+        // workOrderId: safeParse<String>(json, "workOrder._id"),
         companyId: safeParse<String>(json, "companyId"),
         createdAt: DateTime.parse(safeParse<String>(json, "createdAt")),
         startedAt:

@@ -7,6 +7,7 @@ import 'package:workorder_company_app/features/submissions/presentation/widgets/
 import 'package:workorder_company_app/features/submissions/presentation/widgets/single_select_field_widget.dart';
 import 'package:workorder_company_app/features/submissions/presentation/widgets/text_area_field_widget.dart';
 import 'package:workorder_company_app/features/submissions/presentation/widgets/text_form_field_widget.dart';
+// import 'package:workorder_company_app/shared/utils/string_mapper.dart';
 
 class FieldRenderer extends StatelessWidget {
   final String formId;
@@ -21,6 +22,20 @@ class FieldRenderer extends StatelessWidget {
     required this.onChanged,
     this.value,
   });
+
+  num? normalizeToNum(dynamic value) {
+    if (value == null) return null;
+
+    if (value is num) return value;
+
+    if (value is String) {
+      final v = value.trim();
+      if (v.isEmpty) return null;
+      return num.tryParse(v);
+    }
+
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +61,8 @@ class FieldRenderer extends StatelessWidget {
       case FieldType.number:
         return NumberFormFieldWidget(
           field: field,
-          value: value?.value, // biasanya num atau int
+          // value: value?.value.toNumSafe(), // biasanya num atau int
+          value: normalizeToNum(value?.value), // value: value?.value as num?,
           onChanged: (val) => onChanged(formId, field.order.toString(), val),
         );
       // return NumberFormFieldWidget(

@@ -3,12 +3,14 @@ import 'package:workorder_company_app/features/auth/domain/entities/user_entity.
 
 class StaffChip extends StatelessWidget {
   final UserEntity user;
+  final bool showPosition;
   final VoidCallback? onTap;
 
   const StaffChip({
     super.key,
     required this.user,
     this.onTap,
+    this.showPosition = false,
   });
 
   String _getInitials(String name) {
@@ -26,7 +28,7 @@ class StaffChip extends StatelessWidget {
       borderRadius: BorderRadius.circular(12),
       onTap: onTap,
       child: Row(
-        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CircleAvatar(
             radius: 20,
@@ -36,40 +38,51 @@ class StaffChip extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 10),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Text(
-                    user.name,
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+
+          // ✅ INI KUNCINYA
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  user.name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                Text(
+                  user.email,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+                if (showPosition) ...[
+                  const SizedBox(height: 10),
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                    decoration: BoxDecoration(
+                      color:
+                          Theme.of(context).colorScheme.primary.withAlpha(15),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      user.position != null
+                          ? '${user.role.displayName} | ${user.position!.name}'
+                          : user.role.displayName,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                        fontSize: 12,
+                      ),
+                    ),
                   ),
-                  const SizedBox(width: 4),
-                  // Container(
-                  //   padding:
-                  //       const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                  //   decoration: BoxDecoration(
-                  //     color:
-                  //         Theme.of(context).colorScheme.primary.withAlpha(15),
-                  //     borderRadius: BorderRadius.circular(20),
-                  //   ),
-                  //   child: Text(
-                  //     user.position != null
-                  //         ? '${user.role.displayName} | ${user.position!.name}'
-                  //         : user.role.displayName,
-                  //     style: TextStyle(
-                  //       color: Theme.of(context).colorScheme.primary,
-                  //       fontSize: 12,
-                  //     ),
-                  //   ),
-                  // ),
-                ],
-              ),
-              Text(user.email, style: Theme.of(context).textTheme.bodySmall),
-            ],
+                ]
+              ],
+            ),
           ),
         ],
       ),

@@ -36,3 +36,4 @@ class SafeMapper {
     return result;
   }
 }
+
