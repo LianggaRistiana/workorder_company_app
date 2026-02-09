@@ -21,6 +21,11 @@ class AppTheme {
             const Color.fromARGB(255, 255, 255, 255), // dipakai card
         surface: AppColors.lightBackground),
     disabledColor: Colors.grey.shade300,
+    chipTheme: ChipThemeData(
+      backgroundColor: AppColors.lightBackground,
+      selectedColor: AppColors.lightPrimaryContainer,
+    ),
+
     // colorScheme: const ColorScheme.light(
     //   primary: Color(0xFF3F51B5), // warna utama
     //   onPrimary: Colors.white,
@@ -43,6 +48,7 @@ class AppTheme {
       backgroundColor: AppColors.lightPrimary,
       foregroundColor: Colors.white,
     ),
+
 
     textTheme: TextTheme(
         titleLarge: AppTextStyles.titleLarge.copyWith(
@@ -92,6 +98,10 @@ class AppTheme {
       // primary: AppColors.darkPrimary
       primaryContainer: AppColors.darkPrimary.withAlpha(20),
       // onPrimaryContainer: AppColors.lightPrimary,
+    ),
+    chipTheme: ChipThemeData(
+      // backgroundColor: AppColors.lightBackground,
+      selectedColor: AppColors.darkPrimary.withAlpha(20),
     ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       backgroundColor: AppColors.darkPrimary,

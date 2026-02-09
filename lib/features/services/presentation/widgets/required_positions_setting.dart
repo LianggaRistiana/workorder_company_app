@@ -36,12 +36,12 @@ class RequiredPositionsSetting extends StatelessWidget {
               children: [
                 Text("Posisi diperlukan", style: Theme.of(context).textTheme.titleMedium),
                 const Spacer(),
-                PositionsSelector(
-                  onAdd: onAdd,
-                  useBloc: true,
-                  selectedPositions:
-                      requiredStaff.map((s) => s.position).toList(),
-                ),
+                // PositionsSelector(
+                //   onAdd: onAdd,
+                //   useBloc: true,
+                //   selectedPositions:
+                //       requiredStaff.map((s) => s.position).toList(),
+                // ),
               ],
             ),
             const SizedBox(height: 12),

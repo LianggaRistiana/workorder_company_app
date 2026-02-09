@@ -207,7 +207,8 @@ extension CreateFormWidgetBuilder on CreateNewFormPageState {
               values: FormType.values,
               selectedValues: [_formType],
               isMultiSelect: false,
-              onChanged: (type) => setState(() => _formType = type[0]))
+              onChanged: (type) => setState(
+                  () => _formType = type.firstOrNull ?? FormType.workOrder))
         ],
       ),
     );

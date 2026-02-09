@@ -135,12 +135,12 @@ class ServiceFormEditorCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        PositionsSelector(
-          selectedPositions: selectedPositions,
-          useBloc: false,
-          positions: availablePositions,
-          onAdd: onAdd,
-        ),
+        // PositionsSelector(
+        //   selectedPositions: selectedPositions,
+        //   useBloc: false,
+        //   positions: availablePositions,
+        //   onAdd: onAdd,
+        // ),
         const SizedBox(height: 12),
         CustomList(
           emptyWidget: const Text("Semua posisi staff terpilih"),

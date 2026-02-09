@@ -35,7 +35,9 @@ Future<void> initClientServiceRequestFeature() async {
   sl.registerLazySingleton<ApproveCsrUsecase>(() => ApproveCsrUsecase(sl()));
   sl.registerLazySingleton<RejectCsrUsecase>(() => RejectCsrUsecase(sl()));
 
-  sl.registerFactory<InternalCsrBloc>(() => InternalCsrBloc(usecase: sl()));
+  sl.registerLazySingleton<InternalCsrBloc>(
+      () => InternalCsrBloc(usecase: sl(), authBloc: sl()));
+      
   sl.registerFactory<InternalCsrDetailCubit>(
       () => InternalCsrDetailCubit(sl()));
 
