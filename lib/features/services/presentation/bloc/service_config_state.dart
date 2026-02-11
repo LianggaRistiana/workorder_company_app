@@ -1,8 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
-import 'package:workorder_company_app/features/forms/domain/entities/ordered_form_entity.dart';
-import 'package:workorder_company_app/features/forms/domain/entities/service_form_entity.dart';
-import 'package:workorder_company_app/features/services/domain/entities/required_staff_entity.dart';
+import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
+import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
 
 class ServiceConfigState extends Equatable {
   final ServiceConfig serviceConfig;
@@ -38,55 +37,115 @@ class ServiceConfigState extends Equatable {
 class ServiceConfig extends Equatable {
   final String title;
   final String description;
-  final List<RequiredStaffEntity> requiredStaff;
-  final List<OrderedFormEntity> selectedIntakeForms;
-  final List<ServiceFormEntity> selectedWorkOrderForms;
-  final List<ServiceFormEntity> selectedReportForms;
   final ServiceAccessType accessType;
+  final List<PositionEntity> departments;
+  final ServiceRequestApprovalAccess serviceRequestApprovalAccess;
+  final FormEntity? intakeForm;
+  final FormEntity? reviewForm;
   final bool isActive;
+  final List<ServiceWorkOrderConfigDraft> workOrderConfigs;
 
   const ServiceConfig({
     this.title = '',
     this.description = '',
-    this.requiredStaff = const [],
-    this.selectedIntakeForms = const [],
-    this.selectedWorkOrderForms = const [],
-    this.selectedReportForms = const [],
     this.accessType = ServiceAccessType.internal,
+    this.departments = const [],
+    this.serviceRequestApprovalAccess = ServiceRequestApprovalAccess.manager,
+    this.intakeForm,
+    this.reviewForm,
+    this.workOrderConfigs = const [],
     this.isActive = true,
   });
 
   ServiceConfig copyWith({
     String? title,
     String? description,
-    List<RequiredStaffEntity>? requiredStaff,
-    List<OrderedFormEntity>? selectedIntakeForms,
-    List<ServiceFormEntity>? selectedWorkOrderForms,
-    List<ServiceFormEntity>? selectedReportForms,
+    List<PositionEntity>? departments,
     ServiceAccessType? accessType,
+    ServiceRequestApprovalAccess? serviceRequestApprovalAccess,
+    FormEntity? intakeForm,
+    FormEntity? reviewForm,
+    List<ServiceWorkOrderConfigDraft>? workOrderConfigs,
     bool? isActive,
   }) {
     return ServiceConfig(
       title: title ?? this.title,
       description: description ?? this.description,
-      requiredStaff: requiredStaff ?? this.requiredStaff,
-      selectedIntakeForms: selectedIntakeForms ?? this.selectedIntakeForms,
-      selectedWorkOrderForms: selectedWorkOrderForms ?? this.selectedWorkOrderForms,
-      selectedReportForms: selectedReportForms ?? this.selectedReportForms,
       accessType: accessType ?? this.accessType,
+      departments: departments ?? this.departments,
+      serviceRequestApprovalAccess:
+          serviceRequestApprovalAccess ?? this.serviceRequestApprovalAccess,
+      intakeForm: intakeForm ?? this.intakeForm,
+      reviewForm: reviewForm ?? this.reviewForm,
+      workOrderConfigs: workOrderConfigs ?? this.workOrderConfigs,
       isActive: isActive ?? this.isActive,
     );
   }
 
   @override
   List<Object?> get props => [
-    title,
-    description,
-    requiredStaff,
-    selectedIntakeForms,
-    selectedWorkOrderForms,
-    selectedReportForms,
-    accessType,
-    isActive,
-  ];
+        title,
+        description,
+        departments,
+        accessType,
+        serviceRequestApprovalAccess,
+        intakeForm,
+        reviewForm,
+        workOrderConfigs,
+        isActive,
+      ];
+}
+
+class ServiceWorkOrderConfigDraft extends Equatable {
+  final FormEntity workOrderForm;
+  final FormEntity? reportForm;
+  final int? minStaff;
+  final int? maxStaff;
+  final PositionEntity? departmentOnDuty;
+  final WorkOrderAprrovalAccess workOrderApprovalAccess;
+  final WorkReportApprovalAccess workReportApprovalAccess;
+
+  const ServiceWorkOrderConfigDraft({
+    required this.workOrderForm,
+    this.reportForm,
+    this.minStaff,
+    this.maxStaff,
+    this.departmentOnDuty,
+    this.workOrderApprovalAccess = WorkOrderAprrovalAccess.headStaff,
+    this.workReportApprovalAccess = WorkReportApprovalAccess.manager,
+  });
+
+  ServiceWorkOrderConfigDraft copyWith({
+    FormEntity? workOrderForm,
+    FormEntity? reportForm,
+    int? minStaff,
+    int? maxStaff,
+    PositionEntity? departmentOnDuty,
+    WorkOrderAprrovalAccess? workOrderApprovalAccess,
+    WorkReportApprovalAccess? workReportApprovalAccess,
+  }) {
+    return ServiceWorkOrderConfigDraft(
+      workOrderForm: workOrderForm ?? this.workOrderForm,
+      reportForm : reportForm ?? this.reportForm,
+      minStaff: minStaff ?? this.minStaff,
+      maxStaff: maxStaff ?? this.maxStaff,
+      departmentOnDuty: departmentOnDuty ?? this.departmentOnDuty,
+      workOrderApprovalAccess:
+          workOrderApprovalAccess ?? this.workOrderApprovalAccess,
+      workReportApprovalAccess:
+          workReportApprovalAccess ?? this.workReportApprovalAccess,
+    );
+  }
+
+
+  @override
+  List<Object?> get props => [
+        workOrderForm,
+        reportForm,
+        minStaff,
+        maxStaff,
+        departmentOnDuty,
+        workOrderApprovalAccess,
+        workReportApprovalAccess,
+      ];
 }

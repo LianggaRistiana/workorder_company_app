@@ -67,6 +67,21 @@ enum UserRole {
   String toString() => displayName;
 }
 
+enum ServiceRequestApprovalAccess {
+  auto,
+  manager,
+}
+
+enum WorkOrderAprrovalAccess {
+  auto,
+  headStaff,
+}
+
+enum WorkReportApprovalAccess {
+  auto,
+  manager,
+}
+
 enum ServiceAccessType {
   public,
   memberOnly,

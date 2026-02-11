@@ -4,6 +4,7 @@ import 'package:workorder_company_app/core/utils/validators.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 
+@Deprecated("Don't Use This")
 class ServiceSettingCard extends StatelessWidget {
   final TextEditingController titleController;
   final TextEditingController descController;

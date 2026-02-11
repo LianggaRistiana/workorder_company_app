@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 
 enum WidgetTipe {
   general,
@@ -86,7 +87,7 @@ class _SelectBottomSheetState<T> extends State<SelectBottomSheet<T>> {
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: widget.isLoading
-                ? const Center(child: CircularProgressIndicator())
+                ? const Center(child: AppLoading())
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

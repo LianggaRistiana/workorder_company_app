@@ -15,6 +15,10 @@ class CustomInputField extends StatelessWidget {
   final bool enabled;
   final String? errorText;
   final int? maxLines;
+  final VoidCallback? onEditingComplete;
+  final FocusNode? focusNode;
+
+
 
   const CustomInputField({
     super.key,
@@ -31,6 +35,8 @@ class CustomInputField extends StatelessWidget {
     this.enabled = true,
     this.errorText,
     this.maxLines = 1,
+    this.onEditingComplete,
+    this.focusNode,
   });
 
   @override
@@ -39,6 +45,8 @@ class CustomInputField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TextFormField(
+          focusNode: focusNode,
+          onEditingComplete: onEditingComplete,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           controller: controller,
           keyboardType: keyboardType,

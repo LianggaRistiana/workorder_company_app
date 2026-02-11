@@ -12,6 +12,7 @@ import 'package:workorder_company_app/shared/widgets/icon_box.dart';
 import 'package:workorder_company_app/shared/widgets/info_bottom_sheet.dart';
 import 'package:workorder_company_app/shared/widgets/information_block.dart';
 
+@Deprecated("Don't Use This")
 class ServiceFormCard extends StatelessWidget {
   final ServiceFormEntity serviceForm;
 
