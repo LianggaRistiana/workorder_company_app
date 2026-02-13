@@ -42,7 +42,7 @@ void main() {
   final userModel = UserModel(
     name: "Test User",
     email: email,
-    role: UserRole.ownerCompany, // sesuaikan dengan enum kamu
+    role: UserRole.ownerCompany,
     position: null,
   );
 
@@ -56,7 +56,7 @@ void main() {
   group("LOGIN", () {
     test("Should return Right(LoginResponseModel) when success", () async {
       when(() => mockRemote.login(email, password))
-          .thenAnswer((_) async => ApiResponse<LoginResponseModel>(
+          .thenAnswer((_) async => ApiResponse(
                 message: "Success",
                 data: loginResponse,
               ));
@@ -65,6 +65,18 @@ void main() {
 
       expect(result, Right(loginResponse));
       verify(() => mockRemote.login(email, password)).called(1);
+    });
+
+    test("Should return ServerFailure when data is null", () async {
+      when(() => mockRemote.login(email, password))
+          .thenAnswer((_) async => ApiResponse<LoginResponseModel>(
+                message: "Invalid credentials",
+                data: null,
+              ));
+
+      final result = await repository.login(email, password);
+
+      expect(result, Left(ServerFailure(message: "Invalid credentials")));
     });
 
     test("Should return ServerFailure when ApiException thrown", () async {
@@ -85,6 +97,43 @@ void main() {
 
       expect(result.isLeft(), true);
       expect(result.fold((l) => l is UnexpectedFailure, (_) => false), true);
+    });
+  });
+
+  // ================= REGISTER =================
+
+  group("REGISTER", () {
+    test("Should return Right(UserEntity) when success", () async {
+      when(() => mockRemote.register(any(), any(), any()))
+          .thenAnswer((_) async => ApiResponse<UserModel>(
+                message: "Success",
+                data: userModel,
+              ));
+
+      final result = await repository.register("Test", email, password);
+
+      expect(result, Right(userModel));
+    });
+
+    test("Should return ServerFailure when data null", () async {
+      when(() => mockRemote.register(any(), any(), any()))
+          .thenAnswer((_) async => ApiResponse<UserModel>(
+                message: "Email already used",
+                data: null,
+              ));
+
+      final result = await repository.register("Test", email, password);
+
+      expect(result, Left(ServerFailure(message: "Email already used")));
+    });
+
+    test("Should return ServerFailure when ApiException thrown", () async {
+      when(() => mockRemote.register(any(), any(), any()))
+          .thenThrow(ApiException(400, "Bad Request"));
+
+      final result = await repository.register("Test", email, password);
+
+      expect(result, Left(ServerFailure(message: "Bad Request")));
     });
   });
 
@@ -162,8 +211,19 @@ void main() {
       expect(result, Left(ServerFailure(message: "Unauthorized")));
     });
 
-    test("Should return CacheFailure when unexpected exception thrown",
-        () async {
+    test("Should return CacheFailure when local clearUser fails", () async {
+      when(() => mockRemote.logout())
+          .thenAnswer((_) async => ApiResponse(message: "OK"));
+
+      when(() => mockLocal.clearUser()).thenThrow(Exception("Local error"));
+
+      final result = await repository.logOut();
+
+      expect(result.isLeft(), true);
+      expect(result.fold((l) => l is CacheFailure, (_) => false), true);
+    });
+
+    test("Should return CacheFailure when unknown exception thrown", () async {
       when(() => mockRemote.logout())
           .thenAnswer((_) async => throw Exception("Unknown"));
 

@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import 'package:logger/logger.dart';
 import 'package:workorder_company_app/core/error/error.dart';
 import 'package:workorder_company_app/core/storage/token_storage.dart';
+import 'package:workorder_company_app/core/utils/app_logger.dart';
 import 'package:workorder_company_app/features/auth/data/datasources/auth_local_datasource.dart';
 import 'package:workorder_company_app/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:workorder_company_app/features/auth/data/model/login_response.dart';
@@ -61,7 +61,7 @@ class AuthRepositoryImpl implements AuthRepository {
       // }
 
       currentUser = result;
-      Logger().i(currentUser);
+      appLogger.i(currentUser);
       return Right(result);
     } catch (e) {
       return Left(CacheFailure(message: e.toString()));
@@ -73,7 +73,7 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       await _localDatasource.saveUser(user);
       currentUser = user;
-      Logger().i(currentUser);
+      appLogger.i(currentUser);
       return Right(null);
     } catch (e) {
       return Left(CacheFailure(message: e.toString()));
@@ -85,7 +85,6 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Either<Failure, void>> logOut() async {
     try {
-      Logger().i("repo");
       await _remoteDatasource.logout();
       await _localDatasource.clearUser();
       await _tokenStorage.clearToken();
@@ -94,7 +93,7 @@ class AuthRepositoryImpl implements AuthRepository {
     } on ApiException catch (e) {
       return Left(ServerFailure(message: e.message));
     } catch (e,st) {
-      Logger().e("$e\n $st");
+      appLogger.e("$e\n $st");
       return Left(CacheFailure(message: "Gagal Menghapus Data Local"));
     }
   }
