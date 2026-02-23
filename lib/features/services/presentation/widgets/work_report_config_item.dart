@@ -89,6 +89,7 @@ class WorkReportConfigItem extends StatelessWidget {
                 icon: Icons.add,
                 height: 60,
                 borderRadius: 12,
+                isLoading: isLoading,
               );
             }),
       ],

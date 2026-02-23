@@ -73,9 +73,10 @@ class ServiceConfigTab extends StatelessWidget {
                     onTap: onPressed,
                     borderColor: Theme.of(context).disabledColor,
                     color: Theme.of(context).colorScheme.primary,
-                    icon: isLoading ? Icons.hourglass_empty : Icons.add,
+                    icon: Icons.add,
                     height: 60,
                     borderRadius: 12,
+                    isLoading: isLoading,
                   )),
           const SizedBox(height: 12),
           CustomList(

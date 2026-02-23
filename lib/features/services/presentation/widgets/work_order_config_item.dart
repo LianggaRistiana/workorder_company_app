@@ -127,11 +127,11 @@ class _WorkOrderConfigItemState extends State<WorkOrderConfigItem> {
                 draft.departmentOnDuty != null ? [draft.departmentOnDuty!] : [],
             onAdd: widget.onDepartmentUpdate,
             buttonBuilder: (context, onPressed, isLoading) {
-              if (isLoading) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
+              // if (isLoading) {
+              //   return const Center(
+              //     child: CircularProgressIndicator(),
+              //   );
+              // }
 
               if (draft.departmentOnDuty != null) {
                 return ClickableCustomCard(
@@ -160,6 +160,7 @@ class _WorkOrderConfigItemState extends State<WorkOrderConfigItem> {
                 icon: Icons.add,
                 height: 60,
                 borderRadius: 12,
+                isLoading: isLoading,
               );
             },
           ),

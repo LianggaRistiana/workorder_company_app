@@ -9,6 +9,7 @@ class DashedButton extends StatelessWidget {
   final double height;
   final double borderRadius;
   final EdgeInsetsGeometry padding;
+  final bool isLoading;
 
   const DashedButton({
     super.key,
@@ -20,6 +21,7 @@ class DashedButton extends StatelessWidget {
     this.height = 50,
     this.borderRadius = 8,
     this.padding = EdgeInsets.zero,
+    this.isLoading = false,
   });
 
   @override
@@ -28,7 +30,7 @@ class DashedButton extends StatelessWidget {
       color: Colors.transparent, // penting agar InkWell terlihat
       child: InkWell(
         borderRadius: BorderRadius.circular(borderRadius),
-        onTap: onTap,
+        onTap: isLoading ? null : onTap,
         child: Container(
           height: height,
           padding: padding,
@@ -37,20 +39,50 @@ class DashedButton extends StatelessWidget {
               color: borderColor,
               borderRadius: borderRadius,
             ),
-            child: Center(
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(icon, color: color),
-                  const SizedBox(width: 8),
-                  Text(
-                    title,
-                    style: TextStyle(
-                        color: color, fontWeight: FontWeight.w500),
+            child: isLoading
+                ? Center(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          width: 24,
+                          height: 24,
+                          padding: const EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            color:
+                                Theme.of(context).colorScheme.primaryContainer,
+                            borderRadius: BorderRadius.circular(borderRadius),
+                          ),
+                          child: CircularProgressIndicator(
+                            strokeWidth: 1,
+                            semanticsValue: "Memuat",
+                            valueColor: AlwaysStoppedAnimation(
+                              Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          "Memuat...",
+                          style: TextStyle(fontWeight: FontWeight.w500),
+                        ),
+                      ],
+                    ),
+                  )
+                : Center(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(icon, color: color),
+                        const SizedBox(width: 8),
+                        Text(
+                          title,
+                          style: TextStyle(
+                              color: color, fontWeight: FontWeight.w500),
+                        ),
+                      ],
+                    ),
                   ),
-                ],
-              ),
-            ),
           ),
         ),
       ),

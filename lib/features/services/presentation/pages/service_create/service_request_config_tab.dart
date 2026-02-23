@@ -80,6 +80,7 @@ class ServiceRequestConfigTab extends StatelessWidget {
                 icon: Icons.add,
                 height: 120,
                 borderRadius: 16,
+                isLoading: isLoading,
               );
             },
           ),
@@ -131,6 +132,7 @@ class ServiceRequestConfigTab extends StatelessWidget {
                 icon: Icons.add,
                 height: 120,
                 borderRadius: 16,
+                isLoading: isLoading,
               );
             },
           ),
