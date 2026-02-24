@@ -7,14 +7,17 @@ import 'package:workorder_company_app/features/forms/domain/entities/field_entit
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/option_entity.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/forms_bloc.dart';
+import 'package:workorder_company_app/features/forms/presentation/widgets/field_type_buttom_sheet.dart';
+import 'package:workorder_company_app/features/forms/presentation/widgets/field_type_icon.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/positions_bloc.dart';
 import 'package:workorder_company_app/shared/utils/reorder_helper_util.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
-import 'package:workorder_company_app/shared/widgets/custom_dropdown.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/custom_step_indicator.dart';
+import 'package:workorder_company_app/shared/widgets/dashed_button.dart';
 import 'package:workorder_company_app/shared/widgets/enum_selector.dart';
+import 'package:workorder_company_app/shared/widgets/information_block.dart';
 import 'package:workorder_company_app/shared/widgets/step_navigation_bar.dart';
 
 part 'create_form_widget_builder.dart';
@@ -29,7 +32,7 @@ class CreateNewFormPage extends StatefulWidget {
 
 class EditableField {
   String label;
-  String type;
+  FieldType type;
   bool required;
   int? min;
   int? max;
@@ -38,7 +41,7 @@ class EditableField {
 
   EditableField({
     this.label = '',
-    this.type = 'text',
+    required this.type ,
     this.required = false,
     this.min,
     this.max,
@@ -48,7 +51,7 @@ class EditableField {
 
   FieldEntity toEntity() => FieldEntity(
         label: label,
-        type: FieldType.fromString(type),
+        type: type,
         required: required,
         min: min,
         max: max,

@@ -1,10 +1,28 @@
 part of 'create_new_form_page.dart';
+
 // ignore_for_file: invalid_use_of_protected_member
 extension CreateFormUiLogic on CreateNewFormPageState {
-  void _addField() {
+  void _addField(FieldType type) {
     setState(() {
-      _fields.add(EditableField(order: _fields.length + 1));
+      _fields.add(EditableField(order: _fields.length + 1, type: type));
     });
+  }
+
+  void _openFieldTypePicker() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20),
+        ),
+      ),
+      builder: (_) => FieldTypeBottomSheet(
+        onSelected: (type) {
+          _addField(type);
+        },
+      ),
+    );
   }
 
   void _removeField(int index) {

@@ -16,6 +16,8 @@ extension CreateFormWidgetBuilder on CreateNewFormPageState {
           // --- Reorderable List untuk options ---
           CustomList(
               isReorderable: true,
+              emptyWidget: InformationBlock.warning(
+                  "Setidaknya Pertanyaan memiliki 2 opsi"),
               items: field.options,
               onReorder: (oldIndex, newIndex) {
                 setState(() {
@@ -53,7 +55,6 @@ extension CreateFormWidgetBuilder on CreateNewFormPageState {
                       IconButton(
                         icon: const Icon(
                           Icons.remove_circle_outline_rounded,
-                          color: Color.fromARGB(255, 255, 93, 81),
                         ),
                         onPressed: () => _removeOption(fieldIndex, index),
                       ),
@@ -61,14 +62,15 @@ extension CreateFormWidgetBuilder on CreateNewFormPageState {
                   ),
                 );
               }),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: TextButton.icon(
-              onPressed: () => _addOption(fieldIndex),
-              icon: const Icon(Icons.add),
-              label: const Text('Tambah Opsi'),
-            ),
+          const SizedBox(height: 8),
+          DashedButton(
+            title: 'Tambah Opsi',
+            onTap: () => _addOption(fieldIndex),
+            icon: Icons.add,
+            color: Theme.of(context).colorScheme.primary,
+            borderColor: Theme.of(context).disabledColor,
           ),
+          
         ],
       ),
     );
@@ -80,17 +82,18 @@ extension CreateFormWidgetBuilder on CreateNewFormPageState {
     return CustomCard(
       key: ValueKey(field.order),
       padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.md, vertical: AppSpacing.sm),
+          horizontal: AppSpacing.md, vertical: AppSpacing.md),
       margin: const EdgeInsets.symmetric(vertical: 8),
       // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Column(
         children: [
           Row(
             children: [
-              const Icon(Icons.drag_handle),
+              // const Icon(Icons.drag_handle),
+              FieldTypeIcon(type: field.type),
               const Spacer(),
               IconButton(
-                icon: const Icon(Icons.delete_outline, color: Colors.red),
+                icon: const Icon(Icons.delete_outline),
                 onPressed: () => _removeField(index),
               ),
             ],
@@ -98,6 +101,7 @@ extension CreateFormWidgetBuilder on CreateNewFormPageState {
           const SizedBox(height: 8),
           CustomInputField(
             label: "Pertanyaan",
+            maxLines: 3,
             onChanged: (value) => field.label = value,
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -108,34 +112,41 @@ extension CreateFormWidgetBuilder on CreateNewFormPageState {
             controller: TextEditingController(text: field.label),
           ),
           const SizedBox(height: 12),
-          CustomDropdown<String>(
-            label: "Tipe Pertanyaan",
-            value: field.type,
-            onChanged: (val) {
-              if (val != null) setState(() => field.type = val);
-            },
-            items: const [
-              DropdownMenuItem(value: 'text', child: Text('Text')),
-              DropdownMenuItem(value: 'number', child: Text('Number')),
-              DropdownMenuItem(value: 'textarea', child: Text('Textarea')),
-              DropdownMenuItem(
-                  value: 'single_select', child: Text('Single Select')),
-              DropdownMenuItem(
-                  value: 'multi_select', child: Text('Multi Select')),
-            ],
+          // CustomDropdown<String>(
+          //   label: "Tipe Pertanyaan",
+          //   value: field.type,
+          //   onChanged: (val) {
+          //     if (val != null) setState(() => field.type = val);
+          //   },
+          //   items: const [
+          //     DropdownMenuItem(value: 'text', child: Text('Text')),
+          //     DropdownMenuItem(value: 'number', child: Text('Number')),
+          //     DropdownMenuItem(value: 'textarea', child: Text('Textarea')),
+          //     DropdownMenuItem(
+          //         value: 'single_select', child: Text('Single Select')),
+          //     DropdownMenuItem(
+          //         value: 'multi_select', child: Text('Multi Select')),
+          //   ],
+          // ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: Theme.of(context).colorScheme.primaryContainer,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text('Wajib diisi'),
+                Switch(
+                  value: field.required,
+                  onChanged: (val) => setState(() => field.required = val),
+                ),
+              ],
+            ),
           ),
-          const SizedBox(height: 12),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text('Wajib diisi'),
-              Switch(
-                value: field.required,
-                onChanged: (val) => setState(() => field.required = val),
-              ),
-            ],
-          ),
-          if (field.type == 'number') ...[
+
+          if (field.type == FieldType.number) ...[
             const SizedBox(height: 8),
             Row(
               children: [
@@ -161,7 +172,9 @@ extension CreateFormWidgetBuilder on CreateNewFormPageState {
               ],
             ),
           ],
-          if (field.type.contains('select')) _buildOptionEditor(index),
+          if (field.type == FieldType.multiSelect ||
+              field.type == FieldType.singleSelect)
+            _buildOptionEditor(index),
         ],
       ),
     );
@@ -225,10 +238,14 @@ extension CreateFormWidgetBuilder on CreateNewFormPageState {
                 }),
             itemBuilder: (_, index) => _buildFieldCard(index)),
         const SizedBox(height: 8),
-        TextButton.icon(
-          onPressed: _addField,
-          icon: const Icon(Icons.add),
-          label: const Text('Tambah Pertanyaan'),
+        DashedButton(
+          height: 150,
+          borderRadius: 12,
+          icon: Icons.add,
+          onTap: _openFieldTypePicker,
+          title: 'Tambah Pertanyaan',
+          borderColor: Theme.of(context).disabledColor,
+          color: Theme.of(context).colorScheme.primary,
         ),
         const SizedBox(height: 32),
       ],
