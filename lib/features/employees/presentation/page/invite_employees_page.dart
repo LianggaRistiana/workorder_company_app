@@ -1,22 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
+import 'package:workorder_company_app/core/di/injection.dart';
+import 'package:workorder_company_app/features/employees/presentation/widget/invitation_config_card.dart';
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
+import 'package:workorder_company_app/features/positions/presentation/bloc/positions_bloc.dart';
+import 'package:workorder_company_app/shared/widgets/dashed_button.dart';
 
-class InviteEmployeePage extends StatefulWidget {
+class InviteEmployeePage extends StatelessWidget {
   const InviteEmployeePage({super.key});
 
   @override
-  State<InviteEmployeePage> createState() => _InviteEmployeePageState();
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        // Tambahkan bloc di sini nanti
+        BlocProvider(create: (_) => sl<PositionsBloc>()..add(GetPositionsRequested())),
+      ],
+      child: const _InviteEmployeeView(),
+    );
+  }
 }
 
-class _InviteEmployeePageState extends State<InviteEmployeePage> {
+class _InviteEmployeeView extends StatefulWidget {
+  const _InviteEmployeeView();
+
+  @override
+  State<_InviteEmployeeView> createState() => _InviteEmployeeViewState();
+}
+
+class _InviteEmployeeViewState extends State<_InviteEmployeeView> {
   final List<_InviteEntry> _invites = [];
-  final List<PositionEntity> _positionOptions = const [
-    PositionEntity(id: '1', name: 'Manager'),
-    PositionEntity(id: '2', name: 'Supervisor'),
-    PositionEntity(id: '3', name: 'Staff'),
-    PositionEntity(id: '4', name: 'Technician'),
-  ];
 
   @override
   void initState() {
@@ -26,7 +40,7 @@ class _InviteEmployeePageState extends State<InviteEmployeePage> {
 
   void _addInvite() {
     setState(() {
-      _invites.insert(0, _InviteEntry()); // baru selalu ditambahkan ke atas
+      _invites.insert(0, _InviteEntry());
     });
   }
 
@@ -37,44 +51,61 @@ class _InviteEmployeePageState extends State<InviteEmployeePage> {
   }
 
   void _submitInvites() {
-    // ✅ Tambahkan aksi bloc submit di sini
-    // final payload = {
-    //   "invites": _invites.map((e) => e.toRequestBody()).toList(),
-    // };
-    // print(payload);
+    final payload = {
+      "invites": _invites.map((e) => e.toRequestBody()).toList(),
+    };
+
+    debugPrint(payload.toString());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Invite Employee")),
+      appBar: AppBar(title: const Text("Undangan Pegawai")),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            OutlinedButton.icon(
-              onPressed: _addInvite,
-              icon: const Icon(Icons.add),
-              label: const Text(
-                'Tambah Invite',
-                style: TextStyle(fontSize: 16),
-              ),
-              style: OutlinedButton.styleFrom(
-                minimumSize: const Size(double.infinity, 50),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
+            DashedButton(
+              title: "Tambah Undangan",
+              icon: Icons.add,
+              onTap: _addInvite,
+              height: 100,
+              color: Theme.of(context).colorScheme.primary,
+              borderColor: Theme.of(context).colorScheme.primary,
+              // borderColor: Theme.of(context).disabledColor,
             ),
             const SizedBox(height: 16),
             Expanded(
               child: _invites.isEmpty
-                  ? const Center(child: Text('Belum ada invite'))
+                  ? const Center(child: Text('Belum ada Undangan'))
                   : ListView.builder(
                       itemCount: _invites.length,
                       itemBuilder: (context, index) {
                         final invite = _invites[index];
-                        return _buildInviteCard(invite, index);
+
+                        return InvitationConfigCard(
+                          email: invite.email ?? '',
+                          role: invite.role ?? UserRole.staffCompany,
+                          position: invite.position,
+                          onEmailChanged: (val) {
+                            invite.email = val;
+                          },
+                          onRoleChanged: (val) {
+                            setState(() {
+                              invite.role = val;
+                              if (val != UserRole.staffCompany) {
+                                invite.position = null;
+                              }
+                            });
+                          },
+                          onPositionChanged: (val) {
+                            setState(() {
+                              invite.position = val;
+                            });
+                          },
+                          onRemove: () => _removeInvite(index),
+                        );
                       },
                     ),
             ),
@@ -83,107 +114,13 @@ class _InviteEmployeePageState extends State<InviteEmployeePage> {
               onPressed: _submitInvites,
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(double.infinity, 50),
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                textStyle:
-                    const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                backgroundColor:
+                    Theme.of(context).colorScheme.primary,
+                textStyle: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600),
               ),
-              child: const Text('Kirim Invite'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildInviteCard(_InviteEntry invite, int index) {
-    final inputBorder = OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
-    );
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextField(
-              decoration: InputDecoration(
-                labelText: 'Email',
-                hintText: 'example@company.com',
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-              ),
-              keyboardType: TextInputType.emailAddress,
-              onChanged: (val) => invite.email = val,
-            ),
-            const SizedBox(height: 12),
-            DropdownButtonFormField<UserRole>(
-              value: invite.role,
-              decoration: InputDecoration(
-                labelText: 'Role',
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-                enabledBorder: inputBorder,
-                focusedBorder: inputBorder.copyWith(
-                  borderSide: BorderSide(width: 2),
-                ),
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
-              ),
-              items: const [
-                DropdownMenuItem(
-                  value: UserRole.managerCompany,
-                  child: Text('Manager'),
-                ),
-                DropdownMenuItem(
-                  value: UserRole.staffCompany,
-                  child: Text('Staff'),
-                ),
-              ],
-              onChanged: (val) {
-                setState(() {
-                  invite.role = val;
-                  if (val == UserRole.managerCompany) invite.positionId = null;
-                });
-              },
-            ),
-            if (invite.role == UserRole.staffCompany) ...[
-              const SizedBox(height: 12),
-              DropdownButtonFormField<String>(
-                value: invite.positionId,
-                decoration: InputDecoration(
-                  labelText: 'Pilih Posisi',
-                  enabledBorder: inputBorder,
-                  focusedBorder: inputBorder.copyWith(
-                    borderSide: BorderSide(width: 2),
-                  ),
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
-                ),
-                items: _positionOptions
-                    .map((pos) =>
-                        DropdownMenuItem(value: pos.id, child: Text(pos.name)))
-                    .toList(),
-                onChanged: (val) {
-                  setState(() {
-                    invite.positionId = val;
-                  });
-                },
-              ),
-            ],
-            const SizedBox(height: 12),
-            Align(
-              alignment: Alignment.centerRight,
-              child: TextButton.icon(
-                onPressed: () => _removeInvite(index),
-                icon: const Icon(Icons.delete_outline, color: Colors.red),
-                label: const Text(
-                  'Hapus',
-                  style: TextStyle(color: Colors.red),
-                ),
-              ),
+              child: const Text('Kirim Undangan'),
             ),
           ],
         ),
@@ -192,17 +129,16 @@ class _InviteEmployeePageState extends State<InviteEmployeePage> {
   }
 }
 
-/// Wrapper untuk menyimpan data setiap entry invite
 class _InviteEntry {
   String? email;
   UserRole? role;
-  String? positionId;
+  PositionEntity? position;
 
   Map<String, dynamic> toRequestBody() {
     return {
       "email": email,
       "role": role?.toSnakeCase(),
-      "positionId": positionId,
+      "positionId": position?.id,
     };
   }
 }

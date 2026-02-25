@@ -127,12 +127,6 @@ class _WorkOrderConfigItemState extends State<WorkOrderConfigItem> {
                 draft.departmentOnDuty != null ? [draft.departmentOnDuty!] : [],
             onAdd: widget.onDepartmentUpdate,
             buttonBuilder: (context, onPressed, isLoading) {
-              // if (isLoading) {
-              //   return const Center(
-              //     child: CircularProgressIndicator(),
-              //   );
-              // }
-
               if (draft.departmentOnDuty != null) {
                 return ClickableCustomCard(
                   margin: EdgeInsets.all(0),
