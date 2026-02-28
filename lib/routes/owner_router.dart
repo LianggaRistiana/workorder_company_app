@@ -2,7 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/features/auth/presentation/pages/profile_page.dart';
 import 'package:workorder_company_app/features/company/presentation/pages/owner_company_page.dart';
 import 'package:workorder_company_app/features/employees/presentation/page/employees_page.dart';
-import 'package:workorder_company_app/features/employees/presentation/page/invite_employees_page.dart';
+import 'package:workorder_company_app/features/invitations/presentation/pages/invite_employees_page.dart';
 import 'package:workorder_company_app/features/forms/presentation/pages/create_new_form/create_new_form_page.dart';
 import 'package:workorder_company_app/features/forms/presentation/pages/form_detail.page.dart';
 import 'package:workorder_company_app/features/forms/presentation/pages/forms/forms_page.dart';

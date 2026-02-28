@@ -1,7 +1,7 @@
 class AppConfig {
   static const String appName = "Work Order Company App";
   static const String appVersion = "1.0.0";
-  static const String appFlavor = "development";
+  static const String appFlavor = "staging";
 
   // network
   static const Map<String, String> baseApiUrls = {

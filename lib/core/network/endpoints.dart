@@ -13,8 +13,6 @@ class Endpoints {
 
   // Employees
   static const String employees = "$company/employees";
-  static const String inviteEmployees = "$company/invite-employees";
-  static const String historyInvitations = "$company/invite-history";
 
   // Positions
   static const String positions = "/positions";
@@ -27,6 +25,13 @@ class Endpoints {
 
   // Client Service Request
   static const String clientServiceRequest = "/client-service-request";
+
+  // Invitations
+  static const String historyInvitations = "/invitations/pending";
+  static const String inviteEmployees = "/company/invite";
+  static const String rejectInvitations = "/invitations/id/reject";
+  static const String acceptInvitations = "/invitations/id/accept";
+  static const String cancelInvitations = "/invitations/id/cancel";
 
   // Workorder
   static const String workorder = "/workorders";
@@ -48,9 +53,6 @@ class Endpoints {
       '${publicCompanies.byId(id)}/services';
   static publicIntakeForms(String id) =>
       '${publicServices.byId(id)}/intake-forms';
-
-  // static publicClientServiceRequests(String id) =>
-  //     '${publicClientServiceRequest.byId(id)}/intake-forms';
 }
 
 extension EndpointIdExtension on String {

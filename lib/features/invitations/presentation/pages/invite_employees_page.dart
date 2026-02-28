@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
-import 'package:workorder_company_app/features/employees/presentation/widget/invitation_config_card.dart';
+import 'package:workorder_company_app/features/invitations/presentation/widgets/invitation_config_card.dart';
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/positions_bloc.dart';
 import 'package:workorder_company_app/shared/widgets/dashed_button.dart';
