@@ -35,9 +35,9 @@ extension ContextSnackbar on BuildContext {
         ),
         content: Row(
           children: [
-             Icon(Icons.error, color: Theme.of(this).colorScheme.onErrorContainer),
+             Icon(Icons.error, color: Theme.of(this).colorScheme.error),
             const SizedBox(width: 8),
-            Expanded(child: Text(message, style: TextStyle(color: Theme.of(this).colorScheme.onErrorContainer))),
+            Expanded(child: Text(message, style: TextStyle(color: Theme.of(this).colorScheme.error))),
           ],
         ),
       ),

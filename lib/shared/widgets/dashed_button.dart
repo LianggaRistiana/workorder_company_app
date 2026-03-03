@@ -93,14 +93,12 @@ class DashedButton extends StatelessWidget {
 /// Painter untuk membuat border putus-putus
 class _DashedBorderPainter extends CustomPainter {
   final Color color;
-  final double dashWidth;
-  final double dashSpace;
+  final double dashWidth = 5;
+  final double dashSpace = 5;
   final double borderRadius;
 
   _DashedBorderPainter({
     required this.color,
-    this.dashWidth = 5,
-    this.dashSpace = 5,
     this.borderRadius = 8,
   });
 

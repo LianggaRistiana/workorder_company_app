@@ -9,10 +9,31 @@ class AuthGuard {
     final authRepo = sl<AuthRepository>();
     final user = authRepo.currentUser;
 
-    // 1. Not logged in
-    if (user == null) return AppRoutes.login;
+    /// 🔓 Public routes (tidak perlu login)
+    const publicRoutes = [
+      AppRoutes.login,
+      AppRoutes.register,
+      AppRoutes.registerCompany,
+      AppRoutes.registerAccount,
+    ];
 
-    // 2. Permission check (if required)
+    final isPublic = publicRoutes.contains(location);
+
+    // 1️⃣ Kalau belum login
+    if (user == null) {
+      // kalau route public → boleh akses
+      if (isPublic) return null;
+
+      // selain itu → paksa ke login
+      return AppRoutes.login;
+    }
+
+    // 2️⃣ Kalau sudah login tapi buka login/register lagi
+    if (isPublic) {
+      return AppRoutes.home;
+    }
+
+    // 3️⃣ Permission check
     final permission = RoutePermissions.map[location];
     if (permission == null) return null;
 

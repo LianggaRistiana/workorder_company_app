@@ -32,3 +32,15 @@ class NetworkFailure extends Failure {
 class AuthFailure extends Failure {
   const AuthFailure({super.message = "Unauthorize"});
 }
+
+class PolicyFailure<E> extends Failure {
+  final E error;
+
+  const PolicyFailure(
+    this.error, {
+    super.message = "Policy validation failed",
+  });
+
+  @override
+  List<Object?> get props => [error, message];
+}
