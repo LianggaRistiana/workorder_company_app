@@ -1,6 +1,7 @@
 import 'package:workorder_company_app/core/network/api_client.dart';
 import 'package:workorder_company_app/core/network/api_response.dart';
 import 'package:workorder_company_app/core/network/endpoints.dart';
+import 'package:workorder_company_app/features/auth/data/model/company_registration_model.dart';
 import 'package:workorder_company_app/features/auth/data/model/login_response.dart';
 import 'package:workorder_company_app/features/auth/data/model/logout_response.dart';
 import 'package:workorder_company_app/features/auth/data/model/user_registration_model.dart';
@@ -9,7 +10,7 @@ abstract class AuthRemoteDatasource {
   Future<ApiResponse<LoginResponseModel>> login(String email, String password);
   Future<ApiResponse<LogoutResponseModel>> logout();
   Future userRegistration(UserRegistrationModel registrationData);
-  Future companyRegistration();
+  Future companyRegistration(CompanyRegistrationModel registrationData);
 }
 
 class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
@@ -47,9 +48,14 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
   }
 
   @override
-  Future companyRegistration() {
-    // TODO: implement companyRegistration
-    throw UnimplementedError();
+  Future companyRegistration(
+    CompanyRegistrationModel registrationData,
+  ) async {
+    await _apiClient.post(
+      Endpoints.registerCompany,
+      data: registrationData.toJson(),
+    );
+    return;
   }
 
   @override

@@ -4,8 +4,9 @@ sealed class AuthState {}
 
 class AuthInitial extends AuthState {}
 
-class UserRegistrationSuccess extends AuthState {
-}
+class UserRegistrationSuccess extends AuthState {}
+
+class CompanyRegistrationSuccess extends AuthState {}
 
 class AuthLoading extends AuthState {}
 

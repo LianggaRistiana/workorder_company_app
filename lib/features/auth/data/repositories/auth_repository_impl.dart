@@ -5,8 +5,10 @@ import 'package:workorder_company_app/core/storage/token_storage.dart';
 import 'package:workorder_company_app/core/utils/safe_call.dart';
 import 'package:workorder_company_app/features/auth/data/datasources/auth_local_datasource.dart';
 import 'package:workorder_company_app/features/auth/data/datasources/auth_remote_datasource.dart';
+import 'package:workorder_company_app/features/auth/data/model/company_registration_model.dart';
 import 'package:workorder_company_app/features/auth/data/model/login_response.dart';
 import 'package:workorder_company_app/features/auth/data/model/user_registration_model.dart';
+import 'package:workorder_company_app/features/auth/domain/entities/company_registration_entity.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_registration_entity.dart';
 import 'package:workorder_company_app/features/auth/domain/repositories/auth_repository.dart';
@@ -83,9 +85,13 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, void>> companyRegistration() {
-    // TODO: implement companyRegistration
-    throw UnimplementedError();
+  Future<Either<Failure, void>> companyRegistration(
+      CompanyRegistrationEntity registrationData
+  ) {
+     return safeCall(() async {
+      return _remoteDatasource
+          .companyRegistration(CompanyRegistrationModel.fromEntity(registrationData));
+    });
   }
 
   @override

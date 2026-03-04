@@ -11,15 +11,12 @@ class LoginRequested extends AuthEvent {
   LoginRequested(this.email, this.password);
 }
 
-class RegisterRequested extends AuthEvent {
-  final String name;
-  final String email;
-  final String password;
+class CompanyRegistrationRequested extends AuthEvent {
+  final CompanyRegistrationEntity registrationData;
 
-  RegisterRequested(this.name, this.email, this.password);
+  CompanyRegistrationRequested(this.registrationData);
+
 }
-
-class CompanyRegistrationRequested extends AuthEvent {}
 
 class UserRegistrationRequested extends AuthEvent {
   final UserRegistrationEntity registrationData;

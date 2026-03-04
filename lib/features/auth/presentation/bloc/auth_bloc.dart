@@ -1,7 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/core/error/error.dart';
+import 'package:workorder_company_app/features/auth/domain/entities/company_registration_entity.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_registration_entity.dart';
+import 'package:workorder_company_app/features/auth/domain/usecases/company_registration_usecase.dart';
 import 'package:workorder_company_app/features/auth/domain/usecases/get_current_user_usecase.dart';
 import 'package:workorder_company_app/features/auth/domain/usecases/login_usecase.dart';
 import 'package:workorder_company_app/features/auth/domain/usecases/logout_usecase.dart';
@@ -15,22 +17,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final GetCurrentUserUsecase getCurrentUserUsecase;
   final LogoutUsecase logoutUsecase;
   final UserRegistrationUsecase userRegistrationUsecase;
-  // final CompanyRegistrationUsecase companyRegistrationUsecase;
+  final CompanyRegistrationUsecase companyRegistrationUsecase;
 
   AuthBloc(
       {required this.loginUseCase,
       required this.getCurrentUserUsecase,
       required this.logoutUsecase,
-      required this.userRegistrationUsecase
-      // required this.companyRegistrationUsecase
-
-      })
+      required this.userRegistrationUsecase,
+      required this.companyRegistrationUsecase})
       : super(AuthInitial()) {
     on<LoginRequested>(_onLoginRequested);
     on<AuthCheckStatus>(_onAuthCheckStatus);
     on<LogoutRequested>(_onLogoutRequested);
     on<UserRegistrationRequested>(_onUserRegistrationRequested);
-    // on<CompanyRegistrationRequested
+    on<CompanyRegistrationRequested>(_onCompanyRegistrationRequested);
     // nanti bisa tambahkan register & logout handler
   }
 
@@ -95,6 +95,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     result.fold(
       (failure) => emit(AuthError(failure.message, failure: failure)),
       (_) => emit(UserRegistrationSuccess()),
+    );
+  }
+
+  Future<void> _onCompanyRegistrationRequested(
+    CompanyRegistrationRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(AuthLoading());
+
+    final result = await companyRegistrationUsecase(event.registrationData);
+    result.fold(
+      (failure) => emit(AuthError(failure.message, failure: failure)),
+      (_) => emit(CompanyRegistrationSuccess()),
     );
   }
 }
