@@ -33,6 +33,18 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    final uri = GoRouterState.of(context).uri;
+    final email = uri.queryParameters['email'];
+
+    if (email != null) {
+      _emailController.text = email;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocConsumer<AuthBloc, AuthState>(

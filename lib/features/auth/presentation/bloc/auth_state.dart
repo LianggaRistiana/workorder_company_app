@@ -4,6 +4,9 @@ sealed class AuthState {}
 
 class AuthInitial extends AuthState {}
 
+class UserRegistrationSuccess extends AuthState {
+}
+
 class AuthLoading extends AuthState {}
 
 class Authenticated extends AuthState {
@@ -15,5 +18,6 @@ class Unauthenticated extends AuthState {}
 
 class AuthError extends AuthState {
   final String message;
-  AuthError(this.message);
+  final Failure? failure;
+  AuthError(this.message, {this.failure});
 }

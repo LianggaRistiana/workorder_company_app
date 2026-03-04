@@ -3,16 +3,13 @@ import 'package:workorder_company_app/core/network/api_response.dart';
 import 'package:workorder_company_app/core/network/endpoints.dart';
 import 'package:workorder_company_app/features/auth/data/model/login_response.dart';
 import 'package:workorder_company_app/features/auth/data/model/logout_response.dart';
-import 'package:workorder_company_app/features/auth/data/model/user_model.dart';
+import 'package:workorder_company_app/features/auth/data/model/user_registration_model.dart';
 
 abstract class AuthRemoteDatasource {
   Future<ApiResponse<LoginResponseModel>> login(String email, String password);
-  Future<ApiResponse<UserModel>> register(
-    String name,
-    String email,
-    String password,
-  );
   Future<ApiResponse<LogoutResponseModel>> logout();
+  Future userRegistration(UserRegistrationModel registrationData);
+  Future companyRegistration();
 }
 
 class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
@@ -40,27 +37,6 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
   }
 
   @override
-  Future<ApiResponse<UserModel>> register(
-    String name,
-    String email,
-    String password,
-  ) async {
-    final response = await _apiClient.post(
-      Endpoints.register,
-      data: {
-        'name': name,
-        'email': email,
-        'password': password,
-      },
-    );
-
-    return ApiResponse<UserModel>.fromJson(
-      response,
-      (json) => UserModel.fromJson(json),
-    );
-  }
-
-  @override
   Future<ApiResponse<LogoutResponseModel>> logout() async {
     final response = await _apiClient.post(Endpoints.logout);
 
@@ -68,5 +44,22 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
       response,
       (data) => LogoutResponseModel.fromJson(data),
     );
+  }
+
+  @override
+  Future companyRegistration() {
+    // TODO: implement companyRegistration
+    throw UnimplementedError();
+  }
+
+  @override
+  Future userRegistration(
+    UserRegistrationModel registrationData,
+  ) async {
+    await _apiClient.post(
+      Endpoints.register,
+      data: registrationData.toJson(),
+    );
+    return;
   }
 }

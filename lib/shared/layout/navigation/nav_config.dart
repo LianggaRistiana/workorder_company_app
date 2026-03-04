@@ -9,24 +9,25 @@ class NavConfig {
       case UserRole.ownerCompany:
         return const [
           NavItem('Utama', Icons.home_rounded, AppRoutes.home),
-          NavItem(
-              'Perusahaan', Icons.home_work_rounded, AppRoutes.companyManageMenu),
+          NavItem('Perusahaan', Icons.home_work_rounded,
+              AppRoutes.companyManageMenu),
         ];
 
       case UserRole.managerCompany:
         return const [
           NavItem('Utama', Icons.home_rounded, AppRoutes.home),
+          NavItem('Pengajuan Layanan', Icons.inbox_rounded,
+              AppRoutes.serviceRequest),
           NavItem(
-              'Pengajuan Layanan', Icons.inbox_rounded, AppRoutes.serviceRequest),
-          NavItem('Perintah Kerja', Icons.assignment_rounded,
-              AppRoutes.workorders),
+              'Perintah Kerja', Icons.assignment_rounded, AppRoutes.workorders),
         ];
 
       case UserRole.staffCompany:
         return const [
           NavItem('Utama', Icons.home_rounded, AppRoutes.home),
           // NavItem('Tugas', Icons.task_rounded, AppRoutes.staffWorkorder),
-          NavItem('Perintah Kerja', Icons.assignment_rounded, AppRoutes.workorders),
+          NavItem(
+              'Perintah Kerja', Icons.assignment_rounded, AppRoutes.workorders),
         ];
 
       case UserRole.client:
@@ -36,8 +37,12 @@ class NavConfig {
               AppRoutes.publicCompanies),
         ];
 
-      default:
-        return const [];
+      case UserRole.staffUnassigned:
+        return const [
+          NavItem('Utama', Icons.home_rounded, AppRoutes.home),
+          NavItem('Daftar Perusahaan', Icons.home_work_rounded,
+              AppRoutes.publicCompanies),
+        ];
     }
   }
 }

@@ -8,6 +8,7 @@ import 'package:workorder_company_app/features/home/presentation/widget/client_c
 import 'package:workorder_company_app/features/home/presentation/widget/manager_content.dart';
 import 'package:workorder_company_app/features/home/presentation/widget/owner_content.dart';
 import 'package:workorder_company_app/features/home/presentation/widget/staff_content.dart';
+import 'package:workorder_company_app/features/home/presentation/widget/staff_unassigned_content.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/orientation_helper.dart';
 
@@ -51,8 +52,10 @@ class _Homepage extends State<Homepage> {
       case UserRole.staffCompany:
         content = StaffContent();
         break;
+      case UserRole.staffUnassigned:
+        content = StaffUnassignedContent();
+        break;
       case UserRole.client:
-      default:
         content = ClientContent();
         break;
     }

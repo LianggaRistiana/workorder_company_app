@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:logger/logger.dart';
 import 'package:workorder_company_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:workorder_company_app/features/notification/presentation/widgets/notification_toggle.dart';
+import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/confirm_dialog.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
@@ -128,12 +130,6 @@ class ProfilePage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  // TODO : add company info card later
-                  // PermissionGate(
-                  //     permission: CompanyPermission.view,
-                  //     child: InternalCompanyCard(
-                  //         companyName: "Company Name",
-                  //         companyAddress: "Company Address")),
 
                   Divider(),
                   NotificationToggle(),
@@ -198,8 +194,10 @@ class ProfilePage extends StatelessWidget {
               ),
             );
           } else if (state is Unauthenticated) {
+            Logger().d("Unauthenticated");
+
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              context.go('/login');
+              context.go(AppRoutes.login);
             });
             return const SizedBox.shrink();
           } else {
@@ -210,15 +208,3 @@ class ProfilePage extends StatelessWidget {
     );
   }
 }
-
-// extension on Object {
-//   String toReadableString() {
-//     if (toString().contains('.')) {
-//       return toString().split('.').last.replaceAllMapped(
-//             RegExp(r'([a-z])([A-Z])'),
-//             (m) => '${m[1]} ${m[2]}',
-//           );
-//     }
-//     return toString();
-//   }
-// }

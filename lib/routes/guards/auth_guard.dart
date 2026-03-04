@@ -29,9 +29,9 @@ class AuthGuard {
     }
 
     // 2️⃣ Kalau sudah login tapi buka login/register lagi
-    if (isPublic) {
-      return AppRoutes.home;
-    }
+    // if (isPublic) {
+    //   return AppRoutes.home;
+    // }
 
     // 3️⃣ Permission check
     final permission = RoutePermissions.map[location];

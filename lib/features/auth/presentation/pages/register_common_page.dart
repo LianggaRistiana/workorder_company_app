@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/core/utils/validators.dart';
+import 'package:workorder_company_app/features/auth/domain/entities/user_registration_entity.dart';
+import 'package:workorder_company_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
 
 class RegisterCommonPage extends StatefulWidget {
   final UserRole role;
-  const RegisterCommonPage({super.key, required this.role});
+
+  const RegisterCommonPage({
+    super.key,
+    required this.role,
+  });
 
   @override
   State<RegisterCommonPage> createState() => _RegisterCommonPageState();
@@ -24,16 +32,19 @@ class _RegisterCommonPageState extends State<RegisterCommonPage> {
   final _confirmPasswordController = TextEditingController();
 
   bool _showPassword = false;
-  bool isLoading = false;
 
   void _onRegisterPressed() {
     if (_formKey.currentState?.validate() ?? false) {
-      setState(() => isLoading = true);
-
-      // TODO: Trigger Bloc / API call
-      Future.delayed(const Duration(seconds: 2), () {
-        setState(() => isLoading = false);
-      });
+      context.read<AuthBloc>().add(
+            UserRegistrationRequested(
+              UserRegistrationEntity(
+                name: _nameController.text.trim(),
+                email: _emailController.text.trim(),
+                password: _passwordController.text.trim(),
+                role: widget.role,
+              ),
+            ),
+          );
     }
   }
 
@@ -48,23 +59,40 @@ class _RegisterCommonPageState extends State<RegisterCommonPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      resizeToAvoidBottomInset: true,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                child: Form(
-                  key: _formKey,
-                  child: _buildFormContent(),
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state is AuthError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(state.message)),
+          );
+        }
+
+        if (state is UserRegistrationSuccess) {
+          context.showSuccess("Registrasi berhasil. Silakan masuk.");
+
+          // context.go(AppRoutes.login);
+          context.go("${AppRoutes.login}?email=${_emailController.text.trim()}");
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(),
+        resizeToAvoidBottomInset: true,
+        body: SafeArea(
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                  child: Form(
+                    key: _formKey,
+                    child: _buildFormContent(),
+                  ),
                 ),
               ),
-            ),
-            _buildRegisterButton(),
-          ],
+              _buildRegisterButton(),
+            ],
+          ),
         ),
       ),
     );
@@ -78,12 +106,12 @@ class _RegisterCommonPageState extends State<RegisterCommonPage> {
         const SizedBox(height: AppSpacing.xl),
         _buildAccountSection(),
         const SizedBox(height: AppSpacing.xl),
-        Divider(),
+        const Divider(),
         TextButton(
           onPressed: () {
             context.go(AppRoutes.login);
           },
-          child: Text("Saya sudah punya akun"),
+          child: const Text("Saya sudah punya akun"),
         ),
       ],
     );
@@ -98,10 +126,10 @@ class _RegisterCommonPageState extends State<RegisterCommonPage> {
           style: Theme.of(context).textTheme.titleLarge,
         ),
         const SizedBox(height: 8),
-        // Text(
-        //   "Mulai kelola Work Order secara terstruktur dan terintegrasi.",
-        //   style: Theme.of(context).textTheme.bodyMedium,
-        // ),
+        Text(
+          "Mulai kelola Work Order secara terstruktur dan terintegrasi.",
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
       ],
     );
   }
@@ -129,11 +157,12 @@ class _RegisterCommonPageState extends State<RegisterCommonPage> {
           ],
         ),
         const SizedBox(height: AppSpacing.md),
+
+        /// Nama
         CustomInputField(
           label: "Nama Lengkap",
           controller: _nameController,
           prefixIcon: const Icon(Icons.person_outline),
-          // backgroundColor: Theme.of(context).colorScheme.onSurface.withAlpha(10),
           validator: (value) => ValidatorUtils.validate(
             value,
             fieldName: "Nama",
@@ -145,6 +174,8 @@ class _RegisterCommonPageState extends State<RegisterCommonPage> {
           ),
         ),
         const SizedBox(height: AppSpacing.md),
+
+        /// Email
         CustomInputField(
           label: "Email",
           controller: _emailController,
@@ -159,6 +190,8 @@ class _RegisterCommonPageState extends State<RegisterCommonPage> {
           ),
         ),
         const SizedBox(height: AppSpacing.md),
+
+        /// Password
         CustomInputField(
           label: "Kata Sandi",
           controller: _passwordController,
@@ -180,6 +213,8 @@ class _RegisterCommonPageState extends State<RegisterCommonPage> {
           ),
         ),
         const SizedBox(height: AppSpacing.md),
+
+        /// Confirm Password
         CustomInputField(
           label: "Konfirmasi Kata Sandi",
           controller: _confirmPasswordController,
@@ -201,7 +236,6 @@ class _RegisterCommonPageState extends State<RegisterCommonPage> {
             ],
           ),
         ),
-        const SizedBox(height: AppSpacing.md),
       ],
     );
   }
@@ -210,25 +244,28 @@ class _RegisterCommonPageState extends State<RegisterCommonPage> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       width: double.infinity,
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.error.withAlpha(1),
-      ),
-      child: ElevatedButton(
-        onPressed: isLoading ? null : _onRegisterPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          padding: const EdgeInsets.symmetric(vertical: 16),
-        ),
-        child: isLoading
-            ? const SizedBox(
-                height: 20,
-                width: 20,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                ),
-              )
-            : const Text("Daftarkan akun"),
+      child: BlocBuilder<AuthBloc, AuthState>(
+        builder: (context, state) {
+          final isLoading = state is AuthLoading;
+
+          return ElevatedButton(
+            onPressed: isLoading ? null : _onRegisterPressed,
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              backgroundColor: Theme.of(context).colorScheme.primary,
+            ),
+            child: isLoading
+                ? const SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    ),
+                  )
+                : const Text("Daftarkan akun"),
+          );
+        },
       ),
     );
   }
