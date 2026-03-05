@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
+enum ConfirmDialogType {
+  normal,
+  warning,
+  danger,
+}
 
-// TODO : add type warning and danger
 Future<bool?> showConfirmDialog({
   required BuildContext context,
   required String title,
@@ -10,17 +14,45 @@ Future<bool?> showConfirmDialog({
   String cancelText = "Batal",
   Color? confirmColor,
   IconData? icon,
+  ConfirmDialogType type = ConfirmDialogType.normal,
 }) {
   final theme = Theme.of(context);
+
+  // default style based on type
+  Color containerColor;
+  Color iconColor;
+  IconData defaultIcon;
+
+  switch (type) {
+    case ConfirmDialogType.warning:
+      containerColor = Colors.orange.withAlpha(20);
+      iconColor = Colors.orange;
+      defaultIcon = Icons.warning_rounded;
+      break;
+
+    case ConfirmDialogType.danger:
+      containerColor = theme.colorScheme.errorContainer;
+      iconColor = theme.colorScheme.error;
+      defaultIcon = Icons.delete_outline_rounded;
+      break;
+
+    case ConfirmDialogType.normal:
+      containerColor = theme.colorScheme.primaryContainer;
+      iconColor = theme.colorScheme.primary;
+      defaultIcon = Icons.help_outline_rounded;
+      break;
+  }
+
+  final finalIcon = icon ?? defaultIcon;
+  final finalColor = confirmColor ?? iconColor;
 
   return showDialog<bool>(
     context: context,
     barrierDismissible: false,
     builder: (context) {
       return Dialog(
-        backgroundColor: Theme.of(context).colorScheme.surface,
+        backgroundColor: theme.colorScheme.surface,
         elevation: 0,
-
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
@@ -31,24 +63,21 @@ Future<bool?> showConfirmDialog({
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Icon section
-              if (icon != null) ...[
-                Container(
-                  padding: const EdgeInsets.all(24),
-                  decoration: BoxDecoration(
-                    color: (confirmColor ??
-                        Theme.of(context).colorScheme.errorContainer).withAlpha(90),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    icon,
-                    size: 28,
-                    color: confirmColor ??
-                        Theme.of(context).colorScheme.error,
-                  ),
+              // Icon
+              Container(
+                padding: const EdgeInsets.all(18),
+                decoration: BoxDecoration(
+                  color: containerColor,
+                  shape: BoxShape.circle,
                 ),
-                const SizedBox(height: 16),
-              ],
+                child: Icon(
+                  finalIcon,
+                  size: 24,
+                  color: finalColor,
+                ),
+              ),
+
+              const SizedBox(height: 24),
 
               // Title
               Text(
@@ -84,8 +113,7 @@ Future<bool?> showConfirmDialog({
                   const SizedBox(width: 8),
                   FilledButton(
                     style: FilledButton.styleFrom(
-                      backgroundColor: confirmColor ??
-                          Theme.of(context).colorScheme.errorContainer.withAlpha(90),
+                      backgroundColor: containerColor,
                       padding: const EdgeInsets.symmetric(
                         horizontal: 20,
                         vertical: 12,
@@ -95,8 +123,9 @@ Future<bool?> showConfirmDialog({
                     child: Text(
                       confirmText,
                       style: theme.textTheme.labelLarge?.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: Theme.of(context).colorScheme.error),
+                        fontWeight: FontWeight.w700,
+                        color: finalColor,
+                      ),
                     ),
                   ),
                 ],

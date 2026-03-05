@@ -22,7 +22,7 @@ class CustomBackButton extends StatelessWidget {
     this.confirmText = "Ya",
     this.cancelText = "Batal",
     this.confirmColor,
-    this.icon,
+    this.icon = Icons.warning_rounded,
   });
 
   @override
@@ -38,11 +38,12 @@ class CustomBackButton extends StatelessWidget {
           shouldPop = await showConfirmDialog(
                 context: context,
                 title: confirmTitle ?? "Konfirmasi",
-                message: confirmMessage ?? "Apakah Anda yakin ingin keluar?",
+                message: confirmMessage ?? "Apakah anda yakin tidak melanjutkan?",
                 confirmText: confirmText,
                 cancelText: cancelText,
                 confirmColor: confirmColor,
                 icon: icon,
+                type: ConfirmDialogType.warning,
               ) ??
               false;
         }

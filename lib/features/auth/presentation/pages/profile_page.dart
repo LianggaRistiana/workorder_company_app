@@ -182,7 +182,8 @@ class ProfilePage extends StatelessWidget {
                         title: "Keluar",
                         message: "Anda yakin ingin keluar?",
                         icon: Icons.logout,
-                        confirmText: "Logout",
+                        confirmText: "Ya, keluar",
+                        type: ConfirmDialogType.danger,
                       );
 
                       if (confirm == false) return;

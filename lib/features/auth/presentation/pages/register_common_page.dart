@@ -8,6 +8,7 @@ import 'package:workorder_company_app/features/auth/domain/entities/user_registr
 import 'package:workorder_company_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
+import 'package:workorder_company_app/shared/widgets/custom_back_buttom.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
 
@@ -49,12 +50,33 @@ class _RegisterCommonPageState extends State<RegisterCommonPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    _emailController.addListener(_onFieldChanged);
+    _nameController.addListener(_onFieldChanged);
+    _passwordController.addListener(_onFieldChanged);
+    _confirmPasswordController.addListener(_onFieldChanged);
+  }
+
+  void _onFieldChanged() {
+    setState(() {});
+  }
+
+  @override
   void dispose() {
     _emailController.dispose();
     _nameController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
+  }
+
+  bool _isFieldFilled() {
+    return _emailController.text.isNotEmpty ||
+        _nameController.text.isNotEmpty ||
+        _passwordController.text.isNotEmpty ||
+        _confirmPasswordController.text.isNotEmpty;
   }
 
   @override
@@ -71,11 +93,16 @@ class _RegisterCommonPageState extends State<RegisterCommonPage> {
           context.showSuccess("Registrasi berhasil. Silakan masuk.");
 
           // context.go(AppRoutes.login);
-          context.go("${AppRoutes.login}?email=${_emailController.text.trim()}");
+          context
+              .go("${AppRoutes.login}?email=${_emailController.text.trim()}");
         }
       },
       child: Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          leading: CustomBackButton(
+            showConfirm: _isFieldFilled(),
+          ),
+        ),
         resizeToAvoidBottomInset: true,
         body: SafeArea(
           child: Column(
