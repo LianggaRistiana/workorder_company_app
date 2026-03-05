@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
 
+// TODO : refactor all code that use this component
 class CustomList<T> extends StatelessWidget {
   final List<T> items;
   final Widget Function(T item, int index) itemBuilder;

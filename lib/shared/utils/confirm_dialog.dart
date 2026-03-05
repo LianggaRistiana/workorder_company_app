@@ -20,7 +20,6 @@ Future<bool?> showConfirmDialog({
       return Dialog(
         backgroundColor: Theme.of(context).colorScheme.surface,
         elevation: 0,
-        // clipBehavior: Clip.antiAliasWithSaveLayer,
 
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),

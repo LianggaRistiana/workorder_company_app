@@ -2,7 +2,7 @@
 class ApiException implements Exception {
   final int statusCode;
   final String message;
-  //TODO : Add TError in this;
+  //TODO : Add dynamic Error here
   
   ApiException(this.statusCode, this.message);
 

@@ -35,26 +35,6 @@ import 'dart:math';
 /// 3. Refactor safely before release
 ///
 /// ------------------------------------------------------------
-/// 🏷 Format Structure
-/// ------------------------------------------------------------
-///
-/// Generated format:
-///
-///     TODO_<FEATURE>_<CATEGORY>_<KEY>
-///
-/// Example:
-///
-///     TODO_AUTH_VALIDATION_PASSWORD_REQUIRED
-///
-/// If feature is not provided, it defaults to:
-///
-///     GLOBAL
-///
-/// Example:
-///
-///     TODO_GLOBAL_ERROR_UNKNOWN
-///
-/// ------------------------------------------------------------
 /// 📂 Recommended Usage
 /// ------------------------------------------------------------
 ///

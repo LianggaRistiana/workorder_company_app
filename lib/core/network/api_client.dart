@@ -93,7 +93,6 @@ class ApiClient {
     try {
       return await request();
     } on DioException catch (e) {
-      // TODO: bisa handle saja error response dari API lakukan di apiexception jadi pertimbangkan hapus error code_error dari APIresponse
       final statusCode = e.response?.statusCode ?? -1;
       final message = e.response?.data?['message'] ?? e.message;
       throw ApiException(statusCode, message);
