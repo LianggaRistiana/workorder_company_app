@@ -12,8 +12,8 @@ class UserRegistrationUsecase {
 
   Future<Either<Failure, void>> call(UserRegistrationEntity user) async {
     final policyResult = policy.validate(user);
-    if (policyResult.isInvalid) {
-      return Left(PolicyFailure(policyResult.error!));
+    if (policyResult.isError) {
+      return Left(PolicyFailure(policyResult.issue!));
     } else {
       return repository.userRegistration(user);
     }

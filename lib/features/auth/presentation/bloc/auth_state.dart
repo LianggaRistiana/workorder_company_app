@@ -18,6 +18,7 @@ class Authenticated extends AuthState {
 class Unauthenticated extends AuthState {}
 
 class AuthError extends AuthState {
+  // Consider to remove failure field
   final String message;
   final Failure? failure;
   AuthError(this.message, {this.failure});

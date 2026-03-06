@@ -11,7 +11,7 @@ class UserRegistrationPolicy {
 
   PolicyResult<RegistrationError> validate(UserRegistrationEntity user) {
     if (!_allowedRoles.contains(user.role)) {
-      return const PolicyResult.invalid(
+      return const PolicyResult.error(
         RegistrationError.roleNotAllowed,
       );
     }

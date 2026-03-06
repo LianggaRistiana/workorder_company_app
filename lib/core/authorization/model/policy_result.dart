@@ -1,28 +1,50 @@
+/// Defines the severity level of a policy evaluation result.
+enum PolicySeverity {
+  warning,
+  error,
+}
+
 /// Represents the result of evaluating a business policy.
 ///
-/// This class is generic so it can be reused across multiple features.
-/// The type parameter [E] represents the specific error type
-/// defined inside each feature's domain.
+/// A policy evaluation can produce:
 ///
-/// If [error] is `null`, the policy check succeeded.
-/// If [error] is not `null`, the policy check failed.
+/// - **Valid**   → operation can continue
+/// - **Warning** → operation can continue with notes
+/// - **Error**   → operation must stop
+///
+/// The generic type [E] represents the domain-specific issue type.
 class PolicyResult<E> {
-  /// The error produced by the policy.
-  ///
-  /// Will be `null` if the policy validation passed.
-  final E? error;
+  final E? issue;
+  final PolicySeverity? severity;
 
-  const PolicyResult._(this.error);
+  const PolicyResult._({
+    this.issue,
+    this.severity,
+  });
 
   /// Creates a successful policy result.
-  const PolicyResult.valid() : this._(null);
+  const PolicyResult.valid() : this._();
 
-  /// Creates a failed policy result with a specific [error].
-  const PolicyResult.invalid(E error) : this._(error);
+  /// Creates a warning policy result.
+  const PolicyResult.warning(E issue)
+      : this._(
+          issue: issue,
+          severity: PolicySeverity.warning,
+        );
 
-  /// Indicates whether the policy validation passed.
-  bool get isValid => error == null;
+  /// Creates an error policy result.
+  const PolicyResult.error(E issue)
+      : this._(
+          issue: issue,
+          severity: PolicySeverity.error,
+        );
 
-  /// Indicates whether the policy validation failed.
-  bool get isInvalid => error != null;
+  /// Returns `true` if the policy passed with no issue.
+  bool get isValid => severity == null;
+
+  /// Returns `true` if the policy produced a warning.
+  bool get isWarning => severity == PolicySeverity.warning;
+
+  /// Returns `true` if the policy produced an error.
+  bool get isError => severity == PolicySeverity.error;
 }

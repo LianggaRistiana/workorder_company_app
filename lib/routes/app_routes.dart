@@ -12,6 +12,7 @@ class AppRoutes {
 
   // Internal Company
   static const company = '/company';
+  static const companyUpdate = '/company/update';
   static const companyFaqConfig = '/company/faq-config';
   static const companyManageMenu = '/company/menu';
 

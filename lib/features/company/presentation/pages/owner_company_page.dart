@@ -8,7 +8,6 @@ import 'package:workorder_company_app/shared/widgets/menu_grid.dart';
 import 'package:workorder_company_app/shared/widgets/menu_item.dart';
 import 'package:workorder_company_app/shared/widgets/section_title.dart';
 
-
 // TODO : Change to CompanyMenuPage
 class OwnerCompanyPage extends StatefulWidget {
   const OwnerCompanyPage({super.key});
@@ -118,13 +117,7 @@ class _OwnerCompanyPageState extends State<OwnerCompanyPage> {
                     icon: Icons.info_outline_rounded,
                     label: "Informasi Perusahaan",
                     onTap: () {
-                      showAppBottomSheet(context,
-                          content: SizedBox(
-                            height: 200,
-                            child: Center(
-                              child: Text("Fitur ini belum tersedia"),
-                            ),
-                          ));
+                      context.push(AppRoutes.company);
                     }),
                 MenuItem(
                     icon: Icons.card_membership_outlined,

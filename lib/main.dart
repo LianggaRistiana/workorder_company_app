@@ -6,11 +6,11 @@ import 'package:workorder_company_app/core/constants/app_config.dart';
 import 'package:workorder_company_app/core/theme/app_theme.dart';
 import 'package:workorder_company_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:workorder_company_app/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:workorder_company_app/features/company/presentation/bloc/internal_company_management/internal_company_get_cubit.dart';
 import 'package:workorder_company_app/features/notification/presentation/bloc/notification_cubit.dart';
 import 'package:workorder_company_app/routes/app_router.dart';
 import 'package:workorder_company_app/core/di/injection.dart' as di;
 import 'package:intl/date_symbol_data_local.dart';
-
 
 // void main() async {
 //   WidgetsFlutterBinding.ensureInitialized();
@@ -79,9 +79,8 @@ class MyApp extends StatelessWidget {
         BlocProvider<AuthBloc>(
           create: (_) => di.sl<AuthBloc>()..add(AuthCheckStatus()),
         ),
-        BlocProvider<NotificationCubit>(
-          create: (_) => di.sl()
-        ),
+        BlocProvider<NotificationCubit>(create: (_) => di.sl()),
+        BlocProvider<InternalCompanyCubit>(create: (_) => di.sl())
         // BlocProvider(
         //   create: (context) =>
         //       di.sl<EmployeesBloc>()..add(GetEmployeesRequested()),
@@ -89,12 +88,12 @@ class MyApp extends StatelessWidget {
         // Tambahkan bloc lain jika ada
       ],
       child: MaterialApp.router(
-          title: AppConfig.appName,
-          debugShowCheckedModeBanner: false,
-          theme: AppTheme.lightTheme,
-          darkTheme: AppTheme.darkTheme,
-          routerConfig: appRouter,
-          ),
+        title: AppConfig.appName,
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.darkTheme,
+        routerConfig: appRouter,
+      ),
     );
   }
 }

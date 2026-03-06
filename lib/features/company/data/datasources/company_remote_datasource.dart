@@ -11,6 +11,8 @@ abstract class CompanyRemoteDatasource {
   Future<ApiResponse<List<ServiceModel>>> getCompanyService(String id);
 }
 
+
+// TODO : refactor the name of this datasource this into public company datasource
 class CompanyRemoteDatasourceImpl implements CompanyRemoteDatasource {
   final ApiClient _apiClient;
 

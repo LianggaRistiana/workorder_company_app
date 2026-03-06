@@ -4,7 +4,12 @@ import 'package:workorder_company_app/features/company/domain/entities/company_e
 import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
 
 abstract class CompanyRepository {
+  // Public Company Service
   Future<Either<Failure, List<CompanyEntity>>> getCompanies();
   Future<Either<Failure, CompanyEntity>> getCompanyById(String id);
   Future<Either<Failure, List<ServiceEntity>>> getCompanyService(String id);
+
+  // Internal Company Management
+  Future<Either<Failure, CompanyEntity>> getCompanyInformation();
+  Future<Either<Failure, CompanyEntity>> updateCompanyInformation(CompanyEntity companyEntity);
 }
