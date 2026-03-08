@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 
 class ForbiddenPage extends StatelessWidget {
@@ -10,33 +11,29 @@ class ForbiddenPage extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
+      appBar: AppBar(),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             // Icon / Logo
-            Icon(
-              Icons.block_rounded,
-              size: 96,
-              color: Colors.red.shade600,
-            ),
+            _forbiddenLogo(context),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: 24),
 
             // Title
             Text(
-              'Access Denied',
+              'Akses Ditolak',
               style: theme.textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.bold,
-                color: Colors.red.shade600,
+                color: Theme.of(context).colorScheme.error,
               ),
             ),
 
             const SizedBox(height: 8),
-
             // Description
             Text(
-              'You do not have permission to access this page.',
+              'Anda tidak punya akses untuk halaman ini.',
               textAlign: TextAlign.center,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: theme.colorScheme.onSurfaceVariant,
@@ -50,10 +47,25 @@ class ForbiddenPage extends StatelessWidget {
               onPressed: () {
                 context.go(AppRoutes.home);
               },
-              child: const Text('Go Home'),
+              child: const Text('Kembali Ke Halaman Beranda'),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _forbiddenLogo(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(AppSpacing.md),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.errorContainer,
+        borderRadius: BorderRadius.circular(AppSpacing.md),
+      ),
+      child: Icon(
+        Icons.block_rounded,
+        size: 24,
+        color: Theme.of(context).colorScheme.error,
       ),
     );
   }

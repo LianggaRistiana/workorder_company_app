@@ -9,6 +9,8 @@ class AppRoutes {
   // Common
   static const profile = '/profile';
   static const forbidden = '/forbidden';
+  static const notFound = '/not-found';
+
 
   // Internal Company
   static const company = '/company';

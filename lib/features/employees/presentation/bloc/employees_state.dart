@@ -1,30 +1,28 @@
 part of 'employees_bloc.dart';
 
-sealed class EmployeesState extends Equatable {
-  const EmployeesState();
-
-  @override
-  List<Object?> get props => [];
-}
-
-class EmployeesInitial extends EmployeesState {}
-
-class EmployeesLoading extends EmployeesState {}
-
-class EmployeesLoaded extends EmployeesState {
+class EmployeesState extends Equatable {
   final List<UserEntity> employees;
+  final bool isLoading;
+  final String? errorMessage;
 
-  const EmployeesLoaded(this.employees);
+  const EmployeesState({
+    this.employees = const [],
+    this.isLoading = false,
+    this.errorMessage,
+  });
+
+  EmployeesState copyWith({
+    List<UserEntity>? employees,
+    bool? isLoading,
+    String? errorMessage,
+  }) {
+    return EmployeesState(
+      employees: employees ?? this.employees,
+      isLoading: isLoading ?? this.isLoading,
+      errorMessage: errorMessage,
+    );
+  }
 
   @override
-  List<Object?> get props => [employees];
-}
-
-class EmployeesError extends EmployeesState {
-  final String message;
-
-  const EmployeesError(this.message);
-
-  @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [employees, isLoading, errorMessage];
 }

@@ -10,18 +10,34 @@ class EmployeesBloc extends Bloc<EmployeesEvent, EmployeesState> {
   final GetEmployeesUsecase getEmployeesUsecase;
 
   EmployeesBloc({required this.getEmployeesUsecase})
-      : super(EmployeesInitial()) {
+      : super(const EmployeesState()) {
     on<GetEmployeesRequested>(_onGetEmployeesRequested);
   }
 
   Future<void> _onGetEmployeesRequested(
-    GetEmployeesRequested event,  
+    GetEmployeesRequested event,
     Emitter<EmployeesState> emit,
   ) async {
-    emit(EmployeesLoading());
+
+    // 🔥 Loading tanpa menghapus data lama
+    emit(state.copyWith(isLoading: true, errorMessage: null));
+
     final response = await getEmployeesUsecase();
 
-    response.fold((failure) => emit(EmployeesError(failure.message)),
-        (data) => emit(EmployeesLoaded(data)));
+    response.fold(
+      (failure) {
+        emit(state.copyWith(
+          isLoading: false,
+          errorMessage: failure.message,
+        ));
+      },
+      (data) {
+        emit(state.copyWith(
+          employees: data,
+          isLoading: false,
+          errorMessage: null,
+        ));
+      },
+    );
   }
 }

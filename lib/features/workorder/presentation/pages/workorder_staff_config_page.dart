@@ -42,10 +42,8 @@ class _WorkorderStaffConfigState extends State<WorkorderStaffConfigPage> {
 
   @override
   Widget build(BuildContext context) {
-    final employeesState = context.watch<EmployeesBloc>().state;
-    final employees = employeesState is EmployeesLoaded
-        ? employeesState.employees
-        : <UserEntity>[];
+    // final employeesState = context.watch<EmployeesBloc>().state;
+    final employees = context.watch<EmployeesBloc>().state.employees;
 
     List<UserEntity> employeeByPositionId(String positionId) {
       return employees.where((u) => u.position?.id == positionId).toList();

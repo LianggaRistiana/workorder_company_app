@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
 import 'package:workorder_company_app/features/services/presentation/widgets/service_access_chip.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
@@ -14,7 +15,10 @@ class ServiceItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomCard(
-      margin: const EdgeInsets.all(0),
+      margin: const EdgeInsets.symmetric(
+        horizontal: 0,
+        vertical: AppSpacing.xs,
+      ),
       padding: const EdgeInsets.all(0),
       child: ListTile(
         shape: RoundedRectangleBorder(

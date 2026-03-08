@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
@@ -59,7 +58,9 @@ class ManagerContent extends StatelessWidget {
             MenuItem(
                 icon: Icons.help_outline_outlined,
                 label: "Bantuan",
-                onTap: () {}),
+                onTap: () {
+                  context.push(AppRoutes.notFound);
+                }),
           ],
         ),
       ],

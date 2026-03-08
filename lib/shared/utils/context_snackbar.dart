@@ -4,20 +4,21 @@ extension ContextSnackbar on BuildContext {
   void showSuccess(String message) {
     ScaffoldMessenger.of(this).showSnackBar(
       SnackBar(
+        elevation: 0,
         behavior: SnackBarBehavior.floating,
         backgroundColor: Theme.of(this).colorScheme.surface,
         margin: const EdgeInsets.all(16),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
-            side: BorderSide(color: Theme.of(this).dividerColor.withAlpha(50))
-            ),
+            side: BorderSide(color: Theme.of(this).dividerColor.withAlpha(50))),
         content: Row(
           children: [
-            const Icon(Icons.check_circle, color: Colors.green),
+            Icon(Icons.check_circle, color: Theme.of(this).colorScheme.primary),
             const SizedBox(width: 8),
             Expanded(
-                child:
-                    Text(message, style: const TextStyle(color: Colors.green))),
+                child: Text(message,
+                    style:
+                        TextStyle(color: Theme.of(this).colorScheme.primary))),
           ],
         ),
       ),
@@ -28,6 +29,7 @@ extension ContextSnackbar on BuildContext {
     ScaffoldMessenger.of(this).showSnackBar(
       SnackBar(
         behavior: SnackBarBehavior.floating,
+        elevation: 0,
         backgroundColor: Theme.of(this).colorScheme.errorContainer,
         margin: const EdgeInsets.all(16),
         shape: RoundedRectangleBorder(
@@ -35,9 +37,11 @@ extension ContextSnackbar on BuildContext {
         ),
         content: Row(
           children: [
-             Icon(Icons.error, color: Theme.of(this).colorScheme.error),
+            Icon(Icons.error, color: Theme.of(this).colorScheme.error),
             const SizedBox(width: 8),
-            Expanded(child: Text(message, style: TextStyle(color: Theme.of(this).colorScheme.error))),
+            Expanded(
+                child: Text(message,
+                    style: TextStyle(color: Theme.of(this).colorScheme.error))),
           ],
         ),
       ),

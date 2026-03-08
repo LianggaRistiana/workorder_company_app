@@ -8,11 +8,9 @@ import 'package:workorder_company_app/features/auth/domain/entities/user_entity.
 import 'package:workorder_company_app/features/employees/presentation/bloc/employees_bloc.dart';
 import 'package:workorder_company_app/features/workorder/presentation/widgets/staff_chip.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
-import 'package:workorder_company_app/shared/widgets/custom_back_buttom.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
-import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
-
+import 'package:workorder_company_app/shared/widgets/list_page_scafold.dart';
 class EmployeesPage extends StatefulWidget {
   const EmployeesPage({super.key});
 
@@ -29,87 +27,52 @@ class _EmployeesPageState extends State<EmployeesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('Pegawai'),
-          leading: CustomBackButton(),
-        ),
-        body: BlocBuilder<EmployeesBloc, EmployeesState>(
-          builder: (context, state) {
-            if (state is EmployeesLoading) {
-              return const Center(child: CircularProgressIndicator());
-            }
-
-            if (state is EmployeesLoaded) {
-              final List<UserEntity> employees = state.employees;
-
-              return RefreshIndicator(
-                child: SingleChildScrollView(
-                  child: CustomList(
-                      scrollable: false,
-                      items: employees,
-                      emptyFooterHeight: 40,
-                      emptyWidget: Center(
-                        child: EmptyStateWidget(
-                          icon: Icons.group_off_outlined,
-                          text: "Tidak ada Pegawai",
-                        ),
-                      ),
-                      itemBuilder: (item, _) {
-                        return CustomCard( 
-                            margin: const EdgeInsets.symmetric(
-                                horizontal: AppSpacing.md,
-                                vertical: AppSpacing.xs),
-                            padding: const EdgeInsets.all(16),
-                            child: StaffChip(
-                              user: item,
-                              showPosition: true,
-                            ));
-                      }),
-                ),
-
-                // child: CustomList(
-                //     scrollable: false,
-                //     items: employees,
-                //     itemBuilder: (item, _) {
-                //       return CustomCard(
-                //           margin: const EdgeInsets.symmetric(
-                //               horizontal: AppSpacing.md,
-                //               vertical: AppSpacing.xs),
-                //           padding: const EdgeInsets.all(16),
-                //           child: UserChip(
-                //             user: item,
-                //           ));
-                //     }),
-                onRefresh: () async {
-                  context.read<EmployeesBloc>().add(GetEmployeesRequested());
-                },
-              );
-            }
-
-            if (state is EmployeesError) {
-              return Center(
-                child: Text(
-                  "Error: ${state.message}",
-                  style: const TextStyle(color: Colors.red),
-                ),
-              );
-            }
-
-            return const Center(child: Text("Employees Home"));
+    return BlocBuilder<EmployeesBloc, EmployeesState>(
+      builder: (context, state) {
+        return ListPageScaffold<UserEntity>(
+          title: "Pegawai",
+          isLoading: state.isLoading,
+          errorMessage: state.errorMessage,
+          items: state.employees,
+          loadingMessage: "Memuat pegawai...",
+          onRefresh: () async {
+            context
+                .read<EmployeesBloc>()
+                .add(GetEmployeesRequested());
           },
-        ),
-
-        // ✅ FloatingActionButton tetap
-        floatingActionButton: PermissionGate(
-          permission: InvitationPermission.create,
-          child: FloatingActionButton.extended(
-            onPressed: () {
-              context.push(AppRoutes.employeeInvite);
-            },
-            label: const Text('Tambah Karyawan'),
-            icon: const Icon(Icons.person_add_alt_1),
+          emptyWidget: const EmptyStateWidget(
+            icon: Icons.group_off_outlined,
+            text: "Tidak ada Pegawai",
           ),
-        ));
+
+          floatingActionButton: PermissionGate(
+            permission: InvitationPermission.create,
+            child: FloatingActionButton.extended(
+              onPressed: state.isLoading
+                  ? null
+                  : () {
+                      context.push(AppRoutes.employeeInvite);
+                    },
+              label: const Text('Tambah Karyawan'),
+              icon: const Icon(Icons.person_add_alt_1),
+            ),
+          ),
+
+          itemBuilder: (item) {
+            return CustomCard(
+              margin: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.md,
+                vertical: AppSpacing.xs,
+              ),
+              padding: const EdgeInsets.all(16),
+              child: StaffChip(
+                user: item,
+                showPosition: true,
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 }

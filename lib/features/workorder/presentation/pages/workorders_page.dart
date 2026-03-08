@@ -8,10 +8,9 @@ import 'package:workorder_company_app/features/workorder/presentation/bloc/worko
 import 'package:workorder_company_app/features/workorder/presentation/widgets/workorder_item.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
-import 'package:workorder_company_app/shared/widgets/custom_back_buttom.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
-import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
+import 'package:workorder_company_app/shared/widgets/list_page_scafold.dart';
 
 class WorkordersPage extends StatefulWidget {
   const WorkordersPage({super.key});
@@ -29,118 +28,71 @@ class _WorkordersPageState extends State<WorkordersPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Perintah Kerja'),
-        leading: context.canPop() ? CustomBackButton() : null,
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(50),
-          child: Container(
-            padding: EdgeInsets.only(
-              left: AppSpacing.md,
-              right: AppSpacing.md,
-            ),
-            child: CustomInputField(
-              label: "Cari Perintah Kerja",
-              prefixIcon: const Icon(Icons.search),
+    return BlocBuilder<WorkorderBloc, WorkorderState>(
+      builder: (context, state) {
+        return ListPageScaffold(
+          title: "Perintah Kerja",
+          isLoading: state.status == WorkorderStateStatus.loading,
+          errorMessage: state.errorMessage,
+          items: state.workorders,
+          loadingMessage: "Memuat perintah kerja...",
+
+          // 🔄 Refresh
+          onRefresh: () async {
+            context.read<WorkorderBloc>().add(GetWorkordersRequested());
+          },
+
+          // 🔎 Search bar tetap ada
+          bottomAppBar: PreferredSize(
+            preferredSize: const Size.fromHeight(50),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.md,
+              ),
+              child: CustomInputField(
+                label: "Cari Perintah Kerja",
+                prefixIcon: const Icon(Icons.search),
+              ),
             ),
           ),
-        ),
-      ),
-      floatingActionButton: PermissionGate(
-        permission: WorkOrderPermissions.create,
-        child: FloatingActionButton.extended(
-          onPressed: () => {},
-          label: const Text("Tambah Perintah kerja"),
-          icon: const Icon(Icons.add),
-        ),
-      ),
-      body: BlocBuilder<WorkorderBloc, WorkorderState>(
-        builder: (context, state) {
-          // LOADING
-          if (state.status == WorkorderStateStatus.loading &&
-              state.workorders.isEmpty) {
-            return const Center(child: CircularProgressIndicator());
-          }
 
-          // ERROR
-          if (state.status == WorkorderStateStatus.error) {
-            return Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(state.errorMessage ?? "Terjadi kesalahan"),
-                  const SizedBox(height: 12),
-                  ElevatedButton(
-                    onPressed: () {
-                      context
-                          .read<WorkorderBloc>()
-                          .add(GetWorkordersRequested());
-                    },
-                    child: const Text("Coba Lagi"),
-                  ),
-                ],
-              ),
-            );
-          }
+          // 🔘 FAB
+          floatingActionButton: PermissionGate(
+            permission: WorkOrderPermissions.create,
+            child: FloatingActionButton.extended(
+              onPressed:
+                  state.status == WorkorderStateStatus.loading ? null : () {},
+              label: const Text("Tambah Perintah Kerja"),
+              icon: const Icon(Icons.add),
+            ),
+          ),
 
-          // // EMPTY
-          // if (state.workorders.isEmpty) {
-          //   return RefreshIndicator(
-          //     onRefresh: () async {
-          //       context.read<WorkorderBloc>().add(GetWorkordersRequested());
-          //     },
-          //     child: ListView(
-          //       children: const [
-          //         SizedBox(height: 200),
-          //         Center(child: Text("Belum ada pengajuan layanan.")),
-          //       ],
-          //     ),
-          //   );
-          // }
+          // 🏷 Header atas list
+          header: HorizontalButton(
+            margin: const EdgeInsets.all(AppSpacing.md),
+            title: "Riwayat Workorder",
+            description: "Lihat Workorder yang dibatalkan dan telah selesai",
+            leadingIcon: Icons.history,
+            onTap: () {},
+          ),
 
-          // LOADED — WITH PULL TO REFRESH
-          return RefreshIndicator(
-              onRefresh: () async {
+          // 📦 Item builder
+          itemBuilder: (item) => WorkorderItem(
+            workorder: item,
+            onTap: () async {
+              final result = await context.push(
+                AppRoutes.workordersDetail.fillId(item.id),
+              );
+
+              if (!context.mounted) return;
+
+              if (result == true) {
                 context.read<WorkorderBloc>().add(GetWorkordersRequested());
-              },
-              child: SingleChildScrollView(
-                child: Padding(
-                    padding: const EdgeInsets.all(0),
-                    child: Column(
-                      children: [
-                        HorizontalButton(
-                          margin: const EdgeInsets.all(AppSpacing.md),
-                          title: "Riwayat Workorder",
-                          description:
-                              "Lihat Workorder yang dibatalkan dan telah selesai",
-                          leadingIcon: Icons.history,
-                          onTap: () {},
-                        ),
-                        CustomList(
-                          scrollable: false,
-                          separatorHeight: 0,
-                          items: state.workorders,
-                          itemBuilder: (item, _) => WorkorderItem(
-                            workorder: item,
-                            onTap: () async {
-                              final result = await context.push(
-                                  AppRoutes.workordersDetail.fillId(item.id));
-                              if (!context.mounted) return;
-                              // TODO : trigger refresh from refresh indicator rather than nothing interact to user
-                              if (result == true) {
-                                context
-                                    .read<WorkorderBloc>()
-                                    .add(GetWorkordersRequested());
-                              }
-                            },
-                          ),
-                        ),
-                      ],
-                    )),
-              ));
-        },
-      ),
+              }
+            },
+          ),
+        );
+      },
     );
   }
 }
