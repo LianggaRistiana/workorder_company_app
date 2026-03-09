@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
-import 'package:workorder_company_app/features/forms/presentation/bloc/forms_bloc.dart';
+import 'package:workorder_company_app/features/forms/presentation/bloc/list/forms_list_bloc.dart';
 import 'package:workorder_company_app/features/forms/presentation/widgets/forms_selector.dart';
 
 class FormsSelectorContainer extends StatelessWidget {
@@ -23,11 +23,10 @@ class FormsSelectorContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FormsBloc, FormsState>(
+    return BlocBuilder<FormsListBloc, FormsListState>(
       builder: (context, state) {
-        final isLoading = state is FormsLoading;
-        final availableForms =
-            state is FormsLoaded ? state.forms : <FormEntity>[];
+        final isLoading = state.status == FormsListStatus.loading;
+        final availableForms = state.forms;
 
         return FormsSelector(
           selectedForms: selectedForms,

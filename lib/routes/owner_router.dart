@@ -3,12 +3,12 @@ import 'package:workorder_company_app/features/auth/presentation/pages/profile_p
 import 'package:workorder_company_app/features/company/presentation/pages/owner_company_page.dart';
 import 'package:workorder_company_app/features/employees/presentation/page/employees_page.dart';
 import 'package:workorder_company_app/features/invitations/presentation/pages/invite_employees_page.dart';
-import 'package:workorder_company_app/features/forms/presentation/pages/create_new_form/create_new_form_page.dart';
+import 'package:workorder_company_app/features/forms/presentation/pages/create/create_form_page.dart';
 import 'package:workorder_company_app/features/forms/presentation/pages/form_detail.page.dart';
-import 'package:workorder_company_app/features/forms/presentation/pages/forms/forms_page.dart';
+import 'package:workorder_company_app/features/forms/presentation/pages/forms_list_page.dart';
 import 'package:workorder_company_app/features/home/presentation/pages/homepage/owner_company_homepage.dart';
 import 'package:workorder_company_app/features/positions/presentation/pages/positions_page.dart';
-import 'package:workorder_company_app/features/services/presentation/pages/create_new_service/create_new_service_page.dart';
+import 'package:workorder_company_app/features/services/presentation/pages/service_create/service_create_page.dart';
 import 'package:workorder_company_app/features/services/presentation/pages/service_detail/service_detail_page.dart';
 import 'package:workorder_company_app/features/services/presentation/pages/services/services_page.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
@@ -44,7 +44,7 @@ final ownerRouter = [
       ),
       GoRoute(
         path: AppRoutes.ownerForms,
-        builder: (_, __) => const FormsPage(),
+        builder: (_, __) => const FormsListPage(),
       ),
       GoRoute(
         path: AppRoutes.ownerInviteEmployees,
@@ -58,7 +58,7 @@ final ownerRouter = [
   ),
   GoRoute(
     path: AppRoutes.ownerNewForm,
-    builder: (_, __) => const CreateNewFormPage(),
+    builder: (_, __) => const CreateFormPage(),
   ),
   GoRoute(
     path: '${AppRoutes.ownerForms}/:id',
@@ -69,7 +69,7 @@ final ownerRouter = [
   ),
   GoRoute(
     path: AppRoutes.ownerNewService,
-    builder: (_, __) => const CreateServicePage(),
+    builder: (_, __) => const ServiceCreatePage(),
   ),
   GoRoute(
     path: '${AppRoutes.ownerServices}/:id',

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:workorder_company_app/features/forms/presentation/bloc/forms_bloc.dart';
+import 'package:workorder_company_app/features/forms/presentation/bloc/list/forms_list_bloc.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/positions_bloc.dart';
 import 'package:workorder_company_app/features/services/presentation/pages/service_create/service_config_tab.dart';
 import 'package:workorder_company_app/features/services/presentation/pages/service_create/service_request_config_tab.dart';
@@ -25,7 +25,7 @@ class _ServiceCreatePageState extends State<ServiceCreatePage>
   void initState() {
     super.initState();
     context.read<PositionsBloc>().add(GetPositionsRequested());
-    context.read<FormsBloc>().add(GetFormsRequested());
+    context.read<FormsListBloc>().add(GetFormsListRequested());
     _tabController = TabController(length: 4, vsync: this);
     _tabController.addListener(() {
       if (_tabController.indexIsChanging) {

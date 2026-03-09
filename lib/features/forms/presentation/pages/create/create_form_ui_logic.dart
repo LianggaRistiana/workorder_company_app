@@ -1,7 +1,7 @@
-part of 'create_new_form_page.dart';
+part of 'create_form_page.dart';
 
 // ignore_for_file: invalid_use_of_protected_member
-extension CreateFormUiLogic on CreateNewFormPageState {
+extension CreateFormUiLogic on CreateFormPageState {
   void _addField(FieldType type) {
     setState(() {
       _fields.add(EditableField(order: _fields.length + 1, type: type));
@@ -91,7 +91,6 @@ extension CreateFormUiLogic on CreateNewFormPageState {
       fields: _fields.map((e) => e.toEntity()).toList(),
     );
 
-    // Tambahkan aksi Bloc di sini
-    _formsBloc.add(CreateFormRequested(form));
+    _formCreateCubit.createForm(form);
   }
 }

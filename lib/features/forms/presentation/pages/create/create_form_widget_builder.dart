@@ -1,7 +1,7 @@
-part of 'create_new_form_page.dart';
+part of 'create_form_page.dart';
 
 // ignore_for_file: invalid_use_of_protected_member
-extension CreateFormWidgetBuilder on CreateNewFormPageState {
+extension CreateFormWidgetBuilder on CreateFormPageState {
   Widget _buildOptionEditor(int fieldIndex) {
     final field = _fields[fieldIndex];
     return Padding(

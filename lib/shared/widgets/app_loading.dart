@@ -8,7 +8,7 @@ class AppLoading extends StatelessWidget {
   const AppLoading({
     super.key,
     this.message = 'Memuat...',
-    this.spinnerSize = 32,
+    this.spinnerSize = 18,
     this.spacing = 12,
   });
 
@@ -19,13 +19,16 @@ class AppLoading extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        SizedBox(
-          width: spinnerSize,
-          height: spinnerSize,
-          child: CircularProgressIndicator(
-            strokeWidth: 1,
-            valueColor: AlwaysStoppedAnimation(
-              Theme.of(context).colorScheme.primary,
+        CircleAvatar(
+          radius: spinnerSize,
+          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+          child: Container(
+            padding: const EdgeInsets.all(4),
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+              valueColor: AlwaysStoppedAnimation(
+                Theme.of(context).colorScheme.primary,
+              ),
             ),
           ),
         ),

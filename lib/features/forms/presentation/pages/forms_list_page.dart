@@ -5,7 +5,7 @@ import 'package:workorder_company_app/core/authorization/feature/form_permission
 import 'package:workorder_company_app/core/authorization/widget/permission_gate.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
-import 'package:workorder_company_app/features/forms/presentation/bloc/forms_bloc.dart';
+import 'package:workorder_company_app/features/forms/presentation/bloc/list/forms_list_bloc.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
@@ -13,39 +13,37 @@ import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
 import 'package:workorder_company_app/shared/widgets/list_page_scafold.dart';
 
-class FormsPage extends StatefulWidget {
-  const FormsPage({super.key});
+class FormsListPage extends StatefulWidget {
+  const FormsListPage({super.key});
 
   @override
-  State<FormsPage> createState() => _FormsPageState();
+  State<FormsListPage> createState() => _FormsPageState();
 }
 
-class _FormsPageState extends State<FormsPage> {
+class _FormsPageState extends State<FormsListPage> {
   @override
   void initState() {
     super.initState();
-    context.read<FormsBloc>().add(GetFormsRequested());
+    context.read<FormsListBloc>().add(GetFormsListRequested());
   }
 
   Future<void> _onRefresh() async {
-    context.read<FormsBloc>().add(GetFormsRequested());
+    context.read<FormsListBloc>().add(GetFormsListRequested());
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<FormsBloc, FormsState>(
+    return BlocListener<FormsListBloc, FormsListState>(
       listener: (context, state) {
-        if (state is FormsError) {
-          context.showError(state.message);
+        if (state.status == FormsListStatus.error && state.errorMessage != null) {
+          context.showError(state.errorMessage!);
         }
       },
-      child: BlocBuilder<FormsBloc, FormsState>(
+      child: BlocBuilder<FormsListBloc, FormsListState>(
         builder: (context, state) {
-          final isLoading = state is FormsLoading || state is FormsInitial;
-
-          final errorMessage = state is FormsError ? state.message : null;
-
-          final forms = state is FormsLoaded ? state.forms : <FormEntity>[];
+          final isLoading = state.status == FormsListStatus.loading || state.status == FormsListStatus.initial;
+          final forms = state.forms;
+          final errorMessage = state.status == FormsListStatus.error ? state.errorMessage : null;
 
           return ListPageScaffold<FormEntity>(
             title: "Formulir",
@@ -76,9 +74,7 @@ class _FormsPageState extends State<FormsPage> {
                 child: InkWell(
                   borderRadius: BorderRadius.circular(12),
                   onTap: () {
-                    context.push(
-                      AppRoutes.formsDetail.fillId(form.id),
-                    );
+                    context.push(AppRoutes.formsDetail.fillId(form.id));
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(16),
@@ -87,8 +83,7 @@ class _FormsPageState extends State<FormsPage> {
                         Container(
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                            color:
-                                Theme.of(context).colorScheme.primaryContainer,
+                            color: Theme.of(context).colorScheme.primaryContainer,
                             borderRadius: BorderRadius.circular(14),
                           ),
                           child: Icon(
@@ -128,7 +123,6 @@ class _FormsPageState extends State<FormsPage> {
     );
   }
 }
-
 // class FormsPage extends StatefulWidget {
 //   const FormsPage({super.key});
 
