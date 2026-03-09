@@ -4,7 +4,8 @@ import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features/invitations/presentation/widgets/invitation_config_card.dart';
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
-import 'package:workorder_company_app/features/positions/presentation/bloc/positions_bloc.dart';
+import 'package:workorder_company_app/features/positions/presentation/bloc/list/positions_list_bloc.dart';
+import 'package:workorder_company_app/features/positions/presentation/bloc/list/positions_list_event.dart';
 import 'package:workorder_company_app/shared/widgets/dashed_button.dart';
 
 class InviteEmployeePage extends StatelessWidget {
@@ -15,7 +16,7 @@ class InviteEmployeePage extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         // Tambahkan bloc di sini nanti
-        BlocProvider(create: (_) => sl<PositionsBloc>()..add(GetPositionsRequested())),
+        BlocProvider(create: (_) => sl<PositionsListBloc>()..add(GetPositionsListRequested())),
       ],
       child: const _InviteEmployeeView(),
     );

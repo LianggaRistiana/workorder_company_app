@@ -3,11 +3,13 @@ import 'package:workorder_company_app/features/positions/data/datasources/positi
 import 'package:workorder_company_app/features/positions/data/repositories/positions_repositories_impl.dart';
 import 'package:workorder_company_app/features/positions/domain/repositories/positions_repository.dart';
 import 'package:workorder_company_app/features/positions/domain/usecase/get_positions_usecase.dart';
-import 'package:workorder_company_app/features/positions/presentation/bloc/positions_bloc.dart';
+import 'package:workorder_company_app/features/positions/presentation/bloc/list/positions_list_bloc.dart';
 
 Future<void> initPositionsFeature() async {
-  sl.registerFactory<PositionsBloc>(
-      () => PositionsBloc(getPositionsUseCase: sl()));
+  sl.registerFactory<PositionsListBloc>(
+      () => PositionsListBloc(getPositionsUseCase: sl()));
+
+      
   sl.registerLazySingleton<GetPositionsUsecase>(
       () => GetPositionsUsecase(sl()));
   sl.registerLazySingleton<PositionsRepository>(

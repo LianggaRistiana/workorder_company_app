@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
-import 'package:workorder_company_app/features/positions/presentation/bloc/positions_bloc.dart';
+import 'package:workorder_company_app/features/positions/presentation/bloc/list/positions_list_bloc.dart';
+import 'package:workorder_company_app/features/positions/presentation/bloc/list/positions_list_state.dart';
 import 'package:workorder_company_app/features/positions/presentation/widget/positions_selector.dart';
 
 class PositionsSelectorContainer extends StatelessWidget {
@@ -22,11 +23,11 @@ class PositionsSelectorContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PositionsBloc, PositionsState>(
+    return BlocBuilder<PositionsListBloc, PositionsListState>(
       builder: (context, state) {
-        final isLoading = state is PositionsLoading;
+        final isLoading = state.status == PositionsListStatus.loading;
         final availablePositions =
-            state is PositionsLoaded ? state.positions : <PositionEntity>[];
+            state.positions;
 
         return PositionsSelector(
           selectedPositions: selectedPositions,

@@ -7,7 +7,7 @@ import 'package:workorder_company_app/features/forms/presentation/pages/create/c
 import 'package:workorder_company_app/features/forms/presentation/pages/form_detail.page.dart';
 import 'package:workorder_company_app/features/forms/presentation/pages/forms_list_page.dart';
 import 'package:workorder_company_app/features/home/presentation/pages/homepage/owner_company_homepage.dart';
-import 'package:workorder_company_app/features/positions/presentation/pages/positions_page.dart';
+import 'package:workorder_company_app/features/positions/presentation/pages/positions_list_page.dart';
 import 'package:workorder_company_app/features/services/presentation/pages/service_create/service_create_page.dart';
 import 'package:workorder_company_app/features/services/presentation/pages/service_detail/service_detail_page.dart';
 import 'package:workorder_company_app/features/services/presentation/pages/services/services_page.dart';
@@ -40,7 +40,7 @@ final ownerRouter = [
       ),
       GoRoute(
         path: AppRoutes.ownerPositions,
-        builder: (_, __) => const PositionsPage(),
+        builder: (_, __) => const PositionsListPage(),
       ),
       GoRoute(
         path: AppRoutes.ownerForms,

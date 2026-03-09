@@ -3,49 +3,51 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/core/authorization/feature/positions_permission.dart';
 import 'package:workorder_company_app/core/authorization/widget/permission_gate.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
-import 'package:workorder_company_app/features/positions/presentation/bloc/positions_bloc.dart';
+import 'package:workorder_company_app/features/positions/presentation/bloc/list/positions_list_bloc.dart';
+import 'package:workorder_company_app/features/positions/presentation/bloc/list/positions_list_event.dart';
+import 'package:workorder_company_app/features/positions/presentation/bloc/list/positions_list_state.dart';
 import 'package:workorder_company_app/features/positions/presentation/widget/add_position_widget.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/list_page_scafold.dart';
 
-class PositionsPage extends StatelessWidget {
-  const PositionsPage({super.key});
+class PositionsListPage extends StatelessWidget {
+  const PositionsListPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => sl<PositionsBloc>()..add(GetPositionsRequested()),
-      child: const _PositionsView(),
+      create: (_) => sl<PositionsListBloc>()..add(GetPositionsListRequested()),
+      child: const _PositionsListView(),
     );
   }
 }
 
-class _PositionsView extends StatelessWidget {
-  const _PositionsView();
+class _PositionsListView extends StatelessWidget {
+  const _PositionsListView();
 
   Future<void> _onRefresh(BuildContext context) async {
-    context.read<PositionsBloc>().add(GetPositionsRequested());
+    context.read<PositionsListBloc>().add(GetPositionsListRequested());
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PositionsBloc, PositionsState>(
+    return BlocBuilder<PositionsListBloc, PositionsListState>(
       builder: (context, state) {
-        final isLoading = state is PositionsLoading;
+        final isLoading = state.status == PositionsListStatus.loading;
 
-        final errorMessage = state is PositionsError ? state.message : null;
+        final errorMessage = state.errorMessage;
 
-        final positions = state is PositionsLoaded ? state.positions : [];
+        final positions = state.positions;
 
         return ListPageScaffold(
-          title: "Posisi Pegawai",
+          title: "Departemen",
           isLoading: isLoading,
           errorMessage: errorMessage,
           items: positions,
-          loadingMessage: "Memuat posisi...",
+          loadingMessage: "Memuat Departemen...",
           onRefresh: () => _onRefresh(context),
           emptyWidget: const Text(
-            "Belum ada posisi.",
+            "Belum ada Departemen.",
             style: TextStyle(color: Colors.grey),
           ),
           floatingActionButton: PermissionGate(
@@ -72,7 +74,7 @@ class _PositionsView extends StatelessWidget {
                       }
                     },
               icon: const Icon(Icons.add),
-              label: const Text('Tambah Posisi'),
+              label: const Text('Tambah Departemen'),
             ),
           ),
           itemBuilder: (position) => Padding(
@@ -122,8 +124,8 @@ class _PositionsView extends StatelessWidget {
     );
   }
 }
-// class PositionsPage extends StatelessWidget {
-//   const PositionsPage({super.key});
+// class PositionsListPage extends StatelessWidget {
+//   const PositionsListPage({super.key});
 
 //   @override
 //   Widget build(BuildContext context) {
@@ -141,7 +143,7 @@ class _PositionsView extends StatelessWidget {
 //   Widget build(BuildContext context) {
 //     return Scaffold(
 //       appBar: AppBar(
-//         title: const Text('Posisi Pegawai'),
+//         title: const Text('Departemen Pegawai'),
 //         leading: CustomBackButton()
 //       ),
 //       body: BlocBuilder<PositionsBloc, PositionsState>(
@@ -156,7 +158,7 @@ class _PositionsView extends StatelessWidget {
 //             if (positions.isEmpty) {
 //               return const Center(
 //                 child: Text(
-//                   'Belum ada posisi.',
+//                   'Belum ada Departemen.',
 //                   style: TextStyle(color: Colors.grey),
 //                 ),
 //               );
@@ -206,7 +208,7 @@ class _PositionsView extends StatelessWidget {
 //                           color: Colors.grey,
 //                         ),
 //                         onTap: () {
-//                           // TODO: nanti arahkan ke detail/edit posisi
+//                           // TODO: nanti arahkan ke detail/edit Departemen
 //                         },
 //                       ),
 //                     );
@@ -254,7 +256,7 @@ class _PositionsView extends StatelessWidget {
 //               }
 //             },
 //             icon: const Icon(Icons.add),
-//             label: const Text('Tambah Posisi'),
+//             label: const Text('Tambah Departemen'),
 //           )),
 //     );
 //   }

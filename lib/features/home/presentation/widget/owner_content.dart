@@ -33,7 +33,7 @@ class OwnerContent extends StatelessWidget {
                 }),
             MenuItem(
                 icon: Icons.badge_outlined,
-                label: "Posisi Pegawai",
+                label: "Departemen",
                 onTap: () {
                   context.push(AppRoutes.positions);
                 }),

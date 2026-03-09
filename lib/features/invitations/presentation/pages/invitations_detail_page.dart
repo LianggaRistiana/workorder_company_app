@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class InvitationsDetailPage extends StatelessWidget {
   const InvitationsDetailPage({super.key});
 
