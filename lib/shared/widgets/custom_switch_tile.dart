@@ -30,8 +30,8 @@ class CustomSwitchTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final hasDescription = description != null && description!.isNotEmpty;
 
-    final bgColor = backgroundColor ??
-        Theme.of(context).colorScheme.primaryContainer;
+    final bgColor =
+        backgroundColor ?? Theme.of(context).colorScheme.primaryContainer;
 
     return Container(
       margin: margin,
@@ -47,10 +47,7 @@ class CustomSwitchTile extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Theme.of(context)
-                    .colorScheme
-                    .onPrimaryContainer
-                    .withAlpha(20),
+                color: Theme.of(context).colorScheme.onPrimary,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Icon(

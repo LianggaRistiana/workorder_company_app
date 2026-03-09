@@ -125,7 +125,7 @@ class _LoginPageState extends State<LoginPage> {
                     ElevatedButton(
                       onPressed: isLoading ? null : _onLoginPressed,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        backgroundColor: Theme.of(context).floatingActionButtonTheme.backgroundColor,
                         padding: const EdgeInsets.symmetric(vertical: 12),
                       ),
                       child: isLoading

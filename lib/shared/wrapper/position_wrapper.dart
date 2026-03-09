@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
+import 'package:workorder_company_app/features/positions/presentation/bloc/create/position_create_cubit.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/list/positions_list_bloc.dart';
 
 class PositionWrapper extends StatelessWidget {
@@ -12,6 +13,7 @@ class PositionWrapper extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => sl<PositionsListBloc>()),
+        BlocProvider(create: (_) => sl<PositionCreateCubit>()),
       ],
       child: child,
     );
