@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:workorder_company_app/core/error/failures.dart';
 import 'package:workorder_company_app/core/utils/safe_call.dart';
 import 'package:workorder_company_app/features/positions/data/datasources/positions_remote_datasource.dart';
+import 'package:workorder_company_app/features/positions/data/models/position_model.dart';
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
 import 'package:workorder_company_app/features/positions/domain/repositories/positions_repository.dart';
 
@@ -9,12 +10,6 @@ class PositionsRepositoryImpl implements PositionsRepository {
   final PositionsRemoteDatasource _remoteDatasource;
 
   PositionsRepositoryImpl(this._remoteDatasource);
-  @override
-  Future<Either<Failure, void>> createPostion(String name) {
-    return safeCall(() async {
-      await _remoteDatasource.createPosition(name);
-    });
-  }
 
   @override
   Future<Either<Failure, List<PositionEntity>>> getPositions() {
@@ -25,8 +20,22 @@ class PositionsRepositoryImpl implements PositionsRepository {
   }
 
   @override
-  Future<Either<Failure, void>> updatePosition(String id, String name) {
-    // TODO: implement updatePosition
-    throw UnimplementedError();
+  Future<Either<Failure, PositionEntity>> createPostion(
+      PositionEntity position) {
+    return safeCall(() async {
+      final payload = await _remoteDatasource
+          .createPosition(PositionModel.fromEntity(position));
+      return payload.data!;
+    });
+  }
+
+  @override
+  Future<Either<Failure, PositionEntity>> updatePosition(
+      PositionEntity position) {
+    return safeCall(() async {
+      final payload = await _remoteDatasource
+          .updatePosition(PositionModel.fromEntity(position));
+      return payload.data!;
+    });
   }
 }

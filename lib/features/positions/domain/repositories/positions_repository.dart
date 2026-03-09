@@ -4,6 +4,6 @@ import 'package:workorder_company_app/features/positions/domain/entities/positio
 
 abstract class PositionsRepository {
   Future<Either<Failure, List<PositionEntity>>> getPositions();
-  Future<Either<Failure, void>> createPostion(String name);
-  Future<Either<Failure, void>> updatePosition(String id, String name);
+  Future<Either<Failure, PositionEntity>> createPostion(PositionEntity position);
+  Future<Either<Failure, PositionEntity>> updatePosition(PositionEntity position);
 }

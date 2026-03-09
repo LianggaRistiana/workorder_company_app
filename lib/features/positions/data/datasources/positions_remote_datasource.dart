@@ -5,8 +5,8 @@ import 'package:workorder_company_app/features/positions/data/models/position_mo
 
 abstract class PositionsRemoteDatasource {
   Future<ApiResponse<List<PositionModel>>> getPositions();
-  Future<ApiResponse<PositionModel>> createPosition(String name);
-  Future<ApiResponse<PositionModel>> updatePosition();
+  Future<ApiResponse<PositionModel>> createPosition(PositionModel positionData);
+  Future<ApiResponse<PositionModel>> updatePosition(PositionModel positionData);
 }
 
 class PositionsRemoteDatasourceImpl implements PositionsRemoteDatasource {
@@ -25,15 +25,25 @@ class PositionsRemoteDatasourceImpl implements PositionsRemoteDatasource {
   }
 
   @override
-  Future<ApiResponse<PositionModel>> updatePosition() {
-    // TODO: implement updatePosition
-    throw UnimplementedError();
+  Future<ApiResponse<PositionModel>> createPosition(
+      PositionModel positionData) async {
+    final response =
+        await _apiClient.post(Endpoints.positions, data: positionData.toJson());
+    return ApiResponse<PositionModel>.fromJson(
+      response,
+      (data) => PositionModel.fromJson(data),
+    );
   }
 
   @override
-  Future<ApiResponse<PositionModel>> createPosition(String name) async {
-    final response = await _apiClient.post(Endpoints.positions, data: name);
-    return ApiResponse.fromJson(
-        response, (data) => PositionModel.fromJson(data));
+  Future<ApiResponse<PositionModel>> updatePosition(
+      PositionModel positionData) async {
+    final response = await _apiClient.put(
+        Endpoints.positions.byId(positionData.id),
+        data: positionData.toJson());
+    return ApiResponse<PositionModel>.fromJson(
+      response,
+      (data) => PositionModel.fromJson(data),
+    );
   }
 }

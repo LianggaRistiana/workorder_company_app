@@ -5,12 +5,16 @@ class PositionModel extends PositionEntity {
   const PositionModel({
     required super.id,
     required super.name,
+    super.description,
+    super.isActive = true,
   });
 
   factory PositionModel.fromJson(Map<String, dynamic> json) {
     return PositionModel(
       id: safeParse<String>(json, "_id"),
       name: safeParse<String>(json, "name"),
+      description: safeParse<String>(json, "description"),
+      isActive: safeParse<bool>(json, "isActive"),
     );
   }
 
@@ -18,6 +22,7 @@ class PositionModel extends PositionEntity {
     return {
       '_id': id,
       'name': name,
+      'description': description,
     };
   }
 
@@ -25,6 +30,8 @@ class PositionModel extends PositionEntity {
     return PositionModel(
       id: entity.id,
       name: entity.name,
+      description: entity.description,
+      isActive: entity.isActive,
     );
   }
 }
