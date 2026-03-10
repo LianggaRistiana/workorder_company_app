@@ -14,7 +14,6 @@ import 'package:workorder_company_app/shared/widgets/dashed_button.dart';
 import 'package:workorder_company_app/shared/widgets/enum_selector.dart';
 import 'package:workorder_company_app/shared/widgets/horizontal_switch.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
-import 'package:workorder_company_app/shared/widgets/information_block.dart';
 
 class ServiceConfigTab extends StatelessWidget {
   const ServiceConfigTab({super.key});

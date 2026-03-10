@@ -35,15 +35,18 @@ class _FormsPageState extends State<FormsListPage> {
   Widget build(BuildContext context) {
     return BlocListener<FormsListBloc, FormsListState>(
       listener: (context, state) {
-        if (state.status == FormsListStatus.error && state.errorMessage != null) {
+        if (state.status == FormsListStatus.error &&
+            state.errorMessage != null) {
           context.showError(state.errorMessage!);
         }
       },
       child: BlocBuilder<FormsListBloc, FormsListState>(
         builder: (context, state) {
-          final isLoading = state.status == FormsListStatus.loading || state.status == FormsListStatus.initial;
+          final isLoading = state.status == FormsListStatus.loading ||
+              state.status == FormsListStatus.initial;
           final forms = state.forms;
-          final errorMessage = state.status == FormsListStatus.error ? state.errorMessage : null;
+          final errorMessage =
+              state.status == FormsListStatus.error ? state.errorMessage : null;
 
           return ListPageScaffold<FormEntity>(
             title: "Formulir",
@@ -83,7 +86,8 @@ class _FormsPageState extends State<FormsListPage> {
                         Container(
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.primaryContainer,
+                            color:
+                                Theme.of(context).colorScheme.primaryContainer,
                             borderRadius: BorderRadius.circular(14),
                           ),
                           child: Icon(

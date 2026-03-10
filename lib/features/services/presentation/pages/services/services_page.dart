@@ -13,7 +13,6 @@ import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
 import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
 import 'package:workorder_company_app/shared/widgets/list_page_scafold.dart';
 
-
 class ServicesPage extends StatefulWidget {
   const ServicesPage({super.key});
 
@@ -27,8 +26,7 @@ class _ServicesPageState extends State<ServicesPage> {
   @override
   void initState() {
     super.initState();
-    _servicesBloc = sl<ServicesBloc>()
-      ..add(GetServicesRequested());
+    _servicesBloc = sl<ServicesBloc>()..add(GetServicesRequested());
   }
 
   @override
@@ -54,37 +52,29 @@ class _ServicesPageState extends State<ServicesPage> {
         child: BlocBuilder<ServicesBloc, ServicesState>(
           builder: (context, state) {
             final isLoading = state is ServicesLoading;
-            final errorMessage =
-                state is ServicesError ? state.message : null;
+            final errorMessage = state is ServicesError ? state.message : null;
             final services =
                 state is ServicesLoaded ? state.services ?? [] : <dynamic>[];
 
             return ListPageScaffold(
               title: "Layanan",
-
               isLoading: isLoading,
-
               errorMessage: errorMessage,
-
               items: services,
-
               loadingMessage: "Memuat layanan...",
-
               onRefresh: _onRefresh,
-
               emptyWidget: const EmptyStateWidget(
                 icon: Icons.miscellaneous_services_outlined,
                 text: "Tidak ada Layanan",
               ),
-
               floatingActionButton: PermissionGate(
                 permission: ServicePermission.create,
                 child: FloatingActionButton.extended(
                   onPressed: isLoading
                       ? null
                       : () async {
-                          final result = await context.push(
-                              AppRoutes.servicesCreate);
+                          final result =
+                              await context.push(AppRoutes.servicesCreate);
 
                           if (result == true && context.mounted) {
                             context
@@ -96,10 +86,8 @@ class _ServicesPageState extends State<ServicesPage> {
                   icon: const Icon(Icons.add),
                 ),
               ),
-
               itemBuilder: (service) => Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.md),
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
                 child: ServiceItem(
                   service: service,
                   isPublic: false,

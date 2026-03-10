@@ -16,6 +16,7 @@ class ListPageScaffold<T> extends StatelessWidget {
   final Widget? floatingActionButton;
   final PreferredSizeWidget? bottomAppBar;
   final Widget? header;
+  final List<Widget>? actions;
   final Widget? emptyWidget;
 
   final String loadingMessage;
@@ -32,6 +33,7 @@ class ListPageScaffold<T> extends StatelessWidget {
     this.bottomAppBar,
     this.header,
     this.emptyWidget,
+    this.actions,
     this.loadingMessage = "Memuat...",
   });
 
@@ -40,7 +42,7 @@ class ListPageScaffold<T> extends StatelessWidget {
     final bottomSpacing = floatingActionButton != null ? 96.0 : 24.0;
     Widget content;
 
-    // 🔥 FIRST LOAD
+    // FIRST LOAD
     if (isLoading && items.isEmpty) {
       content = Center(
         child: AppLoading(
@@ -49,7 +51,7 @@ class ListPageScaffold<T> extends StatelessWidget {
       );
     }
 
-    // ❌ ERROR (hanya jika tidak ada data)
+    // ERROR
     else if (errorMessage != null && items.isEmpty) {
       content = Center(
         child: Column(
@@ -66,7 +68,7 @@ class ListPageScaffold<T> extends StatelessWidget {
       );
     }
 
-    // 📭 EMPTY
+    // EMPTY
     else if (items.isEmpty) {
       content = RefreshIndicator(
         onRefresh: onRefresh,
@@ -82,7 +84,7 @@ class ListPageScaffold<T> extends StatelessWidget {
       );
     }
 
-    // ✅ LOADED
+    // LOADED
     else {
       content = RefreshIndicator(
         onRefresh: onRefresh,
@@ -101,6 +103,7 @@ class ListPageScaffold<T> extends StatelessWidget {
       appBar: AppBar(
         leading: CustomBackButton(),
         title: Text(title),
+        actions: actions,
         bottom: bottomAppBar,
       ),
       floatingActionButton: floatingActionButton,
