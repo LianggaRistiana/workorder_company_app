@@ -3,6 +3,7 @@ import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
 import 'package:workorder_company_app/features/positions/presentation/widget/positions_selector_container.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/service_config_state.dart';
+import 'package:workorder_company_app/shared/utils/todo_strings_helper.dart';
 import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
@@ -73,7 +74,8 @@ class _WorkOrderConfigItemState extends State<WorkOrderConfigItem> {
   @override
   Widget build(BuildContext context) {
     final draft = widget.draft;
-    debugPrint("🔥 Rebuild WorkOrderConfigItem ${widget.draft.workOrderForm.title}");
+    debugPrint(
+        "🔥 Rebuild WorkOrderConfigItem ${widget.draft.workOrderForm.title}");
 
     return CustomCard(
       child: Column(
@@ -82,18 +84,32 @@ class _WorkOrderConfigItemState extends State<WorkOrderConfigItem> {
           /// Header
           Row(
             children: [
-              const IconBox(icon: Icons.assignment_turned_in_outlined),
+              const IconBox(
+                icon: Icons.assignment_turned_in_outlined,
+                paddingSize: 8,
+                borderRadius: 8,
+                iconSize: 24,
+              ),
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
                   draft.workOrderForm.title,
+                  // TodoText.title("form", loremCount: 100),
                   style: Theme.of(context).textTheme.titleMedium,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
               if (widget.onRemove != null)
-                IconButton(
+                IconButton.filled(
                   onPressed: widget.onRemove,
                   icon: const Icon(Icons.delete_outline),
+                  style: IconButton.styleFrom(
+                    backgroundColor:
+                        Theme.of(context).colorScheme.errorContainer,
+                    foregroundColor:
+                        Theme.of(context).colorScheme.error, // warna icon
+                  ),
                 ),
             ],
           ),
@@ -133,7 +149,11 @@ class _WorkOrderConfigItemState extends State<WorkOrderConfigItem> {
                   onTap: onPressed,
                   child: Row(
                     children: [
-                      const IconBox(icon: Icons.badge_outlined, paddingSize: 8, iconSize: 20,),
+                      const IconBox(
+                        icon: Icons.badge_outlined,
+                        paddingSize: 8,
+                        iconSize: 20,
+                      ),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(

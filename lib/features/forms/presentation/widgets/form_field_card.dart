@@ -25,6 +25,10 @@ class FormFieldCard extends StatelessWidget {
           /// === Header: Field label + type chip ===
           FieldTypeIcon(type: field.type),
           const SizedBox(height: 12),
+          Text(
+            "Pertanyaan",
+            style: Theme.of(context).textTheme.titleSmall,
+          ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -37,6 +41,25 @@ class FormFieldCard extends StatelessWidget {
               ),
             ],
           ),
+          if (field.placeholder != null) ...[
+            const SizedBox(height: 16),
+            Text(
+              "Petunjuk",
+              style: Theme.of(context).textTheme.titleSmall,
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(width: 36),
+                Expanded(
+                  child: Text(field.label,
+                      style: textTheme.bodyMedium?.copyWith(
+                        fontStyle: FontStyle.italic,
+                      )),
+                ),
+              ],
+            ),
+          ],
 
           const SizedBox(height: 16),
 
@@ -80,7 +103,7 @@ class FormFieldCard extends StatelessWidget {
 
           /// === Options list (for select fields) ===
           if ((field.options ?? []).isNotEmpty) ...[
-            Text("Opsi :", style: textTheme.bodyMedium),
+            Text("Opsi", style: textTheme.titleSmall),
             const SizedBox(height: 8),
             // Divider(color: Colors.grey.shade300, height: 20),
             CustomList<OptionEntity>(

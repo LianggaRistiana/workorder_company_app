@@ -8,6 +8,7 @@ import 'package:workorder_company_app/features/forms/domain/entities/form_entity
 import 'package:workorder_company_app/features/forms/domain/entities/option_entity.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/create/form_create_cubit.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/create/form_create_state.dart';
+import 'package:workorder_company_app/features/helps/presentation/widgets/form_type_tips.dart';
 import 'package:workorder_company_app/features/forms/presentation/widgets/field_type_buttom_sheet.dart';
 import 'package:workorder_company_app/features/forms/presentation/widgets/field_type_icon.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
@@ -18,7 +19,10 @@ import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/custom_step_indicator.dart';
 import 'package:workorder_company_app/shared/widgets/dashed_button.dart';
 import 'package:workorder_company_app/shared/widgets/enum_selector.dart';
+import 'package:workorder_company_app/features/helps/presentation/widgets/help_button.dart';
+import 'package:workorder_company_app/shared/widgets/info_bottom_sheet.dart';
 import 'package:workorder_company_app/shared/widgets/information_block.dart';
+import 'package:workorder_company_app/shared/widgets/reorderable_custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/step_navigation_bar.dart';
 
 part 'create_form_widget_builder.dart';
@@ -37,6 +41,7 @@ class EditableField {
   bool required;
   int? min;
   int? max;
+  String? placeholder;
   List<OptionEntity> options;
   int order;
 
@@ -44,6 +49,7 @@ class EditableField {
     this.label = '',
     required this.type,
     this.required = false,
+    this.placeholder,
     this.min,
     this.max,
     this.order = 1,
@@ -54,6 +60,7 @@ class EditableField {
         label: label,
         type: type,
         required: required,
+        placeholder: placeholder,
         min: min,
         max: max,
         options: options,
@@ -104,7 +111,6 @@ class CreateFormPageState extends State<CreateFormPage>
             Navigator.pop(context);
           } else if (state.status == FormCreateStatus.error) {
             context.showError(state.errorMessage ?? 'Terjadi kesalahan');
-          
           }
         },
         child: Scaffold(
@@ -134,8 +140,8 @@ class CreateFormPageState extends State<CreateFormPage>
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Theme.of(context).colorScheme.primary,
                     foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 12),
                   ),
                   child: isLoading
                       ? const SizedBox(
@@ -146,17 +152,7 @@ class CreateFormPageState extends State<CreateFormPage>
                             color: Colors.white,
                           ),
                         )
-                      : Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.upload,
-                              color: Theme.of(context).colorScheme.onPrimary,
-                            ),
-                            const SizedBox(width: 8),
-                            const Text('Simpan Form'),
-                          ],
-                        ),
+                      : const Text('Simpan Form'),
                 );
               },
             ),

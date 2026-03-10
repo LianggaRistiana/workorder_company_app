@@ -44,11 +44,12 @@ class AppBottomSheet extends StatelessWidget {
               const SizedBox(height: 12),
             ],
 
-            // CONTENT (WAJIB)
-            content,
+            Flexible(
+              child: content,
+            ),
 
             if (footer != null) ...[
-              const SizedBox(height: 24),
+              const SizedBox(height: 12),
               footer!,
             ],
           ],
@@ -70,10 +71,19 @@ void showAppBottomSheet(
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
     ),
-    builder: (_) => AppBottomSheet(
-      header: header,
-      content: content,
-      footer: footer,
-    ),
+    builder: (context) {
+      final maxHeight = MediaQuery.of(context).size.height * 0.9;
+
+      return ConstrainedBox(
+        constraints: BoxConstraints(
+          maxHeight: maxHeight,
+        ),
+        child: AppBottomSheet(
+          header: header,
+          content: content,
+          footer: footer,
+        ),
+      );
+    },
   );
 }

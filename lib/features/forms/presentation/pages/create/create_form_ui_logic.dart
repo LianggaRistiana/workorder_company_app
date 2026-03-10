@@ -9,15 +9,9 @@ extension CreateFormUiLogic on CreateFormPageState {
   }
 
   void _openFieldTypePicker() {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20),
-        ),
-      ),
-      builder: (_) => FieldTypeBottomSheet(
+    showAppBottomSheet(
+      context,
+      content: FieldTypeBottomSheet(
         onSelected: (type) {
           _addField(type);
         },
@@ -73,9 +67,7 @@ extension CreateFormUiLogic on CreateFormPageState {
 
   void _submitForm() {
     if (_fields.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Isi Pertanyaan')),
-      );
+      context.showError("Pertanyaan tidak boleh kosong");
       return;
     }
 

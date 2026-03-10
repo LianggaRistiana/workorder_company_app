@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
 
 // TODO : refactor all code that use this component
+
 class CustomList<T> extends StatelessWidget {
   final List<T> items;
   final Widget Function(T item, int index) itemBuilder;
@@ -32,18 +34,20 @@ class CustomList<T> extends StatelessWidget {
     if (items.isEmpty) return emptyWidget;
 
     if (isReorderable && onReorder != null) {
+    
+      if (items.length == 1) return itemBuilder(items.first, 0);
+
+
       return ReorderableListView(
         shrinkWrap: true,
         onReorderStart: (_) => FocusScope.of(context).unfocus(),
         physics: const NeverScrollableScrollPhysics(),
-        onReorder: onReorder!,
-        // proxyDecorator: (child, index, animation) {
-        //   return Material(
-        //     color: Colors.transparent,
-        //     elevation: 0,
-        //     child: child,
-        //   );
-        // },
+        onReorder: (oldIndex, newIndex) {
+          Logger().i('REORDER START old: $oldIndex new: $newIndex');
+          onReorder!(oldIndex, newIndex);
+          debugPrint('REORDER END');
+        },
+        // onReorder: onReorder!,
         proxyDecorator: (child, index, animation) {
           return RepaintBoundary(
             child: Material(
@@ -55,13 +59,12 @@ class CustomList<T> extends StatelessWidget {
         },
 
         children: [
-          for (final item in items)
+          // for (final item in items)
+          for (int i = 0; i < items.length; i++)
             KeyedSubtree(
-              key: ValueKey(item),
-              child: itemBuilder(item, items.indexOf(item)),
+              key: ValueKey(items[i].hashCode),
+              child: itemBuilder(items[i], i),
             ),
-          // TODO : Remove this
-          SizedBox(key: ValueKey('__buttom_space__'), height: emptyFooterHeight)
         ],
       );
     }

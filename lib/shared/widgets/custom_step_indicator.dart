@@ -70,8 +70,8 @@ class CustomStepIndicator extends StatelessWidget {
                         backgroundColor: isActive ? active : inactive,
                         child: Text(
                           '${index + 1}',
-                          style: const TextStyle(
-                            color: Colors.white,
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onPrimary,
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
                           ),

@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/core/utils/validators.dart';
+import 'package:workorder_company_app/features/helps/presentation/widgets/help_button.dart';
+import 'package:workorder_company_app/features/helps/presentation/widgets/service_type_tips.dart';
 import 'package:workorder_company_app/features/positions/presentation/widget/positions_selector_container.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/add_service_cubit.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
@@ -31,36 +33,43 @@ class ServiceConfigTab extends StatelessWidget {
               value: context.select((AddServiceCubit cubit) =>
                   cubit.state.serviceConfig.isActive),
               onChanged: context.read<AddServiceCubit>().toggleActive),
-          CustomInputField(
-              label: "Judul Layanan",
-              validator: (value) =>
-                  ValidatorUtils.required(value, fieldName: "Judul Layanan")),
-          const SizedBox(height: 12),
-          CustomInputField(
-              label: "Deskripsi",
-              // controller: descController,
-              maxLines: 3,
-              validator: (value) =>
-                  ValidatorUtils.required(value, fieldName: "Deskripsi")),
-          const SizedBox(height: 12),
-          // const Text('Tipe Akses',
-          //     style: TextStyle(fontWeight: FontWeight.bold)),
-          EnumSelector(
-              title: "Tipe Akses",
-              values: ServiceAccessType.values,
-              selectedValues: [
-                context.select((AddServiceCubit cubit) =>
-                    cubit.state.serviceConfig.accessType)
-              ],
-              isMultiSelect: false,
-              onChanged: (value) {
-                context.read<AddServiceCubit>().updateAccessType(
-                    value.firstOrNull ?? ServiceAccessType.internal);
-              }),
-          InformationBlock(
-              message:
-                  "Tipe layanan menentukan layanan bisa diakses publik, langganan, atau hanya internal"),
-          const SizedBox(height: 12),
+          CustomCard(
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                CustomInputField(
+                    prefixIcon: Icon(Icons.build_circle_outlined),
+                    label: "Nama Layanan",
+                    validator: (value) => ValidatorUtils.required(value,
+                        fieldName: "Nama Layanan")),
+                const SizedBox(height: 12),
+                CustomInputField(
+                    prefixIcon: Icon(Icons.info_outline),
+                    label: "Deskripsi",
+                    // controller: descController,
+                    maxLines: 3,
+                    validator: (value) =>
+                        ValidatorUtils.required(value, fieldName: "Deskripsi")),
+                const SizedBox(height: 12),
+                EnumSelector(
+                    title: "Tipe Akses",
+                    labelBuilder: (p0) => p0.displayName,
+                    values: ServiceAccessType.values,
+                    selectedValues: [
+                      context.select((AddServiceCubit cubit) =>
+                          cubit.state.serviceConfig.accessType)
+                    ],
+                    isMultiSelect: false,
+                    onChanged: (value) {
+                      context.read<AddServiceCubit>().updateAccessType(
+                          value.firstOrNull ?? ServiceAccessType.internal);
+                    }),
+              ])),
+          HelpButton(
+            title: "Ketahui jenis akses layanan",
+            child: ServiceAccessTypeTips(),
+          ),
+          // const SizedBox(height: 12),
           Text("Department Penyedia layanan",
               style: Theme.of(context).textTheme.titleSmall),
           const SizedBox(height: 8),

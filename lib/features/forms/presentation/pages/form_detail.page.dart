@@ -91,32 +91,29 @@ class _FormDetailPageState extends State<FormDetailPage> {
 
               // ---- Description ----
               CustomCard(
-                child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      InformationBlock(
-                        message: 'Formulir ${form.formType.displayName}',
-                      ),
-                      const SizedBox(height: 12),
-                      Text(
-                        form.description.isEmpty
-                            ? 'Tidak ada deskripsi'
-                            : form.description,
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                    ],
-                  ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    InformationBlock(
+                      message: 'Formulir ${form.formType.displayName}',
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      form.description.isEmpty
+                          ? 'Tidak ada deskripsi'
+                          : form.description,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ],
                 ),
               ),
 
               const SizedBox(height: 16),
               Text(
-                'Pertanyaan',
+                'Daftar Pertanyaan',
                 style: Theme.of(context).textTheme.titleMedium,
               ),
-              const Divider(thickness: 1),
+              const SizedBox(height: 12),
 
               // ---- Fields ----
               ListView.builder(

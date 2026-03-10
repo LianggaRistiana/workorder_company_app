@@ -23,18 +23,27 @@ class ReorderableCustomList<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (items.isEmpty) return emptyWidget;
+    if (items.length == 1) return itemBuilder(items.first, 0);
 
     return ReorderableListView(
-      padding: padding,
       shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
       onReorderStart: (_) => FocusScope.of(context).unfocus(),
+      physics: const NeverScrollableScrollPhysics(),
       onReorder: onReorder,
+      proxyDecorator: (child, index, animation) {
+        return RepaintBoundary(
+          child: Material(
+            color: Colors.transparent,
+            elevation: 0,
+            child: child,
+          ),
+        );
+      },
       children: [
-        for (int index = 0; index < items.length; index++)
+        for (int i = 0; i < items.length; i++)
           KeyedSubtree(
-            key: ValueKey('$index-${items[index]}'),
-            child: itemBuilder(items[index], index),
+            key: ValueKey(items[i].hashCode),
+            child: itemBuilder(items[i], i),
           ),
       ],
     );

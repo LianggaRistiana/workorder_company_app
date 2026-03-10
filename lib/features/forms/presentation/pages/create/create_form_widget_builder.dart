@@ -70,7 +70,6 @@ extension CreateFormWidgetBuilder on CreateFormPageState {
             color: Theme.of(context).colorScheme.primary,
             borderColor: Theme.of(context).disabledColor,
           ),
-          
         ],
       ),
     );
@@ -101,7 +100,7 @@ extension CreateFormWidgetBuilder on CreateFormPageState {
           const SizedBox(height: 8),
           CustomInputField(
             label: "Pertanyaan",
-            maxLines: 3,
+            maxLines: 2,
             onChanged: (value) => field.label = value,
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -111,23 +110,13 @@ extension CreateFormWidgetBuilder on CreateFormPageState {
             },
             controller: TextEditingController(text: field.label),
           ),
+          const SizedBox(height: 8),
+          CustomInputField(
+            label: "Placeholder",
+            onChanged: (value) => field.placeholder = value,
+            maxLines: 1,
+          ),
           const SizedBox(height: 12),
-          // CustomDropdown<String>(
-          //   label: "Tipe Pertanyaan",
-          //   value: field.type,
-          //   onChanged: (val) {
-          //     if (val != null) setState(() => field.type = val);
-          //   },
-          //   items: const [
-          //     DropdownMenuItem(value: 'text', child: Text('Text')),
-          //     DropdownMenuItem(value: 'number', child: Text('Number')),
-          //     DropdownMenuItem(value: 'textarea', child: Text('Textarea')),
-          //     DropdownMenuItem(
-          //         value: 'single_select', child: Text('Single Select')),
-          //     DropdownMenuItem(
-          //         value: 'multi_select', child: Text('Multi Select')),
-          //   ],
-          // ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             decoration: BoxDecoration(
@@ -145,7 +134,6 @@ extension CreateFormWidgetBuilder on CreateFormPageState {
               ],
             ),
           ),
-
           if (field.type == FieldType.number) ...[
             const SizedBox(height: 8),
             Row(
@@ -181,58 +169,65 @@ extension CreateFormWidgetBuilder on CreateFormPageState {
   }
 
   Widget _buildFormSetting() {
-    return CustomCard(
-      // elevation: 2,
-      padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.md, vertical: AppSpacing.lg),
-      margin: const EdgeInsets.only(bottom: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          CustomInputField(
-            label: "Judul Form",
-            controller: _titleController,
-            hint: "Judul Sebagai langkah step pekerjaan",
-            description:
-                "Judul Form akan digunakan sebagai judul step di dalam report",
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Judul wajib diisi';
-              }
-              return null;
-            },
+    return Column(
+      children: [
+        CustomCard(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CustomInputField(
+                prefixIcon: Icon(Icons.assignment_turned_in_outlined),
+                label: "Judul Formulir",
+                controller: _titleController,
+                hint: "Judul Sebagai langkah step pekerjaan",
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Judul wajib diisi';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 18),
+              CustomInputField(
+                label: "Deskripsi Formulir",
+                prefixIcon: Icon(Icons.info_outline),
+                controller: _descController,
+                maxLines: 3,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Deskripsi wajib diisi';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 18),
+              EnumSelector<FormType>(
+                  title: "Jenis Form",
+                  values: FormType.values,
+                  selectedValues: [_formType],
+                  isMultiSelect: false,
+                  labelBuilder: (type) {
+                    return type.displayName;
+                  },
+                  onChanged: (type) => setState(() =>
+                      _formType = type.firstOrNull ?? FormType.workOrder)),
+            ],
           ),
-          const SizedBox(height: 18),
-          CustomInputField(
-            label: "Deskripsi Form",
-            controller: _descController,
-            maxLines: 3,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Deskripsi wajib diisi';
-              }
-              return null;
-            },
-          ),
-          const SizedBox(height: 18),
-          EnumSelector<FormType>(
-              title: "Jenis Form",
-              values: FormType.values,
-              selectedValues: [_formType],
-              isMultiSelect: false,
-              onChanged: (type) => setState(
-                  () => _formType = type.firstOrNull ?? FormType.workOrder))
-        ],
-      ),
+        ),
+        HelpButton(
+          title: "Ketahui Jenis Formulir",
+          child: FormTypeTips(),
+        )
+      ],
     );
   }
 
   Widget _buildFields() {
     return Column(
       children: [
-        CustomList(
+        ReorderableCustomList(
             items: _fields,
-            isReorderable: true,
+            emptyWidget: InformationBlock.warning("Pertanyaan kosong"),
             onReorder: (oldIndex, newIndex) => setState(() {
                   _fields.reorder(oldIndex, newIndex);
                 }),
