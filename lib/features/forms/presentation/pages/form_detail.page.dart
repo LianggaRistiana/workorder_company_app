@@ -4,11 +4,13 @@ import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/detail/form_detail_cubit.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/detail/form_detail_state.dart';
 import 'package:workorder_company_app/features/forms/presentation/widgets/form_field_card.dart';
+import 'package:workorder_company_app/features/helps/presentation/widgets/form_type_tips.dart';
+import 'package:workorder_company_app/features/helps/presentation/widgets/help_button.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 import 'package:workorder_company_app/shared/widgets/custom_back_buttom.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
-import 'package:workorder_company_app/shared/widgets/information_block.dart';
+import 'package:workorder_company_app/shared/widgets/property_display.dart';
 
 class FormDetailPage extends StatefulWidget {
   final String formId;
@@ -91,28 +93,30 @@ class _FormDetailPageState extends State<FormDetailPage> {
 
               // ---- Description ----
               CustomCard(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    InformationBlock(
-                      message: 'Formulir ${form.formType.displayName}',
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      form.description.isEmpty
-                          ? 'Tidak ada deskripsi'
-                          : form.description,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                  ],
+                  child: PropertyDisplay(properties: [
+                PropertyItem.text(
+                  label: 'Deskripsi',
+                  icon: Icons.info_outline,
+                  value: form.description,
                 ),
-              ),
+                PropertyItem.text(
+                  label: 'Tipe Formulir',
+                  icon: Icons.category_outlined,
+                  value: form.formType.displayName,
+                ),
+                PropertyItem.text(
+                  label: 'Jumlah Pertanyaan',
+                  icon: Icons.question_mark_outlined,
+                  value: form.fields?.length.toString() ?? "-",
+                ),
+              ])),
+              
+              HelpButton(title: "Kenali Tipe Formulir", child: FormTypeTips()),
 
               const SizedBox(height: 16),
-              Text(
-                'Daftar Pertanyaan',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
+              PropertyTitle(
+                  label: "Daftar Pertanyaan", icon: Icons.question_mark),
+
               const SizedBox(height: 12),
 
               // ---- Fields ----

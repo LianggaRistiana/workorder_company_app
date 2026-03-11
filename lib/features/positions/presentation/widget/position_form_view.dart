@@ -105,6 +105,7 @@ class _PositionFormViewState extends State<PositionFormView> {
           context.pop();
         }
       },
+      
       child: Form(
         key: _formKey,
         child: Column(

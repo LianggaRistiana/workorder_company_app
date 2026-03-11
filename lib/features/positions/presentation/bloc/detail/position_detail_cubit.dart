@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
 import 'package:workorder_company_app/features/positions/domain/usecase/get_position_byid_usecase.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/detail/position_detail_state.dart';
 
@@ -26,5 +27,12 @@ class PositionDetailCubit extends Cubit<PositionDetailState> {
         ),
       ),
     );
+  }
+
+  Future<void> replaceData(PositionEntity newPositions) async {
+    emit(state.copyWith(
+      status: PositionDetailStatus.loaded,
+      position: newPositions,
+    ));
   }
 }

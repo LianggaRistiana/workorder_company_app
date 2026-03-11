@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/features/company/domain/entities/company_entity.dart';
 import 'package:workorder_company_app/features/company/presentation/pages/internal_company_edit_page.dart';
@@ -19,7 +18,6 @@ final companyRouter = [
   GoRoute(
     path: AppRoutes.companyUpdate,
     builder: (_, state) {
-      debugPrint("OPEN UPDATE PAGE");
       return InternalCompanyEditPage(
         company: state.extra as CompanyEntity,
       );

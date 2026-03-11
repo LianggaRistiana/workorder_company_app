@@ -6,6 +6,8 @@ import 'package:workorder_company_app/features/positions/presentation/bloc/creat
 import 'package:workorder_company_app/features/positions/presentation/widget/Position_form_view.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 
+
+// Inject Cubit here
 class PositionCreatePage extends StatelessWidget {
   const PositionCreatePage({super.key});
 

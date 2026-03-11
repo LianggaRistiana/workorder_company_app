@@ -5,15 +5,19 @@ import 'package:workorder_company_app/features/positions/domain/repositories/pos
 import 'package:workorder_company_app/features/positions/domain/usecase/create_position_usecase.dart';
 import 'package:workorder_company_app/features/positions/domain/usecase/get_position_byid_usecase.dart';
 import 'package:workorder_company_app/features/positions/domain/usecase/get_positions_usecase.dart';
+import 'package:workorder_company_app/features/positions/domain/usecase/update_position_usecase.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/create/position_create_cubit.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/detail/position_detail_cubit.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/list/positions_list_bloc.dart';
+import 'package:workorder_company_app/features/positions/presentation/bloc/update/position_update_cubit.dart';
 
 Future<void> initPositionsFeature() async {
   sl.registerFactory<PositionsListBloc>(
       () => PositionsListBloc(getPositionsUseCase: sl()));
   sl.registerFactory<PositionCreateCubit>(
       () => PositionCreateCubit(createPositionUsecase: sl()));
+  sl.registerFactory<PositionUpdateCubit>(
+      () => PositionUpdateCubit(updatePositionUsecase: sl()));
   sl.registerFactory<PositionDetailCubit>(
       () => PositionDetailCubit(getPositionByidUsecase: sl()));
 
@@ -23,6 +27,8 @@ Future<void> initPositionsFeature() async {
       () => GetPositionByidUsecase(sl()));
   sl.registerLazySingleton<CreatePositionUsecase>(
       () => CreatePositionUsecase(sl()));
+  sl.registerLazySingleton<UpdatePositionUsecase>(
+      () => UpdatePositionUsecase(sl()));
 
   sl.registerLazySingleton<PositionsRepository>(
       () => PositionsRepositoryImpl(sl()));

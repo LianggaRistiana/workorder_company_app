@@ -24,6 +24,7 @@ class PositionModel extends PositionEntity {
       '_id': id,
       'name': name,
       'description': description,
+      'isActive': isActive,
     };
   }
 
