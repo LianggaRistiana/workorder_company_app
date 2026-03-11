@@ -5,6 +5,7 @@ class ClickableCustomCard extends StatelessWidget {
     super.key,
     required this.child,
     required this.onTap,
+    this.onLongPress,
     this.padding,
     this.margin,
     this.elevation = 4,
@@ -15,6 +16,7 @@ class ClickableCustomCard extends StatelessWidget {
 
   final Widget child;
   final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
   final EdgeInsetsGeometry? padding;
   final EdgeInsetsGeometry? margin;
   final double elevation;
@@ -42,6 +44,7 @@ class ClickableCustomCard extends StatelessWidget {
       child: InkWell(
         borderRadius: borderRadius,
         onTap: onTap,
+        onLongPress: onLongPress,
         child: Padding(
           padding: padding ?? const EdgeInsets.all(12),
           child: child,

@@ -38,4 +38,12 @@ class PositionsRepositoryImpl implements PositionsRepository {
       return payload.data!;
     });
   }
+
+  @override
+  Future<Either<Failure, PositionEntity>> getPositionById(String id) {
+    return safeCall(() async {
+      final payload = await _remoteDatasource.getPositionById(id);
+      return payload.data!;
+    });
+  }
 }

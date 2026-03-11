@@ -5,6 +5,7 @@ import 'package:workorder_company_app/features/positions/data/models/position_mo
 
 abstract class PositionsRemoteDatasource {
   Future<ApiResponse<List<PositionModel>>> getPositions();
+  Future<ApiResponse<PositionModel>> getPositionById(String id);
   Future<ApiResponse<PositionModel>> createPosition(PositionModel positionData);
   Future<ApiResponse<PositionModel>> updatePosition(PositionModel positionData);
 }
@@ -41,6 +42,15 @@ class PositionsRemoteDatasourceImpl implements PositionsRemoteDatasource {
     final response = await _apiClient.put(
         Endpoints.positions.byId(positionData.id),
         data: positionData.toJson());
+    return ApiResponse<PositionModel>.fromJson(
+      response,
+      (data) => PositionModel.fromJson(data),
+    );
+  }
+
+  @override
+  Future<ApiResponse<PositionModel>> getPositionById(String id) async {
+    final response = await _apiClient.get(Endpoints.positions.byId(id));
     return ApiResponse<PositionModel>.fromJson(
       response,
       (data) => PositionModel.fromJson(data),
