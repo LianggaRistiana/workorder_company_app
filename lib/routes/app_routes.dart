@@ -41,6 +41,11 @@ class AppRoutes {
   static const employeeInvite = '/employee/invite';
   static const employeeDetail = '/employee/:id';
 
+  // Invitation
+  static const invitationsHistory = '/invitations/history';
+  static const invitationsPending = '/invitations/pending';
+
+
   // Work Order
   static const workorders = '/workorders';
   static const workordersAssignStaff = '/workorders/assign-staff/:id';

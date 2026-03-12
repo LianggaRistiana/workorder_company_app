@@ -47,48 +47,6 @@ class _OwnerCompanyPageState extends State<OwnerCompanyPage> {
 
             InternalCompanyCard(
                 companyName: companyName, companyAddress: companyAddress),
-            // CustomCard(
-            //   child: Row(
-            //     children: [
-            //       // Company Logo / Avatar
-            //       CircleAvatar(
-            //         radius: 32,
-            //         backgroundColor: theme.colorScheme.primaryContainer,
-            //         child: Icon(
-            //           Icons.apartment_rounded,
-            //           size: 36,
-            //           color: theme.colorScheme.primary,
-            //         ),
-            //       ),
-            //       const SizedBox(width: 16),
-            //       // Company Info
-            //       Expanded(
-            //         child: Column(
-            //           crossAxisAlignment: CrossAxisAlignment.start,
-            //           children: [
-            //             Text(
-            //               companyName,
-            //               style: theme.textTheme.titleLarge
-            //                   ?.copyWith(fontWeight: FontWeight.bold),
-            //             ),
-            //             const SizedBox(height: 4),
-            //             Text(
-            //               companyAddress,
-            //               style: theme.textTheme.bodyMedium
-            //                   ?.copyWith(color: Colors.grey[700]),
-            //             ),
-            //             const SizedBox(height: 8),
-            //             ActiveStatusChip(
-            //               isActive: true,
-            //               label: "Perusahaan",
-            //             )
-            //           ],
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-
             const SizedBox(height: 12),
             // /// --- Section Title ---
             SectionTitle("Menu Konfigurasi Perusahaan"),
@@ -179,13 +137,7 @@ class _OwnerCompanyPageState extends State<OwnerCompanyPage> {
                     icon: Icons.person_add_alt_1_outlined,
                     label: "Riwayat Undangan Pegawai",
                     onTap: () {
-                      showAppBottomSheet(context,
-                          content: SizedBox(
-                            height: 200,
-                            child: Center(
-                              child: Text("Fitur ini belum tersedia"),
-                            ),
-                          ));
+                      context.push(AppRoutes.invitationsHistory);
                     }),
                 MenuItem(
                     icon: Icons.wallet_membership_outlined,

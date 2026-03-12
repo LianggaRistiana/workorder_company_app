@@ -27,7 +27,7 @@ class Endpoints {
   static const String clientServiceRequest = "/client-service-request";
 
   // Invitations
-  static const String historyInvitations = "/invitations/pending";
+  static const String historyInvitations = "/company/invitations/history";
   static const String inviteEmployees = "/company/invite";
   static const String rejectInvitations = "/invitations/id/reject";
   static const String acceptInvitations = "/invitations/id/accept";
@@ -35,14 +35,17 @@ class Endpoints {
 
   // Workorder
   static const String workorder = "/workorders";
-  static  workorderSetAssignedStaff(String id) => "${workorder.byId(id)}/assign-staffs";
-  static  workorderSetSubmissions(String id) => "${workorder.byId(id)}/submissions";
-  static  workorderSetToReady(String id) => "${workorder.byId(id)}/ready";
-  static  workorderStart(String id) => "${workorder.byId(id)}/start";
+  static workorderSetAssignedStaff(String id) =>
+      "${workorder.byId(id)}/assign-staffs";
+  static workorderSetSubmissions(String id) =>
+      "${workorder.byId(id)}/submissions";
+  static workorderSetToReady(String id) => "${workorder.byId(id)}/ready";
+  static workorderStart(String id) => "${workorder.byId(id)}/start";
 
   // WorkReport
-  static  workorderReport(String id) => "${workorder.byId(id)}/report";
-  static  workorderReportSubmissions(String id) => "${workorder.byId(id)}/report";
+  static workorderReport(String id) => "${workorder.byId(id)}/report";
+  static workorderReportSubmissions(String id) =>
+      "${workorder.byId(id)}/report";
 
   // Public Endpoint
   static const String publicCompanies = '$clientPrefix/companies';

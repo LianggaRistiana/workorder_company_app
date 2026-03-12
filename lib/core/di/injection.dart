@@ -6,6 +6,7 @@ import 'package:workorder_company_app/features/client_service_request/client_ser
 import 'package:workorder_company_app/features/company/company_injection.dart';
 import 'package:workorder_company_app/features/employees/employees_injection.dart';
 import 'package:workorder_company_app/features/forms/forms_injections.dart';
+import 'package:workorder_company_app/features/invitations/invitations_injection.dart';
 import 'package:workorder_company_app/features/notification/notification_injection.dart';
 import 'package:workorder_company_app/features/positions/positions_injections.dart';
 import 'package:workorder_company_app/features/services/services_injection.dart';
@@ -32,4 +33,5 @@ Future<void> init() async {
   await initWorkorderFeature();
   await intiWorkRerportFeature();
   await initNotificationFeature();
+  await initInvitationsFeature();
 }

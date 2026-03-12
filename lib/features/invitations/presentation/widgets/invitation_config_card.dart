@@ -16,7 +16,7 @@ class InvitationConfigCard extends StatelessWidget {
   final ValueChanged<String> onEmailChanged;
   final ValueChanged<UserRole> onRoleChanged;
   final ValueChanged<PositionEntity?> onPositionChanged;
-  final VoidCallback onRemove;
+  final VoidCallback? onRemove;
 
   const InvitationConfigCard(
       {super.key,

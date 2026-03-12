@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
+import 'package:workorder_company_app/features/invitations/domain/entitties/invitation_draft_entity.dart';
+import 'package:workorder_company_app/features/invitations/presentation/bloc/invite/invite_employees_cubit.dart';
+import 'package:workorder_company_app/features/invitations/presentation/bloc/invite/invite_employees_state.dart';
 import 'package:workorder_company_app/features/invitations/presentation/widgets/invitation_config_card.dart';
-import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/list/positions_list_bloc.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/list/positions_list_event.dart';
+import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/dashed_button.dart';
 
 class InviteEmployeePage extends StatelessWidget {
@@ -15,23 +19,44 @@ class InviteEmployeePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        // Tambahkan bloc di sini nanti
-        BlocProvider(create: (_) => sl<PositionsListBloc>()..add(GetPositionsListRequested())),
+        BlocProvider(
+          create: (_) =>
+              sl<PositionsListBloc>()..add(GetPositionsListRequested()),
+        ),
+        BlocProvider(
+          create: (_) => sl<InviteEmployeesCubit>(),
+        ),
       ],
-      child: const _InviteEmployeeView(),
+      child: BlocConsumer<InviteEmployeesCubit, InviteEmployeesState>(
+        listener: (context, state) {
+          if (state.status == InviteEmployeesStatus.error) {
+            context.showError(state.errorMessage ?? 'Terjadi kesalahan');
+          }
+
+          if (state.status == InviteEmployeesStatus.success) {
+            context.showSuccess('Undangan berhasil dikirim');
+            context.pop();
+          }
+        },
+        builder: (context, state) {
+          return _InviteEmployeeView(state: state);
+        },
+      ),
     );
   }
 }
 
 class _InviteEmployeeView extends StatefulWidget {
-  const _InviteEmployeeView();
+  final InviteEmployeesState state;
+
+  const _InviteEmployeeView({required this.state});
 
   @override
   State<_InviteEmployeeView> createState() => _InviteEmployeeViewState();
 }
 
 class _InviteEmployeeViewState extends State<_InviteEmployeeView> {
-  final List<_InviteEntry> _invites = [];
+  final List<InvitationDraftEntity> _invites = [];
 
   @override
   void initState() {
@@ -41,7 +66,14 @@ class _InviteEmployeeViewState extends State<_InviteEmployeeView> {
 
   void _addInvite() {
     setState(() {
-      _invites.insert(0, _InviteEntry());
+      _invites.insert(
+        0,
+        InvitationDraftEntity(
+          email: '',
+          role: UserRole.staffCompany,
+          position: null,
+        ),
+      );
     });
   }
 
@@ -51,16 +83,26 @@ class _InviteEmployeeViewState extends State<_InviteEmployeeView> {
     });
   }
 
-  void _submitInvites() {
-    final payload = {
-      "invites": _invites.map((e) => e.toRequestBody()).toList(),
-    };
+  void _updateInvite(int index, InvitationDraftEntity updated) {
+    setState(() {
+      _invites[index] = updated;
+    });
+  }
 
-    debugPrint(payload.toString());
+  void _submitInvites() {
+    final cubit = context.read<InviteEmployeesCubit>();
+
+    final validInvites = _invites.where((e) => e.email.isNotEmpty).toList();
+
+    if (validInvites.isEmpty) return;
+
+    cubit.inviteEmployees(validInvites);
   }
 
   @override
   Widget build(BuildContext context) {
+    final isLoading = widget.state.status == InviteEmployeesStatus.loading;
+
     return Scaffold(
       appBar: AppBar(title: const Text("Undangan Pegawai")),
       body: Padding(
@@ -70,76 +112,76 @@ class _InviteEmployeeViewState extends State<_InviteEmployeeView> {
             DashedButton(
               title: "Tambah Undangan",
               icon: Icons.add,
-              onTap: _addInvite,
+              onTap: isLoading ? null : _addInvite,
               height: 100,
               color: Theme.of(context).colorScheme.primary,
               borderColor: Theme.of(context).colorScheme.primary,
-              // borderColor: Theme.of(context).disabledColor,
             ),
             const SizedBox(height: 16),
             Expanded(
               child: _invites.isEmpty
-                  ? const Center(child: Text('Belum ada Undangan'))
+                  ? const Center(
+                      child: Text('Belum ada Undangan'),
+                    )
                   : ListView.builder(
                       itemCount: _invites.length,
                       itemBuilder: (context, index) {
                         final invite = _invites[index];
 
                         return InvitationConfigCard(
-                          email: invite.email ?? '',
-                          role: invite.role ?? UserRole.staffCompany,
+                          email: invite.email,
+                          role: invite.role,
                           position: invite.position,
                           onEmailChanged: (val) {
-                            invite.email = val;
+                            _updateInvite(
+                              index,
+                              invite.copyWith(email: val),
+                            );
                           },
                           onRoleChanged: (val) {
-                            setState(() {
-                              invite.role = val;
-                              if (val != UserRole.staffCompany) {
-                                invite.position = null;
-                              }
-                            });
+                            _updateInvite(
+                              index,
+                              invite.copyWith(
+                                role: val,
+                                position: val != UserRole.staffCompany
+                                    ? null
+                                    : invite.position,
+                              ),
+                            );
                           },
                           onPositionChanged: (val) {
-                            setState(() {
-                              invite.position = val;
-                            });
+                            _updateInvite(
+                              index,
+                              invite.copyWith(position: val),
+                            );
                           },
-                          onRemove: () => _removeInvite(index),
+                          onRemove:
+                              isLoading ? null : () => _removeInvite(index),
                         );
                       },
                     ),
             ),
             const SizedBox(height: 12),
             ElevatedButton(
-              onPressed: _submitInvites,
+              onPressed: isLoading ? null : _submitInvites,
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(double.infinity, 50),
-                backgroundColor:
-                    Theme.of(context).colorScheme.primary,
-                textStyle: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600),
+                backgroundColor: Theme.of(context).colorScheme.primary,
               ),
-              child: const Text('Kirim Undangan'),
+              child: isLoading
+                  ? const SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: Colors.white,
+                      ),
+                    )
+                  : const Text('Kirim Undangan'),
             ),
           ],
         ),
       ),
     );
-  }
-}
-
-class _InviteEntry {
-  String? email;
-  UserRole? role;
-  PositionEntity? position;
-
-  Map<String, dynamic> toRequestBody() {
-    return {
-      "email": email,
-      "role": role?.toSnakeCase(),
-      "positionId": position?.id,
-    };
   }
 }
