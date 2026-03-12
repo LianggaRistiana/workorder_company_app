@@ -15,7 +15,7 @@ class PositionModel extends PositionEntity {
       name: safeParse<String>(json, "name"),
       description:
           safeParse<String?>(json, "description", requiredField: false),
-      isActive: safeParse<bool>(json, "isActive"),
+      isActive: safeParse<bool?>(json, "isActive", requiredField: false) ?? true,
     );
   }
 
