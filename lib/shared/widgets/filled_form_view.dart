@@ -13,20 +13,28 @@ class FilledFormView extends StatelessWidget {
   // -------------------------------------------------------------
   // FIELD WRAPPER
   // -------------------------------------------------------------
-  Widget _filledField(BuildContext context, FieldEntity field, dynamic answer) {
-    return CustomCard(
-        margin: const EdgeInsets.only(top: 4, bottom: 4, left: 32),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              field.label,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-            _answerWidget(context, field, answer),
-            // const SizedBox(height: 18),
-          ],
-        ));
+  Widget _filledField(
+    BuildContext context,
+    FieldEntity field,
+    dynamic answer,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            field.label,
+            style: Theme.of(context)
+                .textTheme
+                .bodyMedium
+                ?.copyWith(fontWeight: FontWeight.w600),
+          ),
+          const SizedBox(height: 6),
+          _answerWidget(context, field, answer),
+        ],
+      ),
+    );
   }
 
   // -------------------------------------------------------------
@@ -83,21 +91,23 @@ class FilledFormView extends StatelessWidget {
   // TEXT ANSWER
   // -------------------------------------------------------------
   Widget _textAnswer(String answer) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 4),
-        Text(answer),
-        const Divider(height: 1),
-      ],
+    return SizedBox(
+      width: double.infinity,
+      child: Text(
+        answer.isEmpty ? "-" : answer,
+        style: const TextStyle(),
+      ),
     );
   }
 
   // -------------------------------------------------------------
   // OPTION ANSWER (CHECKBOXES)
   // -------------------------------------------------------------
-  Widget _optionAnswer(BuildContext context, List<OptionEntity> options,
-      List<String> keyAnswer) {
+  Widget _optionAnswer(
+    BuildContext context,
+    List<OptionEntity> options,
+    List<String> keyAnswer,
+  ) {
     if (options.isEmpty) {
       return const Text("-");
     }
@@ -107,16 +117,21 @@ class FilledFormView extends StatelessWidget {
       children: options.map((opt) {
         final isSelected = keyAnswer.contains(opt.key);
 
-        return Row(
-          children: [
-            Icon(
-              isSelected ? Icons.check_box : Icons.check_box_outline_blank,
-              size: 20,
-              color: isSelected ? Theme.of(context).colorScheme.primary : null,
-            ),
-            const SizedBox(width: 8),
-            Expanded(child: Text(opt.value)),
-          ],
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 2),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(
+                isSelected ? Icons.check_box : Icons.check_box_outline_blank,
+                size: 20,
+                color:
+                    isSelected ? Theme.of(context).colorScheme.primary : null,
+              ),
+              const SizedBox(width: 8),
+              Expanded(child: Text(opt.value)),
+            ],
+          ),
         );
       }).toList(),
     );
@@ -175,18 +190,34 @@ class FilledFormView extends StatelessWidget {
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('${filledForm.order}. ${filledForm.form.title}',
+                        Text(filledForm.form.title,
                             style: Theme.of(context).textTheme.titleMedium),
                         const SizedBox(height: 2),
                         Text(filledForm.form.description,
                             style: Theme.of(context).textTheme.bodyMedium),
                       ])),
             ])),
-        ...filledForm.form.fields!.map(
-          (field) => _filledField(
-            context,
-            field,
-            _findAnswer(field.order.toString()),
+        const SizedBox(height: 16),
+        CustomCard(
+          child: Column(
+            children: List.generate(
+              filledForm.form.fields!.length,
+              (index) {
+                final field = filledForm.form.fields![index];
+
+                return Column(
+                  children: [
+                    _filledField(
+                      context,
+                      field,
+                      _findAnswer(field.order.toString()),
+                    ),
+                    if (index != filledForm.form.fields!.length - 1)
+                      const Divider(height: 1),
+                  ],
+                );
+              },
+            ),
           ),
         ),
       ],
