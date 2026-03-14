@@ -33,7 +33,7 @@ class ClickableCustomCard extends StatelessWidget {
     return Card(
       elevation: elevation,
       shadowColor: Colors.black.withAlpha(60),
-      margin: margin ?? const EdgeInsets.only(bottom: 16),
+      margin: margin ?? const EdgeInsets.only(bottom: 8),
       shape: RoundedRectangleBorder(
         borderRadius: borderRadius,
         side: BorderSide(

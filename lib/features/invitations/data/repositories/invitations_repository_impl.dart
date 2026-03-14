@@ -4,8 +4,8 @@ import 'package:workorder_company_app/core/utils/safe_call.dart';
 import 'package:workorder_company_app/features/invitations/data/datasources/receiver_invitations_remote_datasource.dart';
 import 'package:workorder_company_app/features/invitations/data/datasources/sender_invitations_remote_datasource.dart';
 import 'package:workorder_company_app/features/invitations/data/model/invitation_draft_model.dart';
-import 'package:workorder_company_app/features/invitations/domain/entitties/invitation_draft_entity.dart';
-import 'package:workorder_company_app/features/invitations/domain/entitties/invitation_entity.dart';
+import 'package:workorder_company_app/features/invitations/domain/entities/invitation_draft_entity.dart';
+import 'package:workorder_company_app/features/invitations/domain/entities/invitation_entity.dart';
 import 'package:workorder_company_app/features/invitations/domain/repositories/invitations_repository.dart';
 
 class InvitationsRepositoryImpl implements InvitationsRepository {

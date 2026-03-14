@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:workorder_company_app/features/invitations/domain/entitties/invitation_entity.dart';
+import 'package:workorder_company_app/features/invitations/domain/entities/invitation_entity.dart';
 
 enum InviteEmployeesStatus { initial, loading, success, error }
 

@@ -5,6 +5,12 @@ import 'package:workorder_company_app/features/invitations/presentation/bloc/his
 import 'package:workorder_company_app/features/invitations/presentation/bloc/history_invitations_list/history_invitations_list_event.dart';
 import 'package:workorder_company_app/features/invitations/presentation/bloc/history_invitations_list/history_invitations_list_state.dart';
 import 'package:workorder_company_app/features/invitations/presentation/widgets/invitation_card.dart';
+import 'package:workorder_company_app/features/invitations/presentation/widgets/sender_invitation_detail.dart';
+import 'package:workorder_company_app/features/invitations/presentation/widgets/user_summary_view.dart';
+import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
+import 'package:workorder_company_app/shared/widgets/icon_box.dart';
+import 'package:workorder_company_app/shared/widgets/info_bottom_sheet.dart';
+import 'package:workorder_company_app/shared/widgets/list_page_scafold.dart';
 
 class InvitationsHistoryPage extends StatelessWidget {
   const InvitationsHistoryPage({super.key});
@@ -17,18 +23,20 @@ class InvitationsHistoryPage extends StatelessWidget {
       child:
           BlocConsumer<HistoryInvitationsListBloc, HistoryInvitationsListState>(
         listener: (context, state) {
-          if (state.status == HistoryInvitationsListStatus.error) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  state.errorMessage ?? 'Terjadi kesalahan',
-                ),
-              ),
-            );
+          if (state.status == HistoryInvitationsListStatus.error &&
+              state.invitations.isNotEmpty) {
+            context.showError(state.errorMessage ?? 'Terjadi kesalahan');
           }
         },
         builder: (context, state) {
-          return InvitationsHistoryView(state: state);
+          return InvitationsHistoryView(
+            state: state,
+            onRefresh: () {
+              context
+                  .read<HistoryInvitationsListBloc>()
+                  .add(const GetHistoryInvitationsList());
+            },
+          );
         },
       ),
     );
@@ -37,48 +45,78 @@ class InvitationsHistoryPage extends StatelessWidget {
 
 class InvitationsHistoryView extends StatelessWidget {
   final HistoryInvitationsListState state;
+  final VoidCallback onRefresh;
 
   const InvitationsHistoryView({
     super.key,
     required this.state,
+    required this.onRefresh,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Riwayat Undangan")),
-      body: _buildBody(),
-    );
-  }
+    return ListPageScaffold(
+      title: "Riwayat Undangan",
 
-  Widget _buildBody() {
-    switch (state.status) {
-      case HistoryInvitationsListStatus.loading:
-        return const Center(child: CircularProgressIndicator());
+      /// LOADING
+      isLoading: state.status == HistoryInvitationsListStatus.loading,
 
-      case HistoryInvitationsListStatus.error:
-        return const Center(child: Text("Gagal memuat data"));
+      /// ERROR MESSAGE (only when no data)
+      errorMessage: state.status == HistoryInvitationsListStatus.error
+          ? state.errorMessage
+          : null,
 
-      case HistoryInvitationsListStatus.loaded:
-        if (state.invitations.isEmpty) {
-          return const Center(child: Text("Belum ada riwayat undangan"));
-        }
+      /// ITEMS
+      items: state.invitations,
 
-        return ListView.separated(
-          padding: const EdgeInsets.all(16),
-          itemCount: state.invitations.length,
-          separatorBuilder: (_, __) => const SizedBox(height: 12),
-          itemBuilder: (context, index) {
-            final invitation = state.invitations[index];
+      /// REFRESH
+      onRefresh: () async => onRefresh(),
 
-            return InvitationCard(
-              invitation: invitation,
-            );
-          },
+      /// ITEM BUILDER
+      itemBuilder: (invitation) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: InvitationCard(
+            invitation: invitation,
+            onTap: () {
+              showAppBottomSheet(context,
+                  header: Row(
+                    children: [
+                      IconBox(icon: Icons.email_outlined),
+                      const SizedBox(width: 16),
+                      Expanded(child: UserSummaryView(user: invitation.toUser))
+                    ],
+                  ),
+                  content: SenderInvitationDetail(invitation: invitation),
+                  footer:
+                      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      style: TextButton.styleFrom(
+                        foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+                      ),
+                      child: const Text("Tutup"),
+                    ),
+                    const SizedBox(width: 16),
+                    FilledButton(
+                      onPressed: () {
+                        // TODO: Implement cancel invitation
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                      ),
+                      child: const Text("Batalkan Undangan"),
+                    )
+                  ]));
+            },
+          ),
         );
+      },
 
-      case HistoryInvitationsListStatus.initial:
-        return const SizedBox();
-    }
+      /// EMPTY
+      emptyWidget: const Text("Belum ada riwayat undangan"),
+
+      loadingMessage: "Memuat riwayat undangan...",
+    );
   }
 }

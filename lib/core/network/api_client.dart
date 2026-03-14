@@ -1,8 +1,10 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:workorder_company_app/core/error/error.dart';
 import 'package:workorder_company_app/core/constants/app_config.dart';
 import 'package:workorder_company_app/core/storage/token_storage.dart';
+import 'dart:convert';
 
 class ApiClient {
   final Dio _dio;
@@ -114,17 +116,23 @@ class LoggingInterceptor extends Interceptor {
 
   LoggingInterceptor(this.logger);
 
+  void prettyPrintJson(dynamic json) {
+    const encoder = JsonEncoder.withIndent('  ');
+    debugPrint(encoder.convert(json));
+  }
+
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     logger.i(
         "➡️ ${options.method} ${options.uri}\nHeaders: ${options.headers}\nBody: ${options.data}");
+    prettyPrintJson(options.data);
     super.onRequest(options, handler);
   }
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    logger.i(
-        "✅ ${response.statusCode} ${response.requestOptions.uri}\nResponse: ${response.data}");
+    logger.i("✅ ${response.statusCode} ${response.requestOptions.uri}");
+    prettyPrintJson(response.data);
     super.onResponse(response, handler);
   }
 

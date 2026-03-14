@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
-import 'package:workorder_company_app/features/invitations/domain/entitties/invitation_draft_entity.dart';
+import 'package:workorder_company_app/features/invitations/domain/entities/invitation_draft_entity.dart';
 import 'package:workorder_company_app/features/invitations/presentation/bloc/invite/invite_employees_cubit.dart';
 import 'package:workorder_company_app/features/invitations/presentation/bloc/invite/invite_employees_state.dart';
 import 'package:workorder_company_app/features/invitations/presentation/widgets/invitation_config_card.dart';

@@ -1,124 +1,62 @@
 import 'package:flutter/material.dart';
-import 'package:workorder_company_app/core/constants/app_enums.dart';
-import 'package:workorder_company_app/features/invitations/domain/entitties/invitation_entity.dart';
+import 'package:intl/intl.dart';
+import 'package:workorder_company_app/core/theme/app_spacing.dart';
+import 'package:workorder_company_app/features/invitations/domain/entities/invitation_entity.dart';
+import 'package:workorder_company_app/features/invitations/presentation/widgets/invitation_status_icon.dart';
+import 'package:workorder_company_app/features/invitations/presentation/widgets/user_summary_view.dart';
+import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
 
 class InvitationCard extends StatelessWidget {
   final InvitationEntity invitation;
+  final VoidCallback? onTap;
 
   const InvitationCard({
     super.key,
     required this.invitation,
+    this.onTap,
   });
-
-  Color _statusColor(BuildContext context) {
-    switch (invitation.status) {
-      case InvitationStatus.accepted:
-        return Colors.green;
-      case InvitationStatus.pending:
-        return Colors.orange;
-      case InvitationStatus.rejected:
-        return Colors.red;
-      case InvitationStatus.cancelled:
-        return Colors.grey;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        borderRadius:
-            BorderRadius.circular(12),
-        border: Border.all(
-          color: Colors.grey.shade300,
-        ),
-      ),
+    return ClickableCustomCard(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(24),
+      padding: const EdgeInsets.all(AppSpacing.md),
       child: Column(
-        crossAxisAlignment:
-            CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          /// Email
-          Text(
-            invitation.toUser.email,
-            style: const TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 16,
-            ),
-          ),
-
-          const SizedBox(height: 6),
-
-          /// Role
-          Text(
-            invitation.role.name,
-            style: const TextStyle(
-              color: Colors.grey,
-            ),
-          ),
-
-          const SizedBox(height: 6),
-
-          /// Position (optional)
-          if (invitation.position != null)
-            Text(
-              invitation.position!.name,
-              style: const TextStyle(
-                color: Colors.black87,
-              ),
-            ),
-
-          const SizedBox(height: 12),
-
-          Row(
-            mainAxisAlignment:
-                MainAxisAlignment.spaceBetween,
+          // const SizedBox(width: AppSpacing.md),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              /// Status
-              Container(
-                padding: const EdgeInsets
-                    .symmetric(
-                        horizontal: 10,
-                        vertical: 4),
-                decoration: BoxDecoration(
-                  color:
-                      _statusColor(context)
-                          .withOpacity(0.1),
-                  borderRadius:
-                      BorderRadius.circular(
-                          20),
-                ),
-                child: Text(
-                  invitation.status.name
-                      .toUpperCase(),
-                  style: TextStyle(
-                    color:
-                        _statusColor(context),
-                    fontSize: 12,
-                    fontWeight:
-                        FontWeight.w600,
+              Row(
+                children: [
+                  InvitationStatusIcon(
+                    status: invitation.status,
+                    height: 70,
                   ),
-                ),
+                  const SizedBox(width: AppSpacing.md),
+                  Expanded(child: UserSummaryView(user: invitation.toUser)),
+                ],
               ),
-
-              /// Created Date
-              if (invitation.createdAt != null)
-                Text(
-                  _formatDate(
-                      invitation.createdAt!),
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey,
-                  ),
-                ),
+              const SizedBox(height: AppSpacing.sm),
+              Row(
+                children: [
+                  // InvitationStatusBadge(
+                      // status: invitation.status, showIcon: false),
+                  Spacer(),
+                  if (invitation.createdAt != null)
+                    Text(
+                        DateFormat('d MMM yyyy', 'id_ID')
+                            .format(invitation.createdAt!),
+                        textAlign: TextAlign.end,
+                        style: Theme.of(context).textTheme.bodySmall),
+                ],
+              )
             ],
-          ),
+          )
         ],
       ),
     );
-  }
-
-  String _formatDate(DateTime date) {
-    return "${date.day}/${date.month}/${date.year}";
   }
 }
