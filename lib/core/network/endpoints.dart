@@ -29,9 +29,9 @@ class Endpoints {
   // Invitations
   static const String historyInvitations = "/company/invitations/history";
   static const String inviteEmployees = "/company/invite";
-  static const String rejectInvitations = "/invitations/id/reject";
-  static const String acceptInvitations = "/invitations/id/accept";
-  static const String cancelInvitations = "/invitations/id/cancel";
+  static const String rejectInvitations = "/invitations/:id/reject";
+  static const String acceptInvitations = "/invitations/:id/accept";
+  static const String cancelInvitations = "/invitations/:id";
 
   // Workorder
   static const String workorder = "/workorders";

@@ -7,5 +7,6 @@ import 'package:workorder_company_app/routes/app_routes.dart';
 class RouteInvitationPermissions {
   static final Map<String, AppPermission> route= {
     AppRoutes.employeeInvite: InvitationPermission.create,
+    AppRoutes.invitationsHistory: InvitationPermission.adminView
   };
 }

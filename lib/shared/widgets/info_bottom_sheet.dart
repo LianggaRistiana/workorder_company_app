@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:workorder_company_app/core/theme/app_spacing.dart';
 
 class AppBottomSheet extends StatelessWidget {
   final Widget content;
@@ -69,7 +70,7 @@ void showAppBottomSheet(
     context: context,
     isScrollControlled: true,
     shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      borderRadius: BorderRadius.vertical(top: Radius.circular(AppSpacing.xl)),
     ),
     builder: (context) {
       final maxHeight = MediaQuery.of(context).size.height * 0.9;

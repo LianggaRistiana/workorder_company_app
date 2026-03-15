@@ -23,8 +23,10 @@ class InvitationsRepositoryImpl implements InvitationsRepository {
 
   @override
   Future<Either<Failure, InvitationEntity>> cancelInvitation(String id) {
-    // TODO: implement cancelInvitation
-    throw UnimplementedError();
+    return safeCall(() async {
+      final payload = await _senderRemoteDatasource.cancelInvitation(id);
+      return payload.data!;
+    });
   }
 
   @override

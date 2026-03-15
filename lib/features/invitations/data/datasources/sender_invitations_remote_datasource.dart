@@ -20,18 +20,18 @@ class SenderInvitationsRemoteDatasourceImpl
 
   SenderInvitationsRemoteDatasourceImpl(this._apiClient);
 
+// FIXME : BE SHOULD FIX RESPONSE
   @override
   Future<ApiResponse<InvitationModel>> cancelInvitation(String id) async {
     final response =
-        await _apiClient.put(Endpoints.cancelInvitations.fillId(id));
+        await _apiClient.delete(Endpoints.cancelInvitations.fillId(id));
     return ApiResponse.fromJson(
       response,
       (json) => InvitationModel.fromJson(json),
     );
   }
 
-
-// FIXME : told BE fis response
+// FIXME : tell BE fis response
   @override
   Future<ApiResponse<List<InvitationModel>>> getInvitationsHistory() async {
     final response = await _apiClient.get(Endpoints.historyInvitations);

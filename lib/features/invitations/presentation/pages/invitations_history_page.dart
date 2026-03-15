@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/authorization/feature/invitation_permission.dart';
+import 'package:workorder_company_app/core/authorization/widget/permission_gate.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features/invitations/presentation/bloc/history_invitations_list/history_invitations_list_bloc.dart';
 import 'package:workorder_company_app/features/invitations/presentation/bloc/history_invitations_list/history_invitations_list_event.dart';
 import 'package:workorder_company_app/features/invitations/presentation/bloc/history_invitations_list/history_invitations_list_state.dart';
+import 'package:workorder_company_app/features/invitations/presentation/bloc/sender_actions/sender_invitation_actions_cubit.dart';
 import 'package:workorder_company_app/features/invitations/presentation/widgets/invitation_card.dart';
+import 'package:workorder_company_app/features/invitations/presentation/widgets/sender_invitation_action.dart';
 import 'package:workorder_company_app/features/invitations/presentation/widgets/sender_invitation_detail.dart';
 import 'package:workorder_company_app/features/invitations/presentation/widgets/user_summary_view.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
@@ -17,9 +22,13 @@ class InvitationsHistoryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => sl<HistoryInvitationsListBloc>()
-        ..add(const GetHistoryInvitationsList()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+            create: (_) => sl<HistoryInvitationsListBloc>()
+              ..add(const GetHistoryInvitationsList())),
+        BlocProvider(create: (_) => sl<SenderInvitationActionsCubit>()),
+      ],
       child:
           BlocConsumer<HistoryInvitationsListBloc, HistoryInvitationsListState>(
         listener: (context, state) {
@@ -79,35 +88,30 @@ class InvitationsHistoryView extends StatelessWidget {
           child: InvitationCard(
             invitation: invitation,
             onTap: () {
-              showAppBottomSheet(context,
-                  header: Row(
-                    children: [
-                      IconBox(icon: Icons.email_outlined),
-                      const SizedBox(width: 16),
-                      Expanded(child: UserSummaryView(user: invitation.toUser))
-                    ],
-                  ),
-                  content: SenderInvitationDetail(invitation: invitation),
-                  footer:
-                      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                    TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      style: TextButton.styleFrom(
-                        foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
-                      ),
+              showAppBottomSheet(
+                context,
+                header: Row(
+                  children: [
+                    IconBox(icon: Icons.email_outlined),
+                    const SizedBox(width: 16),
+                    Expanded(child: UserSummaryView(user: invitation.toUser))
+                  ],
+                ),
+                content: SenderInvitationDetail(invitation: invitation),
+                footer: BlocProvider.value(
+                  value: context.read<SenderInvitationActionsCubit>(),
+                  child: PermissionGate(
+                    permission: InvitationPermission.cancel,
+                    fallback: FilledButton(
+                      onPressed: () => context.pop(),
                       child: const Text("Tutup"),
                     ),
-                    const SizedBox(width: 16),
-                    FilledButton(
-                      onPressed: () {
-                        // TODO: Implement cancel invitation
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
-                      ),
-                      child: const Text("Batalkan Undangan"),
-                    )
-                  ]));
+                    child: SenderInvitationAction(
+                      invitation: invitation,
+                    ),
+                  ),
+                ),
+              );
             },
           ),
         );

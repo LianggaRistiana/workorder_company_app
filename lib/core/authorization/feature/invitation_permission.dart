@@ -3,25 +3,21 @@ import 'package:workorder_company_app/core/authorization/enums/permission_action
 import 'package:workorder_company_app/core/authorization/model/app_permission.dart';
 
 class InvitationPermission {
-  static const view =
-      AppPermission(AppFeature.company, PermissionAction.view);
+  static const adminView =
+      AppPermission(AppFeature.senderInvitation, PermissionAction.view);
   static const create =
-      AppPermission(AppFeature.company, PermissionAction.create);
+      AppPermission(AppFeature.senderInvitation, PermissionAction.create);
   static const cancel =
-      AppPermission(AppFeature.company, PermissionAction.cancel);
-  static const reject =
-      AppPermission(AppFeature.company, PermissionAction.reject);
-  static const approve =
-      AppPermission(AppFeature.company, PermissionAction.approve);
+      AppPermission(AppFeature.senderInvitation, PermissionAction.cancel);
 
-  static final Set<AppPermission> admin = {
-    view,
-    create,
-    cancel
-  };
-  static final Set<AppPermission> unassigned = {
-    view,
-    reject,
-    approve
-  };
+  static const receiverView =
+      AppPermission(AppFeature.receiverInvitation, PermissionAction.view);
+  static const reject =
+      AppPermission(AppFeature.receiverInvitation, PermissionAction.reject);
+  static const approve =
+      AppPermission(AppFeature.receiverInvitation, PermissionAction.approve);
+
+  static final Set<AppPermission> admin = {adminView, create, cancel};
+
+  static final Set<AppPermission> unassigned = {receiverView, reject, approve};
 }

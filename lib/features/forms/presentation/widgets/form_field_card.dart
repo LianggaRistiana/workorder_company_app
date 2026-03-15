@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/field_entity.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/option_entity.dart';
 import 'package:workorder_company_app/features/forms/presentation/widgets/field_option_item.dart';
-import 'package:workorder_company_app/features/forms/presentation/widgets/field_type_icon.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 
@@ -23,30 +22,33 @@ class FormFieldCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           /// === Header: Field label + type chip ===
-          FieldTypeIcon(type: field.type),
+          // FieldTypeIcon(type: field.type),
+          // const SizedBox(height: 12),
+          // Text(
+          //   "Pertanyaan",
+          //   style: Theme.of(context).textTheme.titleSmall,
+          // ),
+          Text(field.label,
+              style: textTheme.titleSmall),
           const SizedBox(height: 12),
-          Text(
-            "Pertanyaan",
-            style: Theme.of(context).textTheme.titleSmall,
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(width: 36),
-              Expanded(
-                child: Text(field.label,
-                    style: textTheme.bodyMedium?.copyWith(
-                      fontStyle: FontStyle.italic,
-                    )),
-              ),
-            ],
-          ),
+          // Row(
+          //   crossAxisAlignment: CrossAxisAlignment.start,
+          //   children: [
+          //     const SizedBox(width: 36),
+          //     Expanded(
+          //       child: Text(field.label,
+          //           style: textTheme.bodyMedium?.copyWith(
+          //             fontStyle: FontStyle.italic,
+          //           )),
+          //     ),
+          //   ],
+          // ),
           if (field.placeholder != null) ...[
-            const SizedBox(height: 16),
-            Text(
-              "Petunjuk",
-              style: Theme.of(context).textTheme.titleSmall,
-            ),
+            // const SizedBox(height: 16),
+            // Text(
+            //   "Petunjuk",
+            //   style: Theme.of(context).textTheme.titleSmall,
+            // ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
