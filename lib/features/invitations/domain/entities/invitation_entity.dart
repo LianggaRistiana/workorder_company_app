@@ -3,6 +3,7 @@ import 'package:workorder_company_app/features/auth/domain/entities/user_summary
 import 'package:workorder_company_app/features/company/domain/entities/company_entity.dart';
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
 
+// consider to separate this entity with to type of invitation entity or tell backend to send similiar data to sender and receiver
 class InvitationEntity {
   final String id;
   final UserRole role;
@@ -12,7 +13,7 @@ class InvitationEntity {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final DateTime? expiresAt;
-  final UserSummaryEntity toUser;
+  final UserSummaryEntity? toUser;
 
   InvitationEntity({
     required this.id,
@@ -23,6 +24,6 @@ class InvitationEntity {
     this.createdAt,
     this.updatedAt,
     this.expiresAt,
-    required this.toUser,
+    this.toUser,
   });
 }

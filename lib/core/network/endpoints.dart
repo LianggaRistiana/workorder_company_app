@@ -28,6 +28,7 @@ class Endpoints {
 
   // Invitations
   static const String historyInvitations = "/company/invitations/history";
+  static const String pendingInvitations = "/invitations/pending";
   static const String inviteEmployees = "/company/invite";
   static const String rejectInvitations = "/invitations/:id/reject";
   static const String acceptInvitations = "/invitations/:id/accept";

@@ -11,7 +11,7 @@ class InvitationModel extends InvitationEntity {
       required super.role,
       required super.status,
       required super.company,
-      required super.toUser,
+      super.toUser,
       super.createdAt,
       super.updatedAt,
       super.expiresAt,
@@ -21,7 +21,9 @@ class InvitationModel extends InvitationEntity {
     return InvitationModel(
         id: safeParse<String>(json, "_id"),
         role: UserRole.fromString(safeParse<String>(json, "role")),
-        toUser: UserSummaryModel.fromJson(json['user']),
+        toUser: json['user'] != null
+            ? UserSummaryModel.fromJson(json['user'])
+            : null,
         status: InvitationStatus.fromString(safeParse<String>(json, "status")),
         createdAt: safeParse<DateTime>(
           json,

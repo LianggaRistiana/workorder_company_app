@@ -54,4 +54,12 @@ class InvitationsRepositoryImpl implements InvitationsRepository {
     // TODO: implement rejectInvitation
     throw UnimplementedError();
   }
+
+  @override
+  Future<Either<Failure, List<InvitationEntity>>> getPendingInvitations() {
+    return safeCall(() async {
+      final payload = await _receiverRemoteDataSource.getPendingInvitations();
+      return payload.data ?? [];
+    });
+  }
 }

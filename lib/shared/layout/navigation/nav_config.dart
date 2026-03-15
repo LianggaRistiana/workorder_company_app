@@ -40,8 +40,8 @@ class NavConfig {
       case UserRole.staffUnassigned:
         return const [
           NavItem('Utama', Icons.home_rounded, AppRoutes.home),
-          NavItem('Daftar Perusahaan', Icons.home_work_rounded,
-              AppRoutes.publicCompanies),
+          NavItem('Undangan Masuk', Icons.inbox_outlined,
+              AppRoutes.invitationsPending),
         ];
     }
   }

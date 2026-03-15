@@ -25,34 +25,26 @@ class InvitationCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // const SizedBox(width: AppSpacing.md),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          Row(
             children: [
-              Row(
-                children: [
-                  InvitationStatusIcon(
-                    status: invitation.status,
-                    height: 70,
-                  ),
-                  const SizedBox(width: AppSpacing.md),
-                  Expanded(child: UserSummaryView(user: invitation.toUser)),
-                ],
+              InvitationStatusIcon(
+                status: invitation.status,
+                height: 70,
               ),
-              const SizedBox(height: AppSpacing.sm),
-              Row(
-                children: [
-                  // InvitationStatusBadge(
-                      // status: invitation.status, showIcon: false),
-                  Spacer(),
-                  if (invitation.createdAt != null)
-                    Text(
-                        DateFormat('d MMM yyyy', 'id_ID')
-                            .format(invitation.createdAt!),
-                        textAlign: TextAlign.end,
-                        style: Theme.of(context).textTheme.bodySmall),
-                ],
-              )
+              const SizedBox(width: AppSpacing.md),
+              Expanded(child: UserSummaryView(user: invitation.toUser!)),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          Row(
+            children: [
+              Spacer(),
+              if (invitation.createdAt != null)
+                Text(
+                    DateFormat('d MMM yyyy', 'id_ID')
+                        .format(invitation.createdAt!),
+                    textAlign: TextAlign.end,
+                    style: Theme.of(context).textTheme.bodySmall),
             ],
           )
         ],

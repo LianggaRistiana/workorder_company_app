@@ -5,9 +5,11 @@ import 'package:workorder_company_app/features/invitations/data/repositories/inv
 import 'package:workorder_company_app/features/invitations/domain/repositories/invitations_repository.dart';
 import 'package:workorder_company_app/features/invitations/domain/usecases/cancel_invitation_usecase.dart';
 import 'package:workorder_company_app/features/invitations/domain/usecases/get_invitations_history_usecase.dart';
+import 'package:workorder_company_app/features/invitations/domain/usecases/get_invitations_pending_usecase.dart';
 import 'package:workorder_company_app/features/invitations/domain/usecases/invite_employees_usecase.dart';
 import 'package:workorder_company_app/features/invitations/presentation/bloc/history_invitations_list/history_invitations_list_bloc.dart';
 import 'package:workorder_company_app/features/invitations/presentation/bloc/invite/invite_employees_cubit.dart';
+import 'package:workorder_company_app/features/invitations/presentation/bloc/pending_invitations_list/pending_invitations_list_bloc.dart';
 import 'package:workorder_company_app/features/invitations/presentation/bloc/sender_actions/sender_invitation_actions_cubit.dart';
 
 Future<void> initInvitationsFeature() async {
@@ -15,7 +17,7 @@ Future<void> initInvitationsFeature() async {
     SenderInvitationsRemoteDatasourceImpl(sl()),
   );
   sl.registerSingleton<ReceiverInvitationsRemoteDatasource>(
-    ReceiverInvitationsRemoteDatasourceImpl(),
+    ReceiverInvitationsRemoteDatasourceImpl(sl()),
   );
 
   sl.registerLazySingleton<InvitationsRepository>(
@@ -34,11 +36,18 @@ Future<void> initInvitationsFeature() async {
     () => CancelInvitationUsecase(sl()),
   );
 
+  sl.registerLazySingleton<GetInvitationsPendingUsecase>(
+    () => GetInvitationsPendingUsecase(sl()),
+  );
+
   sl.registerFactory<InviteEmployeesCubit>(() => InviteEmployeesCubit(sl()));
   sl.registerFactory<SenderInvitationActionsCubit>(
     () => SenderInvitationActionsCubit(sl()),
   );
   sl.registerFactory<HistoryInvitationsListBloc>(
     () => HistoryInvitationsListBloc(sl()),
+  );
+  sl.registerFactory<PendingInvitationsListBloc>(
+    () => PendingInvitationsListBloc(sl()),
   );
 }

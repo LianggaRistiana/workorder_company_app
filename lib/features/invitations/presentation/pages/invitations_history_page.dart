@@ -8,15 +8,15 @@ import 'package:workorder_company_app/features/invitations/presentation/bloc/his
 import 'package:workorder_company_app/features/invitations/presentation/bloc/history_invitations_list/history_invitations_list_event.dart';
 import 'package:workorder_company_app/features/invitations/presentation/bloc/history_invitations_list/history_invitations_list_state.dart';
 import 'package:workorder_company_app/features/invitations/presentation/bloc/sender_actions/sender_invitation_actions_cubit.dart';
-import 'package:workorder_company_app/features/invitations/presentation/widgets/invitation_card.dart';
+import 'package:workorder_company_app/features/invitations/presentation/widgets/sender_invitation_card.dart';
 import 'package:workorder_company_app/features/invitations/presentation/widgets/sender_invitation_action.dart';
 import 'package:workorder_company_app/features/invitations/presentation/widgets/sender_invitation_detail.dart';
 import 'package:workorder_company_app/features/invitations/presentation/widgets/user_summary_view.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
-import 'package:workorder_company_app/shared/widgets/icon_box.dart';
 import 'package:workorder_company_app/shared/widgets/info_bottom_sheet.dart';
 import 'package:workorder_company_app/shared/widgets/list_page_scafold.dart';
 
+/// This Page Only Can access by sender with invitation permission admin
 class InvitationsHistoryPage extends StatelessWidget {
   const InvitationsHistoryPage({super.key});
 
@@ -90,13 +90,9 @@ class InvitationsHistoryView extends StatelessWidget {
             onTap: () {
               showAppBottomSheet(
                 context,
-                header: Row(
-                  children: [
-                    IconBox(icon: Icons.email_outlined),
-                    const SizedBox(width: 16),
-                    Expanded(child: UserSummaryView(user: invitation.toUser))
-                  ],
-                ),
+                header: invitation.toUser != null
+                    ? UserSummaryView(user: invitation.toUser!)
+                    : null,
                 content: SenderInvitationDetail(invitation: invitation),
                 footer: BlocProvider.value(
                   value: context.read<SenderInvitationActionsCubit>(),

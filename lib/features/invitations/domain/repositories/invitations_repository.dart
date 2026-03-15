@@ -5,6 +5,7 @@ import 'package:workorder_company_app/features/invitations/domain/entities/invit
 
 abstract class InvitationsRepository {
   Future<Either<Failure, List<InvitationEntity>>> getInvitationsHistory();
+  Future<Either<Failure, List<InvitationEntity>>> getPendingInvitations();
   Future<Either<Failure, List<InvitationEntity>>> inviteEmployees(
     List<InvitationDraftEntity> invitationsData,
   );

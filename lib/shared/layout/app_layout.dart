@@ -2,15 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
-// import 'package:workorder_company_app/core/constants/app_enums.dart';
-// import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
-// import 'package:workorder_company_app/features/client_service_request/presentation/bloc/internal_client_service_request/internal_csr_bloc.dart';
-// import 'package:workorder_company_app/features/client_service_request/presentation/bloc/public_client_service_request/csr_bloc.dart';
-// import 'package:workorder_company_app/features/employees/presentation/bloc/employees_bloc.dart';
-// import 'package:workorder_company_app/features/forms/presentation/bloc/forms_bloc.dart';
-// import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_bloc.dart';
 import 'package:workorder_company_app/shared/layout/navigation/app_navigantion_bar.dart';
 
 // ===================== WIHT OUT ANIMATE ==============================
@@ -43,7 +36,7 @@ final Map<UserRole, List<String>> _roleMainPages = {
   UserRole.ownerCompany: [AppRoutes.home, AppRoutes.companyManageMenu],
   UserRole.managerCompany: [AppRoutes.home, AppRoutes.serviceRequest, AppRoutes.workorders],
   UserRole.staffCompany: [AppRoutes.home, AppRoutes.workorders],
-  UserRole.staffUnassigned: [AppRoutes.home, AppRoutes.publicCompanies],
+  UserRole.staffUnassigned: [AppRoutes.home, AppRoutes.invitationsPending],
   UserRole.client: [AppRoutes.home, AppRoutes.publicCompanies],
 };
 // ===================== WIHT ANIMATE ==============================
