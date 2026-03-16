@@ -10,7 +10,7 @@ class PositionsListBloc extends Bloc<PositionsListEvent, PositionsListState> {
   PositionsListBloc({required this.getPositionsUseCase})
       : super(const PositionsListState()) {
     on<GetPositionsListRequested>(_onGetPositionsRequested);
-    on<NewPositionAdded>(_onNewPositionAdded);
+    // on<NewPositionAdded>(_onNewPositionAdded);
   }
 
   Future<void> _onGetPositionsRequested(
@@ -20,7 +20,8 @@ class PositionsListBloc extends Bloc<PositionsListEvent, PositionsListState> {
       errorMessage: null,
     ));
 
-    final response = await getPositionsUseCase();
+    final response =
+        await getPositionsUseCase(forceRefresh: event.forceRefresh);
 
     response.fold(
       (failure) => emit(state.copyWith(
@@ -34,10 +35,10 @@ class PositionsListBloc extends Bloc<PositionsListEvent, PositionsListState> {
     );
   }
 
-  Future<void> _onNewPositionAdded(
-      NewPositionAdded event, Emitter<PositionsListState> emit) async {
-    emit(state.copyWith(
-      positions: [event.position, ...state.positions],
-    ));
-  }
+  // Future<void> _onNewPositionAdded(
+  //     NewPositionAdded event, Emitter<PositionsListState> emit) async {
+  //   emit(state.copyWith(
+  //     positions: [event.position, ...state.positions],
+  //   ));
+  // }
 }

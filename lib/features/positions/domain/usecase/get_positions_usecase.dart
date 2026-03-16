@@ -8,7 +8,8 @@ class GetPositionsUsecase {
 
   GetPositionsUsecase(this._repository);
 
-  Future<Either<Failure, List<PositionEntity>>> call() async {
-    return _repository.getPositions();
+  Future<Either<Failure, List<PositionEntity>>> call(
+      {bool forceRefresh = false}) async {
+    return _repository.getPositions(refresh: forceRefresh);
   }
 }

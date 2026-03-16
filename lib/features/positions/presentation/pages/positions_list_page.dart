@@ -32,7 +32,9 @@ class _PositionsListView extends StatelessWidget {
   const _PositionsListView();
 
   Future<void> _onRefresh(BuildContext context) async {
-    context.read<PositionsListBloc>().add(GetPositionsListRequested());
+    context
+        .read<PositionsListBloc>()
+        .add(GetPositionsListRequested(forceRefresh: true));
   }
 
   @override
@@ -68,7 +70,7 @@ class _PositionsListView extends StatelessWidget {
                       if (result != null) {
                         context
                             .read<PositionsListBloc>()
-                            .add(NewPositionAdded(result));
+                            .add(GetPositionsListRequested());
                       }
                     },
               icon: const Icon(Icons.add),

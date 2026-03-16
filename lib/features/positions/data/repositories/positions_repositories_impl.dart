@@ -1,5 +1,7 @@
 import 'package:dartz/dartz.dart';
+import 'package:workorder_company_app/core/cache/list_cache_helper.dart';
 import 'package:workorder_company_app/core/error/failures.dart';
+import 'package:workorder_company_app/core/utils/either_helper.dart';
 import 'package:workorder_company_app/core/utils/safe_call.dart';
 import 'package:workorder_company_app/features/positions/data/datasources/positions_remote_datasource.dart';
 import 'package:workorder_company_app/features/positions/data/models/position_model.dart';
@@ -9,33 +11,56 @@ import 'package:workorder_company_app/features/positions/domain/repositories/pos
 class PositionsRepositoryImpl implements PositionsRepository {
   final PositionsRemoteDatasource _remoteDatasource;
 
+  // TODO : doesnt support for pagination and search mechanism for right now
+  final ListCacheHelper<PositionEntity> _cache = ListCacheHelper();
+
   PositionsRepositoryImpl(this._remoteDatasource);
 
   @override
-  Future<Either<Failure, List<PositionEntity>>> getPositions() {
-    return safeCall(() async {
-      final response = await _remoteDatasource.getPositions();
-      return response.data ?? [];
-    });
+  @override
+  Future<Either<Failure, List<PositionEntity>>> getPositions({
+    bool refresh = false,
+  }) {
+    return _cache.fetchList(
+      remoteCall: () async {
+        final response = await _remoteDatasource.getPositions();
+        return response.data ?? [];
+      },
+      forceRefresh: refresh,
+    );
   }
 
   @override
   Future<Either<Failure, PositionEntity>> createPostion(
-      PositionEntity position) {
-    return safeCall(() async {
-      final payload = await _remoteDatasource
+      PositionEntity position) async {
+    final result = await safeCall(() async {
+      final response = await _remoteDatasource
           .createPosition(PositionModel.fromEntity(position));
-      return payload.data!;
+      return response.data!;
+    });
+
+    return result.onSuccess((updated) {
+      _cache.mergeSingle(
+        updated,
+        (a, b) => a.id == b.id,
+      );
     });
   }
 
   @override
   Future<Either<Failure, PositionEntity>> updatePosition(
-      PositionEntity position) {
-    return safeCall(() async {
-      final payload = await _remoteDatasource
+      PositionEntity position) async {
+    final result = await safeCall(() async {
+      final response = await _remoteDatasource
           .updatePosition(PositionModel.fromEntity(position));
-      return payload.data!;
+      return response.data!;
+    });
+
+    return result.onSuccess((updated) {
+      _cache.mergeSingle(
+        updated,
+        (a, b) => a.id == b.id,
+      );
     });
   }
 

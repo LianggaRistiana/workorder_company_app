@@ -7,6 +7,7 @@ class LogoutUsecase {
 
   LogoutUsecase(this.repository);
 
+  // FIXME :clear all cache when logout
   Future<Either<Failure, void>> call() async {
     return repository.logOut();
   }
