@@ -9,7 +9,6 @@ class AuthGuard {
     final authRepo = sl<AuthRepository>();
     final user = authRepo.currentUser;
 
-    /// 🔓 Public routes (tidak perlu login)
     const publicRoutes = [
       AppRoutes.login,
       AppRoutes.register,

@@ -53,7 +53,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     emit(AuthLoading());
 
-    // try {
     final user = await getCurrentUserUsecase();
     user.fold(
       (failure) => emit(AuthError(failure.message)),

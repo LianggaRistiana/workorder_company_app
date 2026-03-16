@@ -18,8 +18,11 @@ class AuthRepositoryImpl implements AuthRepository {
   final AuthLocalDatasource _localDatasource;
   final TokenStorage _tokenStorage; // Pertimbangkan Pindah ke Injector
 
+  // final CachedResource<UserEntity> _cache = CachedResource<UserEntity>();
+  UserEntity? _cache;
+
   @override
-  UserEntity? currentUser;
+  UserEntity? get currentUser => _cache;
 
   AuthRepositoryImpl(
       this._remoteDatasource, this._localDatasource, this._tokenStorage);
@@ -41,12 +44,21 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, UserEntity?>> getCurrentUser() async {
+  Future<Either<Failure, UserEntity>> getCurrentUser() async {
     try {
+      if (_cache != null) {
+        Logger().i("Cache Hit $_cache");
+        return Right(_cache!);
+      }
+
       final result = await _localDatasource.getUser();
 
-      currentUser = result;
-      Logger().i(currentUser);
+      if (result == null) {
+        return Left(AuthFailure());
+      }
+
+      _cache = result;
+      Logger().i(result);
       return Right(result);
     } catch (e) {
       return Left(CacheFailure(message: e.toString()));
@@ -57,8 +69,8 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, void>> saveUser(UserEntity user) async {
     try {
       await _localDatasource.saveUser(user);
-      currentUser = user;
-      Logger().i(currentUser);
+      _cache = user;
+      Logger().i(user);
       return Right(null);
     } catch (e) {
       return Left(CacheFailure(message: e.toString()));
@@ -69,11 +81,10 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Either<Failure, void>> logOut() async {
     try {
-      Logger().i("repo");
       await _remoteDatasource.logout();
       await _localDatasource.clearUser();
       await _tokenStorage.clearToken();
-      currentUser = null;
+      _cache = null;
 
       return Right(null);
     } on ApiException catch (e) {
@@ -86,11 +97,10 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Either<Failure, void>> companyRegistration(
-      CompanyRegistrationEntity registrationData
-  ) {
-     return safeCall(() async {
-      return _remoteDatasource
-          .companyRegistration(CompanyRegistrationModel.fromEntity(registrationData));
+      CompanyRegistrationEntity registrationData) {
+    return safeCall(() async {
+      return _remoteDatasource.companyRegistration(
+          CompanyRegistrationModel.fromEntity(registrationData));
     });
   }
 
