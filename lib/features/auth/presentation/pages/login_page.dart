@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:logger/logger.dart';
 import 'package:workorder_company_app/core/utils/validators.dart';
 import 'package:workorder_company_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
@@ -149,7 +148,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     TextButton(
                       onPressed: () {
-                        Logger().d(GoRouterState.of(context).uri.toString());
+                        // Logger().d(GoRouterState.of(context).uri.toString());
                         GoRouter.of(context).go(AppRoutes.register);
                       },
                       child: Text("Buat akun baru"),

@@ -26,6 +26,12 @@ class Endpoints {
   // Client Service Request
   static const String clientServiceRequest = "/client-service-request";
 
+  // Mmeberships
+  static const String memberships = "/memberships";
+  static const String generateMembershipCode = "/memberships/generate";
+  static const String claimMembership = "/memberships/claim";
+  static const String deleteMembership = "/memberships/:id";
+
   // Invitations
   static const String historyInvitations = "/company/invitations/history";
   static const String pendingInvitations = "/invitations/pending";
