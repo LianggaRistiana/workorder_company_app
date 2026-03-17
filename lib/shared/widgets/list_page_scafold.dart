@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 import 'package:workorder_company_app/shared/widgets/custom_back_buttom.dart';
 
@@ -101,7 +102,7 @@ class ListPageScaffold<T> extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        leading: CustomBackButton(),
+        leading: context.canPop() ? CustomBackButton() : null,
         title: Text(title),
         actions: actions,
         bottom: bottomAppBar,

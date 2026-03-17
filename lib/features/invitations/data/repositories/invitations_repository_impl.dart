@@ -17,8 +17,10 @@ class InvitationsRepositoryImpl implements InvitationsRepository {
 
   @override
   Future<Either<Failure, InvitationEntity>> acceptInvitation(String id) {
-    // TODO: implement acceptInvitation
-    throw UnimplementedError();
+    return safeCall(() async {
+      final payload = await _receiverRemoteDataSource.acceptInvitation(id);
+      return payload.data!;
+    });
   }
 
   @override
@@ -51,8 +53,10 @@ class InvitationsRepositoryImpl implements InvitationsRepository {
 
   @override
   Future<Either<Failure, InvitationEntity>> rejectInvitation(String id) {
-    // TODO: implement rejectInvitation
-    throw UnimplementedError();
+    return safeCall(() async {
+      final payload = await _receiverRemoteDataSource.rejectInvitation(id);
+      return payload.data!;
+    });
   }
 
   @override

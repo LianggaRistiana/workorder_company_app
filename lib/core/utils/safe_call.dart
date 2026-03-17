@@ -24,17 +24,17 @@ Failure _mapExceptionToFailure(dynamic error) {
     // ApiException biasanya punya code + message
     switch (error.statusCode) {
       case 400:
-        return ServerFailure(message:  error.message);
+        return ServerFailure(message: error.message);
       case 401:
-        return AuthFailure(message:  "Unauthorized");
+        return AuthFailure(message: "Unauthorized");
       case 403:
-        return AuthFailure(message:  "Forbidden");
+        return AuthFailure(message: "Anda tidak diijinkan mengakses data ini");
       case 404:
         return ServerFailure(message: error.message);
       case 500:
         return ServerFailure(message: "Server Sedang Gangguan");
       default:
-        return UnexpectedFailure(message:  "Terjadi Kesalahan Tidak Terduga");
+        return UnexpectedFailure(message: "Terjadi Kesalahan Tidak Terduga");
     }
   }
   if (error is FormatException) {
