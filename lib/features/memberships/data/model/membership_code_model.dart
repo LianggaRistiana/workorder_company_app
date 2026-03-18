@@ -1,9 +1,9 @@
 import 'package:workorder_company_app/core/utils/safe_parse.dart';
 import 'package:workorder_company_app/features/auth/data/model/user_model.dart';
-import 'package:workorder_company_app/features/memberships/domain/entitties/membership_entity.dart';
+import 'package:workorder_company_app/features/memberships/domain/entitties/membership_code_entity.dart';
 
-class MembershipModel extends MembershipEntity {
-  const MembershipModel(
+class MembershipCodeModel extends MembershipCodeEntity {
+  const MembershipCodeModel(
       {required super.id,
       required super.code,
       required super.isClaimed,
@@ -13,8 +13,8 @@ class MembershipModel extends MembershipEntity {
       super.updatedAt,
       super.deletedAt});
 
-  factory MembershipModel.fromJson(Map<String, dynamic> json) {
-    return MembershipModel(
+  factory MembershipCodeModel.fromJson(Map<String, dynamic> json) {
+    return MembershipCodeModel(
       id: safeParse<String>(json, "_id"),
       code: safeParse<String>(json, "code"),
       isClaimed: safeParse<bool>(json, "isClaimed"),

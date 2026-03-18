@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 
-class MembershipEntity extends Equatable {
+class MembershipCodeEntity extends Equatable {
   final String id;
   final String code;
   final bool isClaimed;
@@ -11,7 +11,7 @@ class MembershipEntity extends Equatable {
   final DateTime? updatedAt;
   final DateTime? deletedAt;
 
-  const MembershipEntity({
+  const MembershipCodeEntity({
     required this.id,
     required this.code,
     required this.isClaimed,
