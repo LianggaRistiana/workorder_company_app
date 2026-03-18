@@ -4,6 +4,7 @@ import 'package:workorder_company_app/features/memberships/data/repositories/mem
 import 'package:workorder_company_app/features/memberships/domain/repositories/memberships_repository.dart';
 import 'package:workorder_company_app/features/memberships/domain/usecases/generate_membership_codes_usecase.dart';
 import 'package:workorder_company_app/features/memberships/domain/usecases/get_membership_codes_usecase.dart';
+import 'package:workorder_company_app/features/memberships/presentation/bloc/code_list/membership_code_list_bloc.dart';
 
 Future<void> initMembershipsFeature() async {
   sl.registerLazySingleton<MembershipsRepository>(
@@ -15,4 +16,6 @@ Future<void> initMembershipsFeature() async {
       () => GetMembershipCodesUsecase(sl()));
   sl.registerLazySingleton<GenerateMembershipCodesUsecase>(
       () => GenerateMembershipCodesUsecase(sl()));
+
+  sl.registerFactory(() => MembershipCodeListBloc(sl()));
 }

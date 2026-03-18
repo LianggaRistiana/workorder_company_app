@@ -1,5 +1,5 @@
 import 'package:workorder_company_app/core/utils/safe_parse.dart';
-import 'package:workorder_company_app/features/auth/data/model/user_model.dart';
+import 'package:workorder_company_app/features/auth/data/model/user_summary_model.dart';
 import 'package:workorder_company_app/features/memberships/domain/entitties/membership_code_entity.dart';
 
 class MembershipCodeModel extends MembershipCodeEntity {
@@ -7,7 +7,7 @@ class MembershipCodeModel extends MembershipCodeEntity {
       {required super.id,
       required super.code,
       required super.isClaimed,
-      required super.claimedBy,
+      super.claimedBy,
       super.claimedAt,
       required super.createdAt,
       super.updatedAt,
@@ -18,8 +18,10 @@ class MembershipCodeModel extends MembershipCodeEntity {
       id: safeParse<String>(json, "_id"),
       code: safeParse<String>(json, "code"),
       isClaimed: safeParse<bool>(json, "isClaimed"),
-      claimedBy: UserModel.fromJson(
-          safeParse<Map<String, dynamic>>(json, "claimedBy")),
+      claimedBy: json["claimedBy"] == null
+          ? null
+          : UserSummaryModel.fromJson(
+              safeParse<Map<String, dynamic>>(json, "claimedBy")),
       claimedAt: safeParse<DateTime?>(
         json,
         "claimedAt",

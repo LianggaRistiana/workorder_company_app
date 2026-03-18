@@ -3,6 +3,7 @@ import 'package:workorder_company_app/core/authorization/feature/csr_permission.
 import 'package:workorder_company_app/core/authorization/feature/employee_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/form_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/invitation_permission.dart';
+import 'package:workorder_company_app/core/authorization/feature/memberships_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/positions_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/public_companies.dart';
 import 'package:workorder_company_app/core/authorization/feature/service_permission.dart';
@@ -24,7 +25,8 @@ extension UserRolePermissions on UserRole {
           ...CsrPermission.all,
           ...WorkOrderPermissions.all,
           ...WorkReportPermissions.all,
-          ...InvitationPermission.admin
+          ...InvitationPermission.admin,
+          ...MembershipsPermission.company
         };
       case UserRole.managerCompany:
         return {
@@ -35,7 +37,8 @@ extension UserRolePermissions on UserRole {
           ServicePermission.view,
           ...CsrPermission.all,
           ...WorkOrderPermissions.all,
-          ...WorkReportPermissions.all
+          ...WorkReportPermissions.all,
+          MembershipsPermission.view
         };
       case UserRole.staffCompany:
         return {
@@ -49,7 +52,11 @@ extension UserRolePermissions on UserRole {
           ...WorkReportPermissions.all
         };
       case UserRole.client:
-        return {PublicCompanies.view, CsrPermission.view};
+        return {
+          PublicCompanies.view,
+          CsrPermission.view,
+          MembershipsPermission.claim
+        };
       case UserRole.staffUnassigned:
         return {...InvitationPermission.unassigned};
     }

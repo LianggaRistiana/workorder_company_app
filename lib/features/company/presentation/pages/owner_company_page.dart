@@ -79,15 +79,9 @@ class _OwnerCompanyPageState extends State<OwnerCompanyPage> {
                     }),
                 MenuItem(
                     icon: Icons.card_membership_outlined,
-                    label: "Kode Unik Pelanggan",
+                    label: "Kode Unik Langganan",
                     onTap: () {
-                      showAppBottomSheet(context,
-                          content: SizedBox(
-                            height: 200,
-                            child: Center(
-                              child: Text("Fitur ini belum tersedia"),
-                            ),
-                          ));
+                      context.push(AppRoutes.membershipsCodes);
                     }),
                 MenuItem(
                     icon: Icons.chat_bubble_outline_rounded,

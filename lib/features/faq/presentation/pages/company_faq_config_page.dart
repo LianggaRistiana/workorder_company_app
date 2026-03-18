@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/shared/widgets/dashed_button.dart';
 import 'package:workorder_company_app/shared/widgets/horizontal_switch.dart';
-import 'package:workorder_company_app/shared/widgets/icon_box.dart';
 
 class CompanyFaqConfigPage extends StatelessWidget {
   const CompanyFaqConfigPage({super.key});

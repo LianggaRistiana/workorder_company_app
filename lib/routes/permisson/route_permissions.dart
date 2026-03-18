@@ -4,6 +4,7 @@ import 'package:workorder_company_app/routes/permisson/route_csr_permissions.dar
 import 'package:workorder_company_app/routes/permisson/route_employee_permissions.dart';
 import 'package:workorder_company_app/routes/permisson/route_form_permissions.dart';
 import 'package:workorder_company_app/routes/permisson/route_invitation_permissions.dart';
+import 'package:workorder_company_app/routes/permisson/route_memberships_permissions.dart';
 import 'package:workorder_company_app/routes/permisson/route_position_permissions.dart';
 import 'package:workorder_company_app/routes/permisson/route_public_csr_permissions.dart';
 import 'package:workorder_company_app/routes/permisson/route_service_permissions.dart';
@@ -22,5 +23,6 @@ class RoutePermissions {
     ...RouteWorkorderPermissions.route,
     ...RouteCompanyPermissions.route,
     ...RouteWorkreportPermissions.route,
+    ...RouteMembershipsPermissions.route,
   };
 }

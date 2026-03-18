@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
-import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
+import 'package:workorder_company_app/features/auth/domain/entities/user_summary_entity.dart';
 
 class MembershipCodeEntity extends Equatable {
   final String id;
   final String code;
   final bool isClaimed;
-  final UserEntity claimedBy;
+  final UserSummaryEntity? claimedBy;
   final DateTime? claimedAt;
   final DateTime createdAt;
   final DateTime? updatedAt;
@@ -15,7 +15,7 @@ class MembershipCodeEntity extends Equatable {
     required this.id,
     required this.code,
     required this.isClaimed,
-    required this.claimedBy,
+    this.claimedBy,
     this.claimedAt,
     required this.createdAt,
     this.updatedAt,

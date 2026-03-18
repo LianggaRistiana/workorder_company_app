@@ -13,4 +13,6 @@ enum AppFeature {
   publicClientServiceRequest,
   senderInvitation,
   receiverInvitation,
+  memberships,
+  claimCodeMembership
 }
