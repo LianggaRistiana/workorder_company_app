@@ -7,10 +7,11 @@ import 'package:workorder_company_app/features/memberships/domain/entitties/memb
 import 'package:workorder_company_app/features/memberships/presentation/bloc/code_list/membership_code_list_bloc.dart';
 import 'package:workorder_company_app/features/memberships/presentation/bloc/code_list/membership_code_list_event.dart';
 import 'package:workorder_company_app/features/memberships/presentation/bloc/code_list/membership_code_list_state.dart';
+import 'package:workorder_company_app/features/memberships/presentation/bloc/generate_code/generate_membership_code_cubit.dart';
+import 'package:workorder_company_app/features/memberships/presentation/widgets/generate_code_widget.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/list_page_scafold.dart';
-
 
 // TODO : refactor this into few files
 class MembershipCodesListPage extends StatelessWidget {
@@ -18,9 +19,16 @@ class MembershipCodesListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) =>
-          sl<MembershipCodeListBloc>()..add(GetMembershipCodeListRequested()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<MembershipCodeListBloc>(
+          create: (_) => sl<MembershipCodeListBloc>()
+            ..add(GetMembershipCodeListRequested()),
+        ),
+        BlocProvider<GenerateMembershipCodeCubit>(
+          create: (_) => sl<GenerateMembershipCodeCubit>(),
+        ),
+      ],
       child: const _MembershipCodesListView(),
     );
   }
@@ -49,6 +57,8 @@ class _MembershipCodesListView extends StatelessWidget {
             title: "Kode Langganan",
             isLoading: isLoading,
             items: groupedList,
+            header: GenerateCodeWidget(),
+            errorMessage: state.errorMessage,
             onRefresh: () => _onRefresh(context),
             loadingMessage: "Memuat Kode Langganan...",
             emptyWidget: const Text(

@@ -5,6 +5,7 @@ import 'package:workorder_company_app/features/company/domain/entities/company_e
 import 'package:workorder_company_app/features/memberships/data/datasources/memberships_remote_datasource.dart';
 import 'package:workorder_company_app/features/memberships/data/model/membership_code_generate_draft_model.dart';
 import 'package:workorder_company_app/features/memberships/domain/entitties/membership_code_entity.dart';
+import 'package:workorder_company_app/features/memberships/domain/entitties/membership_codes_generate_draft_entity.dart';
 import 'package:workorder_company_app/features/memberships/domain/repositories/memberships_repository.dart';
 
 class MembershipsRepositoryImpl extends MembershipsRepository {
@@ -30,9 +31,9 @@ class MembershipsRepositoryImpl extends MembershipsRepository {
 
   @override
   Future<Either<Failure, List<MembershipCodeEntity>>> generateMembershipCodes(
-      MembershipCodeGenerateDraftModel draft) {
+      MembershipCodesGenerateDraftEntity draft) {
     return safeCall(() async {
-      final response = await _remoteDatasource.generateMembershipCodes(draft);
+      final response = await _remoteDatasource.generateMembershipCodes(MembershipCodeGenerateDraftModel.fromEntity(draft));
       return response.data ?? [];
     });
   }
