@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
+import 'package:workorder_company_app/core/utils/validators.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 import 'package:workorder_company_app/features/memberships/domain/entitties/membership_codes_generate_draft_entity.dart';
@@ -15,6 +16,8 @@ class GenerateCodeWidget extends StatefulWidget {
 }
 
 class _GenerateCodeWidgetState extends State<GenerateCodeWidget> {
+  final _formKey = GlobalKey<FormState>();
+
   late final TextEditingController _codeController;
   late final TextEditingController _amountController;
 
@@ -33,19 +36,11 @@ class _GenerateCodeWidgetState extends State<GenerateCodeWidget> {
   }
 
   void _onGenerate() {
-    final code = _codeController.text.trim();
-    final amount = int.tryParse(_amountController.text.trim()) ?? 0;
-
-    if (code.isEmpty || amount <= 0) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Kode dan jumlah wajib diisi")),
-      );
-      return;
-    }
+    if (!_formKey.currentState!.validate()) return;
 
     final draft = MembershipCodesGenerateDraftEntity(
-      prefix: code,
-      amount: amount,
+      prefix: _codeController.text.trim(),
+      amount: int.parse(_amountController.text.trim()),
     );
 
     context.read<GenerateMembershipCodeCubit>().generateCode(draft);
@@ -61,6 +56,7 @@ class _GenerateCodeWidgetState extends State<GenerateCodeWidget> {
             const SnackBar(content: Text("Kode berhasil digenerate")),
           );
 
+          _formKey.currentState?.reset();
           _codeController.clear();
           _amountController.clear();
         }
@@ -72,8 +68,7 @@ class _GenerateCodeWidgetState extends State<GenerateCodeWidget> {
         }
       },
       builder: (context, state) {
-        final isLoading =
-            state.status == GenerateMembershipCodeStatus.loading;
+        final isLoading = state.status == GenerateMembershipCodeStatus.loading;
 
         return CustomCard(
           margin: const EdgeInsets.only(
@@ -81,46 +76,74 @@ class _GenerateCodeWidgetState extends State<GenerateCodeWidget> {
             right: AppSpacing.md,
             bottom: AppSpacing.md,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Generate Kode Langganan",
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              const SizedBox(height: AppSpacing.md),
-
-              CustomInputField(
-                label: "Kode",
-                controller: _codeController,
-                enabled: !isLoading,
-              ),
-
-              const SizedBox(height: AppSpacing.md),
-
-              CustomInputField(
-                label: "Jumlah",
-                keyboardType: TextInputType.number,
-                controller: _amountController,
-                enabled: !isLoading,
-              ),
-
-              const SizedBox(height: AppSpacing.md),
-
-              SizedBox(
-                width: double.infinity,
-                child: FilledButton(
-                  onPressed: isLoading ? null : _onGenerate,
-                  child: isLoading
-                      ? const SizedBox(
-                          height: 18,
-                          width: 18,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        )
-                      : const Text("Generate"),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Generate Kode Langganan",
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
-              ),
-            ],
+                const SizedBox(height: AppSpacing.md),
+
+                /// PREFIX
+                CustomInputField(
+                  label: "Kode",
+                  controller: _codeController,
+                  enabled: !isLoading,
+                  validator: (value) => ValidatorUtils.validate(
+                    value,
+                    [
+                      ValidatorType.required,
+                      ValidatorType.minLength,
+                      ValidatorType.maxLength,
+                    ],
+                    minLength: 3,
+                    maxLength: 10,
+                    fieldName: "Kode",
+                  ),
+                ),
+
+                const SizedBox(height: AppSpacing.md),
+
+                /// AMOUNT
+                CustomInputField(
+                  label: "Jumlah",
+                  keyboardType: TextInputType.number,
+                  controller: _amountController,
+                  enabled: !isLoading,
+                  validator: (value) => ValidatorUtils.validate(
+                    value,
+                    [
+                      ValidatorType.required,
+                      ValidatorType.number,
+                      ValidatorType.minValue,
+                    ],
+                    minValue: 1,
+                    fieldName: "Jumlah",
+                  ),
+                ),
+
+                const SizedBox(height: AppSpacing.md),
+
+                SizedBox(
+                  width: double.infinity,
+                  child: FilledButton(
+                    onPressed: isLoading ? null : _onGenerate,
+                    child: isLoading
+                        ? const SizedBox(
+                            height: 18,
+                            width: 18,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                            ),
+                          )
+                        : const Text("Generate"),
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },

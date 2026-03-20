@@ -7,6 +7,8 @@ enum ValidatorType {
   minLength,
   maxLength,
   match,
+  minValue,
+  maxValue,
 }
 
 class ValidatorUtils {
@@ -17,6 +19,8 @@ class ValidatorUtils {
     int? minLength,
     int? maxLength,
     String? matchValue,
+    double? minValue,
+    double? maxValue,
     String fieldName = "Field",
   }) {
     for (var type in types) {
@@ -27,6 +31,8 @@ class ValidatorUtils {
         maxLength: maxLength,
         matchValue: matchValue,
         fieldName: fieldName,
+        minValue: minValue,
+        maxValue: maxValue,
       );
       if (result != null) return result;
     }
@@ -39,6 +45,8 @@ class ValidatorUtils {
     ValidatorType type, {
     int? minLength,
     int? maxLength,
+    double? minValue,
+    double? maxValue,
     String? matchValue,
     String fieldName = "Field",
   }) {
@@ -47,6 +55,8 @@ class ValidatorUtils {
       type,
       minLength: minLength,
       maxLength: maxLength,
+      minValue: minValue,
+      maxValue: maxValue,
       matchValue: matchValue,
       fieldName: fieldName,
     );
@@ -59,6 +69,8 @@ class ValidatorUtils {
     int? minLength,
     int? maxLength,
     String? matchValue,
+    double? minValue,
+    double? maxValue,
     String fieldName = "Field",
   }) {
     switch (type) {
@@ -111,6 +123,23 @@ class ValidatorUtils {
           return "$fieldName tidak cocok";
         }
         break;
+      case ValidatorType.minValue:
+        if (value != null && double.tryParse(value) != null) {
+          final number = double.parse(value);
+          if (minValue != null && number < minValue) {
+            return "$fieldName minimal $minValue";
+          }
+        }
+        break;
+
+      case ValidatorType.maxValue:
+        if (value != null && double.tryParse(value) != null) {
+          final number = double.parse(value);
+          if (maxValue != null && number > maxValue) {
+            return "$fieldName maksimal $maxValue";
+          }
+        }
+        break;
     }
     return null;
   }
@@ -128,12 +157,27 @@ class ValidatorUtils {
   static String? number(String? value, {String fieldName = "Field"}) =>
       single(value, ValidatorType.number, fieldName: fieldName);
 
-  static String? minLength(String? value, int min, {String fieldName = "Field"}) =>
-      single(value, ValidatorType.minLength, minLength: min, fieldName: fieldName);
+  static String? minLength(String? value, int min,
+          {String fieldName = "Field"}) =>
+      single(value, ValidatorType.minLength,
+          minLength: min, fieldName: fieldName);
 
-  static String? maxLength(String? value, int max, {String fieldName = "Field"}) =>
-      single(value, ValidatorType.maxLength, maxLength: max, fieldName: fieldName);
+  static String? maxLength(String? value, int max,
+          {String fieldName = "Field"}) =>
+      single(value, ValidatorType.maxLength,
+          maxLength: max, fieldName: fieldName);
 
-  static String? match(String? value, String matchValue, {String fieldName = "Field"}) =>
-      single(value, ValidatorType.match, matchValue: matchValue, fieldName: fieldName);
+  static String? match(String? value, String matchValue,
+          {String fieldName = "Field"}) =>
+      single(value, ValidatorType.match,
+          matchValue: matchValue, fieldName: fieldName);
+  static String? minValue(String? value, double min,
+          {String fieldName = "Field"}) =>
+      single(value, ValidatorType.minValue,
+          minValue: min, fieldName: fieldName);
+
+  static String? maxValue(String? value, double max,
+          {String fieldName = "Field"}) =>
+      single(value, ValidatorType.maxValue,
+          maxValue: max, fieldName: fieldName);
 }
