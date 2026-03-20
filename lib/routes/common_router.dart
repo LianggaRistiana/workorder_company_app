@@ -6,9 +6,11 @@ import 'package:workorder_company_app/features/auth/presentation/pages/register_
 import 'package:workorder_company_app/features/auth/presentation/pages/register_company_page.dart';
 import 'package:workorder_company_app/features/auth/presentation/pages/register_page.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
-import 'package:workorder_company_app/shared/common_page/forbidden_page.dart';
-import 'package:workorder_company_app/shared/common_page/not_found_page.dart';
+import 'package:workorder_company_app/shared/page/forbidden_page.dart';
+import 'package:workorder_company_app/shared/page/not_found_page.dart';
 
+
+// separated this into publicRoutes and Common route
 final commonRouter = [
   GoRoute(
     path: AppRoutes.login,

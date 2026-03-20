@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
 
+// TODO : refactor all page that has kind of this widget
 class HeaderOfPage extends StatelessWidget {
   final String title;
   final IconData icon;
