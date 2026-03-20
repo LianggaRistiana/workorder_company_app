@@ -4,16 +4,16 @@ import 'package:equatable/equatable.dart';
 // FIXME : prefffix => prefix
 class MembershipCodesGenerateDraftEntity extends Equatable {
   final int amount;
-  final String preffix;
+  final String prefix;
 
   const MembershipCodesGenerateDraftEntity({
     required this.amount,
-    required this.preffix,
+    required this.prefix,
   });
 
   @override
   List<Object?> get props => [
         amount,
-        preffix,
+        prefix,
       ];
 }

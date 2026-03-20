@@ -44,7 +44,7 @@ class _GenerateCodeWidgetState extends State<GenerateCodeWidget> {
     }
 
     final draft = MembershipCodesGenerateDraftEntity(
-      preffix: code,
+      prefix: code,
       amount: amount,
     );
 

@@ -1,26 +1,25 @@
 import 'package:workorder_company_app/features/memberships/domain/entitties/membership_codes_generate_draft_entity.dart';
 
 
-// FIXME : prefffix => prefix, 'ad' s after 'code'
-class MembershipCodeGenerateDraftModel
+class MembershipCodesGenerateDraftModel
     extends MembershipCodesGenerateDraftEntity {
-  const MembershipCodeGenerateDraftModel({
+  const MembershipCodesGenerateDraftModel({
     required super.amount,
-    required super.preffix,
+    required super.prefix,
   });
 
   Map<String, dynamic> toJson() {
     return {
       'amount': amount,
-      'prefix': preffix,
+      'prefix': prefix,
     };
   }
 
-  factory MembershipCodeGenerateDraftModel.fromEntity(
+  factory MembershipCodesGenerateDraftModel.fromEntity(
       MembershipCodesGenerateDraftEntity entity) {
-    return MembershipCodeGenerateDraftModel(
+    return MembershipCodesGenerateDraftModel(
       amount: entity.amount,
-      preffix: entity.preffix,
+      prefix: entity.prefix,
     );
   }
 }

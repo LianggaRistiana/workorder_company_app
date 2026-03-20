@@ -3,14 +3,14 @@ import 'package:workorder_company_app/core/network/api_response.dart';
 import 'package:workorder_company_app/core/network/endpoints.dart';
 import 'package:workorder_company_app/core/utils/safe_mapper.dart';
 import 'package:workorder_company_app/features/company/data/models/company_model.dart';
-import 'package:workorder_company_app/features/memberships/data/model/membership_code_generate_draft_model.dart';
 import 'package:workorder_company_app/features/memberships/data/model/membership_code_model.dart';
+import 'package:workorder_company_app/features/memberships/data/model/membership_codes_generate_draft_model.dart';
 import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
 
 abstract class MembershipsRemoteDatasource {
   Future<ApiResponse<List<MembershipCodeModel>>> getMembershipCodes();
   Future<ApiResponse<List<MembershipCodeModel>>> generateMembershipCodes(
-      MembershipCodeGenerateDraftModel draft);
+      MembershipCodesGenerateDraftModel draft);
   Future<ApiResponse<CompanyModel>> claimMembership(String code);
   Future<ApiResponse<MembershipCodeModel>> deleteMembership(String id);
 }
@@ -42,7 +42,7 @@ class MembershipsRemoteDatasourceImpl implements MembershipsRemoteDatasource {
 
   @override
   Future<ApiResponse<List<MembershipCodeModel>>> generateMembershipCodes(
-      MembershipCodeGenerateDraftModel draft) async {
+      MembershipCodesGenerateDraftModel draft) async {
     final response = await _apiClient.post(Endpoints.generateMembershipCode,
         data: draft.toJson());
     return ApiResponse.fromJson(
