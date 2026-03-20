@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 
 
-// FIXME : prefffix => prefix
 class MembershipCodesGenerateDraftEntity extends Equatable {
   final int amount;
   final String prefix;

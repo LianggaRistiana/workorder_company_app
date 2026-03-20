@@ -24,10 +24,6 @@ class SubmissionsModel extends SubmissionEntity {
       status: json['status'] != null
           ? SubmissionStatus.fromString(json['status'])
           : null,
-      // FIXME : fix on Mock
-      // submittedBy: json['submittedBy'] != null
-      //     ? UserModel.fromJson(json['submittedBy'])
-      //     : null,
       fieldsData: (json['fieldsData'] as List<dynamic>?)
           ?.map((e) => FieldDataModel.fromJson(e))
           .toList(),

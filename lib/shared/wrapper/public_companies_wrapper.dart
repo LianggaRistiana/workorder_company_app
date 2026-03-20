@@ -12,7 +12,6 @@ class PublicCompaniesWrapper extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => sl<CompanyBloc>()),
-        // TODO : add submission intake bloc here
       ],
       child: child,
     );

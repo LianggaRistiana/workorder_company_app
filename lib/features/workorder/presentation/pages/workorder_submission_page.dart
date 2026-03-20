@@ -119,7 +119,6 @@ class _WorkorderSubmissionPageState extends State<WorkorderSubmissionPage> {
                           .submitSubmissions(workorder.id, submissions);
                     }
                   },
-            // TODO : Implement animatedswitcher to all button
             child: AnimatedSwitcher(
               duration: const Duration(milliseconds: 250),
               child: isLoading

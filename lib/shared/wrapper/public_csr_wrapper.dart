@@ -14,7 +14,6 @@ class PublicCsrWrapper extends StatelessWidget {
       providers: [
         BlocProvider(create: (_) => sl<CsrBloc>()),
         BlocProvider(create: (_) => sl<CsrDetailCubit>()),
-        // TODO : add submission intake bloc here
       ],
       child: child,
     );

@@ -5,7 +5,7 @@ import 'package:workorder_company_app/routes/app_routes.dart';
 class RouteCompanyPermissions {
   static final Map<String, AppPermission> route = {
     AppRoutes.company: CompanyPermission.view,
-    AppRoutes.companyManageMenu: CompanyPermission.update, //TODO : change to view if each button in this page has permission gate
+    AppRoutes.companyManageMenu: CompanyPermission.update, 
     AppRoutes.companyUpdate: CompanyPermission.update,
     AppRoutes.companyFaqConfig: CompanyPermission.update,
   };

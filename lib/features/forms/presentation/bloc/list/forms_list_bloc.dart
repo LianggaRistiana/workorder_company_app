@@ -12,7 +12,6 @@ class FormsListBloc extends Bloc<FormsListEvent, FormsListState> {
   FormsListBloc({required this.getFormsUsecase})
       : super(const FormsListState()) {
     on<GetFormsListRequested>(_onGetFormsListRequested);
-    // TODO: nanti bisa tambah event lain seperti search, refresh, filter
   }
 
   Future<void> _onGetFormsListRequested(
