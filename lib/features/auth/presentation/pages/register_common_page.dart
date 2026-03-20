@@ -84,9 +84,7 @@ class _RegisterCommonPageState extends State<RegisterCommonPage> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message)),
-          );
+          context.showError(state.message);
         }
 
         if (state is UserRegistrationSuccess) {

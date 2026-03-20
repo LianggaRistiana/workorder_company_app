@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/core/utils/validators.dart';
+import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 import 'package:workorder_company_app/features/memberships/domain/entitties/membership_codes_generate_draft_entity.dart';
@@ -52,9 +53,7 @@ class _GenerateCodeWidgetState extends State<GenerateCodeWidget> {
         GenerateMembershipCodeState>(
       listener: (context, state) {
         if (state.status == GenerateMembershipCodeStatus.success) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Kode berhasil digenerate")),
-          );
+          context.showSuccess("Kode berhasil digenerate");
 
           _formKey.currentState?.reset();
           _codeController.clear();
@@ -62,9 +61,7 @@ class _GenerateCodeWidgetState extends State<GenerateCodeWidget> {
         }
 
         if (state.status == GenerateMembershipCodeStatus.error) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.errorMessage ?? "Terjadi kesalahan")),
-          );
+          context.showError(state.errorMessage ?? "Terjadi kesalahan");
         }
       },
       builder: (context, state) {

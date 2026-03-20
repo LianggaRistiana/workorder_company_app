@@ -4,6 +4,7 @@ import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features/company/domain/entities/company_entity.dart';
 import 'package:workorder_company_app/features/company/presentation/bloc/internal_company_management/internal_update_company_cubit.dart';
 import 'package:workorder_company_app/features/company/presentation/bloc/internal_company_management/internal_update_company_state.dart';
+import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 import 'package:workorder_company_app/shared/widgets/custom_switch_tile.dart';
 
@@ -86,9 +87,7 @@ class _InternalCompanyEditViewState extends State<InternalCompanyEditView> {
         }
 
         if (state.error != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.error!)),
-          );
+          context.showError(state.error ?? "Terjadi kesalahan");
         }
       },
       child: Scaffold(

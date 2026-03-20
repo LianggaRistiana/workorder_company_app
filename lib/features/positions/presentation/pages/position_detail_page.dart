@@ -7,6 +7,7 @@ import 'package:workorder_company_app/features/positions/domain/entities/positio
 import 'package:workorder_company_app/features/positions/presentation/bloc/detail/position_detail_cubit.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/detail/position_detail_state.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/active_status_chip.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
@@ -40,12 +41,7 @@ class PositionDetailView extends StatelessWidget {
       body: BlocConsumer<PositionDetailCubit, PositionDetailState>(
         listener: (context, state) {
           if (state.status == PositionDetailStatus.error) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.errorMessages ?? "Terjadi kesalahan"),
-                backgroundColor: Theme.of(context).colorScheme.error,
-              ),
-            );
+            context.showError(state.errorMessages ?? "Terjadi kesalahan");
           }
         },
         builder: (context, state) {

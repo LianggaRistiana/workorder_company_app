@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features/memberships/presentation/bloc/claim/claim_membership_code_state.dart';
+import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 import 'package:workorder_company_app/features/memberships/presentation/bloc/claim/claim_membership_code_cubit.dart';
 
@@ -54,9 +55,7 @@ class _ClaimMembershipCodeViewState extends State<_ClaimMembershipCodeView> {
       body: BlocConsumer<ClaimMembershipCodeCubit, ClaimMembershipCodeState>(
         listener: (context, state) {
           if (state.status == ClaimMembershipCodeStatus.success) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("Kode berhasil diklaim")),
-            );
+            context.showSuccess("Kode berhasil diklaim");
 
             _codeController.clear();
 
