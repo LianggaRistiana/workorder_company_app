@@ -5,5 +5,6 @@ import 'package:workorder_company_app/routes/app_routes.dart';
 class RouteMembershipsPermissions {
   static final Map<String, AppPermission> route = {
     AppRoutes.membershipsCodes: MembershipsPermission.view,
+    AppRoutes.membershipsClaim: MembershipsPermission.claim,
   };
 }

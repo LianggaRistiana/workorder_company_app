@@ -38,7 +38,7 @@ class ClientContent extends StatelessWidget {
             MenuItem(
                 icon: Icons.card_membership_outlined,
                 label: "Aktifkan Keanggotaan",
-                onTap: () {}),
+                onTap: () => context.push(AppRoutes.membershipsClaim)),
             MenuItem(
                 icon: Icons.history, label: "Riwayat Pengajuan", onTap: () {}),
             MenuItem(
