@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/error/failures.dart';
 import 'package:workorder_company_app/core/utils/validators.dart';
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
+import 'package:workorder_company_app/features/positions/domain/properties/position_property.dart';
 import 'package:workorder_company_app/shared/utils/confirm_dialog.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 import 'package:workorder_company_app/shared/widgets/custom_switch_tile.dart';
 
 class PositionFormView extends StatefulWidget {
+  final ValidationFailure? validation;
   final PositionEntity? initialData;
   final bool isLoading;
   final void Function(PositionEntity entity) onSubmit;
@@ -17,6 +20,7 @@ class PositionFormView extends StatefulWidget {
     this.initialData,
     required this.onSubmit,
     required this.submitLabel,
+    this.validation,
     this.isLoading = false,
   });
 
@@ -31,6 +35,8 @@ class _PositionFormViewState extends State<PositionFormView> {
   late final TextEditingController _descriptionController;
 
   late bool _isActive;
+
+  
 
   @override
   void initState() {
@@ -105,7 +111,6 @@ class _PositionFormViewState extends State<PositionFormView> {
           context.pop();
         }
       },
-      
       child: Form(
         key: _formKey,
         child: Column(
@@ -114,6 +119,7 @@ class _PositionFormViewState extends State<PositionFormView> {
               label: 'Nama Departemen',
               controller: _nameController,
               prefixIcon: const Icon(Icons.badge_outlined),
+              errorText: widget.validation?.errorOf(PositionProperty.name),
               validator: (value) {
                 return ValidatorUtils.single(
                     value,
@@ -125,6 +131,7 @@ class _PositionFormViewState extends State<PositionFormView> {
             CustomInputField(
               label: 'Deskripsi',
               controller: _descriptionController,
+              errorText: widget.validation?.errorOf(PositionProperty.description),
               maxLines: 3,
               prefixIcon: const Icon(Icons.info_outline),
               validator: (value) {

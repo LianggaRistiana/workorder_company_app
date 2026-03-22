@@ -97,7 +97,8 @@ class ApiClient {
     } on DioException catch (e) {
       final statusCode = e.response?.statusCode ?? -1;
       final message = e.response?.data?['message'] ?? e.message;
-      throw ApiException(statusCode, message);
+      final errors = e.response?.data?['errors'] ?? e.message;
+      throw ApiException(statusCode, message, errors: errors);
     }
   }
 

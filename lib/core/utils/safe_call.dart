@@ -12,6 +12,7 @@ Future<Either<Failure, T>> safeCall<T>(Future<T> Function() action) async {
       error: error,
       stackTrace: stack,
     );
+
     return Left(_mapExceptionToFailure(error));
   }
 }
@@ -23,14 +24,30 @@ Failure _mapExceptionToFailure(dynamic error) {
     //  TODO: Refactore all repo in data layer using this utils
     // ApiException biasanya punya code + message
     switch (error.statusCode) {
-      case 400:
-        return ServerFailure(message: error.message);
+      // case 400:
+      //   return ServerFailure(message: error.message);
       case 401:
         return AuthFailure(message: "Unauthorized");
       case 403:
         return AuthFailure(message: "Anda tidak diijinkan mengakses data ini");
       case 404:
         return ServerFailure(message: error.message);
+      case 400:
+      case 422:
+        final raw = error.errors;
+        final result = <String, String>{};
+
+        if (raw is Map && raw["field"] is List) {
+          for (final item in raw["field"]) {
+            if (item is Map) {
+              item.forEach((key, value) {
+                result[key.toString()] = value.toString();
+              });
+            }
+          }
+        }
+
+        return ValidationFailure(message: error.message, errors: result);
       case 500:
         return ServerFailure(message: "Server Sedang Gangguan");
       default:

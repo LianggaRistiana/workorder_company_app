@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:workorder_company_app/core/model/property_key.dart';
 
 abstract class Failure extends Equatable {
   final String message; // optional pesan error
@@ -10,6 +11,22 @@ abstract class Failure extends Equatable {
 
 class ServerFailure extends Failure {
   const ServerFailure({super.message = "Server error occurred"});
+}
+
+class ValidationFailure extends Failure {
+  final Map<String, String> errors;
+
+  const ValidationFailure({
+    required this.errors,
+    super.message = "Validation failed",
+  });
+
+  @override
+  List<Object?> get props => [errors, message];
+
+  String? errorOf(PropertyKey property) {
+    return errors[property.key];
+  }
 }
 
 class ParsingFailure extends Failure {
@@ -33,6 +50,7 @@ class AuthFailure extends Failure {
   const AuthFailure({super.message = "Unauthorize"});
 }
 
+// FIXME : follow the flow of validation error that has MapString of error and extension for access for the message
 class PolicyFailure<E> extends Failure {
   final E error;
 
@@ -43,4 +61,13 @@ class PolicyFailure<E> extends Failure {
 
   @override
   List<Object?> get props => [error, message];
+}
+
+extension FailureX on Failure? {
+  String? validationErrorOf(PropertyKey property) {
+    if (this is ValidationFailure) {
+      return (this as ValidationFailure).errorOf(property);
+    }
+    return null;
+  }
 }

@@ -47,6 +47,7 @@ class _CustomInputFieldState extends State<CustomInputField> {
   late FocusNode _focusNode;
   bool _isFocused = false;
   bool _isError = false;
+  String? errorText;
 
   @override
   void initState() {
@@ -57,6 +58,7 @@ class _CustomInputFieldState extends State<CustomInputField> {
         _isFocused = _focusNode.hasFocus;
       });
     });
+    errorText = widget.errorText;
   }
 
   Color _getIconColor(BuildContext context) {
@@ -64,6 +66,18 @@ class _CustomInputFieldState extends State<CustomInputField> {
     if (_isError) return Theme.of(context).colorScheme.error;
     if (_isFocused) return Theme.of(context).colorScheme.primary;
     return Colors.grey[600]!;
+  }
+
+  @override
+  void didUpdateWidget(covariant CustomInputField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.errorText != widget.errorText) {
+      setState(() {
+        errorText = widget.errorText;
+        _isError = widget.errorText != null;
+      });
+    }
   }
 
   @override
@@ -80,7 +94,16 @@ class _CustomInputFieldState extends State<CustomInputField> {
           controller: widget.controller,
           keyboardType: widget.keyboardType,
           obscureText: widget.obscureText,
-          onChanged: widget.onChanged,
+          onChanged: (value) {
+            if (_isError || errorText != null) {
+              setState(() {
+                _isError = false;
+                errorText = null;
+              });
+            }
+            // TODO : observe this line
+            widget.onChanged?.call(value);
+          },
           enabled: widget.enabled,
           maxLines: widget.maxLines,
           validator: (val) {
@@ -88,17 +111,20 @@ class _CustomInputFieldState extends State<CustomInputField> {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               if (mounted) {
                 setState(() {
-                  _isError = result != null;
+                  _isError = result != null || errorText != null;
                 });
               }
             });
+            if (errorText != null) {
+              return errorText;
+            }
             return result;
           },
           decoration: InputDecoration(
             labelText: widget.label,
             hintText: widget.hint,
             hintStyle: TextStyle(color: Colors.grey[400]),
-            errorText: widget.errorText,
+            errorText: errorText,
             prefixIcon: widget.prefixIcon != null
                 ? IconTheme(
                     data: IconThemeData(color: iconColor),

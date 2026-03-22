@@ -2,9 +2,13 @@
 class ApiException implements Exception {
   final int statusCode;
   final String message;
-  //TODO : Add dynamic Error here
-  
-  ApiException(this.statusCode, this.message);
+  final dynamic errors;
+
+  ApiException(
+    this.statusCode,
+    this.message, {
+    this.errors,
+  });
 
   @override
   String toString() => 'ApiException($statusCode): $message';
@@ -20,8 +24,6 @@ class CacheException implements Exception {
   String toString() => message ?? 'CacheException';
 }
 
-
-
 /// Exception for parsing
 class ParsingException implements Exception {
   final String? message;
@@ -30,7 +32,6 @@ class ParsingException implements Exception {
 
   @override
   String toString() => message ?? 'ParsingException';
-
 }
 
 /// Exception untuk error koneksi (misal no internet)
