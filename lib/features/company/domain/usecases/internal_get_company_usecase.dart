@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import 'package:workorder_company_app/core/authorization/model/warnings_meta.dart';
+import 'package:workorder_company_app/core/result/meta/warnings_meta.dart';
 import 'package:workorder_company_app/core/error/error.dart';
-import 'package:workorder_company_app/core/authorization/model/result.dart';
+import 'package:workorder_company_app/core/result/result.dart';
 import 'package:workorder_company_app/features/company/domain/entities/company_entity.dart';
 import 'package:workorder_company_app/features/company/domain/policies/company_management_policy.dart';
 import 'package:workorder_company_app/features/company/domain/repositories/company_repository.dart';

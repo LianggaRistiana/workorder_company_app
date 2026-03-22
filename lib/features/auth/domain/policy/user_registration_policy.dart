@@ -1,4 +1,4 @@
-import 'package:workorder_company_app/core/authorization/model/policy_result.dart';
+import 'package:workorder_company_app/core/policy/policy_result.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_registration_entity.dart';
 

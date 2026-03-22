@@ -1,4 +1,4 @@
-import 'package:workorder_company_app/core/authorization/model/result.dart';
+import 'package:workorder_company_app/core/result/result.dart';
 
 /// Metadata representing warnings produced by business rules.
 ///

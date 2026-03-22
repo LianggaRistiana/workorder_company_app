@@ -1,4 +1,4 @@
-import 'package:workorder_company_app/core/authorization/model/policy_result.dart';
+import 'package:workorder_company_app/core/policy/policy_result.dart';
 import 'package:workorder_company_app/features/company/domain/entities/company_entity.dart';
 
 enum CompanyRules {

@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:workorder_company_app/core/authorization/model/warnings_meta.dart';
+import 'package:workorder_company_app/core/result/meta/warnings_meta.dart';
 import 'package:workorder_company_app/features/company/domain/policies/company_management_policy.dart';
 import 'package:workorder_company_app/features/company/domain/usecases/internal_get_company_usecase.dart';
 import 'package:workorder_company_app/features/company/presentation/mappers/company_rule_message_mapper.dart';
