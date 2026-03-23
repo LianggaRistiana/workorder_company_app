@@ -5,7 +5,7 @@ import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 import 'package:workorder_company_app/features/employees/presentation/bloc/employees_bloc.dart';
 import 'package:workorder_company_app/features/employees/presentation/widget/employee_selector.dart';
-import 'package:workorder_company_app/features/services/domain/entities/required_staff_entity.dart';
+import 'package:workorder_company_app/features/services_legacy/domain/entities/required_staff_entity.dart';
 import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_assigned_staff_cubit.dart';
 import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_bloc.dart';
 import 'package:workorder_company_app/features/workorder/presentation/widgets/staff_chip.dart';

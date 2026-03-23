@@ -3,7 +3,7 @@ import 'package:workorder_company_app/core/utils/safe_parse.dart';
 import 'package:workorder_company_app/features/auth/data/model/user_model.dart';
 import 'package:workorder_company_app/features/forms/data/model/filled_form_model.dart';
 import 'package:workorder_company_app/features/forms/data/model/ordered_form_model.dart';
-import 'package:workorder_company_app/features/services/data/models/service_model.dart';
+import 'package:workorder_company_app/features/services_legacy/data/models/service_model.dart';
 import 'package:workorder_company_app/features/submissions/data/model/submissions_model.dart';
 import 'package:workorder_company_app/features/workorder/domain/entitties/workorder__entity.dart';
 

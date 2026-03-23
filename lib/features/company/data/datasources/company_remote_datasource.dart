@@ -3,7 +3,7 @@ import 'package:workorder_company_app/core/network/api_response.dart';
 import 'package:workorder_company_app/core/network/endpoints.dart';
 import 'package:workorder_company_app/core/utils/safe_mapper.dart';
 import 'package:workorder_company_app/features/company/data/models/company_model.dart';
-import 'package:workorder_company_app/features/services/data/models/service_model.dart';
+import 'package:workorder_company_app/features/services_legacy/data/models/service_model.dart';
 
 abstract class CompanyRemoteDatasource {
   Future<ApiResponse<CompanyModel>> getCompanyById(String id);

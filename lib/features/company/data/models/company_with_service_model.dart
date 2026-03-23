@@ -1,6 +1,6 @@
 import 'package:workorder_company_app/features/company/data/models/company_model.dart';
 import 'package:workorder_company_app/features/company/domain/entities/company_with_service_entity.dart';
-import 'package:workorder_company_app/features/services/data/models/service_model.dart';
+import 'package:workorder_company_app/features/services_legacy/data/models/service_model.dart';
 
 class CompanyWithServiceModel extends CompanyWithServiceEntity {
   CompanyWithServiceModel({

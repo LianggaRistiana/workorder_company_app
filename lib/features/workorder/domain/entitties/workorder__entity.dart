@@ -1,7 +1,7 @@
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/filled_form_entity.dart';
-import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
+import 'package:workorder_company_app/features/services_legacy/domain/entities/service_entity.dart';
 
 
 // TODO : fix the name of this file

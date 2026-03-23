@@ -6,7 +6,7 @@ import 'package:workorder_company_app/features/company/domain/entities/company_e
 import 'package:workorder_company_app/features/company/domain/usecases/public_get_companies_usecase.dart';
 import 'package:workorder_company_app/features/company/domain/usecases/public_get_company_detail_usecase.dart';
 import 'package:workorder_company_app/features/company/domain/usecases/public_get_company_services.dart';
-import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
+import 'package:workorder_company_app/features/services_legacy/domain/entities/service_entity.dart';
 
 part 'company_state.dart';
 part 'company_event.dart';

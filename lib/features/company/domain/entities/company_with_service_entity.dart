@@ -1,5 +1,5 @@
 import 'package:workorder_company_app/features/company/domain/entities/company_entity.dart';
-import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
+import 'package:workorder_company_app/features/services_legacy/domain/entities/service_entity.dart';
 
 class CompanyWithServiceEntity {
   final CompanyEntity company;
