@@ -1,7 +1,7 @@
 class AppConfig {
   static const String appName = "Work Order Company App";
   static const String appVersion = "1.0.0";
-  static const String appFlavor = "staging";
+  static const String appFlavor = "production";
 
   // network
   static const Map<String, String> baseApiUrls = {
@@ -12,7 +12,7 @@ class AppConfig {
     'development.dede': 'http://192.168.1.193:3000',
     'development.ngrok': 'http://172.16.153.108:3000',
     'staging': 'https://workorder-team.vercel.app/',
-    'production': 'https://api.example.com/v1',
+    'production': 'https://workorder-portal-production.up.railway.app',
   };
 
   static String get baseApiUrl => baseApiUrls[appFlavor]!;

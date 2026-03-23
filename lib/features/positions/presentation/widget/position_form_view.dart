@@ -36,8 +36,6 @@ class _PositionFormViewState extends State<PositionFormView> {
 
   late bool _isActive;
 
-  
-
   @override
   void initState() {
     super.initState();
@@ -118,6 +116,7 @@ class _PositionFormViewState extends State<PositionFormView> {
             CustomInputField(
               label: 'Nama Departemen',
               controller: _nameController,
+              enabled: !widget.isLoading,
               prefixIcon: const Icon(Icons.badge_outlined),
               errorText: widget.validation?.errorOf(PositionProperty.name),
               validator: (value) {
@@ -130,14 +129,16 @@ class _PositionFormViewState extends State<PositionFormView> {
             const SizedBox(height: 16),
             CustomInputField(
               label: 'Deskripsi',
+              enabled: !widget.isLoading,
               controller: _descriptionController,
-              errorText: widget.validation?.errorOf(PositionProperty.description),
+              errorText:
+                  widget.validation?.errorOf(PositionProperty.description),
               maxLines: 3,
               prefixIcon: const Icon(Icons.info_outline),
-              validator: (value) {
-                return ValidatorUtils.single(
-                    value, fieldName: "Deskripsi", ValidatorType.required);
-              },
+              // validator: (value) {
+              //   return ValidatorUtils.single(
+              //       value, fieldName: "Deskripsi", ValidatorType.required);
+              // },
             ),
             const SizedBox(height: 20),
             CustomSwitchTile(
