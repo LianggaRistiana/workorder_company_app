@@ -108,17 +108,89 @@ enum InvitationStatus {
 
 enum ServiceRequestApprovalAccess {
   auto,
-  manager,
+  manager;
+
+  String get displayName {
+    switch (this) {
+      case ServiceRequestApprovalAccess.auto:
+        return 'Auto';
+      case ServiceRequestApprovalAccess.manager:
+        return 'Manajer';
+    }
+  }
+
+  static ServiceRequestApprovalAccess fromString(String value) {
+    switch (value) {
+      case 'auto':
+        return ServiceRequestApprovalAccess.auto;
+      case 'manager':
+        return ServiceRequestApprovalAccess.manager;
+      default:
+        throw ParsingException('Unknown ServiceRequestApprovalAccess: $value');
+    }
+  }
+
+  String toSnakeCase() {
+    return name.toSnakeCase();
+  }
 }
 
 enum WorkOrderAprrovalAccess {
   auto,
-  headStaff,
+  staffPic;
+
+  String get displayName {
+    switch (this) {
+      case WorkOrderAprrovalAccess.auto:
+        return 'Auto';
+      case WorkOrderAprrovalAccess.staffPic:
+        return 'Kepala Staff';
+    }
+  }
+
+  static WorkOrderAprrovalAccess fromString(String value) {
+    switch (value) {
+      case 'auto':
+        return WorkOrderAprrovalAccess.auto;
+      case 'head_staff':
+        return WorkOrderAprrovalAccess.staffPic;
+      default:
+        throw ParsingException('Unknown WorkOrderAprrovalAccess: $value');
+    }
+  }
+
+  String toSnakeCase() {
+    return name.toSnakeCase();
+  }
 }
 
 enum WorkReportApprovalAccess {
   auto,
-  manager,
+  manager;
+
+  String get displayName {
+    switch (this) {
+      case WorkReportApprovalAccess.auto:
+        return 'Auto';
+      case WorkReportApprovalAccess.manager:
+        return 'Manajer';
+    }
+  }
+
+  static WorkReportApprovalAccess fromString(String value) {
+    switch (value) {
+      case 'auto':
+        return WorkReportApprovalAccess.auto;
+      case 'manager':
+        return WorkReportApprovalAccess.manager;
+      default:
+        throw ParsingException('Unknown WorkReportApprovalAccess: $value');
+    }
+  }
+
+  String toSnakeCase() {
+    return name.toSnakeCase();
+  }
 }
 
 enum ServiceAccessType {

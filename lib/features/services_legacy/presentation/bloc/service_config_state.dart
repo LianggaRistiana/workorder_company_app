@@ -111,7 +111,7 @@ class ServiceWorkOrderConfigDraft extends Equatable {
     this.minStaff,
     this.maxStaff,
     this.departmentOnDuty,
-    this.workOrderApprovalAccess = WorkOrderAprrovalAccess.headStaff,
+    this.workOrderApprovalAccess = WorkOrderAprrovalAccess.staffPic,
     this.workReportApprovalAccess = WorkReportApprovalAccess.manager,
   });
 
