@@ -1,3 +1,4 @@
+import 'package:workorder_company_app/core/cache/list_cache_helper.dart';
 import 'package:workorder_company_app/core/types/future_either.dart';
 import 'package:workorder_company_app/core/utils/safe_call.dart';
 import 'package:workorder_company_app/features/services/data/datasources/internal_services_management_remote_datasource.dart';
@@ -7,6 +8,8 @@ import 'package:workorder_company_app/features/services/domain/repositories/serv
 
 class ServicesRepositoryImpl implements ServicesRepository {
   final InternalServicesManagementRemoteDatasource _internalRemoteDatasource;
+
+  final ListCacheHelper<ServiceSummaryEntity> _cache = ListCacheHelper();
 
   ServicesRepositoryImpl(this._internalRemoteDatasource);
 
@@ -37,11 +40,16 @@ class ServicesRepositoryImpl implements ServicesRepository {
   }
 
   @override
-  FutureEitherList<ServiceSummaryEntity> getServices() {
-    return safeCall(() async {
-      final services = await _internalRemoteDatasource.getServices();
-      return services.data ?? [];
-    });
+  FutureEitherList<ServiceSummaryEntity> getServices(
+    {bool forceRefresh = false}
+  ) {
+    return _cache.fetchList(
+      remoteCall: () async {
+        final response = await _internalRemoteDatasource.getServices();
+        return response.data ?? [];
+      },
+      forceRefresh: forceRefresh,
+    );
   }
 
   @override

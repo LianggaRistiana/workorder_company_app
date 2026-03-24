@@ -7,7 +7,10 @@ class InternalGetServicesUsecase {
 
   InternalGetServicesUsecase(this._repository);
 
-  FutureEitherList<ServiceSummaryEntity> call() async {
-    return await _repository.getServices();
+  FutureEitherList<ServiceSummaryEntity> call(
+      {bool forceRefresh = false}) async {
+    return await _repository.getServices(
+      forceRefresh: forceRefresh,
+    );
   }
 }

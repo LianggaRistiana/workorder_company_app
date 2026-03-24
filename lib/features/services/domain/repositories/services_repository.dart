@@ -8,7 +8,7 @@ abstract class ServicesRepository {
   FutureEither<ServiceEntity> getPublicServiceById(String id);
 
   // Internal Service Management
-  FutureEitherList<ServiceSummaryEntity> getServices();
+  FutureEitherList<ServiceSummaryEntity> getServices({bool forceRefresh = false});
   FutureEither<ServiceEntity> getServiceById(String id);
   FutureEither<ServiceEntity> createService(ServiceEntity service);
   FutureEither<ServiceEntity> updateService(ServiceEntity service);

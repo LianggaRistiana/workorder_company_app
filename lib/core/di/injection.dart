@@ -10,12 +10,14 @@ import 'package:workorder_company_app/features/invitations/invitations_injection
 import 'package:workorder_company_app/features/memberships/memberships_injection.dart';
 import 'package:workorder_company_app/features/notification/notification_injection.dart';
 import 'package:workorder_company_app/features/positions/positions_injections.dart';
-import 'package:workorder_company_app/features/services_legacy/services_injection.dart';
+import 'package:workorder_company_app/features/services/services_injection.dart';
 import 'package:workorder_company_app/features/submissions/submissions_injection.dart';
 import 'package:workorder_company_app/features/workorder/workorder_injection.dart';
 import 'package:workorder_company_app/features/workreport/workreport_injection.dart';
 
+/// Service Locator
 final sl = GetIt.instance;
+
 
 Future<void> init() async {
   /// Core
