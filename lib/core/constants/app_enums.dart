@@ -113,7 +113,7 @@ enum ServiceRequestApprovalAccess {
   String get displayName {
     switch (this) {
       case ServiceRequestApprovalAccess.auto:
-        return 'Auto';
+        return 'Otomatis';
       case ServiceRequestApprovalAccess.manager:
         return 'Manajer';
     }
@@ -142,9 +142,9 @@ enum WorkOrderAprrovalAccess {
   String get displayName {
     switch (this) {
       case WorkOrderAprrovalAccess.auto:
-        return 'Auto';
+        return 'Otomatis';
       case WorkOrderAprrovalAccess.staffPic:
-        return 'Kepala Staff';
+        return 'Pegawai Bertanggung Jawab';
     }
   }
 
@@ -152,7 +152,7 @@ enum WorkOrderAprrovalAccess {
     switch (value) {
       case 'auto':
         return WorkOrderAprrovalAccess.auto;
-      case 'head_staff':
+      case 'staff_pic':
         return WorkOrderAprrovalAccess.staffPic;
       default:
         throw ParsingException('Unknown WorkOrderAprrovalAccess: $value');
@@ -171,7 +171,7 @@ enum WorkReportApprovalAccess {
   String get displayName {
     switch (this) {
       case WorkReportApprovalAccess.auto:
-        return 'Auto';
+        return 'Otomatis';
       case WorkReportApprovalAccess.manager:
         return 'Manajer';
     }
@@ -220,9 +220,9 @@ enum ServiceAccessType {
   String get displayName {
     switch (this) {
       case ServiceAccessType.public:
-        return 'Public';
+        return 'Publik';
       case ServiceAccessType.memberOnly:
-        return 'Member Only';
+        return 'Hanya Langganan';
       case ServiceAccessType.internal:
         return 'Internal';
     }

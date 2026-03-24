@@ -18,9 +18,10 @@ class WorkOrderConfigModel extends WorkOrderConfigEntity {
     return WorkOrderConfigModel(
       workOrderForm: FormModel.fromJson(json["workOrderForm"]),
       workReportForm: FormModel.fromJson(json["workReportForm"]),
-      positionOnDuty: PositionModel.fromJson(json["positionOnDuty"]),
+      positionOnDuty: PositionModel.fromJson(json["positionsOnDuty"]),
       workOrderAprrovalAccessType: WorkOrderAprrovalAccess.fromString(
-          safeParse<String>(json, "workOrderAprrovalAccessType")),
+          safeParse<String>(json, "workOrderApprovalAccessType")
+          ),
       workReportApprovalAccessType: WorkReportApprovalAccess.fromString(
           safeParse<String>(json, "workReportApprovalAccessType")),
       minStaff: safeParse<int>(json, "minStaff"),

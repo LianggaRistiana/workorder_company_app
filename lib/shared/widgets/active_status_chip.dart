@@ -24,17 +24,14 @@ class ActiveStatusChip extends StatelessWidget {
     final iconColor = isActive ? Colors.green : Colors.grey[600];
 
     return InkWell(
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(50),
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
         decoration: BoxDecoration(
           color:
               isActive ? Colors.green.withAlpha(30) : Colors.grey.withAlpha(30),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: isActive ? Colors.green : Colors.grey,
-          ),
+          borderRadius: BorderRadius.circular(50),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,

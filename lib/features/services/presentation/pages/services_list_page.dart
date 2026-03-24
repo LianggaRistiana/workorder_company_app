@@ -9,6 +9,7 @@ import 'package:workorder_company_app/features/services/presentation/bloc/list/s
 import 'package:workorder_company_app/features/services/presentation/bloc/list/services_list_state.dart';
 import 'package:workorder_company_app/features/services/presentation/widgets/service_summary_item.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
 import 'package:workorder_company_app/shared/widgets/list_page_scafold.dart';
 
 class ServicesListPage extends StatelessWidget {
@@ -62,7 +63,9 @@ class _ServicesListView extends StatelessWidget {
             itemBuilder: (item) => ServiceSummaryItem(
                   service: item,
                   isPublic: false,
-                  onTap: () {},
+                  onTap: () {
+                    context.push(AppRoutes.servicesDetail.fillId(item.id));
+                  },
                 ));
       },
     );

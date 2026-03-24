@@ -52,7 +52,9 @@ class PropertyDisplay extends StatelessWidget {
               child: item.child,
             ),
             if (showDivider && index != properties.length - 1)
-              const Divider(height: 24),
+              const Divider(
+                thickness: 0.2,
+                height: 24),
           ],
         );
       }),
