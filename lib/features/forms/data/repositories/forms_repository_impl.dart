@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:workorder_company_app/core/cache/list_cache_helper.dart';
 import 'package:workorder_company_app/core/error/failures.dart';
 import 'package:workorder_company_app/core/utils/safe_call.dart';
 import 'package:workorder_company_app/features/forms/data/datasources/forms_remote_datasource.dart';
@@ -12,11 +13,14 @@ import 'package:workorder_company_app/features/submissions/domain/entitties/subm
 class FormsRepositoryImpl implements FormsRepository {
   final FormsRemoteDatasource _remoteDatasource;
 
+  final ListCacheHelper<FormEntity> _cache = ListCacheHelper();
+
   FormsRepositoryImpl(this._remoteDatasource);
 
+  // TODO : add forcerefresh
   @override
   Future<Either<Failure, List<FormEntity>>> getForms() {
-    return safeCall(() async {
+    return _cache.fetchList(remoteCall: () async {
       final forms = await _remoteDatasource.getForms();
       return forms.data ?? [];
     });
