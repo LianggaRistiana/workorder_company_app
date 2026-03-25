@@ -23,7 +23,7 @@ class ServiceRequestTabView extends StatelessWidget {
               PropertyItem.text(
                 label: "Hak Persetujuan",
                 value: config.serviceRequestApprovalAccessType.displayName,
-                icon: Icons.shield_outlined,
+                icon: Icons.admin_panel_settings,
               ),
               PropertyItem.text(
                 label: "Kebutuhan Review",

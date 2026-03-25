@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/company/domain/entities/company_entity.dart';
 import 'package:workorder_company_app/features/company/presentation/bloc/internal_company_management/internal_company_get_cubit.dart';
@@ -86,7 +87,7 @@ class _InternalCompanyProfilePageState
                     context.push(AppRoutes.companyUpdate, extra: company);
                   },
                   label: Text("Edit Profil Perusahaan"),
-                  icon: const Icon(Icons.edit),
+                  icon: Icon(AppIcon.edit),
                 ),
               ],
             ),

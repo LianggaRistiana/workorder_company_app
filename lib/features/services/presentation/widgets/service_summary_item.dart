@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
+import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_summary_entity.dart';
 import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
@@ -48,7 +49,7 @@ class ServiceSummaryItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Stack(children: [
-            IconBox(icon: Icons.build_circle_outlined),
+            IconBox(icon: AppIcon.service),
             if (!isPublic) ...[
               const SizedBox(height: 8),
               Positioned(

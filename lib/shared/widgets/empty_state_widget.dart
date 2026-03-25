@@ -10,9 +10,9 @@ class EmptyStateWidget extends StatelessWidget {
   const EmptyStateWidget({
     super.key,
     this.text = 'Tidak ada item',
-    this.icon = Icons.inbox_outlined,
-    this.backgroundColor, // abu pudar
-    this.size = 80,
+    this.icon = Icons.info_outline,
+    this.backgroundColor,
+    this.size = 50,
     this.textStyle,
   });
 
@@ -25,9 +25,9 @@ class EmptyStateWidget extends StatelessWidget {
           width: size,
           height: size,
           decoration: BoxDecoration(
-            color: backgroundColor ?? Theme.of(context).disabledColor.withAlpha(50),
-            shape: BoxShape.circle,
-          ),
+              color: backgroundColor ??
+                  Theme.of(context).disabledColor.withAlpha(40),
+              shape: BoxShape.circle),
           child: Icon(
             icon,
             size: size * 0.5,

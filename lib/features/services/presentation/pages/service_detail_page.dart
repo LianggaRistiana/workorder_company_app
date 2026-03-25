@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
+import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/helps/presentation/widgets/help_button.dart';
 import 'package:workorder_company_app/features/helps/presentation/widgets/service_type_tips.dart';
@@ -48,7 +49,7 @@ class _ServiceDetailView extends StatelessWidget {
                 return Center(child: AppLoading());
               case ServiceDetailStatus.loaded:
                 final service = state.service!;
-                final icon = Icons.build_circle_outlined;
+                final icon = AppIcon.service;
                 return DefaultTabController(
                   length: 3,
                   child: Column(

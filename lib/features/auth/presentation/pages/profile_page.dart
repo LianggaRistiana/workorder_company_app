@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
+import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:workorder_company_app/features/notification/presentation/widgets/notification_toggle.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
@@ -174,14 +175,14 @@ class ProfilePage extends StatelessWidget {
                     margin: const EdgeInsets.all(0),
                     title: "Keluar",
                     description: "Anda dapat masuk kembali kapan saja",
-                    leadingIcon: Icons.logout,
+                    leadingIcon: AppIcon.logout,
                     isDanger: true,
                     onTap: () async {
                       final confirm = await showConfirmDialog(
                         context: context,
                         title: "Keluar",
                         message: "Anda yakin ingin keluar?",
-                        icon: Icons.logout,
+                        icon: AppIcon.logout,
                         confirmText: "Ya, keluar",
                         type: ConfirmDialogType.danger,
                       );

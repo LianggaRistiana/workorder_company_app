@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
+import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
 
 class FieldTypeIcon extends StatelessWidget {
@@ -10,21 +11,21 @@ class FieldTypeIcon extends StatelessWidget {
   IconData _getIcon(FieldType type) {
     switch (type) {
       case FieldType.text:
-        return Icons.text_format;
+        return AppIcon.textField;
       case FieldType.email:
-        return Icons.alternate_email;
+        return AppIcon.emailField;
       case FieldType.textarea:
-        return Icons.notes;
+        return AppIcon.textareaField;
       case FieldType.number:
-        return Icons.numbers_outlined;
+        return AppIcon.numberField;
       case FieldType.date:
-        return Icons.calendar_today;
+        return AppIcon.dateField;
       case FieldType.time:
-        return Icons.access_time;
+        return AppIcon.timeField;
       case FieldType.multiSelect:
-        return Icons.checklist;
+        return AppIcon.multiSelect;
       case FieldType.singleSelect:
-        return Icons.radio_button_checked;
+        return AppIcon.singleSelect;
     }
   }
 

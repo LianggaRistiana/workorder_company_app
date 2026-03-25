@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/features/company/presentation/widgets/internal_company_card.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/orientation_helper.dart';
@@ -31,66 +32,65 @@ class _OwnerCompanyPageState extends State<OwnerCompanyPage> {
 
   @override
   Widget build(BuildContext context) {
-    // final theme = Theme.of(context);
-
-    // Dummy data
-    final companyName = "PT Maju Jaya";
-    final companyAddress = "Jl. Contoh No.123, Bali";
 
     return Scaffold(
+      appBar: AppBar(
+        bottom: PreferredSize(
+          preferredSize: Size(50, 60),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: InternalCompanyCard(),
+          ),
+        ),
+      ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 72),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// --- Company Card ---
-
-            InternalCompanyCard(
-                companyName: companyName, companyAddress: companyAddress),
-            const SizedBox(height: 12),
             // /// --- Section Title ---
             SectionTitle("Menu Konfigurasi Perusahaan"),
             const SizedBox(height: 12),
             MenuGrid(
               items: [
                 MenuItem(
-                    icon: Icons.assignment_turned_in_outlined,
+                    icon: AppIcon.form,
                     label: "Formulir",
                     onTap: () {
                       context.push(AppRoutes.forms);
                     }),
                 MenuItem(
-                    icon: Icons.build_circle_outlined,
+                    icon: AppIcon.service,
                     label: "Layanan",
                     onTap: () {
                       context.push(AppRoutes.services);
                     }),
                 MenuItem(
-                    icon: Icons.badge_outlined,
-                    label: "Posisi Pegawai",
+                    icon: AppIcon.department,
+                    label: "Departemen",
                     onTap: () {
                       context.push(AppRoutes.positions);
                     }),
                 MenuItem(
-                    icon: Icons.info_outline_rounded,
+                    icon: AppIcon.info,
                     label: "Informasi Perusahaan",
                     onTap: () {
                       context.push(AppRoutes.company);
                     }),
                 MenuItem(
-                    icon: Icons.card_membership_outlined,
+                    icon: AppIcon.memberCode,
                     label: "Kode Unik Langganan",
                     onTap: () {
                       context.push(AppRoutes.membershipsCodes);
                     }),
                 MenuItem(
-                    icon: Icons.chat_bubble_outline_rounded,
+                    icon: AppIcon.qna,
                     label: "Konfigurasi Tanya Jawab",
                     onTap: () {
                       context.push(AppRoutes.companyFaqConfig);
                     }),
                 MenuItem(
-                    icon: Icons.help_outline_outlined,
+                    icon: AppIcon.help,
                     label: "Bantuan",
                     onTap: () {
                       showAppBottomSheet(context,
@@ -110,31 +110,31 @@ class _OwnerCompanyPageState extends State<OwnerCompanyPage> {
             MenuGrid(
               items: [
                 MenuItem(
-                    icon: Icons.inbox_outlined,
+                    icon: AppIcon.serviceRequestInbox,
                     label: "Pengajuan Layanan",
                     onTap: () {
                       context.push(AppRoutes.serviceRequest);
                     }),
                 MenuItem(
-                    icon: Icons.assignment_outlined,
+                    icon: AppIcon.workOrder,
                     label: "Tugas Kerja",
                     onTap: () {
                       context.push(AppRoutes.workorders);
                     }),
                 MenuItem(
-                    icon: Icons.people_outline,
+                    icon: AppIcon.employee,
                     label: "Pegawai",
                     onTap: () {
                       context.push(AppRoutes.employee);
                     }),
                 MenuItem(
-                    icon: Icons.person_add_alt_1_outlined,
+                    icon: AppIcon.history,
                     label: "Riwayat Undangan Pegawai",
                     onTap: () {
                       context.push(AppRoutes.invitationsHistory);
                     }),
                 MenuItem(
-                    icon: Icons.wallet_membership_outlined,
+                    icon: AppIcon.membership,
                     label: "Pelanggan",
                     onTap: () {
                       showAppBottomSheet(context,
@@ -146,7 +146,7 @@ class _OwnerCompanyPageState extends State<OwnerCompanyPage> {
                           ));
                     }),
                 MenuItem(
-                    icon: Icons.help_outline_outlined,
+                    icon: AppIcon.help,
                     label: "Bantuan",
                     onTap: () {
                       showAppBottomSheet(context,

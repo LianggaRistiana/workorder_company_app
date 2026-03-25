@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 
 class InternalCompanyCard extends StatelessWidget {
-  final String companyName;
-  final String companyAddress;
 
   const InternalCompanyCard({
     super.key,
-    required this.companyName,
-    required this.companyAddress,
   });
 
   @override
@@ -63,7 +59,7 @@ class InternalCompanyCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  companyName,
+                 "Company Name",
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: theme.textTheme.titleLarge?.copyWith(
@@ -73,7 +69,7 @@ class InternalCompanyCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  companyAddress,
+                  "Company Address",
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: theme.textTheme.bodyMedium?.copyWith(

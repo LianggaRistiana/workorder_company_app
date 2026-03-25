@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
 import 'package:workorder_company_app/shared/widgets/info_bottom_sheet.dart';
@@ -20,25 +21,25 @@ class OwnerContent extends StatelessWidget {
         MenuGrid(
           items: [
             MenuItem(
-                icon: Icons.assignment_turned_in_outlined,
+                icon: AppIcon.form,
                 label: "Formulir",
                 onTap: () {
                   context.push(AppRoutes.forms);
                 }),
             MenuItem(
-                icon: Icons.build_circle_outlined,
+                icon: AppIcon.service,
                 label: "Layanan",
                 onTap: () {
                   context.push(AppRoutes.services);
                 }),
             MenuItem(
-                icon: Icons.badge_outlined,
+                icon: AppIcon.department,
                 label: "Departemen",
                 onTap: () {
                   context.push(AppRoutes.positions);
                 }),
             MenuItem(
-                icon: Icons.help_outline_outlined,
+                icon: AppIcon.help,
                 label: "Bantuan",
                 onTap: () {
                   showAppBottomSheet(context,
@@ -57,25 +58,25 @@ class OwnerContent extends StatelessWidget {
         MenuGrid(
           items: [
             MenuItem(
-                icon: Icons.inbox_outlined,
+                icon: AppIcon.serviceRequestInbox,
                 label: "Pengajuan Layanan",
                 onTap: () {
                   context.push(AppRoutes.serviceRequest);
                 }),
             MenuItem(
-                icon: Icons.assignment_outlined,
+                icon: AppIcon.workOrder,
                 label: "Perintah Kerja",
                 onTap: () {
                   context.push(AppRoutes.workorders);
                 }),
             MenuItem(
-                icon: Icons.people_outline,
+                icon: AppIcon.employee,
                 label: "Pegawai",
                 onTap: () {
                   context.push(AppRoutes.employee);
                 }),
             MenuItem(
-                icon: Icons.help_outline_outlined,
+                icon: AppIcon.help,
                 label: "Bantuan",
                 onTap: () {
                   showAppBottomSheet(context,
@@ -90,7 +91,7 @@ class OwnerContent extends StatelessWidget {
         ),
         const SizedBox(height: 24),
         HorizontalButton(
-          leadingIcon: Icons.dashboard_outlined,
+          leadingIcon: AppIcon.more,
           title: "Menu lainnya",
           description:
               "Pengaturan umum seperti nama, alamat perusahaan dan lain sebagainya",

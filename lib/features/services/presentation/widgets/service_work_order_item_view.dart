@@ -45,7 +45,7 @@ class ServiceWorkOrderItemView extends StatelessWidget {
                       PropertyDisplay(showDivider: false, properties: [
                         PropertyItem.widget(
                           label: "Formulir Perintah Kerja",
-                          icon: Icons.build_circle_outlined,
+                          icon: Icons.task_outlined,
                           child: ClickableCustomCard(
                               onTap: () {
                                 context.pop();
@@ -70,7 +70,7 @@ class ServiceWorkOrderItemView extends StatelessWidget {
                               )),
                         ),
                         PropertyItem.text(
-                            icon: Icons.shield_outlined,
+                            icon: Icons.admin_panel_settings,
                             label: "Hak Persetujuan Perintah Kerja",
                             value:
                                 config.workOrderAprrovalAccessType.displayName)
@@ -79,13 +79,13 @@ class ServiceWorkOrderItemView extends StatelessWidget {
                       PropertyDisplay(showDivider: false, properties: [
                         PropertyItem.widget(
                           label: "Formulir Laporan",
-                          icon: Icons.build_circle_outlined,
+                          icon: Icons.task_outlined,
                           child: ClickableCustomCard(
                               onTap: () {},
                               child: Text(config.workReportForm.title)),
                         ),
                         PropertyItem.text(
-                            icon: Icons.shield_outlined,
+                            icon: Icons.admin_panel_settings,
                             label: "Hak Persetujuan Laporan Kerja",
                             value:
                                 config.workReportApprovalAccessType.displayName)

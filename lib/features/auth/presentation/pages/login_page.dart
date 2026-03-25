@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:workorder_company_app/core/utils/validators.dart';
 import 'package:workorder_company_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
@@ -69,11 +70,16 @@ class _LoginPageState extends State<LoginPage> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(
-                      "Masuk",
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontSize: 32,
-                          ),
+                    Row(
+                      children: [
+                        Text(
+                          "Masuk",
+                          style:
+                              Theme.of(context).textTheme.titleLarge?.copyWith(
+                                    fontSize: 32,
+                                  ),
+                        ),
+                      ],
                     ),
                     Text(
                         "Masukan Email dan Kata Sandi Anda untuk masuk ke aplikasi.",
@@ -82,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
                     CustomInputField(
                       controller: _emailController,
                       label: "Email",
-                      prefixIcon: const Icon(Icons.email_outlined),
+                      prefixIcon: const Icon(LucideIcons.mail),
                       validator: (value) {
                         // gunakan ValidatorUtils + placeholder TODO
                         final result = ValidatorUtils.validate(
@@ -98,12 +104,10 @@ class _LoginPageState extends State<LoginPage> {
                       controller: _passwordController,
                       obscureText: !_showPassword,
                       label: "Kata Sandi",
-                      prefixIcon: const Icon(Icons.lock_outline_rounded),
+                      prefixIcon: const Icon(LucideIcons.lock),
                       suffixIcon: IconButton(
                         icon: Icon(
-                          _showPassword
-                              ? Icons.visibility
-                              : Icons.visibility_off,
+                          _showPassword ? LucideIcons.eye : LucideIcons.eyeOff,
                         ),
                         onPressed: () {
                           setState(() {
@@ -124,7 +128,9 @@ class _LoginPageState extends State<LoginPage> {
                     ElevatedButton(
                       onPressed: isLoading ? null : _onLoginPressed,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).floatingActionButtonTheme.backgroundColor,
+                        backgroundColor: Theme.of(context)
+                            .floatingActionButtonTheme
+                            .backgroundColor,
                         padding: const EdgeInsets.symmetric(vertical: 12),
                       ),
                       child: isLoading
