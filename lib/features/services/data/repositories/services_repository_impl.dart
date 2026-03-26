@@ -2,6 +2,7 @@ import 'package:workorder_company_app/core/cache/list_cache_helper.dart';
 import 'package:workorder_company_app/core/types/future_either.dart';
 import 'package:workorder_company_app/core/utils/safe_call.dart';
 import 'package:workorder_company_app/features/services/data/datasources/internal_services_management_remote_datasource.dart';
+import 'package:workorder_company_app/features/services/data/model/service_model.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_summary_entity.dart';
 import 'package:workorder_company_app/features/services/domain/repositories/services_repository.dart';
@@ -15,8 +16,11 @@ class ServicesRepositoryImpl implements ServicesRepository {
 
   @override
   FutureEither<ServiceEntity> createService(ServiceEntity service) {
-    // TODO: implement createService
-    throw UnimplementedError();
+    return safeCall(() async {
+      final payload = await _internalRemoteDatasource
+          .createService(ServiceModel.fromEntity(service));
+      return payload.data!;
+    });
   }
 
   @override
@@ -41,8 +45,7 @@ class ServicesRepositoryImpl implements ServicesRepository {
 
   @override
   FutureEitherList<ServiceSummaryEntity> getServices(
-    {bool forceRefresh = false}
-  ) {
+      {bool forceRefresh = false}) {
     return _cache.fetchList(
       remoteCall: () async {
         final response = await _internalRemoteDatasource.getServices();

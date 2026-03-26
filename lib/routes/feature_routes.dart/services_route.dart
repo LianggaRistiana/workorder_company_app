@@ -1,7 +1,7 @@
 import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/features/services/presentation/pages/service_create_page.dart';
 import 'package:workorder_company_app/features/services/presentation/pages/service_detail_page.dart';
 import 'package:workorder_company_app/features/services/presentation/pages/services_list_page.dart';
-import 'package:workorder_company_app/features/services_legacy/presentation/pages/service_create/service_create_page.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 
 final serviceRoute = [
@@ -12,7 +12,6 @@ final serviceRoute = [
   GoRoute(
     path: AppRoutes.servicesCreate,
     builder: (_, __) => const ServiceCreatePage(),
-    // builder: (_, __) => const CreateServicePage(),
   ),
   GoRoute(
     path: AppRoutes.servicesDetail,

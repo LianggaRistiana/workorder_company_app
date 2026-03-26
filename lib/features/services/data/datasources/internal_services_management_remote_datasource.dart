@@ -20,11 +20,10 @@ class InternalServicesManagementRemoteDatasourceImpl
 
   @override
   ApiFuture<ServiceModel> createService(ServiceModel service) async {
-    // final response =
-    //     await _apiClient.post(Endpoints.services, data: service.toJson());
-    // return ApiResponse<ServiceModel>.fromJson(
-    //     response, (data) => ServiceModel.fromJson(data));
-    throw UnimplementedError();
+    final response =
+        await _apiClient.post(Endpoints.services, data: service.toJson());
+    return ApiResponse<ServiceModel>.fromJson(
+        response, (data) => ServiceModel.fromJson(data));
   }
 
   @override

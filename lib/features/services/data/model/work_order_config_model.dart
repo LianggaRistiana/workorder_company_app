@@ -20,12 +20,35 @@ class WorkOrderConfigModel extends WorkOrderConfigEntity {
       workReportForm: FormModel.fromJson(json["workReportForm"]),
       positionOnDuty: PositionModel.fromJson(json["positionsOnDuty"]),
       workOrderAprrovalAccessType: WorkOrderAprrovalAccess.fromString(
-          safeParse<String>(json, "workOrderApprovalAccessType")
-          ),
+          safeParse<String>(json, "workOrderApprovalAccessType")),
       workReportApprovalAccessType: WorkReportApprovalAccess.fromString(
           safeParse<String>(json, "workReportApprovalAccessType")),
       minStaff: safeParse<int>(json, "minStaff"),
       maxStaff: safeParse<int>(json, "maxStaff"),
     );
+  }
+
+  factory WorkOrderConfigModel.fromEntity(WorkOrderConfigEntity entity) {
+    return WorkOrderConfigModel(
+      workOrderForm: entity.workOrderForm,
+      workReportForm: entity.workReportForm,
+      positionOnDuty: entity.positionOnDuty,
+      workOrderAprrovalAccessType: entity.workOrderAprrovalAccessType,
+      workReportApprovalAccessType: entity.workReportApprovalAccessType,
+      minStaff: entity.minStaff,
+      maxStaff: entity.maxStaff,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "workOrderForm": (workOrderForm as FormModel).toJson(),
+      "workReportForm": (workReportForm as FormModel).toJson(),
+      "positionsOnDuty": (positionOnDuty as PositionModel).toJson(),
+      "workOrderApprovalAccessType": workOrderAprrovalAccessType.toSnakeCase(),
+      "workReportApprovalAccessType": workReportApprovalAccessType.toSnakeCase(),
+      "minStaff": minStaff,
+      "maxStaff": maxStaff,
+    };
   }
 }

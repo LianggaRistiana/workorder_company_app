@@ -32,5 +32,31 @@ class ServiceModel extends ServiceEntity {
     );
   }
 
-  
+  factory ServiceModel.fromEntity(ServiceEntity entity) {
+    return ServiceModel(
+      id: entity.id,
+      title: entity.title,
+      description: entity.description,
+      accessType: entity.accessType,
+      isActive: entity.isActive,
+      serviceRequestConfig: ServiceRequestConfigModel.fromEntity(entity.serviceRequestConfig),
+      workOrdersConfig: entity.workOrdersConfig.map((e) => WorkOrderConfigModel.fromEntity(e)).toList(),
+    );
+  }
+
+
+  Map<String, dynamic> toJson() {
+    return {
+      "_id": id,
+      "title": title,
+      "description": description,
+      "accessType": accessType.toSnakeCase(),
+      "isActive": isActive,
+      "serviceRequestConfig":
+          (serviceRequestConfig as ServiceRequestConfigModel).toJson(),
+      "workOrdersConfig": workOrdersConfig
+          .map((e) => (e as WorkOrderConfigModel).toJson())
+          .toList()
+    };
+  }
 }

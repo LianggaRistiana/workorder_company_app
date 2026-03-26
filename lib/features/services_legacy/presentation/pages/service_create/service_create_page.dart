@@ -91,7 +91,7 @@ class _ServiceCreatePageState extends State<ServiceCreatePage>
                   child: CustomStepIndicator(
                     currentStep: _tabController.index,
                     steps: const [
-                      'Konfigurasi',
+                      'Konfigurasi',  
                       'Permintaan',
                       'Perintah Kerja',
                       'Laporan'

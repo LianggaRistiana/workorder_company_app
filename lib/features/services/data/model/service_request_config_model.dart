@@ -19,4 +19,24 @@ class ServiceRequestConfigModel extends ServiceRequestConfigEntity {
       reviewNeed: safeParse<bool>(json, "reviewNeed"),
     );
   }
+
+  factory ServiceRequestConfigModel.fromEntity(ServiceRequestConfigEntity entity) {
+    return ServiceRequestConfigModel(
+      intakeForm: entity.intakeForm,
+      reviewForm: entity.reviewForm,
+      serviceRequestApprovalAccessType: entity.serviceRequestApprovalAccessType,
+      reviewNeed: entity.reviewNeed,
+    );
+  }
+
+  Map<String, dynamic> toJson() { 
+    return {
+      "intakeForm": (intakeForm as FormModel).toJson(),
+      "reviewForm": (reviewForm as FormModel).toJson(),
+      "serviceRequestApprovalAccessType": serviceRequestApprovalAccessType.toSnakeCase(),
+      "reviewNeed": reviewNeed,
+    };
+  }
+
+  
 }

@@ -1,10 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/logger.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
 import 'package:workorder_company_app/features/services/domain/usecases/internal_create_service_usecase.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/create/service_create_state.dart';
 
+
+// TODO : refactor state in page
 class ServiceCreateCubit extends Cubit<ServiceCreateState> {
   final InternalCreateServiceUsecase _createServiceUsecase;
 
@@ -210,10 +213,16 @@ class ServiceCreateCubit extends Cubit<ServiceCreateState> {
     try {
       final entity = state.serviceConfig.toEntity(id: "");
 
-      await _createServiceUsecase(entity);
-
-      emit(state.copyWith(status: ServiceCreateStatus.success));
+      final result = await _createServiceUsecase(entity);
+      result.fold(
+        (l) => emit(state.copyWith(
+          status: ServiceCreateStatus.error,
+          errorMessage: l.message,
+        )),
+        (r) => emit(state.copyWith(status: ServiceCreateStatus.success)),
+      );
     } catch (e) {
+      Logger().e(e);
       emit(state.copyWith(
         status: ServiceCreateStatus.error,
         errorMessage: "Invalid Data in Service Config",
