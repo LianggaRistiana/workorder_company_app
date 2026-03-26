@@ -64,7 +64,9 @@ class _ServiceDetailView extends StatelessWidget {
                         tabs: const [
                           Tab(child: FittedBox(child: Text("Konfigurasi"))),
                           Tab(child: FittedBox(child: Text("Permintaan"))),
-                          Tab(child: FittedBox(child: Text("Perintah Kerja\ndan Laporan"))),
+                          Tab(
+                              child: FittedBox(
+                                  child: Text("Perintah Kerja\ndan Laporan"))),
                         ],
                       ),
                       Expanded(

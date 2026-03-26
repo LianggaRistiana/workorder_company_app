@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/theme/app_icon.dart';
+import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
 import 'package:workorder_company_app/features/services/domain/entities/work_order_config_entity.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
@@ -32,11 +34,11 @@ class ServiceWorkOrderItemView extends StatelessWidget {
                     children: [
                       PropertyDisplay(showDivider: false, properties: [
                         PropertyItem.text(
-                            icon: Icons.badge_outlined,
+                            icon: AppIcon.department,
                             label: "Departemen bertugas",
                             value: config.positionOnDuty.name),
                         PropertyItem.text(
-                            icon: Icons.people_alt_outlined,
+                            icon: AppIcon.employee,
                             label: "Pegawai Diperlukan",
                             value:
                                 "${config.minStaff} hingga ${config.maxStaff} orang"),
@@ -44,31 +46,10 @@ class ServiceWorkOrderItemView extends StatelessWidget {
                       const Divider(),
                       PropertyDisplay(showDivider: false, properties: [
                         PropertyItem.widget(
-                          label: "Formulir Perintah Kerja",
-                          icon: Icons.task_outlined,
-                          child: ClickableCustomCard(
-                              onTap: () {
-                                context.pop();
-                                context.push(AppRoutes.formsDetail
-                                    .fillId(config.workOrderForm.id));
-                              },
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    config.workOrderForm.title,
-                                    style:
-                                        Theme.of(context).textTheme.titleSmall,
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    config.workOrderForm.description,
-                                    style:
-                                        Theme.of(context).textTheme.labelSmall,
-                                  ),
-                                ],
-                              )),
-                        ),
+                            label: "Formulir Perintah Kerja",
+                            icon: AppIcon.workOrder,
+                            child:
+                                ClickableFormCard(form: config.workOrderForm)),
                         PropertyItem.text(
                             icon: Icons.admin_panel_settings,
                             label: "Hak Persetujuan Perintah Kerja",
@@ -79,10 +60,8 @@ class ServiceWorkOrderItemView extends StatelessWidget {
                       PropertyDisplay(showDivider: false, properties: [
                         PropertyItem.widget(
                           label: "Formulir Laporan",
-                          icon: Icons.task_outlined,
-                          child: ClickableCustomCard(
-                              onTap: () {},
-                              child: Text(config.workReportForm.title)),
+                          icon: AppIcon.workReport,
+                          child: ClickableFormCard(form: config.workReportForm),
                         ),
                         PropertyItem.text(
                             icon: Icons.admin_panel_settings,
@@ -96,18 +75,48 @@ class ServiceWorkOrderItemView extends StatelessWidget {
         child: PropertyDisplay(properties: [
           PropertyItem.text(
             label: "Formulir Perintah Kerja",
-            icon: Icons.build_circle_outlined,
+            icon: AppIcon.workOrder,
             value: config.workOrderForm.title,
           ),
           PropertyItem.text(
             label: "Formulir Laporan",
-            icon: Icons.build_circle_outlined,
+            icon: AppIcon.workReport,
             value: config.workReportForm.title,
           ),
           PropertyItem.text(
-              icon: Icons.badge_outlined,
+              icon: AppIcon.department,
               label: "Departemen bertugas",
               value: config.positionOnDuty.name)
         ]));
+  }
+}
+
+class ClickableFormCard extends StatelessWidget {
+  final FormEntity form;
+  const ClickableFormCard({super.key, required this.form});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+        width: double.infinity,
+        child: ClickableCustomCard(
+            onTap: () {
+              context.pop();
+              context.push(AppRoutes.formsDetail.fillId(form.id));
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  form.title,
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  form.description,
+                  style: Theme.of(context).textTheme.labelSmall,
+                ),
+              ],
+            )));
   }
 }

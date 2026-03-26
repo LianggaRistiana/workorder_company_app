@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/services/domain/entities/base_service_entity.dart';
 import 'package:workorder_company_app/shared/widgets/active_status_chip.dart';
@@ -18,7 +19,7 @@ class ServiceConfigView extends StatelessWidget {
           PropertyItem.text(
             label: "Nama Layanan",
             value: service.title,
-            icon: Icons.build_circle_outlined,
+            icon: AppIcon.service,
           ),
           PropertyItem.text(
             label: "Deskripsi",
@@ -32,7 +33,7 @@ class ServiceConfigView extends StatelessWidget {
           ),
           PropertyItem.widget(
               label: "Status Aktif",
-              icon: Icons.verified_outlined,
+              icon: AppIcon.activeState,
               child: ActiveStatusChip(
                 isActive: service.isActive,
               )),

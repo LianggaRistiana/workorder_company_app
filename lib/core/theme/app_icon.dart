@@ -39,7 +39,11 @@ class AppIcon {
   static const IconData edit = LucideIcons.edit3;
   static const IconData delete = LucideIcons.trash;
 
-  // Icon For Account action
+  // Icon For Account Action
   static const IconData logout = LucideIcons.logOut;
   static const IconData login = LucideIcons.logIn;
+
+  // Icon For StateData
+  static const IconData activeState = LucideIcons.checkCircle2;
+  static const IconData inactiveState = Icons.block_outlined;
 }
