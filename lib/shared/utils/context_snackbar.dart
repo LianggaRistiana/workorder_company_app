@@ -24,6 +24,29 @@ extension ContextSnackbar on BuildContext {
       ),
     );
   }
+  void showWarning(String message) {
+    ScaffoldMessenger.of(this).showSnackBar(
+      SnackBar(
+        elevation: 0,
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Theme.of(this).colorScheme.surface,
+        margin: const EdgeInsets.all(16),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+            side: BorderSide(color: Theme.of(this).dividerColor.withAlpha(50))),
+        content: Row(
+          children: [
+            Icon(Icons.warning, color: Theme.of(this).colorScheme.error),
+            const SizedBox(width: 8),
+            Expanded(
+                child: Text(message,
+                    style:
+                        TextStyle(color: Theme.of(this).colorScheme.error))),
+          ],
+        ),
+      ),
+    );
+  }
 
   void showError(String message) {
     ScaffoldMessenger.of(this).showSnackBar(

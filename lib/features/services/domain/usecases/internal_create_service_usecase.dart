@@ -12,7 +12,7 @@ class InternalCreateServiceUsecase {
 
   FutureEither<ServiceEntity> call(ServiceDraft draft) async {
     try {
-      final entity = draft.toEntity(id: "");
+      final entity = draft.toEntity();
       return await _repository.createService(entity);
     } on ValidataionException catch (e) {
       return Left(ValidationFailure(

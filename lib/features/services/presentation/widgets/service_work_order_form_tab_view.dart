@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 // import 'package:logger/logger.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
+import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
 import 'package:workorder_company_app/features/forms/presentation/widgets/forms_selector_container.dart';
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
 import 'package:workorder_company_app/features/services/domain/draft/service_work_order_config_draft.dart';
@@ -22,7 +23,7 @@ class ServiceWorkOrderFormTabView extends StatelessWidget {
       onApprovalChange;
 
   final void Function(int index) onRemove;
-  final ValueChanged onAdd;
+  final ValueChanged<FormEntity> onAdd;
 
   const ServiceWorkOrderFormTabView({
     super.key,

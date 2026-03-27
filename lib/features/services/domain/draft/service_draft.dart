@@ -7,6 +7,7 @@ import 'package:workorder_company_app/features/services/domain/entities/service_
 import 'package:workorder_company_app/features/services/domain/entities/service_request_config_entity.dart';
 
 class ServiceDraft {
+  final String id;
   final bool isActive;
   final String title;
   final String description;
@@ -19,6 +20,7 @@ class ServiceDraft {
   final List<ServiceWorkOrderConfigDraft> workOrders;
 
   const ServiceDraft({
+    required this.id,
     required this.isActive,
     required this.title,
     required this.description,
@@ -31,6 +33,7 @@ class ServiceDraft {
 
   factory ServiceDraft.initial() {
     return const ServiceDraft(
+      id: '',
       isActive: true,
       title: '',
       description: '',
@@ -41,6 +44,21 @@ class ServiceDraft {
       workOrders: [],
     );
   }
+
+  factory ServiceDraft.fromEntity(ServiceEntity entity) {
+    return ServiceDraft(
+      id: entity.id,
+      isActive: entity.isActive,
+      title: entity.title,
+      description: entity.description,
+      accessType: entity.accessType,
+      requestApprovalAccess: entity.serviceRequestConfig.serviceRequestApprovalAccessType,
+      intakeForm: entity.serviceRequestConfig.intakeForm,
+      reviewForm: entity.serviceRequestConfig.reviewForm,
+      workOrders: entity.workOrdersConfig.map((e) => ServiceWorkOrderConfigDraft.fromEntity(e)).toList(),
+    );
+  }
+
 
   ServiceDraft copyWith({
     bool? isActive,
@@ -53,6 +71,7 @@ class ServiceDraft {
     List<ServiceWorkOrderConfigDraft>? workOrders,
   }) {
     return ServiceDraft(
+      id: id,
       isActive: isActive ?? this.isActive,
       title: title ?? this.title,
       description: description ?? this.description,
@@ -172,7 +191,7 @@ class ServiceDraft {
 }
 
 extension ServiceDraftMapper on ServiceDraft {
-  ServiceEntity toEntity({required String id}) {
+  ServiceEntity toEntity() {
     if (!isBasicInfoValid) {
       throw ValidataionException("Informasi dasar service belum lengkap");
     }

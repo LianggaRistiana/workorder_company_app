@@ -36,6 +36,20 @@ class ServiceWorkOrderConfigDraft extends Equatable {
     );
   }
 
+  factory ServiceWorkOrderConfigDraft.fromEntity(
+    WorkOrderConfigEntity entity,
+  ) {
+    return ServiceWorkOrderConfigDraft(
+      workOrderForm: entity.workOrderForm,
+      reportForm: entity.workReportForm,
+      minStaff: entity.minStaff,
+      maxStaff: entity.maxStaff,
+      departmentOnDuty: entity.positionOnDuty,
+      workOrderApprovalAccess: entity.workOrderAprrovalAccessType,
+      workReportApprovalAccess: entity.workReportApprovalAccessType,
+    );
+  }
+
   /// =========================
   /// SAFE COPY WITH (Nullable Support)
   /// =========================
@@ -97,9 +111,7 @@ class ServiceWorkOrderConfigDraft extends Equatable {
 /// Private marker
 const _noChange = Object();
 
-extension WorkOrderDraftMapper
-    on ServiceWorkOrderConfigDraft {
-
+extension WorkOrderDraftMapper on ServiceWorkOrderConfigDraft {
   WorkOrderConfigEntity toEntity() {
     if (reportForm == null) {
       throw ValidataionException("Work report form wajib dipilih");
@@ -118,7 +130,8 @@ extension WorkOrderDraftMapper
     }
 
     if (minStaff! > maxStaff!) {
-      throw ValidataionException("Min staff tidak boleh lebih besar dari max staff");
+      throw ValidataionException(
+          "Min staff tidak boleh lebih besar dari max staff");
     }
 
     return WorkOrderConfigEntity(
