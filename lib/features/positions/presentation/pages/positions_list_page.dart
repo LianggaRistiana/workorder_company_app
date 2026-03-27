@@ -4,16 +4,17 @@ import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/authorization/feature/positions_permission.dart';
 import 'package:workorder_company_app/core/authorization/widget/permission_gate.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
+import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/list/positions_list_bloc.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/list/positions_list_event.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/list/positions_list_state.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
-import 'package:workorder_company_app/shared/widgets/bottom_sheet_actions.dart';
+// import 'package:workorder_company_app/shared/widgets/bottom_sheet_actions.dart';
 import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
-import 'package:workorder_company_app/shared/widgets/info_bottom_sheet.dart';
+// import 'package:workorder_company_app/shared/widgets/info_bottom_sheet.dart';
 import 'package:workorder_company_app/shared/widgets/list_page_scafold.dart';
 
 class PositionsListPage extends StatelessWidget {
@@ -85,52 +86,53 @@ class _PositionsListView extends StatelessWidget {
                 context.push(AppRoutes.positionsDetail.fillId(position.id));
               },
               onLongPress: () {
-                showAppBottomSheet(
-                  context,
-                  header: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        IconBox(
-                          icon: Icons.badge_outlined,
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Text(
-                            position.name,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
-                        ),
-                      ]),
-                  content: ActionBottomSheetContent(
-                    actions: [
-                      BottomSheetAction(
-                        title: "Edit",
-                        icon: Icons.edit,
-                        onTap: () {
-                          // print("Edit");
-                        },
-                      ),
-                      BottomSheetAction(
-                        title: "Hapus",
-                        icon: Icons.delete,
-                        isDanger: true,
-                        onTap: () {
-                          // print("Delete");
-                        },
-                      ),
-                    ],
-                  ),
-                );
+                // TODO : fix later
+                // showAppBottomSheet(
+                //   context,
+                //   header: Row(
+                //       mainAxisAlignment: MainAxisAlignment.start,
+                //       crossAxisAlignment: CrossAxisAlignment.center,
+                //       children: [
+                //         IconBox(
+                //           icon: AppIcon.department,
+                //         ),
+                //         const SizedBox(width: 12),
+                //         Expanded(
+                //           child: Text(
+                //             position.name,
+                //             maxLines: 1,
+                //             overflow: TextOverflow.ellipsis,
+                //             style: Theme.of(context).textTheme.titleMedium,
+                //           ),
+                //         ),
+                //       ]),
+                //   content: ActionBottomSheetContent(
+                //     actions: [
+                //       BottomSheetAction(
+                //         title: "Edit",
+                //         icon: AppIcon.edit,
+                //         onTap: () {
+                //           // print("Edit");
+                //         },
+                //       ),
+                //       BottomSheetAction(
+                //         title: "Hapus",
+                //         icon: AppIcon.delete,
+                //         isDanger: true,
+                //         onTap: () {
+                //           // print("Delete");
+                //         },
+                //       ),
+                //     ],
+                //   ),
+                // );
               },
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     IconBox(
-                      icon: Icons.badge_outlined,
+                      icon: AppIcon.department,
                     ),
                     const SizedBox(width: 12),
                     Expanded(

@@ -34,8 +34,7 @@ class _CompanyDetailPageState extends State<CompanyDetailPage> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-      ),
+      appBar: AppBar(),
       body: BlocBuilder<CompanyBloc, CompanyState>(
         builder: (context, state) {
           switch (state.status) {
@@ -76,8 +75,9 @@ class _CompanyDetailPageState extends State<CompanyDetailPage> {
               final companyData = state.selectedCompany;
               final servicesData = state.selectedCompanyServices;
 
-              if (companyData == null)
+              if (companyData == null) {
                 return EmptyStateWidget(text: "Perusahaan tidak ditemukan");
+              }
               return _buildCompanyContent(
                   context, companyData, servicesData ?? []);
 
@@ -179,7 +179,8 @@ class _CompanyDetailPageState extends State<CompanyDetailPage> {
               itemBuilder: (service, _) => ServiceItem(
                   service: service,
                   onTap: () {
-                    context.push(AppRoutes.publicServiceDetail.fillId(service.id));
+                    context
+                        .push(AppRoutes.publicServiceDetail.fillId(service.id));
                   })),
         ],
       ),

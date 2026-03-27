@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/error/failures.dart';
+import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/utils/validators.dart';
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
 import 'package:workorder_company_app/features/positions/domain/properties/position_property.dart';
 import 'package:workorder_company_app/shared/utils/confirm_dialog.dart';
+import 'package:workorder_company_app/shared/widgets/button_with_loading_state.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 import 'package:workorder_company_app/shared/widgets/custom_switch_tile.dart';
 
@@ -117,7 +119,7 @@ class _PositionFormViewState extends State<PositionFormView> {
               label: 'Nama Departemen',
               controller: _nameController,
               enabled: !widget.isLoading,
-              prefixIcon: const Icon(Icons.badge_outlined),
+              prefixIcon: const Icon(AppIcon.department),
               errorText: widget.validation?.errorOf(PositionProperty.name),
               validator: (value) {
                 return ValidatorUtils.single(
@@ -134,7 +136,7 @@ class _PositionFormViewState extends State<PositionFormView> {
               errorText:
                   widget.validation?.errorOf(PositionProperty.description),
               maxLines: 3,
-              prefixIcon: const Icon(Icons.info_outline),
+              prefixIcon: const Icon(AppIcon.desc),
               // validator: (value) {
               //   return ValidatorUtils.single(
               //       value, fieldName: "Deskripsi", ValidatorType.required);
@@ -144,7 +146,7 @@ class _PositionFormViewState extends State<PositionFormView> {
             CustomSwitchTile(
               title: 'Status Aktif',
               description: 'Jika nonaktif, Departemen tidak dapat digunakan',
-              leadingIcon: Icons.task_alt_outlined,
+              leadingIcon: AppIcon.activeState,
               value: _isActive,
               onChanged: (val) {
                 setState(() {
@@ -153,25 +155,11 @@ class _PositionFormViewState extends State<PositionFormView> {
               },
             ),
             const Spacer(),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: widget.isLoading ? null : _handleSubmit,
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                ),
-                child: widget.isLoading
-                    ? const SizedBox(
-                        height: 18,
-                        width: 18,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: Colors.white,
-                        ),
-                      )
-                    : Text(widget.submitLabel),
-              ),
-            ),
+            ButtonWithLoadingState(
+                onPressed: _handleSubmit,
+                isLoading: widget.isLoading,
+                icon: AppIcon.submit,
+                label: widget.submitLabel)
           ],
         ),
       ),

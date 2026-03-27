@@ -7,6 +7,7 @@ import 'package:workorder_company_app/features/company/domain/entities/company_e
 import 'package:workorder_company_app/features/company/presentation/bloc/internal_company_management/internal_company_get_cubit.dart';
 import 'package:workorder_company_app/features/company/presentation/bloc/internal_company_management/internal_company_get_state.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/property_display.dart';
 
@@ -36,7 +37,7 @@ class _InternalCompanyProfilePageState
       body: BlocBuilder<InternalCompanyCubit, InternalCompanyState>(
         builder: (context, state) {
           if (state.company == null && state.isLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(child: AppLoading());
           }
 
           if (state.company == null) {
@@ -64,7 +65,7 @@ class _InternalCompanyProfilePageState
                     child: PropertyDisplay(properties: [
                   PropertyItem.text(
                       label: "Nama Perusahaan",
-                      icon: Icons.business,
+                      icon: AppIcon.company,
                       value: company.name),
                   PropertyItem.text(
                     label: "Alamat",
@@ -75,7 +76,7 @@ class _InternalCompanyProfilePageState
                   ),
                   PropertyItem.text(
                     label: "Deskripsi",
-                    icon: Icons.info_outline,
+                    icon: AppIcon.desc,
                     value: company.description.isEmpty
                         ? "Deskripsi belum diisi"
                         : company.description,

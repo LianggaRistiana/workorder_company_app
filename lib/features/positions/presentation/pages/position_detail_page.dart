@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
+import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/detail/position_detail_cubit.dart';
@@ -98,7 +99,7 @@ class _DetailContent extends StatelessWidget {
           /// Header
           HeaderOfPage(
             title: position.name,
-            icon: Icons.badge_outlined,
+            icon: AppIcon.department,
           ),
 
           /// ===== SECTION: INFORMASI =====
@@ -110,16 +111,16 @@ class _DetailContent extends StatelessWidget {
                   PropertyItem.text(
                     label: "Nama Departemen",
                     value: position.name,
-                    icon: Icons.badge_outlined,
+                    icon: AppIcon.department,
                   ),
                   PropertyItem.text(
                     label: "Deskripsi",
                     value: position.description ?? "-",
-                    icon: Icons.info_outline,
+                    icon: AppIcon.desc,
                   ),
                   PropertyItem.widget(
                       label: "Status Aktif",
-                      icon: Icons.verified,
+                      icon: AppIcon.activeState,
                       child: ActiveStatusChip(
                         isActive: position.isActive,
                       )),
@@ -129,7 +130,7 @@ class _DetailContent extends StatelessWidget {
           /// ===== ACTION BUTTON =====
           SizedBox(
             width: double.infinity,
-            child: FilledButton.icon(
+            child: TextButton.icon(
               onPressed: () async {
                 final result = await context.push<PositionEntity?>(
                     AppRoutes.positionsUpdate,
@@ -140,7 +141,7 @@ class _DetailContent extends StatelessWidget {
                   context.read<PositionDetailCubit>().replaceData(result);
                 }
               },
-              icon: const Icon(Icons.edit),
+              icon: const Icon(AppIcon.edit),
               label: const Text("Edit Departemen"),
             ),
           ),
@@ -152,7 +153,7 @@ class _DetailContent extends StatelessWidget {
           /// ===== SECTION: DAFTAR PEGAWAI =====
           PropertyTitle(
             label: "Daftar Pegawai",
-            icon: Icons.people_outline,
+            icon: AppIcon.employee,
           ),
 
           const SizedBox(height: AppSpacing.md),

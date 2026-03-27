@@ -69,6 +69,7 @@ class ListPageScaffold<T> extends StatelessWidget {
       );
     }
 
+    // TODO : fix later (empty and loaded should have on refresindicator)
     // EMPTY
     else if (items.isEmpty) {
       content = RefreshIndicator(
@@ -76,6 +77,7 @@ class ListPageScaffold<T> extends StatelessWidget {
         child: ListView(
           physics: const AlwaysScrollableScrollPhysics(),
           children: [
+            if (header != null) header!,
             const SizedBox(height: 200),
             Center(
               child: emptyWidget ?? const Text("Belum ada data."),
