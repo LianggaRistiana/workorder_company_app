@@ -31,8 +31,8 @@ class ServiceRequestConfigModel extends ServiceRequestConfigEntity {
 
   Map<String, dynamic> toJson() { 
     return {
-      "intakeForm": (intakeForm as FormModel).toJson(),
-      "reviewForm": (reviewForm as FormModel).toJson(),
+      "intakeFormId": intakeForm.id ,
+      "reviewFormId": reviewForm.id,
       "serviceRequestApprovalAccessType": serviceRequestApprovalAccessType.toSnakeCase(),
       "reviewNeed": reviewNeed,
     };

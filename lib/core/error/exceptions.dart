@@ -34,6 +34,17 @@ class ParsingException implements Exception {
   String toString() => message ?? 'ParsingException';
 }
 
+class ValidataionException implements Exception {
+  final String? message;
+
+  ValidataionException([this.message]);
+
+  @override
+  String toString() => message ?? 'ValidataionException';
+}
+
+
+
 /// Exception untuk error koneksi (misal no internet)
 class NetworkException implements Exception {
   final String? message;

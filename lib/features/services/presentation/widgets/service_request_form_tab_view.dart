@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
+import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
 import 'package:workorder_company_app/features/forms/presentation/widgets/forms_selector_container.dart';
-import 'package:workorder_company_app/features/services/presentation/bloc/create/service_create_cubit.dart';
 import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/dashed_button.dart';
@@ -11,7 +10,24 @@ import 'package:workorder_company_app/shared/widgets/enum_selector.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
 
 class ServiceRequestFormTabView extends StatelessWidget {
-  const ServiceRequestFormTabView({super.key});
+  final ServiceRequestApprovalAccess approvalAccess;
+  final ValueChanged<ServiceRequestApprovalAccess> onApprovalAccessChanged;
+
+  final FormEntity? intakeForm;
+  final ValueChanged<FormEntity?> onIntakeFormChanged;
+
+  final FormEntity? reviewForm;
+  final ValueChanged<FormEntity?> onReviewFormChanged;
+
+  const ServiceRequestFormTabView({
+    super.key,
+    required this.approvalAccess,
+    required this.onApprovalAccessChanged,
+    required this.intakeForm,
+    required this.onIntakeFormChanged,
+    required this.reviewForm,
+    required this.onReviewFormChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,124 +36,98 @@ class ServiceRequestFormTabView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          /// Approval Access
           CustomCard(
-            child: EnumSelector(
-                title: "Akses Persetujuan",
-                isMultiSelect: false,
-                values: ServiceRequestApprovalAccess.values,
-                selectedValues: [
-                  context.select((ServiceCreateCubit cubit) =>
-                      cubit.state.serviceConfig.serviceRequestApprovalAccess)
-                ],
-                onChanged: (value) {
-                  context
-                      .read<ServiceCreateCubit>()
-                      .updateServiceRequestApprovalAccess(value.firstOrNull ??
-                          ServiceRequestApprovalAccess.manager);
-                }),
+            child: EnumSelector<ServiceRequestApprovalAccess>(
+              title: "Akses Persetujuan",
+              isMultiSelect: false,
+              values: ServiceRequestApprovalAccess.values,
+              selectedValues: [approvalAccess],
+              onChanged: (value) {
+                if (value.isNotEmpty) {
+                  onApprovalAccessChanged(value.first);
+                }
+              },
+            ),
           ),
 
+          const SizedBox(height: 24),
+
+          /// Intake Form
           Text(
             "Formulir Pengajuan Layanan",
             style: Theme.of(context).textTheme.titleSmall,
           ),
-          const SizedBox(
-            height: 12,
-          ),
-          FormsSelectorContainer(
-            selectedForms: [],
-            onAdd: context.read<ServiceCreateCubit>().updateIntakeForm,
-            buttonBuilder: (context, onPressed, isLoading) {
-              final intakeForm = context.select(
-                (ServiceCreateCubit cubit) => cubit.state.serviceConfig.intakeForm,
-              );
+          const SizedBox(height: 12),
 
-              if (isLoading) {
-                return const CircularProgressIndicator();
-              }
-
-              if (intakeForm != null) {
-                return ClickableCustomCard(
-                    onTap: onPressed,
-                    child: Row(
-                      children: [
-                        IconBox(icon: Icons.assignment_turned_in_outlined),
-                        const SizedBox(width: 12),
-                        Expanded(
-                            child: Text(
-                          intakeForm.title,
-                          style: Theme.of(context).textTheme.titleSmall,
-                        ))
-                      ],
-                    ));
-              }
-
-              return DashedButton(
-                title: "Tambah Formulir",
-                onTap: onPressed,
-                borderColor: Theme.of(context).disabledColor,
-                color: Theme.of(context).colorScheme.primary,
-                icon: Icons.add,
-                height: 120,
-                borderRadius: 16,
-                isLoading: isLoading,
-              );
-            },
+          _FormSelectorSection(
+            form: intakeForm,
+            onTap: onIntakeFormChanged,
           ),
 
-          // if (context.select((ServiceCreateCubit cubit)))
-          const SizedBox(
-            height: 24,
-          ),
+          const SizedBox(height: 24),
+
+          /// Review Form
           Text(
             "Formulir Review Layanan",
             style: Theme.of(context).textTheme.titleSmall,
           ),
-          const SizedBox(
-            height: 12,
-          ),
-          FormsSelectorContainer(
-            selectedForms: [],
-            onAdd: context.read<ServiceCreateCubit>().updateReviewForm,
-            buttonBuilder: (context, onPressed, isLoading) {
-              final reviewForm = context.select(
-                (ServiceCreateCubit cubit) => cubit.state.serviceConfig.reviewForm,
-              );
+          const SizedBox(height: 12),
 
-              if (isLoading) {
-                return const CircularProgressIndicator();
-              }
-
-              if (reviewForm != null) {
-                return ClickableCustomCard(
-                    onTap: onPressed,
-                    child: Row(
-                      children: [
-                        IconBox(icon: Icons.assignment_turned_in_outlined),
-                        const SizedBox(width: 12),
-                        Expanded(
-                            child: Text(
-                          reviewForm.title,
-                          style: Theme.of(context).textTheme.titleSmall,
-                        ))
-                      ],
-                    ));
-              }
-
-              return DashedButton(
-                title: "Tambah Formulir",
-                onTap: onPressed,
-                borderColor: Theme.of(context).disabledColor,
-                color: Theme.of(context).colorScheme.primary,
-                icon: Icons.add,
-                height: 120,
-                borderRadius: 16,
-                isLoading: isLoading,
-              );
-            },
+          _FormSelectorSection(
+            form: reviewForm,
+            onTap: onReviewFormChanged,
           ),
         ],
       ),
+    );
+  }
+}
+
+class _FormSelectorSection extends StatelessWidget {
+  final FormEntity? form;
+  final ValueChanged<FormEntity?> onTap;
+
+  const _FormSelectorSection({
+    required this.form,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return FormsSelectorContainer(
+      selectedForms: form != null ? [form!] : [],
+      onAdd: onTap,
+      buttonBuilder: (context, onPressed, isLoading) {
+        if (form != null) {
+          return ClickableCustomCard(
+            onTap: onPressed,
+            child: Row(
+              children: [
+                IconBox(icon: Icons.assignment_turned_in_outlined),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    form!.title,
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                )
+              ],
+            ),
+          );
+        }
+
+        return DashedButton(
+          title: "Tambah Formulir",
+          onTap: onPressed,
+          borderColor: Theme.of(context).disabledColor,
+          color: Theme.of(context).colorScheme.primary,
+          icon: Icons.add,
+          height: 120,
+          borderRadius: 16,
+          isLoading: isLoading,
+        );
+      },
     );
   }
 }

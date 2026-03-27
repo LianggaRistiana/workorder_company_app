@@ -5,6 +5,7 @@ import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/list/forms_list_bloc.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/list/positions_list_bloc.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/list/positions_list_event.dart';
+import 'package:workorder_company_app/features/services/domain/draft/service_draft.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/create/service_create_cubit.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/create/service_create_state.dart';
 import 'package:workorder_company_app/features/services/presentation/widgets/service_config_form_tab_view.dart';
@@ -48,12 +49,23 @@ class __ServiceCreateViewState extends State<_ServiceCreateView>
     with TickerProviderStateMixin {
   late final TabController _tabController;
   final _serviceKey = GlobalKey<FormState>();
+  late final ServiceConfigControllers _configControllers;
+
+  late ServiceDraft _draft;
 
   @override
   void initState() {
     super.initState();
     context.read<PositionsListBloc>().add(GetPositionsListRequested());
     context.read<FormsListBloc>().add(GetFormsListRequested());
+
+    _draft = ServiceDraft.initial();
+
+    _configControllers = ServiceConfigControllers(
+      title: TextEditingController(),
+      description: TextEditingController(),
+    );
+
     _tabController = TabController(length: 4, vsync: this);
     _tabController.addListener(() {
       if (_tabController.indexIsChanging) {
@@ -62,34 +74,30 @@ class __ServiceCreateViewState extends State<_ServiceCreateView>
     });
   }
 
+  void _onSubmit() {
+    // if (!_serviceKey.currentState!.validate()) return;
+    final title = _configControllers.title.text;
+    final description = _configControllers.description.text;
+
+    _draft = _draft.copyWith(
+      title: title,
+      description: description,
+    );
+
+    context.read<ServiceCreateCubit>().submit(_draft);
+  }
+
   void _onNext(BuildContext context) {
     final currentIndex = _tabController.index;
     bool isValid = true;
-    // bool isValid = false;
 
     switch (currentIndex) {
       case 0:
-        final formValid = _serviceKey.currentState?.validate() ?? false;
-
-        // if (requiredStaff.isEmpty || !_validateRequiredStaff()) {
-        //   isValid = false;
-        //   ScaffoldMessenger.of(context).showSnackBar(
-        //     const SnackBar(content: Text('Posisi Belum diisi')),
-        //   );
-        // } else {
-        //   isValid = formValid;
-        // }
-        isValid = true;
-        // isValid = formValid;
+        // TODO : check validation to next Tab
         break;
       case 1:
-        // if (selectedWorkOrderForms.isNotEmpty) {
-        //   isValid = true;
-        // } else {
-        //   ScaffoldMessenger.of(context).showSnackBar(
-        //     const SnackBar(content: Text('Form Workorder Belum diisi')),
-        //   );
-        // }
+        // TODO : check validation to next Tab
+
         break;
     }
 
@@ -139,31 +147,132 @@ class __ServiceCreateViewState extends State<_ServiceCreateView>
                 ),
               ),
               bottomNavigationBar: StepNavigationBar(
-                  currentStep: _tabController.index,
-                  totalSteps: 4,
-                  onPrevious: _onPrevious,
-                  onNext: () => _onNext(context),
-                  finalAction: FilledButton.icon(
-                      onPressed: () {
-                        isLoading
-                            ? null
-                            : context.read<ServiceCreateCubit>().submit();
-                      },
-                      icon: const Icon(AppIcon.submit),
-                      label: Text(isLoading ? "Loading..." : "Simpan"))),
+                isLoading: isLoading,
+                currentStep: _tabController.index,
+                totalSteps: 4,
+                onPrevious: _onPrevious,
+                onNext: () => _onNext(context),
+                finalAction: FilledButton.icon(
+                  onPressed: isLoading ? null : _onSubmit,
+                  icon: const Icon(AppIcon.submit),
+                  label: Text(isLoading ? "Loading..." : "Simpan"),
+                ),
+              ),
               body: TabBarView(
                 controller: _tabController,
                 physics: const NeverScrollableScrollPhysics(),
                 children: [
                   Form(
                     key: _serviceKey,
-                    child: ServiceConfigFormTabView(),
+                    child: ServiceConfigFormTabView(
+                      isActive: _draft.isActive,
+                      onActiveChanged: (v) {
+                        setState(() {
+                          _draft = _draft.copyWith(isActive: v);
+                        });
+                      },
+                      titleController: _configControllers.title,
+                      descriptionController: _configControllers.description,
+                      accessType: _draft.accessType,
+                      onAccessTypeChanged: (v) {
+                        setState(() {
+                          _draft = _draft.copyWith(accessType: v);
+                        });
+                      },
+                    ),
                   ),
-                  ServiceRequestFormTabView(),
-                  ServiceWorkOrderFormTabView(),
-                  ServiceWorkReportFormTabView(),
+                  ServiceRequestFormTabView(
+                    approvalAccess: _draft.requestApprovalAccess,
+                    onApprovalAccessChanged: (value) {
+                      setState(() {
+                        _draft = _draft.copyWith(
+                          requestApprovalAccess: value,
+                        );
+                      });
+                    },
+                    intakeForm: _draft.intakeForm,
+                    onIntakeFormChanged: (form) {
+                      setState(() {
+                        _draft = _draft.copyWith(intakeForm: form);
+                      });
+                    },
+                    reviewForm: _draft.reviewForm,
+                    onReviewFormChanged: (form) {
+                      setState(() {
+                        _draft = _draft.copyWith(reviewForm: form);
+                      });
+                    },
+                  ),
+                  ServiceWorkOrderFormTabView(
+                    workOrders: _draft.workOrders,
+                    onAdd: (form) {
+                      setState(() {
+                        _draft = _draft.addWorkOrder(form);
+                      });
+                    },
+                    onRemove: (index) {
+                      setState(() {
+                        _draft = _draft.removeWorkOrder(index);
+                      });
+                    },
+                    onDepartmentUpdate: (index, position) {
+                      setState(() {
+                        _draft = _draft.updateDepartment(index, position);
+                      });
+                    },
+                    onMinChange: (index, value) {
+                      setState(() {
+                        _draft = _draft.updateMinStaff(index, value);
+                      });
+                    },
+                    onMaxChange: (index, value) {
+                      setState(() {
+                        _draft = _draft.updateMaxStaff(index, value);
+                      });
+                    },
+                    onApprovalChange: (index, value) {
+                      setState(() {
+                        _draft = _draft.updateApproval(index, value);
+                      });
+                    },
+                  ),
+                  ServiceWorkReportFormTabView(
+                    workOrders: _draft.workOrders,
+                    onApprovalChange: (index, value) {
+                      setState(() {
+                        _draft = _draft.updateWorkOrder(
+                          index,
+                          _draft.workOrders[index]
+                              .copyWith(workReportApprovalAccess: value),
+                        );
+                      });
+                    },
+                    onFormUpdate: (index, form) {
+                      setState(() {
+                        _draft = _draft.updateWorkOrder(
+                          index,
+                          _draft.workOrders[index].copyWith(reportForm: form),
+                        );
+                      });
+                    },
+                  ),
                 ],
               )));
     });
+  }
+}
+
+class ServiceConfigControllers {
+  final TextEditingController title;
+  final TextEditingController description;
+
+  ServiceConfigControllers({
+    required this.title,
+    required this.description,
+  });
+
+  void dispose() {
+    title.dispose();
+    description.dispose();
   }
 }

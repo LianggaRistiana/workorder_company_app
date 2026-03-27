@@ -1,4 +1,7 @@
+import 'package:dartz/dartz.dart';
+import 'package:workorder_company_app/core/error/error.dart';
 import 'package:workorder_company_app/core/types/future_either.dart';
+import 'package:workorder_company_app/features/services/domain/draft/service_draft.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
 import 'package:workorder_company_app/features/services/domain/repositories/services_repository.dart';
 
@@ -7,7 +10,15 @@ class InternalCreateServiceUsecase {
 
   InternalCreateServiceUsecase(this._repository);
 
- FutureEither<ServiceEntity>  call(ServiceEntity service) async {
-    return _repository.createService(service);
+  FutureEither<ServiceEntity> call(ServiceDraft draft) async {
+    try {
+      final entity = draft.toEntity(id: "");
+      return await _repository.createService(entity);
+    } on ValidataionException catch (e) {
+      return Left(ValidationFailure(
+          message: e.message ?? "Terjadi Kesalahan", errors: {}));
+    } catch (e) {
+      return Left(UnexpectedFailure(message: e.toString()));
+    }
   }
 }

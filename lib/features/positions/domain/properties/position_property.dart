@@ -8,3 +8,7 @@ enum PositionProperty implements PropertyKey {
   final String key;
   const PositionProperty(this.key);
 }
+
+extension PositionPropertyValidat on PositionProperty {
+  // TODO : can do like this
+}

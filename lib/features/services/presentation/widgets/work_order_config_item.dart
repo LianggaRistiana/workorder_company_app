@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
 import 'package:workorder_company_app/features/positions/presentation/widget/positions_selector_container.dart';
-import 'package:workorder_company_app/features/services/presentation/bloc/create/service_create_state.dart';
+import 'package:workorder_company_app/features/services/domain/draft/service_work_order_config_draft.dart';
 import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
@@ -53,6 +53,10 @@ class _WorkOrderConfigItemState extends State<WorkOrderConfigItem> {
   void didUpdateWidget(covariant WorkOrderConfigItem oldWidget) {
     super.didUpdateWidget(oldWidget);
 
+    if (oldWidget.draft != widget.draft) {
+      return;
+    }
+
     // Update controller only jika value berubah dari luar
     if (oldWidget.draft.minStaff != widget.draft.minStaff) {
       _minController.text = widget.draft.minStaff?.toString() ?? '';
@@ -90,15 +94,15 @@ class _WorkOrderConfigItemState extends State<WorkOrderConfigItem> {
                 iconSize: 24,
               ),
               const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  draft.workOrderForm.title,
-                  // TodoText.title("form", loremCount: 100),
-                  style: Theme.of(context).textTheme.titleMedium,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+                Expanded(
+                  child: Text(
+                    draft.workOrderForm.title,
+                    // TodoText.title("form", loremCount: 100),
+                    style: Theme.of(context).textTheme.titleMedium,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
-              ),
               if (widget.onRemove != null)
                 IconButton.filled(
                   onPressed: widget.onRemove,
@@ -197,12 +201,6 @@ class _WorkOrderConfigItemState extends State<WorkOrderConfigItem> {
                   onChanged: (p0) => widget.onMinChange(
                     int.tryParse(p0),
                   ),
-                  // onEditingComplete: () {
-                  //   widget.onMinChange(
-                  //     int.tryParse(_minController.text),
-                  //   );
-                  //   // FocusScope.of(context).unfocus();
-                  // },
                 ),
               ),
               const SizedBox(width: 12),
@@ -214,12 +212,6 @@ class _WorkOrderConfigItemState extends State<WorkOrderConfigItem> {
                   onChanged: (p0) => widget.onMaxChange(
                     int.tryParse(p0),
                   ),
-                  // onEditingComplete: () {
-                  //   widget.onMaxChange(
-                  //     int.tryParse(_maxController.text),
-                  //   );
-                  //   // FocusScope.of(context).unfocus();
-                  // },
                 ),
               ),
             ],

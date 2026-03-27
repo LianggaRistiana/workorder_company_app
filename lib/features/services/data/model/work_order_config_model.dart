@@ -42,9 +42,9 @@ class WorkOrderConfigModel extends WorkOrderConfigEntity {
 
   Map<String, dynamic> toJson() {
     return {
-      "workOrderForm": (workOrderForm as FormModel).toJson(),
-      "workReportForm": (workReportForm as FormModel).toJson(),
-      "positionsOnDuty": (positionOnDuty as PositionModel).toJson(),
+      "workOrderFormId": workOrderForm.id,
+      "workReportFormId": workReportForm.id,
+      "positionId": positionOnDuty.id,
       "workOrderApprovalAccessType": workOrderAprrovalAccessType.toSnakeCase(),
       "workReportApprovalAccessType": workReportApprovalAccessType.toSnakeCase(),
       "minStaff": minStaff,

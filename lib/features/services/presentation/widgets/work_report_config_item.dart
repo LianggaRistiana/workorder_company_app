@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
 import 'package:workorder_company_app/features/forms/presentation/widgets/forms_selector_container.dart';
-import 'package:workorder_company_app/features/services/presentation/bloc/create/service_create_state.dart';
+import 'package:workorder_company_app/features/services/domain/draft/service_work_order_config_draft.dart';
 import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/dashed_button.dart';
@@ -12,7 +12,7 @@ import 'package:workorder_company_app/shared/widgets/icon_box.dart';
 class WorkReportConfigItem extends StatelessWidget {
   final ServiceWorkOrderConfigDraft draft;
   final ValueChanged<WorkReportApprovalAccess> onApprovalChange;
-  final ValueChanged<FormEntity> onFormUpdate;
+  final ValueChanged<FormEntity?> onFormUpdate;
 
   const WorkReportConfigItem({
     super.key,
@@ -24,22 +24,23 @@ class WorkReportConfigItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomCard(
-        child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            IconBox(icon: Icons.assignment_turned_in_outlined),
-            const SizedBox(width: 12),
-            Expanded(
-                child: Text(
-              draft.workOrderForm.title,
-              style: Theme.of(context).textTheme.titleMedium,
-            ))
-          ],
-        ),
-        const SizedBox(height: 12),
-        EnumSelector(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const IconBox(icon: Icons.assignment_turned_in_outlined),
+              const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    draft.workOrderForm.title,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                )
+            ],
+          ),
+          const SizedBox(height: 12),
+          EnumSelector<WorkReportApprovalAccess>(
             isMultiSelect: false,
             title: "Akses Persetujuan laporan",
             values: WorkReportApprovalAccess.values,
@@ -48,14 +49,15 @@ class WorkReportConfigItem extends StatelessWidget {
               if (value.isNotEmpty) {
                 onApprovalChange(value.first);
               }
-            }),
-        const SizedBox(height: 16),
-        Text(
-          "Formulir Laporan",
-          style: Theme.of(context).textTheme.titleSmall,
-        ),
-        const SizedBox(height: 12),
-        FormsSelectorContainer(
+            },
+          ),
+          const SizedBox(height: 16),
+          Text(
+            "Formulir Laporan",
+            style: Theme.of(context).textTheme.titleSmall,
+          ),
+          const SizedBox(height: 12),
+          FormsSelectorContainer(
             selectedForms: draft.reportForm != null ? [draft.reportForm!] : [],
             onAdd: onFormUpdate,
             buttonBuilder: (context, onPressed, isLoading) {
@@ -64,20 +66,23 @@ class WorkReportConfigItem extends StatelessWidget {
                   child: CircularProgressIndicator(),
                 );
               }
+
               if (draft.reportForm != null) {
                 return ClickableCustomCard(
-                  margin: EdgeInsets.all(0),
+                  margin: EdgeInsets.zero,
                   onTap: onPressed,
-                  child: Row(children: [
-                    const IconBox(icon: Icons.assignment_outlined),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        draft.reportForm!.title,
-                        style: Theme.of(context).textTheme.titleSmall,
-                      ),
-                    )
-                  ]),
+                  child: Row(
+                    children: [
+                      const IconBox(icon: Icons.assignment_outlined),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          draft.reportForm!.title,
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
+                      )
+                    ],
+                  ),
                 );
               }
 
@@ -91,8 +96,10 @@ class WorkReportConfigItem extends StatelessWidget {
                 borderRadius: 12,
                 isLoading: isLoading,
               );
-            }),
-      ],
-    ));
+            },
+          ),
+        ],
+      ),
+    );
   }
 }

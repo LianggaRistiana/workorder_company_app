@@ -1,21 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/core/utils/validators.dart';
 import 'package:workorder_company_app/features/helps/presentation/widgets/help_button.dart';
 import 'package:workorder_company_app/features/helps/presentation/widgets/service_type_tips.dart';
-import 'package:workorder_company_app/features/services/presentation/bloc/create/service_create_cubit.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 import 'package:workorder_company_app/shared/widgets/enum_selector.dart';
 import 'package:workorder_company_app/shared/widgets/horizontal_switch.dart';
-
-// TODO : for support either add or edit service
 class ServiceConfigFormTabView extends StatelessWidget {
-  const ServiceConfigFormTabView({super.key});
+  final bool isActive;
+  final ValueChanged<bool> onActiveChanged;
+
+  final TextEditingController titleController;
+  final TextEditingController descriptionController;
+
+  final ServiceAccessType accessType;
+  final ValueChanged<ServiceAccessType> onAccessTypeChanged;
+
+  const ServiceConfigFormTabView({
+    super.key,
+    required this.isActive,
+    required this.onActiveChanged,
+    required this.titleController,
+    required this.descriptionController,
+    required this.accessType,
+    required this.onAccessTypeChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,50 +38,60 @@ class ServiceConfigFormTabView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           HorizontalSwitch(
-              leadingIcon: AppIcon.activeState,
-              title: "Layanan Aktif",
-              description: "Layanan aktif akan langsung bisa digunakan",
-              value: context.select((ServiceCreateCubit cubit) =>
-                  cubit.state.serviceConfig.isActive),
-              onChanged: context.read<ServiceCreateCubit>().toggleActive),
+            leadingIcon: AppIcon.activeState,
+            title: "Layanan Aktif",
+            description: "Layanan aktif akan langsung bisa digunakan",
+            value: isActive,
+            onChanged: onActiveChanged,
+          ),
+
           CustomCard(
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
                 CustomInputField(
+                  controller: titleController,
                   prefixIcon: Icon(AppIcon.service),
                   label: "Nama Layanan",
                   validator: (value) =>
-                      ValidatorUtils.required(value, fieldName: "Nama Layanan"),
-                  onChanged: (p0) =>
-                      context.read<ServiceCreateCubit>().updateTitle(p0),
+                      ValidatorUtils.required(
+                        value,
+                        fieldName: "Nama Layanan",
+                      ),
                 ),
+
                 const SizedBox(height: 12),
+
                 CustomInputField(
-                    prefixIcon: Icon(AppIcon.desc),
-                    label: "Deskripsi",
-                    // controller: descController,
-                    onChanged: (p0) => context
-                        .read<ServiceCreateCubit>()
-                        .updateDescription(p0),
-                    maxLines: 3,
-                    validator: (value) =>
-                        ValidatorUtils.required(value, fieldName: "Deskripsi")),
+                  controller: descriptionController,
+                  prefixIcon: Icon(AppIcon.desc),
+                  label: "Deskripsi",
+                  maxLines: 3,
+                  validator: (value) =>
+                      ValidatorUtils.required(
+                        value,
+                        fieldName: "Deskripsi",
+                      ),
+                ),
+
                 const SizedBox(height: 12),
-                EnumSelector(
-                    title: "Tipe Akses",
-                    labelBuilder: (p0) => p0.displayName,
-                    values: ServiceAccessType.values,
-                    selectedValues: [
-                      context.select((ServiceCreateCubit cubit) =>
-                          cubit.state.serviceConfig.accessType)
-                    ],
-                    isMultiSelect: false,
-                    onChanged: (value) {
-                      context.read<ServiceCreateCubit>().updateAccessType(
-                          value.firstOrNull ?? ServiceAccessType.internal);
-                    }),
-              ])),
+
+                EnumSelector<ServiceAccessType>(
+                  title: "Tipe Akses",
+                  labelBuilder: (e) => e.displayName,
+                  values: ServiceAccessType.values,
+                  selectedValues: [accessType],
+                  isMultiSelect: false,
+                  onChanged: (value) {
+                    if (value.isNotEmpty) {
+                      onAccessTypeChanged(value.first);
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
+
           HelpButton(
             title: "Ketahui jenis akses layanan",
             child: ServiceAccessTypeTips(),
