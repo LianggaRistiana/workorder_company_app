@@ -61,6 +61,19 @@ class ApiClient {
       final response = await _dio.post(endpoint, data: data, options: options);
       return _parseResponse<T>(response.data, fromJson);
     });
+
+  }
+  /// PATCH request
+  Future<T> patch<T>(
+    String endpoint, {
+    dynamic data,
+    Options? options,
+    T Function(dynamic data)? fromJson,
+  }) async {
+    return _handle(() async {
+      final response = await _dio.patch(endpoint, data: data, options: options);
+      return _parseResponse<T>(response.data, fromJson);
+    });
   }
 
   /// PUT request

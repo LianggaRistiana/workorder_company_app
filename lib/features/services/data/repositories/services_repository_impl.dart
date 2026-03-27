@@ -57,7 +57,10 @@ class ServicesRepositoryImpl implements ServicesRepository {
 
   @override
   FutureEither<ServiceEntity> updateService(ServiceEntity service) {
-    // TODO: implement updateService
-    throw UnimplementedError();
+    return safeCall(() async {
+      final payload = await _internalRemoteDatasource
+          .updateService(ServiceModel.fromEntity(service));
+      return payload.data!;
+    });
   }
 }

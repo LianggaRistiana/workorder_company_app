@@ -63,8 +63,13 @@ class _ServicesListView extends StatelessWidget {
             itemBuilder: (item) => ServiceSummaryItem(
                   service: item,
                   isPublic: false,
-                  onTap: () {
-                    context.push(AppRoutes.servicesDetail.fillId(item.id));
+                  onTap: () async {
+                    final result = await context
+                        .push(AppRoutes.servicesDetail.fillId(item.id));
+                    if (!context.mounted) return;
+                    if (result == true) {
+                      _onRefresh(context);
+                    }
                   },
                 ));
       },

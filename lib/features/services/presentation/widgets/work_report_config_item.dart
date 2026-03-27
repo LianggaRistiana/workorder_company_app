@@ -61,11 +61,6 @@ class WorkReportConfigItem extends StatelessWidget {
             selectedForms: draft.reportForm != null ? [draft.reportForm!] : [],
             onAdd: onFormUpdate,
             buttonBuilder: (context, onPressed, isLoading) {
-              if (isLoading) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
 
               if (draft.reportForm != null) {
                 return ClickableCustomCard(
