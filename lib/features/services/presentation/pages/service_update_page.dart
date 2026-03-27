@@ -6,8 +6,8 @@ import 'package:workorder_company_app/features/forms/presentation/bloc/list/form
 import 'package:workorder_company_app/features/positions/presentation/bloc/list/positions_list_bloc.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/list/positions_list_event.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
-import 'package:workorder_company_app/features/services/presentation/bloc/create/service_create_cubit.dart';
-import 'package:workorder_company_app/features/services/presentation/bloc/create/service_create_state.dart';
+import 'package:workorder_company_app/features/services/presentation/bloc/update/service_update_cubit.dart';
+import 'package:workorder_company_app/features/services/presentation/bloc/update/service_update_state.dart';
 import 'package:workorder_company_app/features/services/presentation/pages/service_editor_view.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 
@@ -20,7 +20,7 @@ class ServiceUpdatePage extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => sl<ServiceCreateCubit>(),
+          create: (_) => sl<ServiceUpdateCubit>(),
         ),
         BlocProvider(
           create: (_) =>
@@ -30,25 +30,25 @@ class ServiceUpdatePage extends StatelessWidget {
           create: (_) => sl<FormsListBloc>()..add(GetFormsListRequested()),
         )
       ],
-      child: BlocConsumer<ServiceCreateCubit, ServiceCreateState>(
+      child: BlocConsumer<ServiceUpdateCubit, ServiceUpdateState>(
         listener: (context, state) {
-          if (state.status == ServiceCreateStatus.error) {
+          if (state.status == ServiceUpdateStatus.error) {
             context.showError(
               state.errorMessage ?? "Terjadi Kesalahan",
             );
           }
 
-          if (state.status == ServiceCreateStatus.success) {
+          if (state.status == ServiceUpdateStatus.success) {
             context.showSuccess("Berhasil Memperbarui Layanan");
             context.pop(true);
           }
         },
         builder: (context, state) {
           return ServiceEditorView.update(
-            isLoading: state.status == ServiceCreateStatus.loading,
+            isLoading: state.status == ServiceUpdateStatus.loading,
             initialEntity: serviceIntialData,
             onSubmit: (draft) {
-              return context.read<ServiceCreateCubit>().submit(draft);
+              return context.read<ServiceUpdateCubit>().submit(draft);
             },
           );
         },

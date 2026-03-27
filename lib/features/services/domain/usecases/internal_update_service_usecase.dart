@@ -13,7 +13,7 @@ class InternalUpdateServiceUsecase {
   FutureEither<ServiceEntity> call(ServiceDraft draft) async {
     try {
       final entity = draft.toEntity();
-      return await _repository.createService(entity);
+      return await _repository.updateService(entity);
     } on ValidataionException catch (e) {
       return Left(ValidationFailure(
           message: e.message ?? "Terjadi Kesalahan", errors: {}));

@@ -5,9 +5,11 @@ import 'package:workorder_company_app/features/services/domain/repositories/serv
 import 'package:workorder_company_app/features/services/domain/usecases/internal_create_service_usecase.dart';
 import 'package:workorder_company_app/features/services/domain/usecases/internal_get_service_byid_usecase.dart';
 import 'package:workorder_company_app/features/services/domain/usecases/internal_get_services_usecase.dart';
+import 'package:workorder_company_app/features/services/domain/usecases/internal_update_service_usecase.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/create/service_create_cubit.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/detail/service_detail_cubit.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/list/services_list_bloc.dart';
+import 'package:workorder_company_app/features/services/presentation/bloc/update/service_update_cubit.dart';
 
 Future<void> initServicesFeature() async {
   sl.registerLazySingleton<InternalServicesManagementRemoteDatasource>(
@@ -22,6 +24,9 @@ Future<void> initServicesFeature() async {
   sl.registerLazySingleton<InternalCreateServiceUsecase>(
       () => InternalCreateServiceUsecase(sl()));
 
+  sl.registerLazySingleton<InternalUpdateServiceUsecase>(
+      () => InternalUpdateServiceUsecase(sl()));
+
   sl.registerLazySingleton<InternalGetServiceByidUsecase>(
       () => InternalGetServiceByidUsecase(sl()));
 
@@ -31,6 +36,10 @@ Future<void> initServicesFeature() async {
 
   sl.registerFactory<ServiceCreateCubit>(
     () => ServiceCreateCubit(sl()),
+  );
+
+  sl.registerFactory<ServiceUpdateCubit>(
+    () => ServiceUpdateCubit(sl()),
   );
 
   sl.registerFactory<ServiceDetailCubit>(
