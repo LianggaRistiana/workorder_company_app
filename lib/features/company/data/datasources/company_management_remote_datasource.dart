@@ -18,24 +18,9 @@ class CompanyManagementRemoteDatasourceImpl
   @override
   Future<ApiResponse<CompanyModel>> getCompanyInformation() async {
     final response = await _apiClient.get(Endpoints.company);
-    // FIXME : active this code if backend fix this bug
-    // return ApiResponse.fromJson(
-    //   response,
-    //   (data) => CompanyModel.fromJson(data),
-    // );
-
     return ApiResponse.fromJson(
       response,
-      (data) {
-        if (data is List) {
-          if (data.isEmpty) {
-            throw Exception("Company data kosong");
-          }
-          return CompanyModel.fromJson(data.first);
-        }
-
-        return CompanyModel.fromJson(data);
-      },
+      (data) => CompanyModel.fromJson(data),
     );
   }
 
