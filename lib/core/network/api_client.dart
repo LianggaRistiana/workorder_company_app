@@ -139,14 +139,14 @@ class LoggingInterceptor extends Interceptor {
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     logger.i(
         "➡️ ${options.method} ${options.uri}\nHeaders: ${options.headers}\nBody: ${options.data}");
-    prettyPrintJson(options.data);
+    // prettyPrintJson(options.data);
     super.onRequest(options, handler);
   }
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    logger.i("✅ ${response.statusCode} ${response.requestOptions.uri}");
-    prettyPrintJson(response.data);
+    logger.i("✅ ${response.statusCode} ${response.requestOptions.uri} ${response.data}");
+    // prettyPrintJson(response.data);
     super.onResponse(response, handler);
   }
 

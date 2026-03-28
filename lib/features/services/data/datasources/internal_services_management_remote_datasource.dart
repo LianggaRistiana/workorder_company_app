@@ -47,7 +47,7 @@ class InternalServicesManagementRemoteDatasourceImpl
 
   @override
   ApiFuture<ServiceModel> updateService(ServiceModel service) async {
-    final response = await _apiClient.patch(Endpoints.internalServices.byId(service.id),
+    final response = await _apiClient.put(Endpoints.services.byId(service.id),
         data: service.toJson());
     return ApiResponse<ServiceModel>.fromJson(
         response, (data) => ServiceModel.fromJson(data));
