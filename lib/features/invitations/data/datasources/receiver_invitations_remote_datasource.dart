@@ -38,7 +38,7 @@ class ReceiverInvitationsRemoteDatasourceImpl
       ),
     );
   }
-
+  
   @override
   Future<ApiResponse<InvitationModel>> rejectInvitation(String id) async {
     final response =

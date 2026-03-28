@@ -77,7 +77,7 @@ class _PendingInvitationsListView extends StatelessWidget {
                     children: [
                       IconBox(icon: Icons.home_work_outlined),
                       const SizedBox(width: 16),
-                      Expanded(child: Text(invitation.company.name))
+                      Expanded(child: Text(invitation.company?.name ?? ""))
                     ],
                   ),
                   content: ReceiverInvitationDetail(invitation: invitation),

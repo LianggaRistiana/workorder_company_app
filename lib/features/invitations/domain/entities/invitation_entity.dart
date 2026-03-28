@@ -8,7 +8,7 @@ class InvitationEntity {
   final String id;
   final UserRole role;
   final InvitationStatus status;
-  final CompanyEntity company;
+  final CompanyEntity? company;
   final PositionEntity? position;
   final DateTime? createdAt;
   final DateTime? updatedAt;
@@ -19,7 +19,7 @@ class InvitationEntity {
     required this.id,
     required this.role,
     required this.status,
-    required this.company,
+    this.company,
     this.position,
     this.createdAt,
     this.updatedAt,

@@ -27,7 +27,7 @@ class ReceiverInvitationCard extends StatelessWidget {
               const SizedBox(width: AppSpacing.md),
               Expanded(
                   child: Text(
-                invitation.company.name,
+                invitation.company?.name ?? "",
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.titleMedium,

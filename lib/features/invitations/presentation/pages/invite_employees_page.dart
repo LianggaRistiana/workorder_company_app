@@ -66,8 +66,7 @@ class _InviteEmployeeViewState extends State<_InviteEmployeeView> {
 
   void _addInvite() {
     setState(() {
-      _invites.insert(
-        0,
+      _invites.add(
         InvitationDraftEntity(
           email: '',
           role: UserRole.staffCompany,

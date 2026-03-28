@@ -8,6 +8,7 @@ import 'package:workorder_company_app/features/helps/presentation/widgets/help_b
 import 'package:workorder_company_app/features/helps/presentation/widgets/service_type_tips.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/detail/service_detail_cubit.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/detail/service_detail_state.dart';
+import 'package:workorder_company_app/features/services/presentation/widgets/service_action_bottom_bar.dart';
 import 'package:workorder_company_app/features/services/presentation/widgets/service_config_view.dart';
 import 'package:workorder_company_app/features/services/presentation/widgets/service_request_tab_view.dart';
 import 'package:workorder_company_app/features/services/presentation/widgets/service_work_order_tab_view.dart';
@@ -75,6 +76,7 @@ class _ServiceDetailView extends StatelessWidget {
                   ),
                 ],
               ),
+              bottomNavigationBar: ServiceActionBottomBar(),
               body: DefaultTabController(
                 length: 3,
                 child: Column(

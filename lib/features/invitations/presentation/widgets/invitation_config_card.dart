@@ -9,7 +9,7 @@ import 'package:workorder_company_app/shared/widgets/dashed_button.dart';
 import 'package:workorder_company_app/shared/widgets/enum_selector.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
 
-class InvitationConfigCard extends StatelessWidget {
+class InvitationConfigCard extends StatefulWidget {
   final String email;
   final UserRole role;
   final PositionEntity? position;
@@ -29,33 +29,50 @@ class InvitationConfigCard extends StatelessWidget {
       required this.onRemove});
 
   @override
+  State<InvitationConfigCard> createState() => _InvitationConfigCardState();
+}
+
+class _InvitationConfigCardState extends State<InvitationConfigCard> {
+  late final TextEditingController _emailController;
+
+  @override
+  void initState() {
+    super.initState();
+    _emailController = TextEditingController(text: widget.email);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return CustomCard(
         child: Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-                CustomInputField(label: "Email", onChanged: onEmailChanged),
+        CustomInputField(
+            label: "Email",
+            onChanged: widget.onEmailChanged,
+            controller: _emailController),
         const SizedBox(height: 12),
         EnumSelector(
             isMultiSelect: false,
             title: "Pilih Role",
             values: [UserRole.staffCompany, UserRole.managerCompany],
             labelBuilder: (position) => position.displayName,
-            selectedValues: [role],
+            selectedValues: [widget.role],
             onChanged: (role) {
               if (role.isNotEmpty) {
-                return onRoleChanged(role.first);
+                return widget.onRoleChanged(role.first);
               } else {
                 return;
               }
             }),
         const SizedBox(height: 12),
-        if (role == UserRole.staffCompany)
+        if (widget.role == UserRole.staffCompany)
           PositionsSelectorContainer(
-            selectedPositions: position != null ? [position!] : [],
-            onAdd: onPositionChanged,
+            selectedPositions:
+                widget.position != null ? [widget.position!] : [],
+            onAdd: widget.onPositionChanged,
             buttonBuilder: (context, onPressed, isLoading) {
-              if (position != null) {
+              if (widget.position != null) {
                 return ClickableCustomCard(
                   margin: EdgeInsets.all(0),
                   onTap: onPressed,
@@ -69,7 +86,7 @@ class InvitationConfigCard extends StatelessWidget {
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
-                          position!.name,
+                          widget.position!.name,
                           style: Theme.of(context).textTheme.titleSmall,
                         ),
                       )
@@ -90,9 +107,9 @@ class InvitationConfigCard extends StatelessWidget {
               );
             },
           ),
-          const SizedBox(height: 12),
-          IconButton.filled(
-          onPressed: onRemove,
+        const SizedBox(height: 12),
+        IconButton.filled(
+          onPressed: widget.onRemove,
           icon: const Icon(Icons.delete_outline_rounded),
           style: IconButton.styleFrom(
             backgroundColor: Theme.of(context).colorScheme.errorContainer,

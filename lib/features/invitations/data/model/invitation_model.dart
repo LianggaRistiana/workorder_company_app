@@ -5,12 +5,13 @@ import 'package:workorder_company_app/features/company/data/models/company_model
 import 'package:workorder_company_app/features/invitations/domain/entities/invitation_entity.dart';
 import 'package:workorder_company_app/features/positions/data/models/position_model.dart';
 
+// TODO : seperate this into to type of entity
 class InvitationModel extends InvitationEntity {
   InvitationModel(
       {required super.id,
       required super.role,
       required super.status,
-      required super.company,
+      super.company,
       super.toUser,
       super.createdAt,
       super.updatedAt,
@@ -43,7 +44,9 @@ class InvitationModel extends InvitationEntity {
           requiredField: false,
           parser: (value) => DateTime.parse(value as String),
         ),
-        company: CompanyModel.fromJson(json['company']),
+        company: json['company'] != null
+            ? CompanyModel.fromJson(json['company'])
+            : null,
         position: PositionModel.fromJson(
             safeParse<Map<String, dynamic>>(json, "position")));
   }

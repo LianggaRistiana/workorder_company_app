@@ -31,14 +31,13 @@ class SenderInvitationsRemoteDatasourceImpl
     );
   }
 
-// FIXME : tell BE fis response
   @override
   Future<ApiResponse<List<InvitationModel>>> getInvitationsHistory() async {
     final response = await _apiClient.get(Endpoints.historyInvitations);
     return ApiResponse.fromJson(
       response,
       (data) => SafeMapper.mapList(
-        data['invitations'],
+        data,
         (json) => InvitationModel.fromJson(json),
       ),
     );
