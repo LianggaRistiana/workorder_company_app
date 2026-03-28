@@ -22,6 +22,7 @@ class AppIcon {
   static const IconData history = LucideIcons.history;
   static const IconData membership = Icons.workspace_premium_rounded;
   static const IconData company = Icons.home_work_outlined;
+  static const IconData template = LucideIcons.layoutTemplate;
 
   // Icon For Field Type
   static const IconData textField = Icons.text_format;

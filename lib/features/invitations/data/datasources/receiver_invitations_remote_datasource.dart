@@ -42,7 +42,7 @@ class ReceiverInvitationsRemoteDatasourceImpl
   @override
   Future<ApiResponse<InvitationModel>> rejectInvitation(String id) async {
     final response =
-        await _apiClient.put(Endpoints.acceptInvitations.fillId(id));
+        await _apiClient.put(Endpoints.rejectInvitations.fillId(id));
     return ApiResponse.fromJson(
       response,
       (json) => InvitationModel.fromJson(json),

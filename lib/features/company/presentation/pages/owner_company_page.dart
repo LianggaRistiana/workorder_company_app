@@ -4,6 +4,7 @@ import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/features/company/presentation/widgets/internal_company_card.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/orientation_helper.dart';
+import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
 import 'package:workorder_company_app/shared/widgets/info_bottom_sheet.dart';
 import 'package:workorder_company_app/shared/widgets/menu_grid.dart';
 import 'package:workorder_company_app/shared/widgets/menu_item.dart';
@@ -32,7 +33,6 @@ class _OwnerCompanyPageState extends State<OwnerCompanyPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         bottom: PreferredSize(
@@ -50,6 +50,13 @@ class _OwnerCompanyPageState extends State<OwnerCompanyPage> {
           children: [
             // /// --- Section Title ---
             SectionTitle("Menu Konfigurasi Perusahaan"),
+            HorizontalButton(
+              leadingIcon: AppIcon.template,
+              title: "Konfigurasi Cepat",
+              description:
+                  "Konfigurasi Departemen, Formulir, Layanan dengan memilih template yang tersedia",
+              onTap: () {},
+            ),
             const SizedBox(height: 12),
             MenuGrid(
               items: [
@@ -103,7 +110,6 @@ class _OwnerCompanyPageState extends State<OwnerCompanyPage> {
                     }),
               ],
             ),
-
             const SizedBox(height: 24),
             const SectionTitle("Menu Operasional"),
             const SizedBox(height: 12),
