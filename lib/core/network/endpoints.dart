@@ -28,8 +28,9 @@ class Endpoints {
 
   // Mmeberships
   static const String memberships = "/memberships";
-  static const String generateMembershipCode = "/memberships/generate";
-  static const String claimMembership = "/memberships/claim";
+  static const String membershipCodes = "/memberships/codes";
+  static const String generateMembershipCode = "/memberships/codes";
+  static const String claimMembership = "/memberships/codes/claim";
   static const String deleteMembership = "/memberships/:id";
 
   // Invitations

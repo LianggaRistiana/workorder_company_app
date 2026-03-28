@@ -56,7 +56,7 @@ class MembershipsRemoteDatasourceImpl implements MembershipsRemoteDatasource {
 
   @override
   Future<ApiResponse<List<MembershipCodeModel>>> getMembershipCodes() async {
-    final response = await _apiClient.get(Endpoints.memberships);
+    final response = await _apiClient.get(Endpoints.membershipCodes);
     return ApiResponse.fromJson(
       response,
       (data) => SafeMapper.mapList(

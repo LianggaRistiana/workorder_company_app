@@ -55,9 +55,11 @@ class _GenerateCodeWidgetState extends State<GenerateCodeWidget> {
         if (state.status == GenerateMembershipCodeStatus.success) {
           context.showSuccess("Kode berhasil digenerate");
 
-          _formKey.currentState?.reset();
           _codeController.clear();
           _amountController.clear();
+          
+          _formKey.currentState?.reset();
+          
         }
 
         if (state.status == GenerateMembershipCodeStatus.error) {
