@@ -81,7 +81,7 @@ class ListCacheHelper<T> {
     if (index != -1) {
       current[index] = entity;
     } else {
-      current.add(entity);
+      current.insert(0, entity);
     }
 
     _cache.update(current);

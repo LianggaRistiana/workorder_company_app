@@ -38,7 +38,7 @@ class ServiceCreatePage extends StatelessWidget {
 
           if (state.status == ServiceCreateStatus.success) {
             context.showSuccess("Berhasil Menyimpan Layanan Baru");
-            context.pop();
+            context.pop(true);
           }
         },
         builder: (context, state) {

@@ -3,6 +3,7 @@ import 'package:workorder_company_app/core/utils/safe_parse.dart';
 import 'package:workorder_company_app/features/services/data/model/service_request_config_model.dart';
 import 'package:workorder_company_app/features/services/data/model/work_order_config_model.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
+import 'package:workorder_company_app/features/services/domain/entities/service_summary_entity.dart';
 
 class ServiceModel extends ServiceEntity {
   const ServiceModel({
@@ -39,11 +40,13 @@ class ServiceModel extends ServiceEntity {
       description: entity.description,
       accessType: entity.accessType,
       isActive: entity.isActive,
-      serviceRequestConfig: ServiceRequestConfigModel.fromEntity(entity.serviceRequestConfig),
-      workOrdersConfig: entity.workOrdersConfig.map((e) => WorkOrderConfigModel.fromEntity(e)).toList(),
+      serviceRequestConfig:
+          ServiceRequestConfigModel.fromEntity(entity.serviceRequestConfig),
+      workOrdersConfig: entity.workOrdersConfig
+          .map((e) => WorkOrderConfigModel.fromEntity(e))
+          .toList(),
     );
   }
-
 
   Map<String, dynamic> toJson() {
     return {
@@ -58,5 +61,25 @@ class ServiceModel extends ServiceEntity {
           .map((e) => (e as WorkOrderConfigModel).toJson())
           .toList()
     };
+  }
+
+  ServiceEntity toEntity() {
+    return ServiceEntity(
+        serviceRequestConfig: serviceRequestConfig,
+        workOrdersConfig: workOrdersConfig,
+        id: id,
+        title: title,
+        description: description,
+        accessType: accessType,
+        isActive: isActive);
+  }
+
+  ServiceSummaryEntity toSummaryEntity() {
+    return ServiceSummaryEntity(
+        id: id,
+        title: title,
+        description: description,
+        accessType: accessType,
+        isActive: isActive);
   }
 }

@@ -56,15 +56,21 @@ class _ServicesListView extends StatelessWidget {
             floatingActionButton: PermissionGate(
               permission: ServicePermission.create,
               child: FloatingActionButton.extended(
-                onPressed: () {
-                  // TODO : hit cache data when there is created service
-                  context.push(AppRoutes.servicesCreate);
+                onPressed: () async {
+                  final result = await context.push(AppRoutes.servicesCreate);
+                  if (!context.mounted) return;
+                  if (result == true) {
+                    context
+                        .read<ServicesListBloc>()
+                        .add(GetServicesRequested());
+                  }
                 },
                 label: const Text("Tambah Layanan"),
                 icon: const Icon(Icons.add),
               ),
             ),
             itemBuilder: (item) => ServiceSummaryItem(
+                  key: ValueKey(item.id),
                   service: item,
                   isPublic: false,
                   onTap: () async {
@@ -72,7 +78,9 @@ class _ServicesListView extends StatelessWidget {
                         .push(AppRoutes.servicesDetail.fillId(item.id));
                     if (!context.mounted) return;
                     if (result == true) {
-                      _onRefresh(context);
+                      context
+                          .read<ServicesListBloc>()
+                          .add(GetServicesRequested());
                     }
                   },
                 ));
