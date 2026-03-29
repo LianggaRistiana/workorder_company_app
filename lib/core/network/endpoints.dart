@@ -24,7 +24,7 @@ class Endpoints {
   static const String services = "/services";
 
   // Client Service Request
-  static const String clientServiceRequest = "/client-service-request";
+  static const String serviceRequest = "/service-request";
 
   // Mmeberships
   static const String memberships = "/memberships";

@@ -13,6 +13,7 @@ import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
 // import 'package:workorder_company_app/shared/widgets/bottom_sheet_actions.dart';
 import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
+import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
 // import 'package:workorder_company_app/shared/widgets/info_bottom_sheet.dart';
 import 'package:workorder_company_app/shared/widgets/list_page_scafold.dart';
@@ -53,9 +54,8 @@ class _PositionsListView extends StatelessWidget {
           items: positions,
           loadingMessage: "Memuat Departemen...",
           onRefresh: () => _onRefresh(context),
-          emptyWidget: const Text(
-            "Belum ada Departemen.",
-            style: TextStyle(color: Colors.grey),
+          emptyWidget: const EmptyStateWidget(
+            text: "Tidak ada departemen",
           ),
           floatingActionButton: PermissionGate(
             permission: PositionsPermission.create,

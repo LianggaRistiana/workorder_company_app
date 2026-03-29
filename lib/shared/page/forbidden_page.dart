@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
-import 'package:workorder_company_app/routes/app_routes.dart';
 
 class ForbiddenPage extends StatelessWidget {
   const ForbiddenPage({super.key});
@@ -11,7 +11,6 @@ class ForbiddenPage extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -43,11 +42,12 @@ class ForbiddenPage extends StatelessWidget {
             const SizedBox(height: 24),
 
             // Back / Home button
-            FilledButton(
+            FilledButton.icon(
               onPressed: () {
-                context.go(AppRoutes.home);
+                context.pop();
               },
-              child: const Text('Kembali Ke Halaman Beranda'),
+              icon: const Icon(Icons.arrow_back),
+              label: Text("Kembali"),
             ),
           ],
         ),
@@ -57,14 +57,14 @@ class ForbiddenPage extends StatelessWidget {
 
   Widget _forbiddenLogo(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(AppSpacing.md),
+      padding: EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.errorContainer,
-        borderRadius: BorderRadius.circular(AppSpacing.md),
+        borderRadius: BorderRadius.circular(AppSpacing.xl),
       ),
       child: Icon(
-        Icons.block_rounded,
-        size: 24,
+        AppIcon.forbidden,
+        size: 64,
         color: Theme.of(context).colorScheme.error,
       ),
     );

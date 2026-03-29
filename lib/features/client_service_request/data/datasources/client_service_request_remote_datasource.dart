@@ -53,7 +53,7 @@ class ClientServiceRequestRemoteDatasourceImpl
   Future<ApiResponse<ClientServiceRequestModel>> getClientServiceRequestById(
       String id) async {
     final response =
-        await _apiClient.get(Endpoints.clientServiceRequest.byId(id));
+        await _apiClient.get(Endpoints.serviceRequest.byId(id));
     return ApiResponse.fromJson(
         response, (json) => ClientServiceRequestModel.fromJson(json));
   }
@@ -61,7 +61,7 @@ class ClientServiceRequestRemoteDatasourceImpl
   @override
   Future<ApiResponse<List<ClientServiceRequestModel>>>
       getClientServiceRequests() async {
-    final response = await _apiClient.get(Endpoints.clientServiceRequest);
+    final response = await _apiClient.get(Endpoints.serviceRequest);
     return ApiResponse.fromJson(
         response,
         (data) => SafeMapper.mapList(
@@ -73,7 +73,7 @@ class ClientServiceRequestRemoteDatasourceImpl
   Future<ApiResponse<WorkorderModel>> approveClientServiceRequest(
       String id) async {
     final response = await _apiClient
-        .put('${Endpoints.clientServiceRequest.byId(id)}/approve');
+        .put('${Endpoints.serviceRequest.byId(id)}/approve');
     return ApiResponse.fromJson(
       response,
       (data) => WorkorderModel.fromJson(data),
@@ -91,7 +91,7 @@ class ClientServiceRequestRemoteDatasourceImpl
   Future<ApiResponse<ClientServiceRequestModel>> rejectClientServiceRequest(
       String id) async {
     final response = await _apiClient
-        .put('${Endpoints.clientServiceRequest.byId(id)}/reject');
+        .put('${Endpoints.serviceRequest.byId(id)}/reject');
     return ApiResponse.fromJson(
       response,
       (data) => ClientServiceRequestModel.fromJson(data),

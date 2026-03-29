@@ -10,6 +10,7 @@ import 'package:workorder_company_app/features/services/presentation/bloc/list/s
 import 'package:workorder_company_app/features/services/presentation/widgets/service_summary_item.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
+import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
 import 'package:workorder_company_app/shared/widgets/list_page_scafold.dart';
 
 class ServicesListPage extends StatelessWidget {
@@ -49,6 +50,9 @@ class _ServicesListView extends StatelessWidget {
             errorMessage: errorMessage,
             loadingMessage: "Memuat Layanan...",
             onRefresh: () => _onRefresh(context),
+            emptyWidget: EmptyStateWidget(
+              text: "Tidak ada layanan",
+            ),
             floatingActionButton: PermissionGate(
               permission: ServicePermission.create,
               child: FloatingActionButton.extended(

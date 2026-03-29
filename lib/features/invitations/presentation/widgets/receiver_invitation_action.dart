@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/features/invitations/domain/entities/invitation_entity.dart';
 import 'package:workorder_company_app/features/invitations/presentation/bloc/receiver_actions/receiver_invitation_actions_cubit.dart';
 import 'package:workorder_company_app/features/invitations/presentation/bloc/receiver_actions/receiver_invitation_actions_state.dart';
+import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 
 class ReceiverInvitationAction extends StatelessWidget {
@@ -20,7 +21,7 @@ class ReceiverInvitationAction extends StatelessWidget {
           // TODO : If accepted success get new CurrentUser data and direct to home page
 
           context.showSuccess("Undangan berhasil diterima");
-          context.pop();
+          context.go(AppRoutes.home);
         }
 
         if (state.status == ReceiverInvitationActionsStatus.error) {

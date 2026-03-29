@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 
 class NotFoundPage extends StatelessWidget {
@@ -22,7 +23,7 @@ class NotFoundPage extends StatelessWidget {
             // Title
             Text(
               'Konten Tidak Ditemukan',
-              style: theme.textTheme.headlineSmall?.copyWith(
+              style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -30,7 +31,6 @@ class NotFoundPage extends StatelessWidget {
             FilledButton.icon(
               onPressed: () {
                 context.pop();
-                // context.showSuccess("Test");
               },
               icon: const Icon(Icons.arrow_back),
               label: Text("Kembali"),
@@ -43,14 +43,14 @@ class NotFoundPage extends StatelessWidget {
 
   Widget _notFoundLogo(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(AppSpacing.md),
+      padding: EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
-        color: Theme.of(context).disabledColor,
-        borderRadius: BorderRadius.circular(AppSpacing.md),
+        color: Theme.of(context).disabledColor.withAlpha(70),
+        borderRadius: BorderRadius.circular(AppSpacing.xl),
       ),
       child: Icon(
-        Icons.warning_rounded,
-        size: 24,
+        AppIcon.notFound,
+        size: 64,
       ),
     );
   }

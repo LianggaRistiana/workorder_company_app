@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 import 'package:workorder_company_app/shared/widgets/custom_back_buttom.dart';
+import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
 
 class ListPageScaffold<T> extends StatelessWidget {
   final String title;
@@ -60,7 +61,7 @@ class ListPageScaffold<T> extends StatelessWidget {
           children: [
             Text(errorMessage!),
             const SizedBox(height: 12),
-            ElevatedButton(
+            FilledButton(
               onPressed: onRefresh,
               child: const Text("Coba Lagi"),
             ),
@@ -78,9 +79,15 @@ class ListPageScaffold<T> extends StatelessWidget {
           physics: const AlwaysScrollableScrollPhysics(),
           children: [
             if (header != null) header!,
-            const SizedBox(height: 200),
-            Center(
-              child: emptyWidget ?? const Text("Belum ada data."),
+            SizedBox(
+              height: MediaQuery.of(context).size.height *
+                  (header != null ? 0.5 : 0.8),
+              child: Center(
+                child: emptyWidget ??
+                    const EmptyStateWidget(
+                      text: "Tidak ada data",
+                    ),
+              ),
             ),
           ],
         ),

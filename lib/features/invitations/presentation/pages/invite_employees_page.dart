@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
+import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/features/invitations/domain/entities/invitation_draft_entity.dart';
 import 'package:workorder_company_app/features/invitations/presentation/bloc/invite/invite_employees_cubit.dart';
 import 'package:workorder_company_app/features/invitations/presentation/bloc/invite/invite_employees_state.dart';
@@ -10,6 +11,7 @@ import 'package:workorder_company_app/features/invitations/presentation/widgets/
 import 'package:workorder_company_app/features/positions/presentation/bloc/list/positions_list_bloc.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/list/positions_list_event.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
+import 'package:workorder_company_app/shared/widgets/button_with_loading_state.dart';
 import 'package:workorder_company_app/shared/widgets/dashed_button.dart';
 
 class InviteEmployeePage extends StatelessWidget {
@@ -66,8 +68,10 @@ class _InviteEmployeeViewState extends State<_InviteEmployeeView> {
 
   void _addInvite() {
     setState(() {
-      _invites.add(
+      _invites.insert(
+        0,
         InvitationDraftEntity(
+          id: DateTime.now().millisecondsSinceEpoch.toString(),
           email: '',
           role: UserRole.staffCompany,
           position: null,
@@ -128,6 +132,7 @@ class _InviteEmployeeViewState extends State<_InviteEmployeeView> {
                         final invite = _invites[index];
 
                         return InvitationConfigCard(
+                          key: ValueKey(invite.id),
                           email: invite.email,
                           role: invite.role,
                           position: invite.position,
@@ -161,23 +166,12 @@ class _InviteEmployeeViewState extends State<_InviteEmployeeView> {
                     ),
             ),
             const SizedBox(height: 12),
-            ElevatedButton(
-              onPressed: isLoading ? null : _submitInvites,
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(double.infinity, 50),
-                backgroundColor: Theme.of(context).colorScheme.primary,
-              ),
-              child: isLoading
-                  ? const SizedBox(
-                      height: 20,
-                      width: 20,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: Colors.white,
-                      ),
-                    )
-                  : const Text('Kirim Undangan'),
-            ),
+            ButtonWithLoadingState(
+                icon: AppIcon.send,
+                onPressed: _submitInvites,
+                isLoading: isLoading,
+                label: "Kirim Undangan"),
+            const SizedBox(height: 12),
           ],
         ),
       ),

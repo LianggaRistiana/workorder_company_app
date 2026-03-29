@@ -42,13 +42,14 @@ class OwnerContent extends StatelessWidget {
                 icon: AppIcon.help,
                 label: "Bantuan",
                 onTap: () {
-                  showAppBottomSheet(context,
-                      content: SizedBox(
-                        height: 200,
-                        child: Center(
-                          child: Text("Fitur ini belum tersedia"),
-                        ),
-                      ));
+                  // showAppBottomSheet(context,
+                  //     content: SizedBox(
+                  //       height: 200,
+                  //       child: Center(
+                  //         child: Text("Fitur ini belum tersedia"),
+                  //       ),
+                  //     ));
+                  context.push(AppRoutes.forbidden);
                 }),
           ],
         ),

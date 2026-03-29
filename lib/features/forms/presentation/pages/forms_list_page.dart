@@ -58,8 +58,7 @@ class _FormsPageState extends State<FormsListPage> {
             loadingMessage: "Memuat formulir...",
             onRefresh: _onRefresh,
             emptyWidget: const EmptyStateWidget(
-              text: "Belum Ada Form",
-              icon: Icons.assignment_outlined,
+              text: "Tidak ada formulir",
             ),
             floatingActionButton: PermissionGate(
               permission: FormPermission.create,

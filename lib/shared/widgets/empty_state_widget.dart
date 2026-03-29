@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:workorder_company_app/core/theme/app_icon.dart';
 
 class EmptyStateWidget extends StatelessWidget {
   final String text;
@@ -10,7 +11,7 @@ class EmptyStateWidget extends StatelessWidget {
   const EmptyStateWidget({
     super.key,
     this.text = 'Tidak ada item',
-    this.icon = Icons.info_outline,
+    this.icon = AppIcon.notFound,
     this.backgroundColor,
     this.size = 50,
     this.textStyle,

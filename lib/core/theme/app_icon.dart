@@ -37,6 +37,7 @@ class AppIcon {
 
   // Icon For Action
   static const IconData submit = LucideIcons.uploadCloud;
+  static const IconData send = LucideIcons.send;
   static const IconData edit = LucideIcons.edit3;
   static const IconData delete = LucideIcons.trash;
 
@@ -47,4 +48,6 @@ class AppIcon {
   // Icon For StateData
   static const IconData activeState = LucideIcons.checkCircle2;
   static const IconData inactiveState = Icons.block_outlined;
+  static const IconData notFound = LucideIcons.fileX2;
+  static const IconData forbidden = LucideIcons.ban;
 }
