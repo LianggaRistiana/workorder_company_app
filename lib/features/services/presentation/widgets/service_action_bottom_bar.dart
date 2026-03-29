@@ -1,69 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
-import 'package:workorder_company_app/core/theme/app_spacing.dart';
+import 'package:workorder_company_app/shared/utils/confirm_dialog.dart';
 
 class ServiceActionBottomBar extends StatelessWidget {
-  final bool isLoading;
-  const ServiceActionBottomBar({super.key, this.isLoading = false});
+  final VoidCallback? onRemove;
+  final bool isActive;
+  final VoidCallback? onToggleActive;
+  const ServiceActionBottomBar(
+      {super.key, this.onRemove, this.onToggleActive, required this.isActive});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(AppSpacing.lg),
-      child: isLoading
-          ? LoadingState()
-          : Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-              IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    AppIcon.delete,
-                    size: 18,
-                    color: Theme.of(context).colorScheme.error,
-                  )),
-              const SizedBox(width: 8),
-              FilledButton.icon(
-                  onPressed: () {},
-                  label: Row(mainAxisSize: MainAxisSize.min, children: [
-                    Icon(AppIcon.activeState),
-                    const SizedBox(width: 8),
-                    Text("Aktifkan Layanan")
-                  ]))
-            ]),
-    );
-  }
-}
+    return Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+      IconButton(
+          onPressed: () async {
+            final confirm = await showConfirmDialog(
+              context: context,
+              title: "Hapus Layanan",
+              message: "Apakah Anda yakin ingin menghapus Layanan ini?",
+              icon: AppIcon.delete,
+              confirmText: "Ya, Hapus",
+              type: ConfirmDialogType.danger,
+            );
 
-class LoadingState extends StatelessWidget {
-  const LoadingState({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        CircleAvatar(
-          radius: 12,
-          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-          child: Container(
-            padding: const EdgeInsets.all(4),
-            child: CircularProgressIndicator(
-              strokeWidth: 2,
-              valueColor: AlwaysStoppedAnimation(
-                Theme.of(context).colorScheme.primary,
-              ),
-            ),
-          ),
-        ),
-        SizedBox(
-          width: 8,
-        ),
-        Text(
-          'Memuat...',
-          // style: textTheme.bodyMedium,
-          textAlign: TextAlign.center,
-        ),
-      ],
-    );
+            if (confirm != true) return;
+            if (!context.mounted) return;
+            onRemove?.call();
+          },
+          icon: Icon(
+            AppIcon.delete,
+            size: 18,
+            color: Theme.of(context).colorScheme.error,
+          )),
+      const SizedBox(width: 8),
+      FilledButton.icon(
+          onPressed: onToggleActive,
+          label: Row(mainAxisSize: MainAxisSize.min, children: [
+            Icon(isActive ? AppIcon.inactiveState : AppIcon.activeState),
+            const SizedBox(width: 8),
+            Text(isActive ? "Nonaktifkan Layanan" : "Aktifkan Layanan")
+          ]))
+    ]);
   }
 }

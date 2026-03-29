@@ -83,4 +83,27 @@ class ServicesRepositoryImpl implements ServicesRepository {
       );
     });
   }
+
+  @override
+  FutureEither<ServiceEntity> removeService(String serviceId) async {
+    final result = await safeCall(() async {
+      final payload = await _internalRemoteDatasource.removeService(serviceId);
+      return payload.data!;
+    });
+
+    return result.onSuccess((updated) {
+      _cache.removeSingle(
+        ServiceSummaryModel.fromServiceEntity(updated),
+        (a, b) => a.id == b.id,
+      );
+    });
+  }
+
+  @override
+  FutureEither<ServiceEntity> toggleActiveStatus(ServiceEntity service) {
+    return safeCall(() async {
+      final payload = await _internalRemoteDatasource.toggleActive(ServiceModel.fromEntity(service));
+      return payload.data!;
+    });
+  }
 }

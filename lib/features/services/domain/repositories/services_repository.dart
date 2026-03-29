@@ -12,4 +12,6 @@ abstract class ServicesRepository {
   FutureEither<ServiceEntity> getServiceById(String id);
   FutureEither<ServiceEntity> createService(ServiceEntity service);
   FutureEither<ServiceEntity> updateService(ServiceEntity service);
+  FutureEither<ServiceEntity> removeService(String serviceId);
+  FutureEither<ServiceEntity> toggleActiveStatus(ServiceEntity service);
 }

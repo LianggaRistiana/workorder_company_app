@@ -5,7 +5,10 @@ import 'package:workorder_company_app/features/services/domain/repositories/serv
 import 'package:workorder_company_app/features/services/domain/usecases/internal_create_service_usecase.dart';
 import 'package:workorder_company_app/features/services/domain/usecases/internal_get_service_byid_usecase.dart';
 import 'package:workorder_company_app/features/services/domain/usecases/internal_get_services_usecase.dart';
+import 'package:workorder_company_app/features/services/domain/usecases/internal_remove_service_usecase.dart';
+import 'package:workorder_company_app/features/services/domain/usecases/internal_toggle_active_service_usecase.dart';
 import 'package:workorder_company_app/features/services/domain/usecases/internal_update_service_usecase.dart';
+import 'package:workorder_company_app/features/services/presentation/bloc/action/service_action_cubit.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/create/service_create_cubit.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/detail/service_detail_cubit.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/list/services_list_bloc.dart';
@@ -30,6 +33,12 @@ Future<void> initServicesFeature() async {
   sl.registerLazySingleton<InternalGetServiceByidUsecase>(
       () => InternalGetServiceByidUsecase(sl()));
 
+  sl.registerLazySingleton<InternalRemoveServiceUsecase>(
+      () => InternalRemoveServiceUsecase(sl()));
+
+  sl.registerLazySingleton<InternalToggleActiveServiceUsecase>(
+      () => InternalToggleActiveServiceUsecase(sl()));
+
   sl.registerFactory<ServicesListBloc>(
     () => ServicesListBloc(internalGetServicesUsecase: sl()),
   );
@@ -40,6 +49,10 @@ Future<void> initServicesFeature() async {
 
   sl.registerFactory<ServiceUpdateCubit>(
     () => ServiceUpdateCubit(sl()),
+  );
+
+  sl.registerFactory<ServiceActionCubit>(
+    () => ServiceActionCubit(sl(), sl()),
   );
 
   sl.registerFactory<ServiceDetailCubit>(

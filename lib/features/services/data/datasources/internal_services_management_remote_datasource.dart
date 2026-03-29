@@ -4,11 +4,14 @@ import 'package:workorder_company_app/core/network/endpoints.dart';
 import 'package:workorder_company_app/core/types/future_api.dart';
 import 'package:workorder_company_app/features/services/data/model/service_model.dart';
 import 'package:workorder_company_app/features/services/data/model/service_summary_model.dart';
+import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
 
 abstract class InternalServicesManagementRemoteDatasource {
   ApiFutureList<ServiceSummaryModel> getServices();
   ApiFuture<ServiceModel> getServiceById(String id);
   ApiFuture<ServiceModel> createService(ServiceModel service);
+  ApiFuture<ServiceModel> toggleActive(ServiceModel service);
+  ApiFuture<ServiceModel> removeService(String serviceId);
   ApiFuture<ServiceModel> updateService(ServiceModel service);
 }
 
@@ -49,6 +52,25 @@ class InternalServicesManagementRemoteDatasourceImpl
   ApiFuture<ServiceModel> updateService(ServiceModel service) async {
     final response = await _apiClient.put(Endpoints.services.byId(service.id),
         data: service.toJson());
+    return ApiResponse<ServiceModel>.fromJson(
+        response, (data) => ServiceModel.fromJson(data));
+  }
+
+
+  // FIXME : BE SHOULD FIX THIS RESPONSE
+  @override
+  ApiFuture<ServiceModel> removeService(String serviceId) async {
+    final response =
+        await _apiClient.delete(Endpoints.services.byId(serviceId));
+    return ApiResponse<ServiceModel>.fromJson(
+        response, (data) => ServiceModel.fromJson(data));
+  }
+
+  @override
+  ApiFuture<ServiceModel> toggleActive(ServiceModel service) async {
+    final response = await _apiClient.patch(
+        Endpoints.servicesToggleActive.fillId(service.id),
+        data: {"isActive": service.isActive ? false : true});
     return ApiResponse<ServiceModel>.fromJson(
         response, (data) => ServiceModel.fromJson(data));
   }

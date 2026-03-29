@@ -23,6 +23,7 @@ class Endpoints {
 
   // Service
   static const String services = "/services";
+  static const String servicesToggleActive = "/services/:id/toggle-active";
 
   // Client Service Request
   static const String serviceRequest = "/service-request";

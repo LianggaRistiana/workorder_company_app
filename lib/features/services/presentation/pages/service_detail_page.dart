@@ -6,6 +6,8 @@ import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/helps/presentation/widgets/help_button.dart';
 import 'package:workorder_company_app/features/helps/presentation/widgets/service_type_tips.dart';
+import 'package:workorder_company_app/features/services/presentation/bloc/action/service_action_cubit.dart';
+import 'package:workorder_company_app/features/services/presentation/bloc/action/service_action_state.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/detail/service_detail_cubit.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/detail/service_detail_state.dart';
 import 'package:workorder_company_app/features/services/presentation/widgets/service_action_bottom_bar.dart';
@@ -16,6 +18,7 @@ import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 import 'package:workorder_company_app/shared/widgets/header_of_page.dart';
+import 'package:workorder_company_app/shared/widgets/loading_state_inline.dart';
 
 class ServiceDetailPage extends StatelessWidget {
   final String serviceId;
@@ -23,8 +26,15 @@ class ServiceDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => sl<ServiceDetailCubit>()..getServiceDetail(serviceId),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => sl<ServiceDetailCubit>()..getServiceDetail(serviceId),
+        ),
+        BlocProvider(
+          create: (_) => sl<ServiceActionCubit>(),
+        ),
+      ],
       child: const _ServiceDetailView(),
     );
   }
@@ -76,7 +86,39 @@ class _ServiceDetailView extends StatelessWidget {
                   ),
                 ],
               ),
-              bottomNavigationBar: ServiceActionBottomBar(),
+              bottomNavigationBar: Padding(
+                padding: const EdgeInsets.all(AppSpacing.lg),
+                child: BlocConsumer<ServiceActionCubit, ServiceActionState>(
+                    builder: (context, state) {
+                  if (state.status == ServiceActionStatus.loading) {
+                    return const LoadingStateInline();
+                  }
+                  return ServiceActionBottomBar(
+                    onRemove: () {
+                      context
+                          .read<ServiceActionCubit>()
+                          .removeService(service.id);
+                    },
+                    onToggleActive: () {
+                      context
+                          .read<ServiceActionCubit>()
+                          .toggleActiveStatus(service);
+                    },
+                    isActive: service.isActive,
+                  );
+                }, listener: (context, state) {
+                  if (state.status == ServiceActionStatus.removed) {
+                    context.pop(true);
+                  } else if (state.status == ServiceActionStatus.error) {
+                    context
+                        .showError(state.errorMessage ?? "Terjadi Kesalahan");
+                  } else if (state.status == ServiceActionStatus.updated) {
+                    context
+                        .read<ServiceDetailCubit>()
+                        .replaceService(state.updatedService!);
+                  }
+                }),
+              ),
               body: DefaultTabController(
                 length: 3,
                 child: Column(
