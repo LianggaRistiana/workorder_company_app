@@ -20,6 +20,7 @@ class InvitationDraftEntity {
     PositionEntity? position,
   }) {
     return InvitationDraftEntity(
+      id: id,
       email: email ?? this.email,
       role: role ?? this.role,
       position: position ?? this.position,
