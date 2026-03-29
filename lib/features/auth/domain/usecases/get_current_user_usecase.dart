@@ -8,7 +8,9 @@ class GetCurrentUserUsecase {
 
   GetCurrentUserUsecase(this.repository);
 
-  Future<Either<Failure, UserEntity?>> call() async{
-    return repository.getCurrentUser();
+  Future<Either<Failure, UserEntity?>> call({bool refresh = false}) async{
+    return repository.getCurrentUser(
+      refresh: refresh,
+    );
   }
 }

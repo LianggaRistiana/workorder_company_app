@@ -4,6 +4,7 @@ class Endpoints {
 
   // Auth
   static const String login = "$authPrefix/login";
+  static const String profile = "$authPrefix/profile";
   static const String register = "$authPrefix/register";
   static const String logout = "$authPrefix/logout";
   static const String registerCompany = "$authPrefix/register-company";

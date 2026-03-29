@@ -9,7 +9,7 @@ abstract class AuthRepository {
   UserEntity? get currentUser;
   Future<Either<Failure, LoginResponseModel>> login(
       String email, String password);
-  Future<Either<Failure, UserEntity?>> getCurrentUser();
+  Future<Either<Failure, UserEntity?>> getCurrentUser({bool refresh = false});
   Future<Either<Failure, void>> saveUser(UserEntity user);
   Future<Either<Failure, void>> logOut();
   Future<Either<Failure, void>> userRegistration(

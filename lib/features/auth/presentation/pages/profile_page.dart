@@ -1,210 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:logger/logger.dart';
-import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:workorder_company_app/features/notification/presentation/widgets/notification_toggle.dart';
+import 'package:workorder_company_app/features/auth/presentation/widgets/profile_card_user.dart';
+import 'package:workorder_company_app/features/auth/presentation/widgets/profile_logout_button.dart';
+import 'package:workorder_company_app/features/auth/presentation/widgets/profile_menu_section.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
-import 'package:workorder_company_app/shared/utils/confirm_dialog.dart';
-import 'package:workorder_company_app/shared/widgets/custom_card.dart';
-import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
-import 'package:workorder_company_app/shared/widgets/horizontal_switch.dart';
-import 'package:workorder_company_app/shared/widgets/info_bottom_sheet.dart';
+import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Profile"),
-        centerTitle: true,
-      ),
-      body: BlocBuilder<AuthBloc, AuthState>(
+    return BlocListener<AuthBloc, AuthState>(
+      listenWhen: (previous, current) =>
+          previous is! Unauthenticated && current is Unauthenticated,
+      listener: (context, state) {
+        context.go(AppRoutes.login);
+      },
+      child: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
+          if (state is AuthLoading) {
+            return const Scaffold(
+              body: Center(child: AppLoading()),
+            );
+          }
+
           if (state is Authenticated) {
-            final user = state.user;
-
-            return SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  // Avatar dan Info Pengguna
-                  CustomCard(
-                    padding: const EdgeInsets.all(16),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        // ----------------------
-                        // Avatar with shadow
-                        // ----------------------
-                        Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withAlpha(8),
-                                blurRadius: 10,
-                                offset: const Offset(0, 3),
-                              ),
-                            ],
-                          ),
-                          child: CircleAvatar(
-                            radius: 35,
-                            backgroundColor: colorScheme.primaryContainer,
-                            child: Text(
-                              user.name.isNotEmpty
-                                  ? user.name[0].toUpperCase()
-                                  : "?",
-                              style: TextStyle(
-                                fontSize: 26,
-                                fontWeight: FontWeight.bold,
-                                color: colorScheme.onPrimaryContainer,
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        const SizedBox(width: 16),
-
-                        // ----------------------
-                        // Info (Name, email, role)
-                        // ----------------------
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                user.name,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleMedium
-                                    ?.copyWith(
-                                      fontWeight: FontWeight.w700,
-                                      color: colorScheme.onSurface,
-                                    ),
-                              ),
-
-                              const SizedBox(height: 4),
-
-                              Text(
-                                user.email,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.copyWith(
-                                      color: colorScheme.onSurfaceVariant,
-                                    ),
-                              ),
-
-                              const SizedBox(height: 8),
-
-                              // Custom Chip
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 12, vertical: 4),
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .primary
-                                      .withAlpha(15),
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Text(
-                                  user.position != null
-                                      ? '${user.role.displayName} | ${user.position!.name}'
-                                      : user.role.displayName,
-                                  style: TextStyle(
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  Divider(),
-                  NotificationToggle(),
-                  HorizontalSwitch(
-                    title: "Petunjuk",
-                    leadingIcon: Icons.info_outline,
-                    description: "Tampilkan petunjuk penggunaan aplikasi Anda",
-                    value: false,
-                    onChanged: (_) {},
-                  ),
-                  HorizontalButton(
-                    title: "Coba versi website",
-                    leadingIcon: Icons.public,
-                    description:
-                        "Versi website disarankan untuk penggunaan desktop",
-                    onTap: () {
-                      showAppBottomSheet(context,
-                          content: SizedBox(
-                            height: 200,
-                            child: Center(
-                              child: Text("Fitur ini belum tersedia"),
-                            ),
-                          ));
-                    },
-                  ),
-                  HorizontalButton(
-                    title: "Bantuan",
-                    leadingIcon: Icons.help_outline,
-                    description:
-                        "Cari bantuan Anda di sini mengenai cara menggunakan aplikasi",
-                    onTap: () {
-                      showAppBottomSheet(context,
-                          content: SizedBox(
-                            height: 200,
-                            child: Center(
-                              child: Text("Fitur ini belum tersedia"),
-                            ),
-                          ));
-                    },
-                  ),
-                  HorizontalButton(
-                    margin: const EdgeInsets.all(0),
-                    title: "Keluar",
-                    description: "Anda dapat masuk kembali kapan saja",
-                    leadingIcon: AppIcon.logout,
-                    isDanger: true,
-                    onTap: () async {
-                      final confirm = await showConfirmDialog(
-                        context: context,
-                        title: "Keluar",
-                        message: "Anda yakin ingin keluar?",
-                        icon: AppIcon.logout,
-                        confirmText: "Ya, keluar",
-                        type: ConfirmDialogType.danger,
-                      );
-
-                      if (confirm == false) return;
-                      if (!context.mounted) return;
-                      context.read<AuthBloc>().add(LogoutRequested());
-                    },
-                  ),
-                ],
+            return Scaffold(
+              appBar: AppBar(
+                // title: const Text("Profile"),
+                // centerTitle: true,
+              ),
+              body: SingleChildScrollView(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    ProfileUserCard(user: state.user),
+                    const SizedBox(height: 16),
+                    const Divider(),
+                    const ProfileMenuSection(),
+                    const SizedBox(height: 8),
+                    const ProfileLogoutButton(),
+                  ],
+                ),
               ),
             );
-          } else if (state is Unauthenticated) {
-            Logger().d("Unauthenticated");
-
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              context.go(AppRoutes.login);
-            });
-            return const SizedBox.shrink();
-          } else {
-            return const Center(child: CircularProgressIndicator());
           }
+
+          return const SizedBox.shrink();
         },
       ),
     );

@@ -1,14 +1,17 @@
 import 'package:workorder_company_app/core/network/api_client.dart';
 import 'package:workorder_company_app/core/network/api_response.dart';
 import 'package:workorder_company_app/core/network/endpoints.dart';
+import 'package:workorder_company_app/core/types/future_api.dart';
 import 'package:workorder_company_app/features/auth/data/model/company_registration_model.dart';
 import 'package:workorder_company_app/features/auth/data/model/login_response.dart';
 import 'package:workorder_company_app/features/auth/data/model/logout_response.dart';
+import 'package:workorder_company_app/features/auth/data/model/user_model.dart';
 import 'package:workorder_company_app/features/auth/data/model/user_registration_model.dart';
 
 abstract class AuthRemoteDatasource {
   Future<ApiResponse<LoginResponseModel>> login(String email, String password);
   Future<ApiResponse<LogoutResponseModel>> logout();
+  ApiFuture<UserModel> getUser();
   Future userRegistration(UserRegistrationModel registrationData);
   Future companyRegistration(CompanyRegistrationModel registrationData);
 }
@@ -67,5 +70,11 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
       data: registrationData.toJson(),
     );
     return;
+  }
+
+  @override
+  ApiFuture<UserModel> getUser() async {
+    final data = await _apiClient.get(Endpoints.profile);
+    return ApiResponse.fromJson(data, (json) => UserModel.fromJson(json));
   }
 }

@@ -27,6 +27,7 @@ class ReceiverInvitationActionsCubit
       (invitation) => emit(ReceiverInvitationActionsState(
         status: ReceiverInvitationActionsStatus.success,
         updatedInvitation: invitation,
+        action: ActionType.accept,
       )),
     );
   }
@@ -44,6 +45,7 @@ class ReceiverInvitationActionsCubit
       )),
       (invitation) => emit(ReceiverInvitationActionsState(
         status: ReceiverInvitationActionsStatus.success,
+        action: ActionType.reject,
         updatedInvitation: invitation,
       )),
     );

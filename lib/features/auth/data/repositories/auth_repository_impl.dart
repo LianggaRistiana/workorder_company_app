@@ -44,22 +44,58 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, UserEntity>> getCurrentUser() async {
+  Future<Either<Failure, UserEntity>> getCurrentUser({
+    bool refresh = false,
+  }) async {
     try {
+      // =====================================================
+      // 1️⃣ FORCE REFRESH → ALWAYS HIT REMOTE
+      // =====================================================
+      if (refresh) {
+        try {
+          final remoteUser = await _remoteDatasource.getUser();
+
+          // update memory cache
+          _cache = remoteUser.data;
+
+          // update local storage
+          await _localDatasource.saveUser(remoteUser.data!);
+
+          return Right(remoteUser.data!);
+        } catch (e) {
+          // fallback ke cache kalau ada
+          if (_cache != null) {
+            return Right(_cache!);
+          }
+
+          // fallback ke local storage
+          final localUser = await _localDatasource.getUser();
+          if (localUser != null) {
+            _cache = localUser;
+            return Right(localUser);
+          }
+
+          return Left(ServerFailure(message: e.toString()));
+        }
+      }
+
+      // =====================================================
+      // 2️⃣ MEMORY CACHE HIT
+      // =====================================================
       if (_cache != null) {
-        Logger().i("Cache Hit $_cache");
         return Right(_cache!);
       }
 
-      final result = await _localDatasource.getUser();
+      // =====================================================
+      // 3️⃣ LOAD FROM LOCAL STORAGE
+      // =====================================================
+      final localUser = await _localDatasource.getUser();
 
-      if (result == null) {
-        return Left(AuthFailure());
+      if (localUser != null) {
+        _cache = localUser;
+        return Right(localUser);
       }
-
-      _cache = result;
-      Logger().i(result);
-      return Right(result);
+      return Left(AuthFailure());
     } catch (e) {
       return Left(CacheFailure(message: e.toString()));
     }

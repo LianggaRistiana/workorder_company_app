@@ -31,7 +31,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<LogoutRequested>(_onLogoutRequested);
     on<UserRegistrationRequested>(_onUserRegistrationRequested);
     on<CompanyRegistrationRequested>(_onCompanyRegistrationRequested);
+    on<GetCurrentUserRequested>(_onGetCurrentUserRequested);
     // nanti bisa tambahkan register & logout handler
+  }
+
+  Future<void> _onGetCurrentUserRequested(
+    GetCurrentUserRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(AuthLoading());
+
+    final result = await getCurrentUserUsecase(refresh: true);
+    result.fold(
+      (failure) => emit(AuthError(failure.message)),
+      (user) => emit(Authenticated(user!)),
+    );
   }
 
   Future<void> _onLogoutRequested(
