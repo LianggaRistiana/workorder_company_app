@@ -1,9 +1,9 @@
-import 'package:dartz/dartz.dart';
-import 'package:workorder_company_app/core/error/failures.dart';
+import 'package:workorder_company_app/core/types/future_either.dart';
 import 'package:workorder_company_app/core/utils/safe_call.dart';
 import 'package:workorder_company_app/features/company/domain/entities/company_entity.dart';
 import 'package:workorder_company_app/features/memberships/data/datasources/memberships_remote_datasource.dart';
 import 'package:workorder_company_app/features/memberships/data/model/membership_codes_generate_draft_model.dart';
+import 'package:workorder_company_app/features/memberships/domain/entitties/member_entity.dart';
 import 'package:workorder_company_app/features/memberships/domain/entitties/membership_code_entity.dart';
 import 'package:workorder_company_app/features/memberships/domain/entitties/membership_codes_generate_draft_entity.dart';
 import 'package:workorder_company_app/features/memberships/domain/repositories/memberships_repository.dart';
@@ -14,7 +14,7 @@ class MembershipsRepositoryImpl extends MembershipsRepository {
   MembershipsRepositoryImpl(this._remoteDatasource);
 
   @override
-  Future<Either<Failure, CompanyEntity>> claimMembership(String code) {
+  FutureEither<CompanyEntity> claimMembership(String code) {
     return safeCall(() async {
       final response = await _remoteDatasource.claimMembership(code);
       return response.data!;
@@ -22,7 +22,7 @@ class MembershipsRepositoryImpl extends MembershipsRepository {
   }
 
   @override
-  Future<Either<Failure, MembershipCodeEntity>> deleteMembership(String id) {
+  FutureEither<MembershipCodeEntity> deleteMembership(String id) {
     return safeCall(() async {
       final response = await _remoteDatasource.deleteMembership(id);
       return response.data!;
@@ -30,18 +30,27 @@ class MembershipsRepositoryImpl extends MembershipsRepository {
   }
 
   @override
-  Future<Either<Failure, List<MembershipCodeEntity>>> generateMembershipCodes(
+  FutureEitherList<MembershipCodeEntity> generateMembershipCodes(
       MembershipCodesGenerateDraftEntity draft) {
     return safeCall(() async {
-      final response = await _remoteDatasource.generateMembershipCodes(MembershipCodesGenerateDraftModel.fromEntity(draft));
+      final response = await _remoteDatasource.generateMembershipCodes(
+          MembershipCodesGenerateDraftModel.fromEntity(draft));
       return response.data ?? [];
     });
   }
 
   @override
-  Future<Either<Failure, List<MembershipCodeEntity>>> getMembershipCodes() {
+  FutureEitherList<MembershipCodeEntity> getMembershipCodes() {
     return safeCall(() async {
       final response = await _remoteDatasource.getMembershipCodes();
+      return response.data ?? [];
+    });
+  }
+
+  @override
+  FutureEitherList<MemberEntity> getMembers() {
+    return safeCall(() async {
+      final response = await _remoteDatasource.getMembers();
       return response.data ?? [];
     });
   }

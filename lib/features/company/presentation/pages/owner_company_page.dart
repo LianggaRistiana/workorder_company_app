@@ -143,13 +143,7 @@ class _OwnerCompanyPageState extends State<OwnerCompanyPage> {
                     icon: AppIcon.membership,
                     label: "Pelanggan",
                     onTap: () {
-                      showAppBottomSheet(context,
-                          content: SizedBox(
-                            height: 200,
-                            child: Center(
-                              child: Text("Fitur ini belum tersedia"),
-                            ),
-                          ));
+                      context.push(AppRoutes.memberships);
                     }),
                 MenuItem(
                     icon: AppIcon.help,
