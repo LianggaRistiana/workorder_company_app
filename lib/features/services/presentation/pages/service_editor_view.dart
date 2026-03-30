@@ -61,6 +61,12 @@ class _ServiceEditorViewState extends State<ServiceEditorView>
     );
 
     _tabController = TabController(length: 4, vsync: this);
+
+    _tabController.addListener(() {
+      if (_tabController.indexIsChanging) {
+        setState(() {});
+      }
+    });
   }
 
   void _onNext() {

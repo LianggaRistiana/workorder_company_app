@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
+import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/detail/form_detail_cubit.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/detail/form_detail_state.dart';
 import 'package:workorder_company_app/features/forms/presentation/widgets/form_field_card.dart';
 import 'package:workorder_company_app/features/helps/presentation/widgets/form_type_tips.dart';
 import 'package:workorder_company_app/features/helps/presentation/widgets/help_button.dart';
+import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 import 'package:workorder_company_app/shared/widgets/custom_back_buttom.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
 import 'package:workorder_company_app/shared/widgets/property_display.dart';
 
+// TODO : PRovide cubit here and fix Page to stateless
 class FormDetailPage extends StatefulWidget {
   final String formId;
 
@@ -46,6 +50,20 @@ class _FormDetailPageState extends State<FormDetailPage> {
           appBar: AppBar(
             centerTitle: true,
             leading: CustomBackButton(),
+            actions: [
+              if (state.form != null)
+                IconButton(
+                  onPressed: () async {
+                    final result = await context.push(AppRoutes.formsUpdate,
+                        extra: state.form);
+                    if (!context.mounted) return;
+                    if (result == true) {
+                      context.pop(true);
+                    }
+                  },
+                  icon: const Icon(AppIcon.edit, size: 18),
+                ),
+            ],
           ),
           body: _buildBody(context, state),
         );
@@ -110,7 +128,7 @@ class _FormDetailPageState extends State<FormDetailPage> {
                   value: form.fields?.length.toString() ?? "-",
                 ),
               ])),
-              
+
               HelpButton(title: "Kenali Tipe Formulir", child: FormTypeTips()),
 
               const SizedBox(height: 16),

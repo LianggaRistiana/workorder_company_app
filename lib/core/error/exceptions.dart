@@ -34,6 +34,8 @@ class ParsingException implements Exception {
   String toString() => message ?? 'ParsingException';
 }
 
+
+// TODO : Typo 
 class ValidataionException implements Exception {
   final String? message;
 

@@ -18,6 +18,7 @@ extension ReorderListExtension<T> on List<T> {
   /// items.reorder(oldIndex, newIndex);
   /// ```
   void reorder(int oldIndex, int newIndex) {
+    if (oldIndex == newIndex) return;
     if (oldIndex < 0 || oldIndex >= length) return;
     if (newIndex < 0 || newIndex > length) return;
 
