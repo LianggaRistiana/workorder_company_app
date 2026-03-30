@@ -26,7 +26,7 @@ class MembershipsRemoteDatasourceImpl implements MembershipsRemoteDatasource {
         await _apiClient.post(Endpoints.claimMembership, data: {"code": code});
     return ApiResponse<CompanyModel>.fromJson(
       response,
-      (data) => CompanyModel.fromJson(data),
+      (data) => CompanyModel.fromJson(data["company"]),
     );
   }
 

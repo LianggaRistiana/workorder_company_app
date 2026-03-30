@@ -31,6 +31,7 @@ Failure _mapExceptionToFailure(dynamic error) {
       case 403:
         return AuthFailure(message: "Anda tidak diijinkan mengakses data ini");
       case 404:
+      case 409:
         return ServerFailure(message: error.message);
       case 400:
       case 422:
