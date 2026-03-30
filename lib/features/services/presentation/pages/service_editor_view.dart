@@ -64,6 +64,7 @@ class _ServiceEditorViewState extends State<ServiceEditorView>
   }
 
   void _onNext() {
+    FocusScope.of(context).unfocus();
     final current = _tabController.index;
 
     // TODO : fix this later
@@ -85,12 +86,14 @@ class _ServiceEditorViewState extends State<ServiceEditorView>
   }
 
   void _onPrevious() {
+    FocusScope.of(context).unfocus();
     if (_tabController.index > 0) {
       _tabController.animateTo(_tabController.index - 1);
     }
   }
 
   Future<void> _onSubmit() async {
+    FocusScope.of(context).unfocus();
     final finalDraft = _coordinator.buildFinal(
       title: _controllers.title.text,
       description: _controllers.description.text,

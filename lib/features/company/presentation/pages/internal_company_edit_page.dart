@@ -47,8 +47,7 @@ class InternalCompanyEditView extends StatefulWidget {
       _InternalCompanyEditViewState();
 }
 
-class _InternalCompanyEditViewState
-    extends State<InternalCompanyEditView> {
+class _InternalCompanyEditViewState extends State<InternalCompanyEditView> {
   final _formKey = GlobalKey<FormState>();
 
   late final TextEditingController _nameController;
@@ -61,10 +60,8 @@ class _InternalCompanyEditViewState
   void initState() {
     super.initState();
 
-    _nameController =
-        TextEditingController(text: widget.company.name);
-    _addressController =
-        TextEditingController(text: widget.company.address);
+    _nameController = TextEditingController(text: widget.company.name);
+    _addressController = TextEditingController(text: widget.company.address);
     _descriptionController =
         TextEditingController(text: widget.company.description);
 
@@ -81,23 +78,19 @@ class _InternalCompanyEditViewState
       isActive: _isActive,
     );
 
-    context
-        .read<InternalUpdateCompanyCubit>()
-        .submit(updatedCompany);
+    context.read<InternalUpdateCompanyCubit>().submit(updatedCompany);
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<InternalUpdateCompanyCubit,
-        InternalUpdateCompanyState>(
+    return BlocConsumer<InternalUpdateCompanyCubit, InternalUpdateCompanyState>(
       listener: (context, state) {
         if (state.success) {
           Navigator.pop(context, true);
         }
 
         if (state.error != null) {
-          context.showError(
-              state.error ?? "Terjadi kesalahan");
+          context.showError(state.error ?? "Terjadi kesalahan");
         }
       },
       builder: (context, state) {
@@ -112,22 +105,20 @@ class _InternalCompanyEditViewState
                 children: [
                   Expanded(
                     child: SingleChildScrollView(
-                      padding: const EdgeInsets.all(
-                          AppSpacing.md),
+                      keyboardDismissBehavior:
+                          ScrollViewKeyboardDismissBehavior.onDrag,
+                      padding: const EdgeInsets.all(AppSpacing.md),
                       child: Form(
                         key: _formKey,
                         child: Column(
-                          crossAxisAlignment:
-                              CrossAxisAlignment.stretch,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             CustomInputField(
                               label: "Nama Perusahaan",
                               controller: _nameController,
-                              prefixIcon:
-                                  const Icon(AppIcon.company),
+                              prefixIcon: const Icon(AppIcon.company),
                               validator: (value) {
-                                if (value == null ||
-                                    value.trim().isEmpty) {
+                                if (value == null || value.trim().isEmpty) {
                                   return "Nama perusahaan wajib diisi";
                                 }
                                 return null;
@@ -136,20 +127,16 @@ class _InternalCompanyEditViewState
                             const SizedBox(height: 20),
                             CustomInputField(
                               label: "Alamat",
-                              controller:
-                                  _addressController,
-                              prefixIcon: const Icon(
-                                  Icons
-                                      .location_on_outlined),
+                              controller: _addressController,
+                              prefixIcon:
+                                  const Icon(Icons.location_on_outlined),
                               maxLines: 2,
                             ),
                             const SizedBox(height: 20),
                             CustomInputField(
                               label: "Deskripsi",
-                              controller:
-                                  _descriptionController,
-                              prefixIcon:
-                                  const Icon(AppIcon.desc),
+                              controller: _descriptionController,
+                              prefixIcon: const Icon(AppIcon.desc),
                               maxLines: 3,
                             ),
                             const SizedBox(height: 24),
@@ -157,8 +144,7 @@ class _InternalCompanyEditViewState
                               title: "Perusahaan Aktif",
                               description:
                                   "Nonaktifkan jika perusahaan tidak beroperasi",
-                              leadingIcon:
-                                  AppIcon.activeState,
+                              leadingIcon: AppIcon.activeState,
                               value: _isActive,
                               onChanged: (value) {
                                 setState(() {
@@ -174,8 +160,7 @@ class _InternalCompanyEditViewState
 
                   /// Sticky Button
                   Padding(
-                    padding: const EdgeInsets.all(
-                        AppSpacing.md),
+                    padding: const EdgeInsets.all(AppSpacing.md),
                     child: ButtonWithLoadingState(
                       onPressed: _submit,
                       isLoading: state.isSaving,

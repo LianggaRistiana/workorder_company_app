@@ -28,33 +28,25 @@ class PositionCreatePage extends StatelessWidget {
             context.showError(state.errorMessage ?? 'Terjadi kesalahan');
           }
         },
-        child: Scaffold(
-          appBar: AppBar(
-            title: const Text('Buat Departemen'),
-          ),
-          body: Padding(
-            padding: const EdgeInsets.all(16),
-            child: BlocBuilder<PositionCreateCubit, PositionCreateState>(
-              builder: (context, state) {
-                ValidationFailure? validation;
+        child: BlocBuilder<PositionCreateCubit, PositionCreateState>(
+          builder: (context, state) {
+            ValidationFailure? validation;
 
-                if (state.status == PositionCreateStatus.error) {
-                  if (state.failure is ValidationFailure) {
-                    validation = state.failure as ValidationFailure;
-                  }
-                }
+            if (state.status == PositionCreateStatus.error) {
+              if (state.failure is ValidationFailure) {
+                validation = state.failure as ValidationFailure;
+              }
+            }
 
-                return PositionFormView(
-                  submitLabel: "Simpan Departemen",
-                  validation: validation,
-                  isLoading: state.status == PositionCreateStatus.loading,
-                  onSubmit: (entity) {
-                    context.read<PositionCreateCubit>().createPosition(entity);
-                  },
-                );
+            return PositionFormView(
+              submitLabel: "Simpan Departemen",
+              validation: validation,
+              isLoading: state.status == PositionCreateStatus.loading,
+              onSubmit: (entity) {
+                context.read<PositionCreateCubit>().createPosition(entity);
               },
-            ),
-          ),
+            );
+          },
         ),
       ),
     );

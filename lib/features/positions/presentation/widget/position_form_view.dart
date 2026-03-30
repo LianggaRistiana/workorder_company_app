@@ -35,19 +35,15 @@ class _PositionFormViewState extends State<PositionFormView> {
 
   late final TextEditingController _nameController;
   late final TextEditingController _descriptionController;
-
   late bool _isActive;
 
   @override
   void initState() {
     super.initState();
-
     _nameController =
         TextEditingController(text: widget.initialData?.name ?? '');
-
     _descriptionController =
         TextEditingController(text: widget.initialData?.description ?? '');
-
     _isActive = widget.initialData?.isActive ?? true;
   }
 
@@ -75,13 +71,11 @@ class _PositionFormViewState extends State<PositionFormView> {
     final initial = widget.initialData;
 
     if (initial == null) {
-      // Mode create → cek apakah ada input
       return _nameController.text.isNotEmpty ||
           _descriptionController.text.isNotEmpty ||
           _isActive != true;
     }
 
-    // Mode edit → cek perubahan dari initial
     return _nameController.text != initial.name ||
         _descriptionController.text != (initial.description ?? '') ||
         _isActive != initial.isActive;
@@ -89,78 +83,95 @@ class _PositionFormViewState extends State<PositionFormView> {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (didPop, result) async {
-        if (didPop) return;
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      appBar: AppBar(
+        title: Text(
+          widget.initialData == null ? "Tambah Departemen" : "Edit Departemen",
+        ),
+      ),
 
-        if (_isDirty) {
-          final shouldLeave = await showConfirmDialog(
-            context: context,
-            title: "Konfirmasi",
-            message: "Apakah Anda yakin ingin meninggalkan halaman ini?",
-            type: ConfirmDialogType.warning,
-          );
+      body: PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (didPop, result) async {
+          if (didPop) return;
 
-          if (!context.mounted) return;
-          if (shouldLeave == true) {
+          if (_isDirty) {
+            final shouldLeave = await showConfirmDialog(
+              context: context,
+              title: "Konfirmasi",
+              message: "Apakah Anda yakin ingin meninggalkan halaman ini?",
+              type: ConfirmDialogType.warning,
+            );
+
+            if (!context.mounted) return;
+            if (shouldLeave == true) {
+              context.pop();
+            }
+          } else {
+            if (!mounted) return;
             context.pop();
           }
-        } else {
-          if (!mounted) return;
-          context.pop();
-        }
-      },
-      child: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            CustomInputField(
-              label: 'Nama Departemen',
-              controller: _nameController,
-              enabled: !widget.isLoading,
-              prefixIcon: const Icon(AppIcon.department),
-              errorText: widget.validation?.errorOf(PositionProperty.name),
-              validator: (value) {
-                return ValidatorUtils.single(
-                    value,
-                    fieldName: "Nama Departemen",
-                    ValidatorType.required);
-              },
+        },
+        child: Form(
+          key: _formKey,
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                CustomInputField(
+                  label: 'Nama Departemen',
+                  controller: _nameController,
+                  enabled: !widget.isLoading,
+                  prefixIcon: const Icon(AppIcon.department),
+                  errorText: widget.validation?.errorOf(PositionProperty.name),
+                  validator: (value) {
+                    return ValidatorUtils.single(
+                      value,
+                      fieldName: "Nama Departemen",
+                      ValidatorType.required,
+                    );
+                  },
+                ),
+                const SizedBox(height: 16),
+                CustomInputField(
+                  label: 'Deskripsi',
+                  enabled: !widget.isLoading,
+                  controller: _descriptionController,
+                  errorText:
+                      widget.validation?.errorOf(PositionProperty.description),
+                  maxLines: 3,
+                  prefixIcon: const Icon(AppIcon.desc),
+                ),
+                const SizedBox(height: 20),
+                CustomSwitchTile(
+                  title: 'Status Aktif',
+                  description:
+                      'Jika nonaktif, Departemen tidak dapat digunakan',
+                  leadingIcon: AppIcon.activeState,
+                  value: _isActive,
+                  onChanged: (val) {
+                    setState(() {
+                      _isActive = val;
+                    });
+                  },
+                ),
+              ],
             ),
-            const SizedBox(height: 16),
-            CustomInputField(
-              label: 'Deskripsi',
-              enabled: !widget.isLoading,
-              controller: _descriptionController,
-              errorText:
-                  widget.validation?.errorOf(PositionProperty.description),
-              maxLines: 3,
-              prefixIcon: const Icon(AppIcon.desc),
-              // validator: (value) {
-              //   return ValidatorUtils.single(
-              //       value, fieldName: "Deskripsi", ValidatorType.required);
-              // },
-            ),
-            const SizedBox(height: 20),
-            CustomSwitchTile(
-              title: 'Status Aktif',
-              description: 'Jika nonaktif, Departemen tidak dapat digunakan',
-              leadingIcon: AppIcon.activeState,
-              value: _isActive,
-              onChanged: (val) {
-                setState(() {
-                  _isActive = val;
-                });
-              },
-            ),
-            const Spacer(),
-            ButtonWithLoadingState(
-                onPressed: _handleSubmit,
-                isLoading: widget.isLoading,
-                icon: AppIcon.submit,
-                label: widget.submitLabel)
-          ],
+          ),
+        ),
+      ),
+
+      /// 🔹 Bottom Button (Auto-handle keyboard)
+      bottomNavigationBar: SafeArea(
+        minimum: const EdgeInsets.all(16),
+        child: ButtonWithLoadingState(
+          onPressed: _handleSubmit,
+          isLoading: widget.isLoading,
+          icon: AppIcon.submit,
+          label: widget.submitLabel,
         ),
       ),
     );

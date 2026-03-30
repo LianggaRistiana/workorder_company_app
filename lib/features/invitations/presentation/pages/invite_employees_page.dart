@@ -127,6 +127,8 @@ class _InviteEmployeeViewState extends State<_InviteEmployeeView> {
                       child: Text('Belum ada Undangan'),
                     )
                   : ListView.builder(
+                      keyboardDismissBehavior:
+                          ScrollViewKeyboardDismissBehavior.onDrag,
                       itemCount: _invites.length,
                       itemBuilder: (context, index) {
                         final invite = _invites[index];
