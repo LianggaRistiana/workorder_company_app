@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/features/forms/domain/draft/form_draft.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
@@ -7,6 +8,7 @@ import 'package:workorder_company_app/features/forms/presentation/coordinator/fo
 import 'package:workorder_company_app/features/forms/presentation/widgets/field_type_buttom_sheet.dart';
 import 'package:workorder_company_app/features/forms/presentation/widgets/fields_editor_tab_view.dart';
 import 'package:workorder_company_app/features/forms/presentation/widgets/form_config_editor_tab_view.dart';
+import 'package:workorder_company_app/shared/utils/confirm_dialog.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/custom_step_indicator.dart';
 import 'package:workorder_company_app/shared/widgets/info_bottom_sheet.dart';
@@ -93,6 +95,7 @@ class _FormEditorViewState extends State<FormEditorView>
   }
 
   void _onNext() {
+    FocusScope.of(context).unfocus();
     final currentIndex = _tabController.index;
     bool isValid = false;
 
@@ -109,12 +112,14 @@ class _FormEditorViewState extends State<FormEditorView>
   }
 
   void _onPrevious() {
+    FocusScope.of(context).unfocus();
     if (_tabController.index > 0) {
       _tabController.animateTo(_tabController.index - 1);
     }
   }
 
   void _submitForm() {
+    FocusScope.of(context).unfocus();
     if (!_coordinator.hasField()) {
       context.showError("Pertanyaan tidak boleh kosong");
       return;
@@ -125,6 +130,18 @@ class _FormEditorViewState extends State<FormEditorView>
     }
 
     widget.onSubmit(_coordinator.draft);
+  }
+
+  // TODO : move ths to coordinator
+  bool get _isDirty {
+    final initial = widget.initialEntity;
+    if (initial == null) {
+      return _controllers.title.text != _coordinator.draft.title ||
+          _controllers.description.text != _coordinator.draft.description;
+    }
+
+    return _controllers.title.text != initial.title ||
+        _controllers.description.text != initial.description;
   }
 
   @override
@@ -164,24 +181,47 @@ class _FormEditorViewState extends State<FormEditorView>
             ),
           ),
         ),
-        body: TabBarView(
-          controller: _tabController,
-          physics: const NeverScrollableScrollPhysics(),
-          children: [
-            FormConfigEditorTabView(
-              titleController: _controllers.title,
-              descController: _controllers.description,
-              formType: _coordinator.draft.formType,
-              formKey: _formKey,
-              onFormTypeChanged: (type) {
-                _coordinator.updateFormType(type);
-              },
-            ),
-            FieldsEditorTabView(
-                formKey: _fieldsKey,
-                coordinator: _coordinator,
-                onAddField: _openFieldTypePicker)
-          ],
+        body: PopScope(
+          canPop: false,
+          onPopInvokedWithResult: (didPop, result) async {
+            if (didPop) return;
+
+            if (_isDirty) {
+              final shouldLeave = await showConfirmDialog(
+                context: context,
+                title: "Konfirmasi",
+                message: "Apakah Anda yakin ingin meninggalkan halaman ini?",
+                type: ConfirmDialogType.warning,
+              );
+
+              if (!context.mounted) return;
+              if (shouldLeave == true) {
+                context.pop();
+              }
+            } else {
+              if (!mounted) return;
+              context.pop();
+            }
+          },
+          child: TabBarView(
+            controller: _tabController,
+            physics: const NeverScrollableScrollPhysics(),
+            children: [
+              FormConfigEditorTabView(
+                titleController: _controllers.title,
+                descController: _controllers.description,
+                formType: _coordinator.draft.formType,
+                formKey: _formKey,
+                onFormTypeChanged: (type) {
+                  _coordinator.updateFormType(type);
+                },
+              ),
+              FieldsEditorTabView(
+                  formKey: _fieldsKey,
+                  coordinator: _coordinator,
+                  onAddField: _openFieldTypePicker)
+            ],
+          ),
         ),
       ),
     );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/features/forms/domain/draft/form_draft.dart';
 import 'package:workorder_company_app/features/forms/domain/draft/option_draft.dart';
+import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
 
 class FormEditorCoordinator extends ChangeNotifier {
   final FormDraft _draft;
@@ -62,7 +63,7 @@ class FormEditorCoordinator extends ChangeNotifier {
     _draft.fields[index].updateFieldPlaceholder(placeholder);
     notifyListeners();
   }
-  
+
   void updateFieldMin(int index, int min) {
     _draft.fields[index].updateMin(min);
     notifyListeners();
@@ -102,5 +103,17 @@ class FormEditorCoordinator extends ChangeNotifier {
 
   bool hasField() {
     return _draft.fields.isNotEmpty;
+  }
+
+  bool isDirty(ServiceEntity? entity) {
+    if (entity == null) {
+      return _draft.title.isNotEmpty ||
+          _draft.description.isNotEmpty ||
+          _draft.formType != FormType.workOrder ||
+          _draft.fields.isNotEmpty;
+    } else {
+      // TODO : to draft and equatable it
+      return true;
+    }
   }
 }

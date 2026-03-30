@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
+import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/utils/validators.dart';
 import 'package:workorder_company_app/features/forms/presentation/coordinator/form_editor_coordinator.dart';
+import 'package:workorder_company_app/features/forms/presentation/widgets/field_type_icon.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 import 'package:workorder_company_app/shared/widgets/dashed_button.dart';
@@ -109,10 +111,23 @@ class _FieldCardWidgetState extends State<FieldCardWidget> {
     return CustomCard(
       child: Column(
         children: [
+          Row(
+            children: [
+              // const Icon(Icons.drag_handle),
+              FieldTypeIcon(type: field.type),
+              const Spacer(),
+              IconButton(
+                icon: const Icon(AppIcon.delete),
+                onPressed: () => widget.coordinator.removeField(widget.index),
+              ),
+            ],
+          ),
+
           /// Label
           CustomInputField(
             label: "Pertanyaan",
             controller: _labelController,
+            maxLines: 2,
             onChanged: (value) =>
                 widget.coordinator.updateFieldLabel(widget.index, value),
             validator: (value) {
@@ -123,22 +138,38 @@ class _FieldCardWidgetState extends State<FieldCardWidget> {
               );
             },
           ),
+          const SizedBox(height: 8),
 
           /// Placeholder
           CustomInputField(
             label: "Placeholder",
+            maxLines: 2,
             controller: _placeholderController,
             onChanged: (value) =>
                 widget.coordinator.updateFieldPlaceholder(widget.index, value),
           ),
+          const SizedBox(height: 12),
 
           /// Required
-          Switch(
-            value: field.required,
-            onChanged: (val) =>
-                widget.coordinator.updateFieldRequired(widget.index, val),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: Theme.of(context).colorScheme.primaryContainer,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text('Wajib diisi'),
+                Switch(
+                  value: field.required,
+                  onChanged: (val) =>
+                      widget.coordinator.updateFieldRequired(widget.index, val),
+                ),
+              ],
+            ),
           ),
-
+          const SizedBox(height: 8),
           if (field.type == FieldType.number)
             Row(
               children: [
@@ -160,6 +191,7 @@ class _FieldCardWidgetState extends State<FieldCardWidget> {
                     },
                   ),
                 ),
+                const SizedBox(width: 8),
                 Expanded(
                   child: CustomInputField(
                     label: "Maksimal",
@@ -226,14 +258,9 @@ class _OptionEditorWidgetState extends State<OptionEditorWidget> {
       children: [
         CustomList(
           items: field.options,
-          isReorderable: true,
-          // onReorder: (oldIndex, newIndex) {
-          //   widget.coordinator.moveOption(
-          //     widget.fieldIndex,
-          //     oldIndex,
-          //     newIndex,
-          //   );
-          // },
+          isReorderable: false,
+          emptyWidget: InformationBlock.warning("Opsi Kosong"),
+          separatorHeight: 4,
           itemBuilder: (option, index) {
             _controllers.putIfAbsent(
               option.key,
@@ -263,14 +290,18 @@ class _OptionEditorWidgetState extends State<OptionEditorWidget> {
                       option.key,
                     );
                   },
-                  icon: const Icon(Icons.delete),
+                  icon: const Icon(AppIcon.remove),
                 )
               ],
             );
           },
         ),
+        const SizedBox(height: 8),
         DashedButton(
           title: "Tambah Opsi",
+          color: Theme.of(context).colorScheme.primary,
+          borderColor: Theme.of(context).disabledColor,
+          icon: Icons.add,
           onTap: () => widget.coordinator.addOption(widget.fieldIndex),
         )
       ],
