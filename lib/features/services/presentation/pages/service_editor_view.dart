@@ -153,6 +153,7 @@ class _ServiceEditorViewState extends State<ServiceEditorView>
           physics: const NeverScrollableScrollPhysics(),
           children: [
             ServiceConfigFormTabView(
+              isUpdate: widget.initialEntity != null,
               isActive: draft.isActive,
               titleController: _controllers.title,
               descriptionController: _controllers.description,

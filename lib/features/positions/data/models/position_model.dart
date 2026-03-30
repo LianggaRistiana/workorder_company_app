@@ -22,7 +22,7 @@ class PositionModel extends PositionEntity {
   Map<String, dynamic> toJson() {
     return {
       '_id': id,
-      'name': name,
+      // 'name': name,
       'description': description,
       'isActive': isActive,
     };

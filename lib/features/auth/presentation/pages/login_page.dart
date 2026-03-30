@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/utils/validators.dart';
 import 'package:workorder_company_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
+import 'package:workorder_company_app/shared/widgets/button_with_loading_state.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 
 class LoginPage extends StatefulWidget {
@@ -125,33 +127,11 @@ class _LoginPageState extends State<LoginPage> {
                       },
                     ),
                     const SizedBox(height: 32),
-                    ElevatedButton(
-                      onPressed: isLoading ? null : _onLoginPressed,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context)
-                            .floatingActionButtonTheme
-                            .backgroundColor,
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                      ),
-                      child: isLoading
-                          ? const SizedBox(
-                              height: 20,
-                              width: 20,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                valueColor:
-                                    AlwaysStoppedAnimation<Color>(Colors.white),
-                              ),
-                            )
-                          : Text('Masuk',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium
-                                  ?.copyWith(
-                                    color:
-                                        Theme.of(context).colorScheme.onPrimary,
-                                  )),
-                    ),
+                    ButtonWithLoadingState(
+                        onPressed: _onLoginPressed,
+                        isLoading: isLoading,
+                        icon: AppIcon.login,
+                        label: "Masuk"),
                     TextButton(
                       onPressed: () {
                         // Logger().d(GoRouterState.of(context).uri.toString());

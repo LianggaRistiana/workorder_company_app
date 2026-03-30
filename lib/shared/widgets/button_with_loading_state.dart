@@ -62,16 +62,23 @@ class ButtonWithLoadingState extends StatelessWidget {
                       Icon(
                         icon,
                         size: 18,
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.onPrimary,
                       ),
                       const SizedBox(width: 8),
-                      Text(label),
+                      Text(label,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(
+                                color: Theme.of(context).colorScheme.onPrimary,
+                              )),
                     ],
                   )
-                : Text(
-                    label,
+                : Text(label,
                     key: const ValueKey("label"),
-                  ),
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.primary,
+                        )),
       ),
     );
 

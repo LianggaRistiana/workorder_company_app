@@ -12,6 +12,7 @@ import 'package:workorder_company_app/shared/widgets/enum_selector.dart';
 import 'package:workorder_company_app/shared/widgets/horizontal_switch.dart';
 class ServiceConfigFormTabView extends StatelessWidget {
   final bool isActive;
+  final bool isUpdate;
   final ValueChanged<bool> onActiveChanged;
 
   final TextEditingController titleController;
@@ -22,6 +23,7 @@ class ServiceConfigFormTabView extends StatelessWidget {
 
   const ServiceConfigFormTabView({
     super.key,
+    required this.isUpdate,
     required this.isActive,
     required this.onActiveChanged,
     required this.titleController,
@@ -37,6 +39,7 @@ class ServiceConfigFormTabView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          if (!isUpdate)
           HorizontalSwitch(
             leadingIcon: AppIcon.activeState,
             title: "Layanan Aktif",
@@ -50,7 +53,7 @@ class ServiceConfigFormTabView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomInputField(
-                  controller: titleController,
+                  controller: titleController, 
                   prefixIcon: Icon(AppIcon.service),
                   label: "Nama Layanan",
                   validator: (value) =>

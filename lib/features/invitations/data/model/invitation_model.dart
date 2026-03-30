@@ -47,7 +47,9 @@ class InvitationModel extends InvitationEntity {
         company: json['company'] != null
             ? CompanyModel.fromJson(json['company'])
             : null,
-        position: PositionModel.fromJson(
-            safeParse<Map<String, dynamic>>(json, "position")));
+        position: json['position'] != null
+            ? PositionModel.fromJson(
+                safeParse<Map<String, dynamic>>(json, "position"))
+            : null);
   }
 }

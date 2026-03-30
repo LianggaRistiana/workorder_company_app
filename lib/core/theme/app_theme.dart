@@ -105,7 +105,7 @@ class AppTheme {
     ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       backgroundColor: AppColors.darkPrimary,
-      foregroundColor: const Color.fromARGB(255, 255, 255, 255),
+      foregroundColor: AppColors.darkBackground,
     ),
     scaffoldBackgroundColor: AppColors.darkBackground,
     appBarTheme: AppBarTheme(
