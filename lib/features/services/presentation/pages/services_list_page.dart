@@ -9,6 +9,7 @@ import 'package:workorder_company_app/features/services/presentation/bloc/list/s
 import 'package:workorder_company_app/features/services/presentation/bloc/list/services_list_state.dart';
 import 'package:workorder_company_app/features/services/presentation/widgets/service_summary_item.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
 import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
 import 'package:workorder_company_app/shared/widgets/list_page_scafold.dart';
@@ -37,7 +38,12 @@ class _ServicesListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ServicesListBloc, ServicesListState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+         if (state.status == ServicesListStatus.error &&
+                state.errorMessage != null) {
+              context.showError(state.errorMessage!);
+            }
+      },
       builder: (context, state) {
         final isLoading = state.status == ServicesListStatus.loading;
         final errorMessage = state.errorMessage;

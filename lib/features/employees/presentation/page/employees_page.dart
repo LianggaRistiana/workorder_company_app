@@ -8,71 +8,67 @@ import 'package:workorder_company_app/features/auth/domain/entities/user_entity.
 import 'package:workorder_company_app/features/employees/presentation/bloc/employees_bloc.dart';
 import 'package:workorder_company_app/features/workorder/presentation/widgets/staff_chip.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
 import 'package:workorder_company_app/shared/widgets/list_page_scafold.dart';
-class EmployeesPage extends StatefulWidget {
+
+class EmployeesPage extends StatelessWidget {
   const EmployeesPage({super.key});
 
   @override
-  State<EmployeesPage> createState() => _EmployeesPageState();
-}
-
-class _EmployeesPageState extends State<EmployeesPage> {
-  @override
-  void initState() {
-    super.initState();
-    context.read<EmployeesBloc>().add(GetEmployeesRequested());
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EmployeesBloc, EmployeesState>(
-      builder: (context, state) {
-        return ListPageScaffold<UserEntity>(
-          title: "Pegawai",
-          isLoading: state.isLoading,
-          errorMessage: state.errorMessage,
-          items: state.employees,
-          loadingMessage: "Memuat pegawai...",
-          onRefresh: () async {
-            context
-                .read<EmployeesBloc>()
-                .add(GetEmployeesRequested());
-          },
-          emptyWidget: const EmptyStateWidget(
-            icon: Icons.group_off_outlined,
-            text: "Tidak ada Pegawai",
-          ),
-
-          floatingActionButton: PermissionGate(
-            permission: InvitationPermission.create,
-            child: FloatingActionButton.extended(
-              onPressed: state.isLoading
-                  ? null
-                  : () {
-                      context.push(AppRoutes.employeeInvite);
-                    },
-              label: const Text('Tambah Karyawan'),
-              icon: const Icon(Icons.person_add_alt_1),
+    return BlocProvider(
+      create: (_) =>
+          context.read<EmployeesBloc>()..add(GetEmployeesRequested()),
+      child: BlocConsumer<EmployeesBloc, EmployeesState>(
+        listener: (context, state) {
+          if (state.errorMessage != null) {
+            context.showError(state.errorMessage!);
+          }
+        },
+        builder: (context, state) {
+          return ListPageScaffold<UserEntity>(
+            title: "Pegawai",
+            isLoading: state.isLoading,
+            errorMessage: state.errorMessage,
+            items: state.employees,
+            loadingMessage: "Memuat pegawai...",
+            onRefresh: () async {
+              context.read<EmployeesBloc>().add(GetEmployeesRequested());
+            },
+            emptyWidget: const EmptyStateWidget(
+              icon: Icons.group_off_outlined,
+              text: "Tidak ada Pegawai",
             ),
-          ),
-
-          itemBuilder: (item) {
-            return CustomCard(
-              margin: const EdgeInsets.symmetric(
-                horizontal: AppSpacing.md,
-                vertical: AppSpacing.xs,
+            floatingActionButton: PermissionGate(
+              permission: InvitationPermission.create,
+              child: FloatingActionButton.extended(
+                onPressed: state.isLoading
+                    ? null
+                    : () {
+                        context.push(AppRoutes.employeeInvite);
+                      },
+                label: const Text('Tambah Karyawan'),
+                icon: const Icon(Icons.person_add_alt_1),
               ),
-              padding: const EdgeInsets.all(16),
-              child: StaffChip(
-                user: item,
-                showPosition: true,
-              ),
-            );
-          },
-        );
-      },
+            ),
+            itemBuilder: (item) {
+              return CustomCard(
+                margin: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.md,
+                  vertical: AppSpacing.xs,
+                ),
+                padding: const EdgeInsets.all(16),
+                child: StaffChip(
+                  user: item,
+                  showPosition: true,
+                ),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
