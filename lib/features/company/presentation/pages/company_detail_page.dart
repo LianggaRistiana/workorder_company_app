@@ -175,7 +175,6 @@ class _CompanyDetailPageState extends State<CompanyDetailPage> {
               emptyFooterHeight: 20,
               separatorHeight: AppSpacing.sm,
               scrollable: false,
-              isReorderable: false,
               itemBuilder: (service, _) => ServiceItem(
                   service: service,
                   onTap: () {

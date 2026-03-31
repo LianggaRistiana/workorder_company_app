@@ -258,7 +258,6 @@ class _OptionEditorWidgetState extends State<OptionEditorWidget> {
       children: [
         CustomList(
           items: field.options,
-          isReorderable: false,
           emptyWidget: InformationBlock.warning("Opsi Kosong"),
           separatorHeight: 4,
           itemBuilder: (option, index) {
