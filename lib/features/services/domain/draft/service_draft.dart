@@ -193,19 +193,19 @@ class ServiceDraft {
 extension ServiceDraftMapper on ServiceDraft {
   ServiceEntity toEntity() {
     if (!isBasicInfoValid) {
-      throw ValidataionException("Informasi dasar service belum lengkap");
+      throw ValidationException("Informasi dasar service belum lengkap");
     }
 
     if (intakeForm == null) {
-      throw ValidataionException("Form intake wajib dipilih");
+      throw ValidationException("Form intake wajib dipilih");
     }
 
     if (reviewForm == null) {
-      throw ValidataionException("Form review wajib dipilih");
+      throw ValidationException("Form review wajib dipilih");
     }
 
     if (workOrders.isEmpty) {
-      throw ValidataionException("Minimal 1 work order");
+      throw ValidationException("Minimal 1 work order");
     }
 
     return ServiceEntity(

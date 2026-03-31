@@ -14,7 +14,7 @@ class InternalUpdateServiceUsecase {
     try {
       final entity = draft.toEntity();
       return await _repository.updateService(entity);
-    } on ValidataionException catch (e) {
+    } on ValidationException catch (e) {
       return Left(ValidationFailure(
           message: e.message ?? "Terjadi Kesalahan", errors: {}));
     } catch (e) {

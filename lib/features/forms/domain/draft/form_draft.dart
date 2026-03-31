@@ -1,4 +1,5 @@
 import 'package:workorder_company_app/core/constants/app_enums.dart';
+import 'package:workorder_company_app/core/error/error.dart';
 import 'package:workorder_company_app/features/forms/domain/draft/field_draft.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
 import 'package:workorder_company_app/shared/utils/reorder_helper_util.dart';
@@ -113,6 +114,35 @@ class FormDraft {
       formType: entity.formType,
       fields:
           entity.fields?.map((f) => FieldDraft.fromEntity(f)).toList() ?? [],
+    );
+  }
+}
+
+extension FormDraftMapper on FormDraft {
+  /// Converts the draft into an entity.
+  ///
+  /// Throws [ValidationException] if any field is invalid or if there are no fields.
+  FormEntity toEntity() {
+    // 1️⃣ Validate title
+    if (title.isEmpty) {
+      throw ValidationException("Form title cannot be empty.");
+    }
+
+    // 2️⃣ Validate fields (at least 1 field)
+    if (fields.isEmpty) {
+      throw ValidationException("Form must contain at least 1 field.");
+    }
+
+    // 3️⃣ Map fields
+    final mappedFields = fields.map((f) => f.toEntity()).toList();
+
+    // 4️⃣ Return mapped entity
+    return FormEntity(
+      id: id ?? DateTime.now().microsecondsSinceEpoch.toString(),
+      title: title,
+      description: description,
+      formType: formType,
+      fields: mappedFields,
     );
   }
 }

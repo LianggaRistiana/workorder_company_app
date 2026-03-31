@@ -1,3 +1,4 @@
+import 'package:workorder_company_app/core/error/error.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/option_entity.dart';
 
 class OptionDraft {
@@ -33,5 +34,20 @@ class OptionDraft {
 
   static String _generateKey() {
     return DateTime.now().microsecondsSinceEpoch.toString();
+  }
+}
+
+/// Extension to map OptionDraft to OptionEntity
+extension OptionDraftMapper on OptionDraft {
+  /// Converts this draft into a fully valid OptionEntity
+  OptionEntity toEntity() {
+    if (value.isEmpty) {
+      throw ValidationException("Value tidak boleh kosong");
+    }
+
+    return OptionEntity(
+      key: key,
+      value: value,
+    );
   }
 }

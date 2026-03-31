@@ -114,23 +114,23 @@ const _noChange = Object();
 extension WorkOrderDraftMapper on ServiceWorkOrderConfigDraft {
   WorkOrderConfigEntity toEntity() {
     if (reportForm == null) {
-      throw ValidataionException("Work report form wajib dipilih");
+      throw ValidationException("Work report form wajib dipilih");
     }
 
     if (departmentOnDuty == null) {
-      throw ValidataionException("Department wajib dipilih");
+      throw ValidationException("Department wajib dipilih");
     }
 
     if (minStaff == null || maxStaff == null) {
-      throw ValidataionException("Min & Max staff wajib diisi");
+      throw ValidationException("Min & Max staff wajib diisi");
     }
 
     if (minStaff! < 0 || maxStaff! < 0) {
-      throw ValidataionException("Staff tidak boleh negatif");
+      throw ValidationException("Staff tidak boleh negatif");
     }
 
     if (minStaff! > maxStaff!) {
-      throw ValidataionException(
+      throw ValidationException(
           "Min staff tidak boleh lebih besar dari max staff");
     }
 

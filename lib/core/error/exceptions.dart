@@ -35,11 +35,10 @@ class ParsingException implements Exception {
 }
 
 
-// TODO : Typo 
-class ValidataionException implements Exception {
+class ValidationException implements Exception {
   final String? message;
 
-  ValidataionException([this.message]);
+  ValidationException([this.message]);
 
   @override
   String toString() => message ?? 'ValidataionException';

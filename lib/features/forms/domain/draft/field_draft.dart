@@ -1,4 +1,5 @@
 import 'package:workorder_company_app/core/constants/app_enums.dart';
+import 'package:workorder_company_app/core/error/error.dart';
 import 'package:workorder_company_app/features/forms/domain/draft/option_draft.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/field_entity.dart';
 
@@ -97,6 +98,49 @@ class FieldDraft {
       max: entity.max,
       options:
           entity.options?.map((o) => OptionDraft.fromEntity(o)).toList() ?? [],
+    );
+  }
+}
+
+/// Mapper extension for FieldDraft -> FieldEntity
+extension FieldDraftMapper on FieldDraft {
+  FieldEntity toEntity() {
+    // 1️⃣ Validate label
+    if (label.isEmpty) {
+      throw ValidationException("Field label cannot be empty.");
+    }
+
+    // 2️⃣ Validate number config
+    if (type == FieldType.number) {
+      if (min != null && max != null && min! > max!) {
+        throw ValidationException(
+            "Field min value cannot be greater than max value.");
+      }
+    }
+
+    // 3️⃣ Validate options for select types
+    if (type == FieldType.multiSelect || type == FieldType.singleSelect) {
+      if (options.length < 2) {
+        throw ValidationException("Select field must have at least 2 options.");
+      }
+      for (final option in options) {
+        if (option.value.isEmpty) {
+          throw ValidationException("Select field option cannot be empty.");
+        }
+      }
+    }
+
+    // 4️⃣ Return mapped entity
+    return FieldEntity(
+      order: order,
+      label: label,
+      type: type,
+      required: required,
+      placeholder: placeholder,
+      min: min,
+      max: max,
+      options:
+          options.isNotEmpty ? options.map((o) => o.toEntity()).toList() : null,
     );
   }
 }
