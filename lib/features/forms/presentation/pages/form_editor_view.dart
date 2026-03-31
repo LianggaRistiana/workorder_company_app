@@ -120,6 +120,9 @@ class _FormEditorViewState extends State<FormEditorView>
 
   void _submitForm() {
     FocusScope.of(context).unfocus();
+    _coordinator.updateTitle(_controllers.title.text);
+    _coordinator.updateDescription(_controllers.description.text);
+
     if (!_coordinator.hasField()) {
       context.showError("Pertanyaan tidak boleh kosong");
       return;

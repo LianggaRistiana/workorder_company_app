@@ -44,17 +44,17 @@ class FormFieldCard extends StatelessWidget {
           //   ],
           // ),
           if (field.placeholder != null) ...[
-            // const SizedBox(height: 16),
-            // Text(
-            //   "Petunjuk",
-            //   style: Theme.of(context).textTheme.titleSmall,
-            // ),
+            const SizedBox(height: 16),
+            Text(
+              "Petunjuk",
+              style: Theme.of(context).textTheme.titleSmall,
+            ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(width: 36),
                 Expanded(
-                  child: Text(field.label,
+                  child: Text(field.placeholder!,
                       style: textTheme.bodyMedium?.copyWith(
                         fontStyle: FontStyle.italic,
                       )),

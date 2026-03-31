@@ -45,7 +45,7 @@ class FieldDraft {
   }
 
   void updateFieldPlaceholder(String placeholder) {
-    placeholder = placeholder.trim();
+    this.placeholder = placeholder;
   }
 
   void updateMin(
