@@ -11,15 +11,15 @@ extension ServiceDetailWidgetBuilder on ServiceDetailPageState {
                   message:
                       "Tekan dan tahan formulir yang dipilih untuk melihat detail formulir"),
             const SizedBox(height: 8),
-            CustomList(
-              items: serviceForms ?? [],
-              separatorHeight: AppSpacing.sm,
-              emptyWidget: EmptyStateWidget(
-                text: "Tidak ada $title",
-              ),
-              itemBuilder: (serviceForm, _) =>
-                  ServiceFormCard(serviceForm: serviceForm),
-            ),
+            // CustomList(
+            //   items: serviceForms ?? [],
+            //   separatorHeight: AppSpacing.sm,
+            //   emptyWidget: EmptyStateWidget(
+            //     text: "Tidak ada $title",
+            //   ),
+            //   itemBuilder: (serviceForm, _) =>
+            //       ServiceFormCard(serviceForm: serviceForm),
+            // ),
           ],
         ));
   }

@@ -13,7 +13,7 @@ class PendingInvitationsListState extends Equatable {
   final List<InvitationEntity> invitations;
   final String? errorMessage;
 
-  PendingInvitationsListState(
+  const PendingInvitationsListState(
       {this.status = PendingInvitationsListStatus.initial,
       this.invitations = const [],
       this.errorMessage});

@@ -28,8 +28,7 @@ class NotificationLocalDataSourceImpl implements NotificationLocalDataSource {
 
     if (status.isGranted) return NotificationPermissionStatus.granted;
     if (status.isDenied) return NotificationPermissionStatus.denied;
-    if (status.isPermanentlyDenied)
-      return NotificationPermissionStatus.permanentlyDenied;
+    if (status.isPermanentlyDenied) return NotificationPermissionStatus.permanentlyDenied;
 
     // fallback
     return NotificationPermissionStatus.denied;
@@ -43,8 +42,7 @@ class NotificationLocalDataSourceImpl implements NotificationLocalDataSource {
 
     if (status.isGranted) return NotificationPermissionStatus.granted;
     if (status.isDenied) return NotificationPermissionStatus.denied;
-    if (status.isPermanentlyDenied)
-      return NotificationPermissionStatus.permanentlyDenied;
+    if (status.isPermanentlyDenied) return NotificationPermissionStatus.permanentlyDenied;
 
     return NotificationPermissionStatus.denied;
   }

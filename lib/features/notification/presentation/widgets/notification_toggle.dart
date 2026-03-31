@@ -27,10 +27,7 @@ class _NotificationToggleState extends State<NotificationToggle> {
           value: isEnabled,
           onChanged: (value) async {
             await context.read<NotificationCubit>().toggleNotification(value);
-
-            // ❌ check mounted sebelum pakai context
-            if (!mounted) return;
-
+            if (!context.mounted) return;
             final newState = context.read<NotificationCubit>().state;
             if (newState.osStatus.permission ==
                 NotificationPermissionStatus.permanentlyDenied) {
