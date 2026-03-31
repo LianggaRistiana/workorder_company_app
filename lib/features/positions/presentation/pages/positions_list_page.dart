@@ -10,12 +10,11 @@ import 'package:workorder_company_app/features/positions/presentation/bloc/list/
 import 'package:workorder_company_app/features/positions/presentation/bloc/list/positions_list_event.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/list/positions_list_state.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
-// import 'package:workorder_company_app/shared/widgets/bottom_sheet_actions.dart';
 import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
-// import 'package:workorder_company_app/shared/widgets/info_bottom_sheet.dart';
 import 'package:workorder_company_app/shared/widgets/list_page_scafold.dart';
 
 class PositionsListPage extends StatelessWidget {
@@ -41,7 +40,12 @@ class _PositionsListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PositionsListBloc, PositionsListState>(
+    return BlocConsumer<PositionsListBloc, PositionsListState>(
+      listener: (context, state) {
+        if (state.status == PositionsListStatus.error) {
+          context.showError(state.errorMessage ?? "Terjadi Kesalahan");
+        }
+      },
       builder: (context, state) {
         final isLoading = state.status == PositionsListStatus.loading;
         final errorMessage = state.errorMessage;

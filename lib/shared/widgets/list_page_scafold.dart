@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 import 'package:workorder_company_app/shared/widgets/custom_back_buttom.dart';
 import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
+import 'package:workorder_company_app/shared/widgets/error_body.dart';
 
 class ListPageScaffold<T> extends StatelessWidget {
   final String title;
@@ -55,18 +56,9 @@ class ListPageScaffold<T> extends StatelessWidget {
 
     // ERROR
     else if (errorMessage != null && items.isEmpty) {
-      content = Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(errorMessage!),
-            const SizedBox(height: 12),
-            FilledButton(
-              onPressed: onRefresh,
-              child: const Text("Coba Lagi"),
-            ),
-          ],
-        ),
+      content = ErrorBody(
+        errorMessage: errorMessage!,
+        onRetry: onRefresh,
       );
     }
 

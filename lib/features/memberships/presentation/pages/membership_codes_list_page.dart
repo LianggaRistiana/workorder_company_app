@@ -46,7 +46,11 @@ class _MembershipCodesListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<MembershipCodeListBloc, MembershipCodeListState>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state.status == MemberShipCodeListStatus.error) {
+            context.showError(state.errorMessage ?? "Terjadi Kesalahan");
+          }
+        },
         builder: (context, state) {
           final isLoading = state.status == MemberShipCodeListStatus.loading;
           final items = state.codes;
