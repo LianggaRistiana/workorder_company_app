@@ -56,8 +56,6 @@ class InternalServicesManagementRemoteDatasourceImpl
         response, (data) => ServiceModel.fromJson(data));
   }
 
-
-  // FIXME : BE SHOULD FIX THIS RESPONSE
   @override
   ApiFuture<ServiceModel> removeService(String serviceId) async {
     final response =

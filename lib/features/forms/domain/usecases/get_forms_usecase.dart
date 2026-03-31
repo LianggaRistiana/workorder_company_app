@@ -8,7 +8,10 @@ class GetFormsUsecase {
 
   GetFormsUsecase(this._repository);
 
-  Future<Either<Failure, List<FormEntity>>> call() async {
-    return _repository.getForms();
+  Future<Either<Failure, List<FormEntity>>> call(
+      {bool forceRefresh = false}) async {
+    return _repository.getForms(
+      forceRefresh: forceRefresh,
+    );
   }
 }

@@ -20,7 +20,7 @@ class FormsListPage extends StatelessWidget {
   const FormsListPage({super.key});
 
   Future<void> _onRefresh(BuildContext context) async {
-    context.read<FormsListBloc>().add(GetFormsListRequested());
+    context.read<FormsListBloc>().add(GetFormsListRequested(forceRefresh: true));
   }
 
   @override

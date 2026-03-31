@@ -17,13 +17,15 @@ class FormsRepositoryImpl implements FormsRepository {
 
   FormsRepositoryImpl(this._remoteDatasource);
 
-  // TODO : add forcerefresh
   @override
-  Future<Either<Failure, List<FormEntity>>> getForms() {
-    return _cache.fetchList(remoteCall: () async {
-      final forms = await _remoteDatasource.getForms();
-      return forms.data ?? [];
-    });
+  Future<Either<Failure, List<FormEntity>>> getForms(
+      {bool forceRefresh = false}) {
+    return _cache.fetchList(
+        remoteCall: () async {
+          final forms = await _remoteDatasource.getForms();
+          return forms.data ?? [];
+        },
+        forceRefresh: forceRefresh);
   }
 
   @override

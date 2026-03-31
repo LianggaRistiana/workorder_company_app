@@ -5,7 +5,7 @@ import 'package:workorder_company_app/features/forms/domain/entities/ordered_for
 import 'package:workorder_company_app/features/submissions/domain/entitties/submission_entity.dart';
 
 abstract class FormsRepository {
-  Future<Either<Failure, List<FormEntity>>> getForms();
+  Future<Either<Failure, List<FormEntity>>> getForms({bool forceRefresh = false});
   Future<Either<Failure, List<OrderedFormEntity>>> publicGetServiceForms(String id);
   Future<Either<Failure, void>> publicSubmitIntakeForms(String id, List<SubmissionEntity> submissions);
   Future<Either<Failure, FormEntity>> getForm(String id);
