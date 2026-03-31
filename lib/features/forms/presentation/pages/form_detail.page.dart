@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
+import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/detail/form_detail_cubit.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/detail/form_detail_state.dart';
 import 'package:workorder_company_app/features/forms/presentation/widgets/form_field_card.dart';
@@ -10,7 +11,6 @@ import 'package:workorder_company_app/features/helps/presentation/widgets/form_t
 import 'package:workorder_company_app/features/helps/presentation/widgets/help_button.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
-import 'package:workorder_company_app/shared/widgets/custom_back_buttom.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/error_body.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
@@ -20,29 +20,28 @@ class FormDetailPage extends StatelessWidget {
   final String formId;
   const FormDetailPage({super.key, required this.formId});
 
-  Future<void> _onRefresh(BuildContext context) async {
-    context.read<FormDetailCubit>().getFormById(formId);
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => sl<FormDetailCubit>()..getFormById(formId),
       child: _FormDetailView(
-        onRefresh: () {
-          _onRefresh(context);
-        },
+        formId: formId,
       ),
     );
   }
 }
 
-class _FormDetailView extends StatelessWidget {
-  final VoidCallback? onRefresh;
+class _FormDetailView extends StatefulWidget {
+  final String formId;
 
-  const _FormDetailView({
-    this.onRefresh,
-  });
+  const _FormDetailView({required this.formId});
+
+  @override
+  State<_FormDetailView> createState() => _FormDetailViewState();
+}
+
+class _FormDetailViewState extends State<_FormDetailView> {
+  bool isUpdated = false;
 
   @override
   Widget build(BuildContext context) {
@@ -51,23 +50,32 @@ class _FormDetailView extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            leading: CustomBackButton(),
             actions: [
               if (state.form != null)
                 IconButton(
                   onPressed: () async {
-                    final result = await context.push(AppRoutes.formsUpdate,
+                    final result = await context.push<FormEntity>(
+                        AppRoutes.formsUpdate,
                         extra: state.form);
                     if (!context.mounted) return;
-                    if (result == true) {
-                      context.pop(true);
+                    if (result != null) {
+                      context.read<FormDetailCubit>().replace(result);
+                      isUpdated = true;
+                      debugPrint(isUpdated.toString());
                     }
                   },
                   icon: const Icon(AppIcon.edit, size: 18),
                 ),
             ],
           ),
-          body: _buildBody(context, state),
+          body: PopScope(
+              canPop: false,
+              onPopInvokedWithResult: (didPop, result) {
+                if (didPop) return;
+                if (!context.mounted) return;
+                context.pop(isUpdated);
+              },
+              child: _buildBody(context, state)),
         );
       },
     );
@@ -81,7 +89,9 @@ class _FormDetailView extends StatelessWidget {
       case FormDetailStatus.error:
         return ErrorBody(
           errorMessage: state.errorMessage,
-          onRetry: onRefresh,
+          onRetry: () {
+            context.read<FormDetailCubit>().getFormById(widget.formId);
+          },
         );
 
       case FormDetailStatus.loaded:
@@ -89,7 +99,9 @@ class _FormDetailView extends StatelessWidget {
         if (form == null) {
           return ErrorBody(
             errorMessage: "Form tidak ditemukan",
-            onRetry: onRefresh,
+            onRetry: () {
+              context.read<FormDetailCubit>().getFormById(widget.formId);
+            },
           );
         }
 

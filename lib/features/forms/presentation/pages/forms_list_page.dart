@@ -20,7 +20,9 @@ class FormsListPage extends StatelessWidget {
   const FormsListPage({super.key});
 
   Future<void> _onRefresh(BuildContext context) async {
-    context.read<FormsListBloc>().add(GetFormsListRequested(forceRefresh: true));
+    context
+        .read<FormsListBloc>()
+        .add(GetFormsListRequested(forceRefresh: true));
   }
 
   @override
@@ -58,9 +60,15 @@ class FormsListPage extends StatelessWidget {
                 floatingActionButton: PermissionGate(
                   permission: FormPermission.create,
                   child: FloatingActionButton.extended(
-                    onPressed: isLoading
-                        ? null
-                        : () => context.push(AppRoutes.formsCreate),
+                    onPressed: () async {
+                      final result = await context.push(AppRoutes.formsCreate);
+                      if (!context.mounted) return;
+                      if (result != null && result == true) {
+                        context
+                            .read<FormsListBloc>()
+                            .add(GetFormsListRequested(forceRefresh: false));
+                      }
+                    },
                     label: const Text("Tambah Form"),
                     icon: const Icon(Icons.add),
                   ),
@@ -73,8 +81,15 @@ class FormsListPage extends StatelessWidget {
                     padding: EdgeInsets.zero,
                     child: InkWell(
                       borderRadius: BorderRadius.circular(12),
-                      onTap: () {
-                        context.push(AppRoutes.formsDetail.fillId(form.id));
+                      onTap: () async {
+                        final result = await context
+                            .push(AppRoutes.formsDetail.fillId(form.id));
+                        if (!context.mounted) return;
+                        if (result != null && result == true) {
+                          context
+                              .read<FormsListBloc>()
+                              .add(GetFormsListRequested(forceRefresh: false));
+                        }
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(16),

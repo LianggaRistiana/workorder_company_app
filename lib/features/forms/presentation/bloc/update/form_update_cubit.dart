@@ -19,7 +19,8 @@ class FormUpdateCubit extends Cubit<FormUpdateState> {
         status: FormUpdateStatus.error,
         errorMessage: failure.message,
       )),
-      (_) => emit(state.copyWith(status: FormUpdateStatus.success)),
+      (updated) => emit(state.copyWith(
+          status: FormUpdateStatus.success, updatedForm: updated)),
     );
   }
 }

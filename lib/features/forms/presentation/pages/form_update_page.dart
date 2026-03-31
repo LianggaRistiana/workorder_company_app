@@ -28,8 +28,8 @@ class FormUpdatePage extends StatelessWidget {
           context.showError(state.errorMessage ?? "Terjadi Kesalahan");
         }
         if (state.status == FormUpdateStatus.success) {
-          context.showSuccess("Berhasil memperbarui form ");
-          context.pop(true);
+          context.showSuccess("Berhasil memperbarui form");
+          context.pop(state.updatedForm);
         }
       }),
     );

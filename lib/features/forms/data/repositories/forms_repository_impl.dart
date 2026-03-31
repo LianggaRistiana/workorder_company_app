@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:workorder_company_app/core/cache/list_cache_helper.dart';
 import 'package:workorder_company_app/core/error/failures.dart';
 import 'package:workorder_company_app/core/types/future_either.dart';
+import 'package:workorder_company_app/core/utils/either_helper.dart';
 import 'package:workorder_company_app/core/utils/safe_call.dart';
 import 'package:workorder_company_app/features/forms/data/datasources/forms_remote_datasource.dart';
 import 'package:workorder_company_app/features/forms/data/model/form_model.dart';
@@ -37,10 +38,38 @@ class FormsRepositoryImpl implements FormsRepository {
   }
 
   @override
-  FutureEither<void> createForm(FormEntity form) {
-    return safeCall(() async {
+  FutureEither<void> createForm(FormEntity form) async {
+    final result = await safeCall(() async {
       final formModel = FormModel.fromEntity(form);
-      await _remoteDatasource.createForm(formModel);
+      final payload = await _remoteDatasource.createForm(formModel);
+      return payload.data!;
+    });
+
+    return result.onSuccess((updated) {
+      _cache.mergeSingle(
+        updated,
+        (a, b) => a.id == b.id,
+      );
+    });
+  }
+
+  @override
+  FutureEither<FormEntity> updateForm(FormEntity form) async {
+    final result = await safeCall(() async {
+      final formModel = FormModel.fromEntity(form);
+      final payload = await _remoteDatasource.updateForm(formModel);
+      return payload.data!;
+    });
+
+    return result.onSuccess((updated) {
+      _cache.removeSingle(
+        form,
+        (a, b) => a.id == b.id,
+      );
+      _cache.mergeSingle(
+        updated,
+        (a, b) => a.id == b.id,
+      );
     });
   }
 
@@ -60,14 +89,6 @@ class FormsRepositoryImpl implements FormsRepository {
       final submissionsModel =
           submissions.map((e) => SubmissionsModel.fromEntity(e)).toList();
       await _remoteDatasource.publicSubmitIntakeForms(id, submissionsModel);
-    });
-  }
-
-  @override
-  FutureEither<void> updateForm(FormEntity form) {
-    return safeCall(() async {
-      final formModel = FormModel.fromEntity(form);
-      await _remoteDatasource.updateForm(formModel);
     });
   }
 }

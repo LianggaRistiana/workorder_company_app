@@ -9,7 +9,7 @@ abstract class FormsRepository {
   FutureEitherList<FormEntity> getForms({bool forceRefresh = false});
   FutureEither<FormEntity> getForm(String id);
   FutureEither<void> createForm(FormEntity form);
-  FutureEither<void> updateForm(FormEntity form);
+  FutureEither<FormEntity> updateForm(FormEntity form);
 
   // TODO : Refactor this into service request feature
   Future<Either<Failure, List<OrderedFormEntity>>> publicGetServiceForms(String id);

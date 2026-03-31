@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
 import 'package:workorder_company_app/features/forms/domain/usecases/get_form_byid_usecase.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/detail/form_detail_state.dart';
 
@@ -28,5 +29,13 @@ class FormDetailCubit extends Cubit<FormDetailState> {
         ),
       ),
     );
+  }
+
+  Future<void> replace(FormEntity form) async {
+    emit(state.copyWith(
+      errorMessage: null,
+      status: FormDetailStatus.loaded,
+      form: form,
+    ));
   }
 }
