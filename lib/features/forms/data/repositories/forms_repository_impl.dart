@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:workorder_company_app/core/cache/list_cache_helper.dart';
 import 'package:workorder_company_app/core/error/failures.dart';
+import 'package:workorder_company_app/core/types/future_either.dart';
 import 'package:workorder_company_app/core/utils/safe_call.dart';
 import 'package:workorder_company_app/features/forms/data/datasources/forms_remote_datasource.dart';
 import 'package:workorder_company_app/features/forms/data/model/form_model.dart';
@@ -18,8 +19,7 @@ class FormsRepositoryImpl implements FormsRepository {
   FormsRepositoryImpl(this._remoteDatasource);
 
   @override
-  Future<Either<Failure, List<FormEntity>>> getForms(
-      {bool forceRefresh = false}) {
+  FutureEitherList<FormEntity> getForms({bool forceRefresh = false}) {
     return _cache.fetchList(
         remoteCall: () async {
           final forms = await _remoteDatasource.getForms();
@@ -29,7 +29,7 @@ class FormsRepositoryImpl implements FormsRepository {
   }
 
   @override
-  Future<Either<Failure, FormEntity>> getForm(String id) {
+  FutureEither<FormEntity> getForm(String id) {
     return safeCall(() async {
       final form = await _remoteDatasource.getFormById(id);
       return form.data!;
@@ -37,7 +37,7 @@ class FormsRepositoryImpl implements FormsRepository {
   }
 
   @override
-  Future<Either<Failure, void>> createForm(FormEntity form) {
+  FutureEither<void> createForm(FormEntity form) {
     return safeCall(() async {
       final formModel = FormModel.fromEntity(form);
       await _remoteDatasource.createForm(formModel);
@@ -60,6 +60,14 @@ class FormsRepositoryImpl implements FormsRepository {
       final submissionsModel =
           submissions.map((e) => SubmissionsModel.fromEntity(e)).toList();
       await _remoteDatasource.publicSubmitIntakeForms(id, submissionsModel);
+    });
+  }
+
+  @override
+  FutureEither<void> updateForm(FormEntity form) {
+    return safeCall(() async {
+      final formModel = FormModel.fromEntity(form);
+      await _remoteDatasource.updateForm(formModel);
     });
   }
 }

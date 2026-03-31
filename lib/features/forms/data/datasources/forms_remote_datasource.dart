@@ -27,7 +27,6 @@ class FormsRemoteDatasourceImpl implements FormsRemoteDatasource {
   @override
   ApiFutureList<FormModel> getForms() async {
     final response = await _apiClient.get(Endpoints.forms);
-
     return ApiResponse.fromJson(
       response,
       (data) => SafeMapper.mapList(
@@ -82,7 +81,8 @@ class FormsRemoteDatasourceImpl implements FormsRemoteDatasource {
 
   @override
   ApiFuture<FormModel> updateForm(FormModel form) async {
-    final response = await _apiClient.put(Endpoints.forms, data: form.toJson());
+    final response = await _apiClient.put(Endpoints.forms.byId(form.id),
+        data: form.toJson());
     return ApiResponse<FormModel>.fromJson(
       response,
       (data) => FormModel.fromJson(data),
