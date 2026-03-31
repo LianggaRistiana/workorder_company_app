@@ -1,0 +1,33 @@
+import 'package:workorder_company_app/core/types/future_either.dart';
+import 'package:workorder_company_app/features/service_request/domain/entities/requester_service_request_entity.dart';
+import 'package:workorder_company_app/features/service_request/domain/repositories/requester_service_request_repository.dart';
+import 'package:workorder_company_app/features/submissions/domain/entitties/submission_entity.dart';
+
+class RequesterServiceRequestRepositoryImpl
+    implements RequesterServiceRequestRepository {
+  @override
+  FutureEither<RequesterServiceRequestEntity> cancelServiceRequest(String id) {
+    // TODO: implement cancelServiceRequest
+    throw UnimplementedError();
+  }
+
+  @override
+  FutureEitherList<RequesterServiceRequestEntity> getServiceRequest() {
+    // TODO: implement getServiceRequest
+    throw UnimplementedError();
+  }
+
+  @override
+  FutureEither<RequesterServiceRequestEntity> getServiceRequestDetail(
+      String id) {
+    // TODO: implement getServiceRequestDetail
+    throw UnimplementedError();
+  }
+
+  @override
+  FutureEither<RequesterServiceRequestEntity> submitReview(
+      SubmissionEntity submission) {
+    // TODO: implement submitReview
+    throw UnimplementedError();
+  }
+}

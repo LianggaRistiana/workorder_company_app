@@ -385,6 +385,63 @@ enum SubmissionStatus {
   String toString() => displayName;
 }
 
+enum ServiceRequestStatus {
+  received,
+  cancelled,
+  rejected,
+  approved,
+  workOrderCreated,
+  completed;
+
+  static ServiceRequestStatus fromString(String value) {
+    switch (value) {
+      case 'received':
+        return ServiceRequestStatus.received;
+      case 'cancelled':
+        return ServiceRequestStatus.cancelled;
+      case 'rejected':
+        return ServiceRequestStatus.rejected;
+      case 'approved':
+        return ServiceRequestStatus.approved;
+      case 'work_order_created':
+        return ServiceRequestStatus.workOrderCreated;
+      case 'completed':
+        return ServiceRequestStatus.completed;
+      default:
+        throw ParsingException('Unknown ServiceRequestStatus: $value');
+    }
+  }
+
+  String toSnakeCase() {
+    return name.toSnakeCase();
+  }
+
+  String toKebabCase() {
+    return name.toKebabCase();
+  }
+
+  String get displayName {
+    switch (this) {
+      case ServiceRequestStatus.received:
+        return 'Menunggu';
+      case ServiceRequestStatus.cancelled:
+        return 'Dibatalkan';
+      case ServiceRequestStatus.rejected:
+        return 'Ditolak';
+      case ServiceRequestStatus.approved:
+        return 'Disetujui';
+      case ServiceRequestStatus.workOrderCreated:
+        return 'Diproses';
+      case ServiceRequestStatus.completed:
+        return 'Selesai';
+    }
+  }
+
+  @override
+  String toString() => displayName;
+}
+
+// TODO : remove this later
 enum ClientServiceRequestStatus {
   received,
   cancelled,
