@@ -17,12 +17,17 @@ import 'package:workorder_company_app/features/services/presentation/widgets/ser
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
+import 'package:workorder_company_app/shared/widgets/error_body.dart';
 import 'package:workorder_company_app/shared/widgets/header_of_page.dart';
 import 'package:workorder_company_app/shared/widgets/loading_state_inline.dart';
 
 class ServiceDetailPage extends StatelessWidget {
   final String serviceId;
   const ServiceDetailPage({super.key, required this.serviceId});
+
+  Future<void> _onRefresh(BuildContext context) async {
+    context.read<ServiceDetailCubit>().getServiceDetail(serviceId);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,13 +40,21 @@ class ServiceDetailPage extends StatelessWidget {
           create: (_) => sl<ServiceActionCubit>(),
         ),
       ],
-      child: const _ServiceDetailView(),
+      child: _ServiceDetailView(
+        () {
+          _onRefresh(context);
+        },
+      ),
     );
   }
 }
 
 class _ServiceDetailView extends StatelessWidget {
-  const _ServiceDetailView();
+  final VoidCallback? onRefresh;
+
+  const _ServiceDetailView(
+    this.onRefresh,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -55,8 +68,11 @@ class _ServiceDetailView extends StatelessWidget {
         switch (state.status) {
           case ServiceDetailStatus.initial:
           case ServiceDetailStatus.error:
-            return const Scaffold(
-              body: SizedBox(),
+            return Scaffold(
+              body: ErrorBody(
+                errorMessage: state.errorMessage,
+                onRetry: onRefresh,
+              ),
             );
 
           case ServiceDetailStatus.loading:

@@ -12,39 +12,41 @@ import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 import 'package:workorder_company_app/shared/widgets/custom_back_buttom.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
+import 'package:workorder_company_app/shared/widgets/error_body.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
 import 'package:workorder_company_app/shared/widgets/property_display.dart';
 
-// TODO : PRovide cubit here and fix Page to stateless
-class FormDetailPage extends StatefulWidget {
+class FormDetailPage extends StatelessWidget {
   final String formId;
-
   const FormDetailPage({super.key, required this.formId});
 
-  @override
-  State<FormDetailPage> createState() => _FormDetailPageState();
-}
-
-class _FormDetailPageState extends State<FormDetailPage> {
-  late final FormDetailCubit _cubit;
-
-  @override
-  void initState() {
-    super.initState();
-    _cubit = sl<FormDetailCubit>();
-    _cubit.getFormById(widget.formId);
-  }
-
-  @override
-  void dispose() {
-    _cubit.close();
-    super.dispose();
+  Future<void> _onRefresh(BuildContext context) async {
+    context.read<FormDetailCubit>().getFormById(formId);
   }
 
   @override
   Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => sl<FormDetailCubit>()..getFormById(formId),
+      child: _FormDetailView(
+        onRefresh: () {
+          _onRefresh(context);
+        },
+      ),
+    );
+  }
+}
+
+class _FormDetailView extends StatelessWidget {
+  final VoidCallback? onRefresh;
+
+  const _FormDetailView({
+    this.onRefresh,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return BlocBuilder<FormDetailCubit, FormDetailState>(
-      bloc: _cubit,
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
@@ -77,12 +79,18 @@ class _FormDetailPageState extends State<FormDetailPage> {
         return const Center(child: AppLoading());
 
       case FormDetailStatus.error:
-        return _buildErrorState(state.errorMessage ?? "Terjadi kesalahan");
+        return ErrorBody(
+          errorMessage: state.errorMessage,
+          onRetry: onRefresh,
+        );
 
       case FormDetailStatus.loaded:
         final form = state.form;
         if (form == null) {
-          return _buildErrorState("Form tidak ditemukan");
+          return ErrorBody(
+            errorMessage: "Form tidak ditemukan",
+            onRetry: onRefresh,
+          );
         }
 
         return SingleChildScrollView(
@@ -154,18 +162,5 @@ class _FormDetailPageState extends State<FormDetailPage> {
       case FormDetailStatus.initial:
         return const SizedBox.shrink();
     }
-  }
-
-  Widget _buildErrorState(String message) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Text(
-          message,
-          textAlign: TextAlign.center,
-          style: const TextStyle(color: Colors.red),
-        ),
-      ),
-    );
   }
 }

@@ -42,7 +42,7 @@ class _ServiceCreatePageState extends State<ServiceCreatePage>
 
     switch (currentIndex) {
       case 0:
-        final formValid = _serviceKey.currentState?.validate() ?? false;
+        // final formValid = _serviceKey.currentState?.validate() ?? false;
 
         // if (requiredStaff.isEmpty || !_validateRequiredStaff()) {
         //   isValid = false;

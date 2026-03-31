@@ -51,4 +51,5 @@ class AppIcon {
   static const IconData inactiveState = Icons.block_outlined;
   static const IconData notFound = LucideIcons.fileX2;
   static const IconData forbidden = LucideIcons.ban;
+  static const IconData error = Icons.warning_rounded;
 }
