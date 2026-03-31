@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/features/services/domain/draft/service_draft.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
 import 'package:workorder_company_app/features/services/presentation/controller/service_config_controllers.dart';
-import 'package:workorder_company_app/features/services/presentation/coordinator/service_form_coordinator.dart';
+import 'package:workorder_company_app/features/services/presentation/coordinator/service_editor_coordinator.dart';
 import 'package:workorder_company_app/features/services/presentation/widgets/service_config_form_tab_view.dart';
 import 'package:workorder_company_app/features/services/presentation/widgets/service_request_form_tab_view.dart';
 import 'package:workorder_company_app/features/services/presentation/widgets/service_work_order_form_tab_view.dart';
 import 'package:workorder_company_app/features/services/presentation/widgets/service_work_report_form_tab_view.dart';
+import 'package:workorder_company_app/shared/utils/confirm_dialog.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/custom_step_indicator.dart';
 import 'package:workorder_company_app/shared/widgets/step_navigation_bar.dart';
@@ -73,7 +75,7 @@ class _ServiceEditorViewState extends State<ServiceEditorView>
     FocusScope.of(context).unfocus();
     final current = _tabController.index;
 
-    // TODO : fix this later
+    // TODO : fix this later, add onchange in titile and description
     _coordinator.updateTitle(
       _controllers.title.text,
     );
@@ -104,6 +106,13 @@ class _ServiceEditorViewState extends State<ServiceEditorView>
       title: _controllers.title.text,
       description: _controllers.description.text,
     );
+
+    if (!_coordinator.isDirty(widget.initialEntity != null
+        ? ServiceDraft.fromEntity(widget.initialEntity!)
+        : null)) {
+      context.showWarning("Anda belum melakukan perubahan");
+      return;
+    }
 
     await widget.onSubmit(finalDraft);
   }
@@ -157,42 +166,69 @@ class _ServiceEditorViewState extends State<ServiceEditorView>
             ),
           ),
         ),
-        body: TabBarView(
-          controller: _tabController,
-          physics: const NeverScrollableScrollPhysics(),
-          children: [
-            ServiceConfigFormTabView(
-              isUpdate: widget.initialEntity != null,
-              isActive: draft.isActive,
-              titleController: _controllers.title,
-              descriptionController: _controllers.description,
-              accessType: draft.accessType,
-              onActiveChanged: _coordinator.updateIsActive,
-              onAccessTypeChanged: _coordinator.updateAccessType,
-            ),
-            ServiceRequestFormTabView(
-              approvalAccess: draft.requestApprovalAccess,
-              intakeForm: draft.intakeForm,
-              reviewForm: draft.reviewForm,
-              onApprovalAccessChanged: _coordinator.updateRequestApprovalAccess,
-              onIntakeFormChanged: _coordinator.updateIntakeForm,
-              onReviewFormChanged: _coordinator.updateReviewForm,
-            ),
-            ServiceWorkOrderFormTabView(
-              workOrders: draft.workOrders,
-              onAdd: _coordinator.addWorkOrder,
-              onRemove: _coordinator.removeWorkOrder,
-              onDepartmentUpdate: _coordinator.updateDepartment,
-              onMinChange: _coordinator.updateMinStaff,
-              onMaxChange: _coordinator.updateMaxStaff,
-              onApprovalChange: _coordinator.updateApproval,
-            ),
-            ServiceWorkReportFormTabView(
-              workOrders: draft.workOrders,
-              onApprovalChange: _coordinator.updateWorkReportApproval,
-              onFormUpdate: _coordinator.updateReportForm,
-            ),
-          ],
+        body: PopScope(
+          canPop: false,
+          onPopInvokedWithResult: (didPop, result) async {
+            if (didPop) return;
+            final isDirty = _coordinator.isDirty(widget.initialEntity != null
+                ? ServiceDraft.fromEntity(widget.initialEntity!)
+                : null);
+
+            if (isDirty) {
+              final shouldLeave = await showConfirmDialog(
+                context: context,
+                title: "Konfirmasi",
+                message: "Apakah Anda yakin ingin meninggalkan halaman ini?",
+                type: ConfirmDialogType.warning,
+              );
+
+              if (!context.mounted) return;
+              if (shouldLeave == true) {
+                context.pop();
+              }
+            } else {
+              if (!mounted) return;
+              context.pop();
+            }
+          },
+          child: TabBarView(
+            controller: _tabController,
+            physics: const NeverScrollableScrollPhysics(),
+            children: [
+              ServiceConfigFormTabView(
+                isUpdate: widget.initialEntity != null,
+                isActive: draft.isActive,
+                titleController: _controllers.title,
+                descriptionController: _controllers.description,
+                accessType: draft.accessType,
+                onActiveChanged: _coordinator.updateIsActive,
+                onAccessTypeChanged: _coordinator.updateAccessType,
+              ),
+              ServiceRequestFormTabView(
+                approvalAccess: draft.requestApprovalAccess,
+                intakeForm: draft.intakeForm,
+                reviewForm: draft.reviewForm,
+                onApprovalAccessChanged:
+                    _coordinator.updateRequestApprovalAccess,
+                onIntakeFormChanged: _coordinator.updateIntakeForm,
+                onReviewFormChanged: _coordinator.updateReviewForm,
+              ),
+              ServiceWorkOrderFormTabView(
+                workOrders: draft.workOrders,
+                onAdd: _coordinator.addWorkOrder,
+                onRemove: _coordinator.removeWorkOrder,
+                onDepartmentUpdate: _coordinator.updateDepartment,
+                onMinChange: _coordinator.updateMinStaff,
+                onMaxChange: _coordinator.updateMaxStaff,
+                onApprovalChange: _coordinator.updateApproval,
+              ),
+              ServiceWorkReportFormTabView(
+                workOrders: draft.workOrders,
+                onApprovalChange: _coordinator.updateWorkReportApproval,
+                onFormUpdate: _coordinator.updateReportForm,
+              ),
+            ],
+          ),
         ),
       ),
     );

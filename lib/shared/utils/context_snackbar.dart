@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:workorder_company_app/core/theme/app_icon.dart';
 
 extension ContextSnackbar on BuildContext {
   void showSuccess(String message) {
@@ -24,24 +25,24 @@ extension ContextSnackbar on BuildContext {
       ),
     );
   }
+
   void showWarning(String message) {
     ScaffoldMessenger.of(this).showSnackBar(
       SnackBar(
         elevation: 0,
         behavior: SnackBarBehavior.floating,
-        backgroundColor: Theme.of(this).colorScheme.surface,
+        backgroundColor: Colors.orange[50],
         margin: const EdgeInsets.all(16),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
             side: BorderSide(color: Theme.of(this).dividerColor.withAlpha(50))),
         content: Row(
           children: [
-            Icon(Icons.warning, color: Theme.of(this).colorScheme.error),
+            Icon(AppIcon.warrning, color: Colors.orange),
             const SizedBox(width: 8),
             Expanded(
                 child: Text(message,
-                    style:
-                        TextStyle(color: Theme.of(this).colorScheme.error))),
+                    style: TextStyle(color: Colors.orange))),
           ],
         ),
       ),

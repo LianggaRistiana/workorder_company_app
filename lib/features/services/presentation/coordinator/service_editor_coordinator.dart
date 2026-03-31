@@ -3,11 +3,10 @@ import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
 import 'package:workorder_company_app/features/services/domain/draft/service_draft.dart';
 
-class ServiceEditorCoordinator extends ChangeNotifier{
+class ServiceEditorCoordinator extends ChangeNotifier {
   ServiceDraft _draft;
 
-  ServiceEditorCoordinator(ServiceDraft initial)
-      : _draft = initial;
+  ServiceEditorCoordinator(ServiceDraft initial) : _draft = initial;
 
   ServiceDraft get draft => _draft;
 
@@ -143,5 +142,13 @@ class ServiceEditorCoordinator extends ChangeNotifier{
       title: title,
       description: description,
     );
+  }
+
+  bool isDirty(ServiceDraft? initalData) {
+    if (initalData == null) {
+      return _draft != ServiceDraft.initial();
+    } else {
+      return _draft != initalData;
+    }
   }
 }

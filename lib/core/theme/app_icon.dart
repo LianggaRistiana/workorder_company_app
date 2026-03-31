@@ -52,4 +52,5 @@ class AppIcon {
   static const IconData notFound = LucideIcons.fileX2;
   static const IconData forbidden = LucideIcons.ban;
   static const IconData error = Icons.warning_rounded;
+  static const IconData warrning = Icons.warning_rounded;
 }

@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/error/error.dart';
 import 'package:workorder_company_app/features/services/domain/draft/service_work_order_config_draft.dart';
@@ -6,7 +7,7 @@ import 'package:workorder_company_app/features/positions/domain/entities/positio
 import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_request_config_entity.dart';
 
-class ServiceDraft {
+class ServiceDraft extends Equatable {
   final String id;
   final bool isActive;
   final String title;
@@ -52,13 +53,15 @@ class ServiceDraft {
       title: entity.title,
       description: entity.description,
       accessType: entity.accessType,
-      requestApprovalAccess: entity.serviceRequestConfig.serviceRequestApprovalAccessType,
+      requestApprovalAccess:
+          entity.serviceRequestConfig.serviceRequestApprovalAccessType,
       intakeForm: entity.serviceRequestConfig.intakeForm,
       reviewForm: entity.serviceRequestConfig.reviewForm,
-      workOrders: entity.workOrdersConfig.map((e) => ServiceWorkOrderConfigDraft.fromEntity(e)).toList(),
+      workOrders: entity.workOrdersConfig
+          .map((e) => ServiceWorkOrderConfigDraft.fromEntity(e))
+          .toList(),
     );
   }
-
 
   ServiceDraft copyWith({
     bool? isActive,
@@ -188,6 +191,19 @@ class ServiceDraft {
 
   bool get isBasicInfoValid =>
       title.trim().isNotEmpty && description.trim().isNotEmpty;
+
+  @override
+  List<Object?> get props => [
+        id,
+        isActive,
+        title,
+        description,
+        accessType,
+        requestApprovalAccess,
+        intakeForm,
+        reviewForm,
+        workOrders,
+      ];
 }
 
 extension ServiceDraftMapper on ServiceDraft {
