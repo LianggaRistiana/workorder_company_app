@@ -11,14 +11,16 @@ import 'package:workorder_company_app/shared/widgets/menu_item.dart';
 import 'package:workorder_company_app/shared/widgets/section_title.dart';
 
 // TODO : Change to CompanyMenuPage
-class OwnerCompanyPage extends StatefulWidget {
-  const OwnerCompanyPage({super.key});
+class InternalCompanyManageMenuPage extends StatefulWidget {
+  const InternalCompanyManageMenuPage({super.key});
 
   @override
-  State<OwnerCompanyPage> createState() => _OwnerCompanyPageState();
+  State<InternalCompanyManageMenuPage> createState() =>
+      _InternalCompanyManageMenuPageState();
 }
 
-class _OwnerCompanyPageState extends State<OwnerCompanyPage> {
+class _InternalCompanyManageMenuPageState
+    extends State<InternalCompanyManageMenuPage> {
   @override
   void initState() {
     super.initState();
