@@ -17,11 +17,6 @@ class EmployeesRemoteDatasourceImpl implements EmployeesRemoteDatasource {
   Future<ApiResponse<List<UserModel>>> getEmployees() async {
     final response = await _apiClient.get(Endpoints.employees);
 
-    // return ApiResponse<List<UserModel>>.fromJson(response, (data) {
-    //   final employees = (data['employees'] as List?) ?? [];
-    //   return employees.map((e) => UserModel.fromJson(e)).toList();
-    // });
-
     return ApiResponse.fromJson(
       response,
       (data) => SafeMapper.mapList(
@@ -29,17 +24,5 @@ class EmployeesRemoteDatasourceImpl implements EmployeesRemoteDatasource {
         (json) => UserModel.fromJson(json),
       ),
     );
-
-    //   Endpoints.employees,
-    // return _apiClient.get<ApiResponse<List<UserModel>>>(
-    //   Endpoints.employees,
-    //   fromJson: (json) => ApiResponse<List<UserModel>>.fromJson(
-    //     json,
-    //     (data) {
-    //       final employees = (data['employees'] as List?) ?? [];
-    //       return employees.map((e) => UserModel.fromJson(e)).toList();
-    //     },
-    //   ),
-    // );
   }
 }

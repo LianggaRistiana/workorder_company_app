@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/authorization/feature/invitation_permission.dart';
 import 'package:workorder_company_app/core/authorization/widget/permission_gate.dart';
+import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 import 'package:workorder_company_app/features/employees/presentation/bloc/employees_bloc.dart';
@@ -20,7 +21,7 @@ class EmployeesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) =>
-          context.read<EmployeesBloc>()..add(GetEmployeesRequested()),
+          sl<EmployeesBloc>()..add(GetEmployeesRequested()),
       child: BlocConsumer<EmployeesBloc, EmployeesState>(
         listener: (context, state) {
           if (state.errorMessage != null) {

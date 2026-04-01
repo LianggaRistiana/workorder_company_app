@@ -20,7 +20,6 @@ class SenderInvitationsRemoteDatasourceImpl
 
   SenderInvitationsRemoteDatasourceImpl(this._apiClient);
 
-// FIXME : BE SHOULD FIX RESPONSE
   @override
   Future<ApiResponse<InvitationModel>> cancelInvitation(String id) async {
     final response =
