@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/authorization/feature/service_permission.dart';
-import 'package:workorder_company_app/core/authorization/widget/permission_gate.dart';
+import 'package:workorder_company_app/core/authorization/rule/permission_rule.dart';
+import 'package:workorder_company_app/core/authorization/util/permission_gate_on_widget.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/services_legacy/presentation/bloc/services_bloc.dart';
@@ -67,25 +68,17 @@ class _ServicesPageState extends State<ServicesPage> {
                 icon: Icons.miscellaneous_services_outlined,
                 text: "Tidak ada Layanan",
               ),
-              floatingActionButton: PermissionGate(
-                permission: ServicePermission.create,
-                child: FloatingActionButton.extended(
-                  onPressed: isLoading
-                      ? null
-                      : () async {
-                          final result =
-                              await context.push(AppRoutes.servicesCreate);
+              floatingActionButton: FloatingActionButton.extended(
+                onPressed: () async {
+                  final result = await context.push(AppRoutes.servicesCreate);
 
-                          if (result == true && context.mounted) {
-                            context
-                                .read<ServicesBloc>()
-                                .add(GetServicesRequested());
-                          }
-                        },
-                  label: const Text("Tambah Layanan"),
-                  icon: const Icon(Icons.add),
-                ),
-              ),
+                  if (result == true && context.mounted) {
+                    context.read<ServicesBloc>().add(GetServicesRequested());
+                  }
+                },
+                label: const Text("Tambah Layanan"),
+                icon: const Icon(Icons.add),
+              ).require(allow(ServicePermission.create)),
               itemBuilder: (service) => Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
                 child: ServiceItem(

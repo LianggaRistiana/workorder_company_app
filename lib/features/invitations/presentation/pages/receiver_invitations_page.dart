@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/core/authorization/feature/invitation_permission.dart';
-import 'package:workorder_company_app/core/authorization/widget/permission_gate.dart';
+import 'package:workorder_company_app/core/authorization/rule/permission_rule.dart';
+import 'package:workorder_company_app/core/authorization/util/permission_gate_on_widget.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features/invitations/presentation/bloc/pending_invitations_list/pending_invitations_list_bloc.dart';
 import 'package:workorder_company_app/features/invitations/presentation/bloc/pending_invitations_list/pending_invitations_list_event.dart';
@@ -83,10 +84,11 @@ class _PendingInvitationsListView extends StatelessWidget {
                   content: ReceiverInvitationDetail(invitation: invitation),
                   footer: BlocProvider.value(
                       value: context.read<ReceiverInvitationActionsCubit>(),
-                      child: PermissionGate(
-                          permission: InvitationPermission.receiverView,
-                          child: ReceiverInvitationAction(
-                              invitation: invitation))));
+                      child: ReceiverInvitationAction(invitation: invitation)
+                          .require(allOf([
+                        InvitationPermission.approve,
+                        InvitationPermission.reject
+                      ]))));
             },
           ),
         );

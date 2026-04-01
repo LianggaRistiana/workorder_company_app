@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/authorization/feature/invitation_permission.dart';
-import 'package:workorder_company_app/core/authorization/widget/permission_gate.dart';
+import 'package:workorder_company_app/core/authorization/rule/permission_rule.dart';
+import 'package:workorder_company_app/core/authorization/util/permission_gate_on_widget.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
@@ -20,8 +21,7 @@ class EmployeesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) =>
-          sl<EmployeesBloc>()..add(GetEmployeesRequested()),
+      create: (_) => sl<EmployeesBloc>()..add(GetEmployeesRequested()),
       child: BlocConsumer<EmployeesBloc, EmployeesState>(
         listener: (context, state) {
           if (state.errorMessage != null) {
@@ -42,18 +42,13 @@ class EmployeesPage extends StatelessWidget {
               icon: Icons.group_off_outlined,
               text: "Tidak ada Pegawai",
             ),
-            floatingActionButton: PermissionGate(
-              permission: InvitationPermission.create,
-              child: FloatingActionButton.extended(
-                onPressed: state.isLoading
-                    ? null
-                    : () {
-                        context.push(AppRoutes.employeeInvite);
-                      },
-                label: const Text('Tambah Karyawan'),
-                icon: const Icon(Icons.person_add_alt_1),
-              ),
-            ),
+            floatingActionButton: FloatingActionButton.extended(
+              onPressed: () {
+                context.push(AppRoutes.employeeInvite);
+              },
+              label: const Text('Tambah Karyawan'),
+              icon: const Icon(Icons.person_add_alt_1),
+            ).require(allow(InvitationPermission.create)),
             itemBuilder: (item) {
               return CustomCard(
                 margin: const EdgeInsets.symmetric(

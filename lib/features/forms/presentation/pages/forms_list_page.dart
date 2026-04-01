@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/authorization/feature/form_permission.dart';
-import 'package:workorder_company_app/core/authorization/widget/permission_gate.dart';
+import 'package:workorder_company_app/core/authorization/rule/permission_rule.dart';
+import 'package:workorder_company_app/core/authorization/util/permission_gate_on_widget.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
@@ -57,22 +58,19 @@ class FormsListPage extends StatelessWidget {
                 emptyWidget: const EmptyStateWidget(
                   text: "Tidak ada formulir",
                 ),
-                floatingActionButton: PermissionGate(
-                  permission: FormPermission.create,
-                  child: FloatingActionButton.extended(
-                    onPressed: () async {
-                      final result = await context.push(AppRoutes.formsCreate);
-                      if (!context.mounted) return;
-                      if (result != null && result == true) {
-                        context
-                            .read<FormsListBloc>()
-                            .add(GetFormsListRequested(forceRefresh: false));
-                      }
-                    },
-                    label: const Text("Tambah Form"),
-                    icon: const Icon(Icons.add),
-                  ),
-                ),
+                floatingActionButton: FloatingActionButton.extended(
+                  onPressed: () async {
+                    final result = await context.push(AppRoutes.formsCreate);
+                    if (!context.mounted) return;
+                    if (result != null && result == true) {
+                      context
+                          .read<FormsListBloc>()
+                          .add(GetFormsListRequested(forceRefresh: false));
+                    }
+                  },
+                  label: const Text("Tambah Form"),
+                  icon: const Icon(Icons.add),
+                ).require(allow(FormPermission.create)),
                 itemBuilder: (form) => Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: AppSpacing.md),

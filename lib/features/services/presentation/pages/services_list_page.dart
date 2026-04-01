@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/authorization/feature/service_permission.dart';
-import 'package:workorder_company_app/core/authorization/widget/permission_gate.dart';
+import 'package:workorder_company_app/core/authorization/rule/permission_rule.dart';
+import 'package:workorder_company_app/core/authorization/util/permission_gate_on_widget.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/list/services_list_bloc.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/list/services_list_event.dart';
@@ -39,10 +40,10 @@ class _ServicesListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<ServicesListBloc, ServicesListState>(
       listener: (context, state) {
-         if (state.status == ServicesListStatus.error &&
-                state.errorMessage != null) {
-              context.showError(state.errorMessage!);
-            }
+        if (state.status == ServicesListStatus.error &&
+            state.errorMessage != null) {
+          context.showError(state.errorMessage!);
+        }
       },
       builder: (context, state) {
         final isLoading = state.status == ServicesListStatus.loading;
@@ -59,22 +60,17 @@ class _ServicesListView extends StatelessWidget {
             emptyWidget: EmptyStateWidget(
               text: "Tidak ada layanan",
             ),
-            floatingActionButton: PermissionGate(
-              permission: ServicePermission.create,
-              child: FloatingActionButton.extended(
-                onPressed: () async {
-                  final result = await context.push(AppRoutes.servicesCreate);
-                  if (!context.mounted) return;
-                  if (result == true) {
-                    context
-                        .read<ServicesListBloc>()
-                        .add(GetServicesRequested());
-                  }
-                },
-                label: const Text("Tambah Layanan"),
-                icon: const Icon(Icons.add),
-              ),
-            ),
+            floatingActionButton: FloatingActionButton.extended(
+              onPressed: () async {
+                final result = await context.push(AppRoutes.servicesCreate);
+                if (!context.mounted) return;
+                if (result == true) {
+                  context.read<ServicesListBloc>().add(GetServicesRequested());
+                }
+              },
+              label: const Text("Tambah Layanan"),
+              icon: const Icon(Icons.add),
+            ).require(allow(ServicePermission.create)),
             itemBuilder: (item) => ServiceSummaryItem(
                   key: ValueKey(item.id),
                   service: item,

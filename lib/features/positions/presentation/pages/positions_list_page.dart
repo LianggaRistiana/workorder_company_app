@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/authorization/feature/positions_permission.dart';
-import 'package:workorder_company_app/core/authorization/widget/permission_gate.dart';
+import 'package:workorder_company_app/core/authorization/rule/permission_rule.dart';
+import 'package:workorder_company_app/core/authorization/util/permission_gate_on_widget.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
@@ -61,27 +62,22 @@ class _PositionsListView extends StatelessWidget {
           emptyWidget: const EmptyStateWidget(
             text: "Tidak ada departemen",
           ),
-          floatingActionButton: PermissionGate(
-            permission: PositionsPermission.create,
-            child: FloatingActionButton.extended(
-              onPressed: isLoading
-                  ? null
-                  : () async {
-                      final result = await context
-                          .push<PositionEntity>(AppRoutes.positionsCreate);
+          floatingActionButton: FloatingActionButton.extended(
+            onPressed: () async {
+              final result =
+                  await context.push<PositionEntity>(AppRoutes.positionsCreate);
 
-                      if (!context.mounted) return;
+              if (!context.mounted) return;
 
-                      if (result != null) {
-                        context
-                            .read<PositionsListBloc>()
-                            .add(GetPositionsListRequested());
-                      }
-                    },
-              icon: const Icon(Icons.add),
-              label: const Text('Tambah Departemen'),
-            ),
-          ),
+              if (result != null) {
+                context
+                    .read<PositionsListBloc>()
+                    .add(GetPositionsListRequested());
+              }
+            },
+            icon: const Icon(Icons.add),
+            label: const Text('Tambah Departemen'),
+          ).require(allow(PositionsPermission.create)),
           itemBuilder: (position) => Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
             child: ClickableCustomCard(

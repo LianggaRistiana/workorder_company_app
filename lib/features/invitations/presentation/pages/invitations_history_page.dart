@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/authorization/feature/invitation_permission.dart';
-import 'package:workorder_company_app/core/authorization/widget/permission_gate.dart';
+import 'package:workorder_company_app/core/authorization/rule/permission_rule.dart';
+import 'package:workorder_company_app/core/authorization/util/permission_gate_on_widget.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features/invitations/presentation/bloc/history_invitations_list/history_invitations_list_bloc.dart';
 import 'package:workorder_company_app/features/invitations/presentation/bloc/history_invitations_list/history_invitations_list_event.dart';
@@ -16,7 +17,6 @@ import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/info_bottom_sheet.dart';
 import 'package:workorder_company_app/shared/widgets/list_page_scafold.dart';
 
-/// This Page Only Can access by sender with invitation permission admin
 class InvitationsHistoryPage extends StatelessWidget {
   const InvitationsHistoryPage({super.key});
 
@@ -95,18 +95,16 @@ class InvitationsHistoryView extends StatelessWidget {
                     : null,
                 content: SenderInvitationDetail(invitation: invitation),
                 footer: BlocProvider.value(
-                  value: context.read<SenderInvitationActionsCubit>(),
-                  child: PermissionGate(
-                    permission: InvitationPermission.cancel,
-                    fallback: FilledButton(
-                      onPressed: () => context.pop(),
-                      child: const Text("Tutup"),
-                    ),
+                    value: context.read<SenderInvitationActionsCubit>(),
                     child: SenderInvitationAction(
                       invitation: invitation,
-                    ),
-                  ),
-                ),
+                    ).require(
+                      allow(InvitationPermission.cancel),
+                      fallback: FilledButton(
+                        onPressed: () => context.pop(),
+                        child: const Text("Tutup"),
+                      ),
+                    )),
               );
             },
           ),

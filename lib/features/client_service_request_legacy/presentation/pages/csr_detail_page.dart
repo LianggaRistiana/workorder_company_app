@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:workorder_company_app/core/authorization/feature/csr_permission.dart';
-import 'package:workorder_company_app/core/authorization/widget/permission_gate.dart';
+// import 'package:workorder_company_app/core/authorization/feature/csr_permission.dart';
+// import 'package:workorder_company_app/core/authorization/widget/permission_gate.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features/client_service_request_legacy/presentation/bloc/internal_client_service_request/internal_csr_actions_cubit.dart';
-import 'package:workorder_company_app/features/client_service_request_legacy/presentation/bloc/internal_client_service_request/internal_csr_bloc.dart';
 import 'package:workorder_company_app/features/client_service_request_legacy/presentation/bloc/internal_client_service_request/internal_csr_detail_cubit.dart';
-import 'package:workorder_company_app/features/client_service_request_legacy/presentation/widgets/csr_actions_button.dart';
 import 'package:workorder_company_app/features/client_service_request_legacy/presentation/widgets/service_request_detail_content.dart';
 
 class CsrDetailPage extends StatelessWidget {
@@ -29,24 +27,24 @@ class CsrDetailPage extends StatelessWidget {
           appBar: AppBar(
             title: const Text("Detail Pengajuan Layanan"),
           ),
-          bottomNavigationBar:
-              BlocBuilder<InternalCsrDetailCubit, InternalCsrDetailState>(
-            builder: (context, state) {
-              final csr = state.clientServiceRequest;
-              if (csr == null) return const SizedBox.shrink();
+          // bottomNavigationBar:
+          //     BlocBuilder<InternalCsrDetailCubit, InternalCsrDetailState>(
+          //   builder: (context, state) {
+          //     final csr = state.clientServiceRequest;
+          //     if (csr == null) return const SizedBox.shrink();
 
-              return PermissionGate(
-                permission: CsrPermission.action,
-                child: CsrActionsButton(
-                  csrId: csrId,
-                  csrStatus: csr.status,
-                  onRefresh: () => context
-                      .read<InternalCsrDetailCubit>()
-                      .getCsrDetail(csrId),
-                ),
-              );
-            },
-          ),
+          //     return PermissionGate(
+          //       permission: CsrPermission.action,
+          //       child: CsrActionsButton(
+          //         csrId: csrId,
+          //         csrStatus: csr.status,
+          //         onRefresh: () => context
+          //             .read<InternalCsrDetailCubit>()
+          //             .getCsrDetail(csrId),
+          //       ),
+          //     );
+          //   },
+          // ),
           body: ServiceRequestDetailContent()),
     );
   }

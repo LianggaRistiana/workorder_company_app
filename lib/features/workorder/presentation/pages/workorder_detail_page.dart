@@ -4,7 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:workorder_company_app/core/authorization/feature/workorder_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/workreport_permission.dart';
-import 'package:workorder_company_app/core/authorization/widget/permission_gate.dart';
+import 'package:workorder_company_app/core/authorization/rule/permission_rule.dart';
+import 'package:workorder_company_app/core/authorization/util/permission_gate_on_widget.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
@@ -68,31 +69,29 @@ class _WorkorderDetailPageState extends State<WorkorderDetailPage> {
             ),
             floatingActionButton: (workorder != null &&
                     workorder.status == WorkOrderStatus.inProgress)
-                ? PermissionGate(
-                    permission: WorkReportPermissions.view,
-                    child: FloatingActionButton.extended(
-                        label: Text("Laporan"),
-                        icon: Icon(Icons.assignment_turned_in_outlined),
-                        onPressed: () {
-                          context
-                              .push(AppRoutes.workreports.fillId(workorder.id));
-                        }))
+                ? FloatingActionButton.extended(
+                    label: Text("Laporan"),
+                    icon: Icon(Icons.assignment_turned_in_outlined),
+                    onPressed: () {
+                      context.push(AppRoutes.workreports.fillId(workorder.id));
+                    }).require(allow(WorkReportPermissions.update))
                 : null,
             bottomNavigationBar: workorder == null
                 ? const SizedBox.shrink()
-                : PermissionGate(
-                    permission: WorkOrderPermissions.update,
-                    child: WorkorderActionButtons(
-                      workorderStatus: workorder.status,
-                      workorderId: widget.workorderId,
-                      onRefresh: () {
-                        _refresh();
-                      },
-                    )),
+                : WorkorderActionButtons(
+                    workorderStatus: workorder.status,
+                    workorderId: widget.workorderId,
+                    onRefresh: () {
+                      _refresh();
+                    },
+                  ).require(allow(WorkOrderPermissions.update)),
             body: workorder == null
                 ? SizedBox.shrink()
                 : state.status == WorkorderStateStatus.loading
-                    ? const Center(child: AppLoading(message: "Memuat Perintah Kerja...",))
+                    ? const Center(
+                        child: AppLoading(
+                        message: "Memuat Perintah Kerja...",
+                      ))
                     : _mainContent(workorder, context),
           );
         });
@@ -117,25 +116,23 @@ class _WorkorderDetailPageState extends State<WorkorderDetailPage> {
               style: Theme.of(context).textTheme.titleMedium),
 
           if (woStatus == WorkOrderStatus.drafted)
-            PermissionGate(
-                permission: WorkOrderPermissions.update,
-                child: HorizontalButton(
-                  title: "Edit pegawai yang bertugas",
-                  leadingIcon: Icons.person_add_outlined,
-                  description:
-                      "pegawai yang betugas harus sesuai dengan posisi yang dibutuhkan layanan",
-                  onTap: () async {
-                    final result = await context.push(
-                        AppRoutes.workordersAssignStaff.fillId(workorder.id),
-                        extra: {
-                          'requiredStaff': workorder.service.requiredStaff,
-                          'assignedStaff': workorder.assignedStaffs
-                        });
-                    if (result == true) {
-                      _refresh();
-                    }
-                  },
-                )),
+            HorizontalButton(
+              title: "Edit pegawai yang bertugas",
+              leadingIcon: Icons.person_add_outlined,
+              description:
+                  "pegawai yang betugas harus sesuai dengan posisi yang dibutuhkan layanan",
+              onTap: () async {
+                final result = await context.push(
+                    AppRoutes.workordersAssignStaff.fillId(workorder.id),
+                    extra: {
+                      'requiredStaff': workorder.service.requiredStaff,
+                      'assignedStaff': workorder.assignedStaffs
+                    });
+                if (result == true) {
+                  _refresh();
+                }
+              },
+            ).require(allow(WorkOrderPermissions.update)),
           _woAssignedStaff(
               workorder.service.requiredStaff, workorder.assignedStaffs ?? []),
 
@@ -145,22 +142,20 @@ class _WorkorderDetailPageState extends State<WorkorderDetailPage> {
               style: Theme.of(context).textTheme.titleMedium),
 
           if (woStatus == WorkOrderStatus.drafted)
-            PermissionGate(
-                permission: WorkOrderPermissions.update,
-                child: HorizontalButton(
-                  title: "Edit Formulir Perintah Kerja",
-                  leadingIcon: Icons.assignment_outlined,
-                  description:
-                      "Anda dapat mengedit perintah kerja selama perintah kerja belum berstatus Siap ",
-                  onTap: () async {
-                    final result =
-                        await context.push(AppRoutes.workordersSubmission);
-                    if (!context.mounted) return;
-                    if (result == true) {
-                      _refresh();
-                    }
-                  },
-                )),
+            HorizontalButton(
+              title: "Edit Formulir Perintah Kerja",
+              leadingIcon: Icons.assignment_outlined,
+              description:
+                  "Anda dapat mengedit perintah kerja selama perintah kerja belum berstatus Siap ",
+              onTap: () async {
+                final result =
+                    await context.push(AppRoutes.workordersSubmission);
+                if (!context.mounted) return;
+                if (result == true) {
+                  _refresh();
+                }
+              },
+            ).require(allow(WorkOrderPermissions.update)),
 
           if (workorder.workorderForms != null &&
               workorder.workorderForms!.isNotEmpty)
