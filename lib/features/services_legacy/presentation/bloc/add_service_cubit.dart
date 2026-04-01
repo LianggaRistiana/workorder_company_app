@@ -7,7 +7,6 @@ import 'package:workorder_company_app/features/positions/domain/entities/positio
 import 'package:workorder_company_app/features/services_legacy/presentation/bloc/service_config_state.dart';
 import 'package:workorder_company_app/features/services_legacy/domain/usecases/create_service_usecase.dart';
 
-// TODO : Use this to add service
 class AddServiceCubit extends Cubit<ServiceConfigState> {
   // ignore: unused_field
   final CreateServiceUsecase _createServiceUsecase;

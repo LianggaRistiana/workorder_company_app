@@ -77,7 +77,6 @@ abstract class PermissionRule {
 }
 
 
-// TODO : Unimplement
 // in widget and auth guard must be refactor
 
 PermissionRule allow(AppPermission permission) =>

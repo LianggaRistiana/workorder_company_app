@@ -89,48 +89,6 @@ class _PositionsListView extends StatelessWidget {
               onTap: () {
                 context.push(AppRoutes.positionsDetail.fillId(position.id));
               },
-              onLongPress: () {
-                // TODO : fix later
-                // showAppBottomSheet(
-                //   context,
-                //   header: Row(
-                //       mainAxisAlignment: MainAxisAlignment.start,
-                //       crossAxisAlignment: CrossAxisAlignment.center,
-                //       children: [
-                //         IconBox(
-                //           icon: AppIcon.department,
-                //         ),
-                //         const SizedBox(width: 12),
-                //         Expanded(
-                //           child: Text(
-                //             position.name,
-                //             maxLines: 1,
-                //             overflow: TextOverflow.ellipsis,
-                //             style: Theme.of(context).textTheme.titleMedium,
-                //           ),
-                //         ),
-                //       ]),
-                //   content: ActionBottomSheetContent(
-                //     actions: [
-                //       BottomSheetAction(
-                //         title: "Edit",
-                //         icon: AppIcon.edit,
-                //         onTap: () {
-                //           // print("Edit");
-                //         },
-                //       ),
-                //       BottomSheetAction(
-                //         title: "Hapus",
-                //         icon: AppIcon.delete,
-                //         isDanger: true,
-                //         onTap: () {
-                //           // print("Delete");
-                //         },
-                //       ),
-                //     ],
-                //   ),
-                // );
-              },
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,

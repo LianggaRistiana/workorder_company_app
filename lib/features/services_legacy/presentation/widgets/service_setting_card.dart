@@ -46,7 +46,6 @@ class ServiceSettingCard extends StatelessWidget {
           const Text('Tipe Akses',
               style: TextStyle(fontWeight: FontWeight.bold)),
 
-          // TODO : Change To enum selector
           Row(
             children: [
               for (final type in [

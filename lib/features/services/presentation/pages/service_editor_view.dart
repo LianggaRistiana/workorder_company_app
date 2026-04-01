@@ -75,7 +75,7 @@ class _ServiceEditorViewState extends State<ServiceEditorView>
     FocusScope.of(context).unfocus();
     final current = _tabController.index;
 
-    // TODO : fix this later, add onchange in titile and description
+    // TODO : fix this later, add onchange in title and description
     _coordinator.updateTitle(
       _controllers.title.text,
     );

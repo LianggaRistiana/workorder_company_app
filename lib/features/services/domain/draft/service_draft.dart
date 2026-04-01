@@ -234,7 +234,7 @@ extension ServiceDraftMapper on ServiceDraft {
         intakeForm: intakeForm!,
         reviewForm: reviewForm!,
         serviceRequestApprovalAccessType: requestApprovalAccess,
-        reviewNeed: true, // TODO : thinks later
+        reviewNeed: true, 
       ),
       workOrdersConfig: workOrders.map((e) => e.toEntity()).toList(),
     );

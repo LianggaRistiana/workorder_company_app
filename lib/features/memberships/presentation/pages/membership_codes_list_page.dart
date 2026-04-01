@@ -13,7 +13,6 @@ import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/list_page_scafold.dart';
 
-// TODO : refactor this into few files
 class MembershipCodesListPage extends StatelessWidget {
   const MembershipCodesListPage({super.key});
 

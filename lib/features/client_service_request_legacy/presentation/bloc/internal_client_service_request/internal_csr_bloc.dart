@@ -10,7 +10,6 @@ import 'package:workorder_company_app/features/client_service_request_legacy/dom
 part 'internal_csr_event.dart';
 part 'internal_csr_state.dart';
 
-// TODO : fix name and method between internal and client side
 class InternalCsrBloc extends Bloc<InternalCsrEvent, InternalCsrState> {
   final GetCsrUsecase usecase;
   final AuthBloc authBloc;

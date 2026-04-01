@@ -101,7 +101,6 @@ class _CustomInputFieldState extends State<CustomInputField> {
                 errorText = null;
               });
             }
-            // TODO : observe this line
             widget.onChanged?.call(value);
           },
           enabled: widget.enabled,

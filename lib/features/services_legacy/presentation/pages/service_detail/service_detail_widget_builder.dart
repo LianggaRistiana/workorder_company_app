@@ -82,7 +82,6 @@ extension ServiceDetailWidgetBuilder on ServiceDetailPageState {
                 margin: const EdgeInsets.all(0),
                 padding: const EdgeInsets.all(AppSpacing.md),
                 child: ListTile(
-                  //TODO : wrap into inkwell and fix padding
                   onTap: () {
                     context.push(AppRoutes.formsDetail.fillId(intake.form.id));
                   },

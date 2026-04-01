@@ -25,7 +25,7 @@ class PositionCreatePage extends StatelessWidget {
           }
 
           if (state.status == PositionCreateStatus.error) {
-            context.showError(state.errorMessage ?? 'Terjadi kesalahan');
+            context.showError(state.failure?.message ?? 'Terjadi kesalahan');
           }
         },
         child: BlocBuilder<PositionCreateCubit, PositionCreateState>(

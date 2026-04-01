@@ -50,7 +50,6 @@ class AuthFailure extends Failure {
   const AuthFailure({super.message = "Unauthorize"});
 }
 
-// FIXME : follow the flow of validation error that has MapString of error and extension for access for the message
 class PolicyFailure<E> extends Failure {
   final E error;
 

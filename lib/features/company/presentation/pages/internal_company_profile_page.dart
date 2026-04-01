@@ -11,7 +11,6 @@ import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/property_display.dart';
 
-// TODO : add permissionGate For this Feature
 class InternalCompanyProfilePage extends StatefulWidget {
   const InternalCompanyProfilePage({super.key});
 

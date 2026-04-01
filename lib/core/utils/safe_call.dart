@@ -18,11 +18,7 @@ Future<Either<Failure, T>> safeCall<T>(Future<T> Function() action) async {
 }
 
 Failure _mapExceptionToFailure(dynamic error) {
-  // Logger().e(error);
   if (error is ApiException) {
-    // return ServerFailure(message: error.message);
-    //  TODO: Refactore all repo in data layer using this utils
-    // ApiException biasanya punya code + message
     switch (error.statusCode) {
       // case 400:
       //   return ServerFailure(message: error.message);

@@ -10,17 +10,13 @@ class PositionCreateCubit extends Cubit<PositionCreateState> {
       : super(const PositionCreateState());
 
   Future<void> createPosition(PositionEntity position) async {
-    emit(state.copyWith(
-        status: PositionCreateStatus.loading,
-        errorMessage: null,
-        failure: null));
+    emit(state.copyWith(status: PositionCreateStatus.loading, failure: null));
 
     final result = await createPositionUsecase(position);
     result.fold(
       (failure) => emit(
         state.copyWith(
           status: PositionCreateStatus.error,
-          errorMessage: failure.message,
           failure: failure,
         ),
       ),
@@ -28,7 +24,6 @@ class PositionCreateCubit extends Cubit<PositionCreateState> {
         state.copyWith(
           status: PositionCreateStatus.success,
           createdPosition: createdPosition,
-          errorMessage: null,
           failure: null,
         ),
       ),

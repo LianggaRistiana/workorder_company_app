@@ -10,7 +10,6 @@ import 'package:workorder_company_app/shared/widgets/menu_grid.dart';
 import 'package:workorder_company_app/shared/widgets/menu_item.dart';
 import 'package:workorder_company_app/shared/widgets/section_title.dart';
 
-// TODO : Change to CompanyMenuPage
 class InternalCompanyManageMenuPage extends StatefulWidget {
   const InternalCompanyManageMenuPage({super.key});
 

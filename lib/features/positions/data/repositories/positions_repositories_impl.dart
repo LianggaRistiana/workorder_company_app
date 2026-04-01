@@ -11,7 +11,6 @@ import 'package:workorder_company_app/features/positions/domain/repositories/pos
 class PositionsRepositoryImpl implements PositionsRepository {
   final PositionsRemoteDatasource _remoteDatasource;
 
-  // TODO : doesnt support for pagination and search mechanism for right now
   final ListCacheHelper<PositionEntity> _cache = ListCacheHelper();
 
   PositionsRepositoryImpl(this._remoteDatasource);

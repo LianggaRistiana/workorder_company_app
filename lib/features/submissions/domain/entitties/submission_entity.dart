@@ -9,10 +9,7 @@ class SubmissionEntity {
   final SubmissionStatus? status;
   final UserEntity? submittedBy;
   final List<FieldDataEntity>? fieldsData;
-  // TODO : thinks this later
   final DateTime? createdAt;
-  // final DateTime? updatedAt;
-
 
   const SubmissionEntity({
     required this.id,
@@ -22,7 +19,6 @@ class SubmissionEntity {
     this.submittedBy,
     this.fieldsData,
     this.createdAt,
-    // this.updatedAt,
   });
 
   SubmissionEntity copyWith({
@@ -33,7 +29,6 @@ class SubmissionEntity {
     UserEntity? submittedBy,
     List<FieldDataEntity>? fieldsData,
     DateTime? createdAt,
-    // DateTime? updatedAt,
   }) {
     return SubmissionEntity(
       id: id ?? this.id,
@@ -43,7 +38,6 @@ class SubmissionEntity {
       submittedBy: submittedBy ?? this.submittedBy,
       fieldsData: fieldsData ?? this.fieldsData,
       createdAt: createdAt ?? this.createdAt,
-      // updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 
@@ -51,5 +45,4 @@ class SubmissionEntity {
   String toString() {
     return 'SubmissionEntity(id: $id, formId: $formId, submissionType: $submissionType, status: $status, submittedBy: $submittedBy, fieldsData: ${fieldsData?.map((e) => e.toString()).toList() ?? []})';
   }
-  
 }

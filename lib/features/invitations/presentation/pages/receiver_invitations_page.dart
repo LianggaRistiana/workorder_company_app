@@ -81,7 +81,6 @@ class _PendingInvitationsListView extends StatelessWidget {
                     ],
                   ),
                   content: ReceiverInvitationDetail(invitation: invitation),
-                  // TODO : Permission for receiver change to action rather than reject and accept
                   footer: BlocProvider.value(
                       value: context.read<ReceiverInvitationActionsCubit>(),
                       child: PermissionGate(
