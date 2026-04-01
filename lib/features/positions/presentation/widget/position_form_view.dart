@@ -6,6 +6,7 @@ import 'package:workorder_company_app/features/positions/domain/entities/positio
 import 'package:workorder_company_app/features/positions/domain/properties/position_property.dart';
 import 'package:workorder_company_app/shared/utils/confirm_dialog.dart';
 import 'package:workorder_company_app/shared/utils/confirm_leave.dart';
+import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/button_with_loading_state.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 import 'package:workorder_company_app/shared/widgets/custom_switch_tile.dart';
@@ -53,8 +54,6 @@ class _PositionFormViewState extends State<PositionFormView> {
     _descriptionController.dispose();
     super.dispose();
   }
-
-  
 
   void _handleSubmit() {
     if (!(_formKey.currentState?.validate() ?? false)) return;
@@ -167,7 +166,13 @@ class _PositionFormViewState extends State<PositionFormView> {
         bottomNavigationBar: SafeArea(
           minimum: const EdgeInsets.all(16),
           child: ButtonWithLoadingState(
-            onPressed: _handleSubmit,
+            onPressed: () {
+              if (!_isDirty) {
+                context.showWarning("Anda belum melakukan perubahan");
+                return;
+              }
+              _handleSubmit();
+            },
             isLoading: widget.isLoading,
             icon: AppIcon.submit,
             label: widget.submitLabel,

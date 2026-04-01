@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/features/forms/domain/draft/form_draft.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
@@ -9,6 +8,7 @@ import 'package:workorder_company_app/features/forms/presentation/widgets/field_
 import 'package:workorder_company_app/features/forms/presentation/widgets/fields_editor_tab_view.dart';
 import 'package:workorder_company_app/features/forms/presentation/widgets/form_config_editor_tab_view.dart';
 import 'package:workorder_company_app/shared/utils/confirm_dialog.dart';
+import 'package:workorder_company_app/shared/utils/confirm_leave.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/custom_step_indicator.dart';
 import 'package:workorder_company_app/shared/widgets/info_bottom_sheet.dart';
@@ -119,9 +119,14 @@ class _FormEditorViewState extends State<FormEditorView>
   }
 
   void _submitForm() {
-    FocusScope.of(context).unfocus();
     _coordinator.updateTitle(_controllers.title.text);
     _coordinator.updateDescription(_controllers.description.text);
+
+    FocusScope.of(context).unfocus();
+    if (!_coordinator.isDirty) {
+      context.showWarning("Anda belum melakukan perubahan");
+      return;
+    }
 
     if (!_coordinator.hasField()) {
       context.showError("Pertanyaan tidak boleh kosong");
@@ -133,18 +138,6 @@ class _FormEditorViewState extends State<FormEditorView>
     }
 
     widget.onSubmit(_coordinator.draft);
-  }
-
-  // TODO : move ths to coordinator
-  bool get _isDirty {
-    final initial = widget.initialEntity;
-    if (initial == null) {
-      return _controllers.title.text != _coordinator.draft.title ||
-          _controllers.description.text != _coordinator.draft.description;
-    }
-
-    return _controllers.title.text != initial.title ||
-        _controllers.description.text != initial.description;
   }
 
   @override
@@ -188,23 +181,19 @@ class _FormEditorViewState extends State<FormEditorView>
           canPop: false,
           onPopInvokedWithResult: (didPop, result) async {
             if (didPop) return;
-
-            if (_isDirty) {
-              final shouldLeave = await showConfirmDialog(
-                context: context,
-                title: "Konfirmasi",
-                message: "Apakah Anda yakin ingin meninggalkan halaman ini?",
-                type: ConfirmDialogType.warning,
-              );
-
-              if (!context.mounted) return;
-              if (shouldLeave == true) {
-                context.pop();
-              }
-            } else {
-              if (!mounted) return;
-              context.pop();
-            }
+            BackNavigationHandler.handle(
+              context: context,
+              isDirty: _coordinator.isDirty,
+              onConfirmLeave: () {
+                return showConfirmDialog(
+                  context: context,
+                  title: "Data belum disimpan",
+                  message:
+                      "Apakah Anda yakin ingin meninggalkan halaman ini tanpa menyimpan perubahan?",
+                  type: ConfirmDialogType.warning,
+                );
+              },
+            );
           },
           child: TabBarView(
             controller: _tabController,

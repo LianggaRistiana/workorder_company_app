@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/features/services/domain/draft/service_draft.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
@@ -10,6 +9,7 @@ import 'package:workorder_company_app/features/services/presentation/widgets/ser
 import 'package:workorder_company_app/features/services/presentation/widgets/service_work_order_form_tab_view.dart';
 import 'package:workorder_company_app/features/services/presentation/widgets/service_work_report_form_tab_view.dart';
 import 'package:workorder_company_app/shared/utils/confirm_dialog.dart';
+import 'package:workorder_company_app/shared/utils/confirm_leave.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/custom_step_indicator.dart';
 import 'package:workorder_company_app/shared/widgets/step_navigation_bar.dart';
@@ -173,23 +173,19 @@ class _ServiceEditorViewState extends State<ServiceEditorView>
             final isDirty = _coordinator.isDirty(widget.initialEntity != null
                 ? ServiceDraft.fromEntity(widget.initialEntity!)
                 : null);
-
-            if (isDirty) {
-              final shouldLeave = await showConfirmDialog(
-                context: context,
-                title: "Konfirmasi",
-                message: "Apakah Anda yakin ingin meninggalkan halaman ini?",
-                type: ConfirmDialogType.warning,
-              );
-
-              if (!context.mounted) return;
-              if (shouldLeave == true) {
-                context.pop();
-              }
-            } else {
-              if (!mounted) return;
-              context.pop();
-            }
+            BackNavigationHandler.handle(
+              context: context,
+              isDirty: isDirty,
+              onConfirmLeave: () {
+                return showConfirmDialog(
+                  context: context,
+                  title: "Data belum disimpan",
+                  message:
+                      "Apakah Anda yakin ingin meninggalkan halaman ini tanpa menyimpan perubahan?",
+                  type: ConfirmDialogType.warning,
+                );
+              },
+            );
           },
           child: TabBarView(
             controller: _tabController,
