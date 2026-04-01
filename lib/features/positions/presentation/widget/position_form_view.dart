@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/error/failures.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/utils/validators.dart';
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
 import 'package:workorder_company_app/features/positions/domain/properties/position_property.dart';
 import 'package:workorder_company_app/shared/utils/confirm_dialog.dart';
+import 'package:workorder_company_app/shared/utils/confirm_leave.dart';
 import 'package:workorder_company_app/shared/widgets/button_with_loading_state.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 import 'package:workorder_company_app/shared/widgets/custom_switch_tile.dart';
@@ -54,6 +54,8 @@ class _PositionFormViewState extends State<PositionFormView> {
     super.dispose();
   }
 
+  
+
   void _handleSubmit() {
     if (!(_formKey.currentState?.validate() ?? false)) return;
 
@@ -83,37 +85,35 @@ class _PositionFormViewState extends State<PositionFormView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      appBar: AppBar(
-        title: Text(
-          widget.initialData == null ? "Tambah Departemen" : "Edit Departemen",
-        ),
-      ),
-
-      body: PopScope(
-        canPop: false,
-        onPopInvokedWithResult: (didPop, result) async {
-          if (didPop) return;
-
-          if (_isDirty) {
-            final shouldLeave = await showConfirmDialog(
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        BackNavigationHandler.handle(
+          context: context,
+          isDirty: _isDirty,
+          onConfirmLeave: () {
+            return showConfirmDialog(
               context: context,
-              title: "Konfirmasi",
-              message: "Apakah Anda yakin ingin meninggalkan halaman ini?",
+              title: "Data belum disimpan",
+              message:
+                  "Apakah Anda yakin ingin meninggalkan halaman ini tanpa menyimpan perubahan?",
               type: ConfirmDialogType.warning,
             );
+          },
+        );
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        appBar: AppBar(
+          title: Text(
+            widget.initialData == null
+                ? "Tambah Departemen"
+                : "Edit Departemen",
+          ),
+        ),
 
-            if (!context.mounted) return;
-            if (shouldLeave == true) {
-              context.pop();
-            }
-          } else {
-            if (!mounted) return;
-            context.pop();
-          }
-        },
-        child: Form(
+        body: Form(
           key: _formKey,
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(16),
@@ -162,16 +162,16 @@ class _PositionFormViewState extends State<PositionFormView> {
             ),
           ),
         ),
-      ),
 
-      /// 🔹 Bottom Button (Auto-handle keyboard)
-      bottomNavigationBar: SafeArea(
-        minimum: const EdgeInsets.all(16),
-        child: ButtonWithLoadingState(
-          onPressed: _handleSubmit,
-          isLoading: widget.isLoading,
-          icon: AppIcon.submit,
-          label: widget.submitLabel,
+        /// 🔹 Bottom Button (Auto-handle keyboard)
+        bottomNavigationBar: SafeArea(
+          minimum: const EdgeInsets.all(16),
+          child: ButtonWithLoadingState(
+            onPressed: _handleSubmit,
+            isLoading: widget.isLoading,
+            icon: AppIcon.submit,
+            label: widget.submitLabel,
+          ),
         ),
       ),
     );
