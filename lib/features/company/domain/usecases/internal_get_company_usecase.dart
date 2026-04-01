@@ -4,10 +4,10 @@ import 'package:workorder_company_app/core/error/error.dart';
 import 'package:workorder_company_app/core/result/result.dart';
 import 'package:workorder_company_app/features/company/domain/entities/company_entity.dart';
 import 'package:workorder_company_app/features/company/domain/policies/company_management_policy.dart';
-import 'package:workorder_company_app/features/company/domain/repositories/company_repository.dart';
+import 'package:workorder_company_app/features/company/domain/repositories/internal_company_repository.dart';
 
 class InternalGetCompanyUsecase {
-  final CompanyRepository _repository;
+  final InternalCompanyRepository _repository;
   final CompanyManagementPolicy _policy;
 
   InternalGetCompanyUsecase(this._repository, this._policy);

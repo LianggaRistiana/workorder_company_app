@@ -1,7 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
 import 'package:workorder_company_app/features/forms/presentation/pages/form_create_page.dart';
-import 'package:workorder_company_app/features/forms/presentation/pages/form_detail.page.dart';
+import 'package:workorder_company_app/features/forms/presentation/pages/form_detail_page.dart';
 import 'package:workorder_company_app/features/forms/presentation/pages/form_update_page.dart';
 import 'package:workorder_company_app/features/forms/presentation/pages/forms_list_page.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';

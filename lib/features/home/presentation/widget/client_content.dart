@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
 import 'package:workorder_company_app/shared/widgets/menu_grid.dart';
@@ -15,7 +16,7 @@ class ClientContent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         HorizontalButton(
-          leadingIcon: Icons.send_rounded,
+          leadingIcon: AppIcon.serviceRequestSend,
           title: "Ajukan Permintaan Layanan",
           description: "Pilih perusahaan kemudiaan ajukan permintaan layanan",
           onTap: () {
@@ -28,19 +29,21 @@ class ClientContent extends StatelessWidget {
         MenuGrid(
           items: [
             MenuItem(
-                icon: Icons.assignment_outlined,
+                icon: AppIcon.serviceRequestSend,
                 label: "Pengajuan Layanan Saya",
                 onTap: () => context.push(AppRoutes.serviceRequestClientSide)),
             MenuItem(
-                icon: Icons.home_work_outlined,
+                icon: AppIcon.company,
                 label: "Perusahaan langganan",
                 onTap: () {}),
             MenuItem(
-                icon: Icons.card_membership_outlined,
+                icon: AppIcon.membership,
                 label: "Aktifkan Keanggotaan",
                 onTap: () => context.push(AppRoutes.membershipsClaim)),
             MenuItem(
-                icon: Icons.history, label: "Riwayat Pengajuan", onTap: () {}),
+                icon: AppIcon.history,
+                label: "Riwayat Pengajuan",
+                onTap: () {}),
             MenuItem(
                 icon: Icons.help_outline_outlined,
                 label: "Bantuan",
