@@ -12,10 +12,10 @@ import 'package:workorder_company_app/features/auth/domain/entities/user_entity.
 /// Use this rule when:
 /// - A route or feature requires exactly ONE permission
 /// - You want future policy logic to stay centralized
-class SinglePermissionRule implements PermissionRule {
+class SingleRolePermissionRule implements PermissionRule {
   final AppPermission permission;
 
-  const SinglePermissionRule(this.permission);
+  const SingleRolePermissionRule(this.permission);
 
   @override
   bool isAllowed(UserEntity user) {

@@ -10,10 +10,10 @@ import 'package:workorder_company_app/features/auth/domain/entities/user_entity.
 ///
 /// Example:
 /// - User may READ or CREATE CSR
-class AnyOfRule implements PermissionRule {
+class AnyOfRolePermissionRule implements PermissionRule {
   final List<AppPermission> permissions;
 
-  const AnyOfRule(this.permissions);
+  const AnyOfRolePermissionRule(this.permissions);
 
   @override
   bool isAllowed(UserEntity user) {

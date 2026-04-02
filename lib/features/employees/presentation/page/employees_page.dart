@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/authorization/feature/invitation_permission.dart';
-import 'package:workorder_company_app/core/authorization/rule/permission_rule.dart';
+import 'package:workorder_company_app/core/authorization/rule/role_permission/role_permission_helper.dart';
 import 'package:workorder_company_app/core/authorization/util/permission_gate_on_widget.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
@@ -48,7 +48,7 @@ class EmployeesPage extends StatelessWidget {
               },
               label: const Text('Tambah Karyawan'),
               icon: const Icon(Icons.person_add_alt_1),
-            ).require(allow(InvitationPermission.create)),
+            ).require(roleCan(InvitationPermission.create)),
             itemBuilder: (item) {
               return CustomCard(
                 margin: const EdgeInsets.symmetric(

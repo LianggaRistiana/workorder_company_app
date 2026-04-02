@@ -10,10 +10,10 @@ import 'package:workorder_company_app/features/auth/domain/entities/user_entity.
 ///
 /// Example:
 /// - User must be able to READ and ASSIGN work orders
-class AllOfRule implements PermissionRule {
+class AllOfRolePermissionRule implements PermissionRule {
   final List<AppPermission> permissions;
 
-  const AllOfRule(this.permissions);
+  const AllOfRolePermissionRule(this.permissions);
 
   @override
   bool isAllowed(UserEntity user) {

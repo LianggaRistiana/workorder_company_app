@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/authorization/feature/workreport_permission.dart';
-import 'package:workorder_company_app/core/authorization/rule/permission_rule.dart';
+import 'package:workorder_company_app/core/authorization/rule/role_permission/role_permission_helper.dart';
 import 'package:workorder_company_app/core/authorization/util/permission_gate_on_widget.dart';
 import 'package:workorder_company_app/features/workreport/presentation/bloc/get_work_report_cubit.dart';
 import 'package:workorder_company_app/features/workreport/presentation/bloc/work_report_state.dart';
@@ -65,7 +65,7 @@ class _WorkreportPageState extends State<WorkreportPage> {
                     },
                     icon: Icon(Icons.edit_document))
                 .require(
-              allow(WorkReportPermissions.update),
+              roleCan(WorkReportPermissions.update),
             ),
           );
         });

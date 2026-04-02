@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:workorder_company_app/core/authorization/feature/workorder_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/workreport_permission.dart';
-import 'package:workorder_company_app/core/authorization/rule/permission_rule.dart';
+import 'package:workorder_company_app/core/authorization/rule/role_permission/role_permission_helper.dart';
 import 'package:workorder_company_app/core/authorization/util/permission_gate_on_widget.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
@@ -74,7 +74,7 @@ class _WorkorderDetailPageState extends State<WorkorderDetailPage> {
                     icon: Icon(Icons.assignment_turned_in_outlined),
                     onPressed: () {
                       context.push(AppRoutes.workreports.fillId(workorder.id));
-                    }).require(allow(WorkReportPermissions.update))
+                    }).require(roleCan(WorkReportPermissions.update))
                 : null,
             bottomNavigationBar: workorder == null
                 ? const SizedBox.shrink()
@@ -84,7 +84,7 @@ class _WorkorderDetailPageState extends State<WorkorderDetailPage> {
                     onRefresh: () {
                       _refresh();
                     },
-                  ).require(allow(WorkOrderPermissions.update)),
+                  ).require(roleCan(WorkOrderPermissions.update)),
             body: workorder == null
                 ? SizedBox.shrink()
                 : state.status == WorkorderStateStatus.loading
@@ -132,7 +132,7 @@ class _WorkorderDetailPageState extends State<WorkorderDetailPage> {
                   _refresh();
                 }
               },
-            ).require(allow(WorkOrderPermissions.update)),
+            ).require(roleCan(WorkOrderPermissions.update)),
           _woAssignedStaff(
               workorder.service.requiredStaff, workorder.assignedStaffs ?? []),
 
@@ -155,7 +155,7 @@ class _WorkorderDetailPageState extends State<WorkorderDetailPage> {
                   _refresh();
                 }
               },
-            ).require(allow(WorkOrderPermissions.update)),
+            ).require(roleCan(WorkOrderPermissions.update)),
 
           if (workorder.workorderForms != null &&
               workorder.workorderForms!.isNotEmpty)

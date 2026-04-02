@@ -1,7 +1,3 @@
-import 'package:workorder_company_app/core/authorization/model/app_permission.dart';
-import 'package:workorder_company_app/core/authorization/rule/all_of_permission_rule.dart';
-import 'package:workorder_company_app/core/authorization/rule/any_of_permission_rule.dart';
-import 'package:workorder_company_app/core/authorization/rule/single_permission_rule.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 
@@ -69,22 +65,10 @@ import 'package:workorder_company_app/features/auth/domain/entities/user_entity.
 /// - Policy consistency
 /// - Future-proof permission system
 abstract class PermissionRule {
-  /// Evaluates whether the given [role]
+  /// Evaluates whether the given [user]
   /// satisfies this authorization rule.
   ///
   /// Returns `true` if access is granted,
   /// otherwise `false`.
   bool isAllowed(UserEntity user);
 }
-
-
-// in widget and auth guard must be refactor
-
-PermissionRule allow(AppPermission permission) =>
-    SinglePermissionRule(permission);
-
-PermissionRule allOf(List<AppPermission> permissions) =>
-    AllOfRule(permissions);
-
-PermissionRule anyOf(List<AppPermission> permissions) =>
-    AnyOfRule(permissions);

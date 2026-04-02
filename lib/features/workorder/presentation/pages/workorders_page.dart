@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/authorization/feature/workorder_permission.dart';
-import 'package:workorder_company_app/core/authorization/rule/permission_rule.dart';
+import 'package:workorder_company_app/core/authorization/rule/role_permission/role_permission_helper.dart';
 import 'package:workorder_company_app/core/authorization/util/permission_gate_on_widget.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_bloc.dart';
@@ -63,7 +63,7 @@ class _WorkordersPageState extends State<WorkordersPage> {
                 state.status == WorkorderStateStatus.loading ? null : () {},
             label: const Text("Tambah Perintah Kerja"),
             icon: const Icon(Icons.add),
-          ).require(allow(WorkOrderPermissions.create)),
+          ).require(roleCan(WorkOrderPermissions.create)),
 
           // 🏷 Header atas list
           header: HorizontalButton(
