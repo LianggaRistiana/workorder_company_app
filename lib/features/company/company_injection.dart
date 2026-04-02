@@ -3,7 +3,6 @@ import 'package:workorder_company_app/features/company/data/datasources/company_
 import 'package:workorder_company_app/features/company/data/datasources/public_companies_remote_datasource.dart';
 import 'package:workorder_company_app/features/company/data/repositories/internal_company_repository_impl.dart';
 import 'package:workorder_company_app/features/company/data/repositories/public_companies_repository_impl.dart';
-import 'package:workorder_company_app/features/company/domain/policies/company_management_policy.dart';
 import 'package:workorder_company_app/features/company/domain/repositories/internal_company_repository.dart';
 import 'package:workorder_company_app/features/company/domain/repositories/public_companies_repository.dart';
 import 'package:workorder_company_app/features/company/domain/usecases/internal_get_company_usecase.dart';
@@ -16,8 +15,6 @@ import 'package:workorder_company_app/features/company/presentation/bloc/public_
 import 'package:workorder_company_app/features/company/presentation/bloc/public_company_detail/public_company_detail_cubit.dart';
 
 Future<void> initCompanyFeature() async {
-  sl.registerLazySingleton<CompanyManagementPolicy>(
-      () => CompanyManagementPolicy());
 
   sl.registerLazySingleton<PublicCompaniesRemoteDatasource>(
       () => PublicCompaniesRemoteDatasourceImpl(sl()));
@@ -38,7 +35,7 @@ Future<void> initCompanyFeature() async {
       () => PublicGetCompanyDetailUsecase(sl()));
 
   sl.registerLazySingleton<InternalGetCompanyUsecase>(
-      () => InternalGetCompanyUsecase(sl(), sl()));
+      () => InternalGetCompanyUsecase(sl()));
 
   sl.registerLazySingleton<InternalUpdateCompanyUsecase>(
       () => InternalUpdateCompanyUsecase(sl()));

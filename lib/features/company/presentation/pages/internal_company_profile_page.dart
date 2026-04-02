@@ -54,10 +54,6 @@ class _InternalCompanyProfilePageState
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
               children: [
-                if (state.warnings.isNotEmpty) ...[
-                  _WarningBlock(warnings: state.warnings),
-                  const SizedBox(height: 24),
-                ],
                 _CompanyHeader(company: company),
                 // const SizedBox(height: 24)
                 CustomCard(
@@ -143,44 +139,6 @@ class _CompanyHeader extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _WarningBlock extends StatelessWidget {
-  final List<String> warnings;
-
-  const _WarningBlock({required this.warnings});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.orange.withAlpha(30),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: Colors.orange.withAlpha(120),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: warnings
-            .map(
-              (e) => Padding(
-                padding: const EdgeInsets.only(bottom: 4),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Icon(Icons.warning_amber_rounded, size: 18),
-                    const SizedBox(width: 6),
-                    Expanded(child: Text(e)),
-                  ],
-                ),
-              ),
-            )
-            .toList(),
       ),
     );
   }

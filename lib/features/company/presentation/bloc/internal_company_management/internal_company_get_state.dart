@@ -2,13 +2,11 @@ import 'package:workorder_company_app/features/company/domain/entities/company_e
 
 class InternalCompanyState {
   final CompanyEntity? company;
-  final List<String> warnings;
   final bool isLoading;
   final String? error;
 
   const InternalCompanyState({
     this.company,
-    this.warnings = const [],
     this.isLoading = false,
     this.error,
   });
@@ -21,7 +19,6 @@ class InternalCompanyState {
   }) {
     return InternalCompanyState(
       company: company ?? this.company,
-      warnings: warnings ?? this.warnings,
       isLoading: isLoading ?? this.isLoading,
       error: error,
     );
