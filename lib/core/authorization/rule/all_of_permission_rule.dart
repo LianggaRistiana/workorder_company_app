@@ -1,7 +1,7 @@
 import 'package:workorder_company_app/core/authorization/model/app_permission.dart';
 import 'package:workorder_company_app/core/authorization/rule/permission_rule.dart';
 import 'package:workorder_company_app/core/authorization/util/check_permission.dart';
-import 'package:workorder_company_app/core/constants/app_enums.dart';
+import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 
 /// Rule that grants access only if the role
 /// is allowed to perform ALL given permissions.
@@ -16,7 +16,7 @@ class AllOfRule implements PermissionRule {
   const AllOfRule(this.permissions);
 
   @override
-  bool isAllowed(UserRole role) {
-    return role.canAll(permissions);
+  bool isAllowed(UserEntity user) {
+    return user.role.canAll(permissions);
   }
 }

@@ -1,4 +1,5 @@
 enum AppFeature {
+  serviceRequest,
   clientServiceRequest,
   invitation,
   workOrder,

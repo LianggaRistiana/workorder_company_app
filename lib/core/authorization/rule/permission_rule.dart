@@ -3,6 +3,7 @@ import 'package:workorder_company_app/core/authorization/rule/all_of_permission_
 import 'package:workorder_company_app/core/authorization/rule/any_of_permission_rule.dart';
 import 'package:workorder_company_app/core/authorization/rule/single_permission_rule.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
+import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 
 /// Represents an authorization rule that determines
 /// whether a [UserRole] is allowed to perform an action.
@@ -73,7 +74,7 @@ abstract class PermissionRule {
   ///
   /// Returns `true` if access is granted,
   /// otherwise `false`.
-  bool isAllowed(UserRole role);
+  bool isAllowed(UserEntity user);
 }
 
 

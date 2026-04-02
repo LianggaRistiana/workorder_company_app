@@ -7,6 +7,7 @@ import 'package:workorder_company_app/core/authorization/feature/memberships_per
 import 'package:workorder_company_app/core/authorization/feature/positions_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/public_companies.dart';
 import 'package:workorder_company_app/core/authorization/feature/service_permission.dart';
+import 'package:workorder_company_app/core/authorization/feature/service_request_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/workreport_permission.dart';
 import 'package:workorder_company_app/core/authorization/model/app_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/workorder_permission.dart';
@@ -26,7 +27,8 @@ extension UserRolePermissions on UserRole {
           ...WorkOrderPermissions.all,
           ...WorkReportPermissions.all,
           ...InvitationPermission.admin,
-          ...MembershipsPermission.company
+          ...MembershipsPermission.company,
+          ...ServiceRequestPermission.receiver
         };
       case UserRole.managerCompany:
         return {
@@ -38,6 +40,7 @@ extension UserRolePermissions on UserRole {
           ...CsrPermission.all,
           ...WorkOrderPermissions.all,
           ...WorkReportPermissions.all,
+          ...ServiceRequestPermission.receiver,
           MembershipsPermission.view
         };
       case UserRole.staffCompany:
@@ -49,13 +52,15 @@ extension UserRolePermissions on UserRole {
           ServicePermission.view,
           CsrPermission.view,
           WorkOrderPermissions.view,
+          ...ServiceRequestPermission.requester,
           ...WorkReportPermissions.all
         };
       case UserRole.client:
         return {
           PublicCompanies.view,
           CsrPermission.view,
-          MembershipsPermission.claim
+          MembershipsPermission.claim,
+          ...ServiceRequestPermission.requester,
         };
       case UserRole.staffUnassigned:
         return {...InvitationPermission.unassigned};

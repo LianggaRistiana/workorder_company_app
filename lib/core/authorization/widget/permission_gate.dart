@@ -87,8 +87,8 @@ class PermissionGate extends StatelessWidget {
       return fallback ?? const SizedBox.shrink();
     }
 
-    final role = state.user.role;
-    final allowed = rule.isAllowed(role);
+    final user = state.user;
+    final allowed = rule.isAllowed(user);
 
     return allowed ? child : (fallback ?? const SizedBox.shrink());
   }
