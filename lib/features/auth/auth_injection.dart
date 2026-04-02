@@ -1,7 +1,6 @@
 import 'package:workorder_company_app/features/auth/data/datasources/auth_local_datasource.dart';
 import 'package:workorder_company_app/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:workorder_company_app/features/auth/data/repositories/auth_repository_impl.dart';
-import 'package:workorder_company_app/features/auth/domain/policy/user_registration_policy.dart';
 import 'package:workorder_company_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:workorder_company_app/features/auth/domain/usecases/company_registration_usecase.dart';
 import 'package:workorder_company_app/features/auth/domain/usecases/get_current_user_usecase.dart';
@@ -20,10 +19,6 @@ Future<void> initAuthFeature() async {
       userRegistrationUsecase: sl(),
       companyRegistrationUsecase: sl()));
 
-  /// Policies
-  sl.registerLazySingleton<UserRegistrationPolicy>(
-      () => UserRegistrationPolicy());
-
   /// Usecases
   sl.registerLazySingleton<LoginUseCase>(() => LoginUseCase(sl(), sl()));
   sl.registerLazySingleton<GetCurrentUserUsecase>(
@@ -32,7 +27,7 @@ Future<void> initAuthFeature() async {
   sl.registerLazySingleton<CompanyRegistrationUsecase>(
       () => CompanyRegistrationUsecase(sl()));
   sl.registerLazySingleton<UserRegistrationUsecase>(
-      () => UserRegistrationUsecase(sl(), sl()));
+      () => UserRegistrationUsecase(sl()));
 
   /// Repository
   sl.registerLazySingleton<AuthRepository>(
