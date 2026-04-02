@@ -62,6 +62,7 @@ class Endpoints {
   static const String publicServices = '$clientPrefix/services';
   static const String publicClientServiceRequest =
       '$clientPrefix/client-service-request';
+      
   static publicCompanyServices(String id) =>
       '${publicCompanies.byId(id)}/services';
   static publicIntakeForms(String id) =>

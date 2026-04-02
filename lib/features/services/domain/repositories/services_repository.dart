@@ -4,7 +4,7 @@ import 'package:workorder_company_app/features/services/domain/entities/service_
 
 abstract class ServicesRepository {
   // Public Service
-  FutureEitherList<ServiceSummaryEntity> getPublicServices();
+  FutureEitherList<ServiceSummaryEntity> getPublicServices(String companyId);
   FutureEither<ServiceEntity> getPublicServiceById(String id);
 
   // Internal Service Management

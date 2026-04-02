@@ -13,9 +13,9 @@ import 'package:workorder_company_app/features/company/presentation/bloc/interna
 import 'package:workorder_company_app/features/company/presentation/bloc/internal_company_management/internal_update_company_cubit.dart';
 import 'package:workorder_company_app/features/company/presentation/bloc/public_companies_list/public_companies_list_bloc.dart';
 import 'package:workorder_company_app/features/company/presentation/bloc/public_company_detail/public_company_detail_cubit.dart';
+import 'package:workorder_company_app/features/company/presentation/bloc/public_company_services.dart/public_company_services_cubit.dart';
 
 Future<void> initCompanyFeature() async {
-
   sl.registerLazySingleton<PublicCompaniesRemoteDatasource>(
       () => PublicCompaniesRemoteDatasourceImpl(sl()));
 
@@ -46,6 +46,9 @@ Future<void> initCompanyFeature() async {
   sl.registerFactory<PublicCompanyDetailCubit>(() => PublicCompanyDetailCubit(
         getCompanyDetailUsecase: sl(),
       ));
+
+  sl.registerFactory<PublicCompanyServicesCubit>(
+      () => PublicCompanyServicesCubit(sl()));
 
   sl.registerFactory<InternalCompanyCubit>(() => InternalCompanyCubit(sl()));
 

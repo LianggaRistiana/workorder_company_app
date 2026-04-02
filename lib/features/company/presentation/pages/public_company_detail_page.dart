@@ -5,6 +5,8 @@ import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/company/presentation/bloc/public_company_detail/public_company_detail_cubit.dart';
 import 'package:workorder_company_app/features/company/presentation/bloc/public_company_detail/public_company_detail_state.dart';
+import 'package:workorder_company_app/features/company/presentation/bloc/public_company_services.dart/public_company_services_cubit.dart';
+import 'package:workorder_company_app/features/company/presentation/widgets/public_services.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
@@ -19,9 +21,16 @@ class PublicCompanyDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) =>
-          sl<PublicCompanyDetailCubit>()..getCompanyDetail(companyId),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) =>
+              sl<PublicCompanyDetailCubit>()..getCompanyDetail(companyId),
+        ),
+        BlocProvider(
+          create: (_) => sl<PublicCompanyServicesCubit>(),
+        ),
+      ],
       child: _View(companyId),
     );
   }
@@ -38,6 +47,10 @@ class _View extends StatelessWidget {
       listener: (context, state) {
         if (state.status == PublicCompaniesListStatus.error) {
           context.showError(state.errorMessage ?? "Terjadi kesalahan");
+        }
+        if (state.status == PublicCompaniesListStatus.loaded &&
+            state.company != null) {
+          context.read<PublicCompanyServicesCubit>().getServices(companyId);
         }
       },
       builder: (context, state) {
@@ -107,6 +120,8 @@ class _View extends StatelessWidget {
                     ),
                   ])),
                 PropertyTitle(label: "Daftar Layanan", icon: AppIcon.service),
+                const SizedBox(height: 8),
+                PublicServices()
               ],
             ),
           ),

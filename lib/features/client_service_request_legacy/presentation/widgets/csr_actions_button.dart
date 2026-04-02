@@ -43,7 +43,6 @@ class CsrActionsButton extends StatelessWidget {
             if (state.status == CsrStateStatus.loaded &&
                 state.workorderId != null &&
                 state.workorderId!.isNotEmpty) {
-              // FIXME : When accept and move to wo detail page, and back again it will shows old data (received its must be approve)
               context.push(
                 AppRoutes.workorders.fillId(state.workorderId!),
               );

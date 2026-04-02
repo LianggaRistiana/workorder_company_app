@@ -3,6 +3,7 @@ import 'package:workorder_company_app/core/types/future_either.dart';
 import 'package:workorder_company_app/core/utils/either_helper.dart';
 import 'package:workorder_company_app/core/utils/safe_call.dart';
 import 'package:workorder_company_app/features/services/data/datasources/internal_services_management_remote_datasource.dart';
+import 'package:workorder_company_app/features/services/data/datasources/public_services_remote_datasource.dart';
 import 'package:workorder_company_app/features/services/data/model/service_model.dart';
 import 'package:workorder_company_app/features/services/data/model/service_summary_model.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
@@ -11,10 +12,12 @@ import 'package:workorder_company_app/features/services/domain/repositories/serv
 
 class ServicesRepositoryImpl implements ServicesRepository {
   final InternalServicesManagementRemoteDatasource _internalRemoteDatasource;
+  final PublicServicesRemoteDatasource _publicRemoteDatasource;
 
   final ListCacheHelper<ServiceSummaryEntity> _cache = ListCacheHelper();
 
-  ServicesRepositoryImpl(this._internalRemoteDatasource);
+  ServicesRepositoryImpl(
+      this._internalRemoteDatasource, this._publicRemoteDatasource);
 
   @override
   FutureEither<ServiceEntity> createService(ServiceEntity service) async {
@@ -39,9 +42,12 @@ class ServicesRepositoryImpl implements ServicesRepository {
   }
 
   @override
-  FutureEitherList<ServiceSummaryEntity> getPublicServices() {
-    // TODO: implement getPublicServices
-    throw UnimplementedError();
+  FutureEitherList<ServiceSummaryEntity> getPublicServices(String companyId) {
+    return safeCall(() async {
+      final payload =
+          await _publicRemoteDatasource.getPublicServices(companyId);
+      return payload.data ?? [];
+    });
   }
 
   @override
@@ -102,7 +108,8 @@ class ServicesRepositoryImpl implements ServicesRepository {
   @override
   FutureEither<ServiceEntity> toggleActiveStatus(ServiceEntity service) {
     return safeCall(() async {
-      final payload = await _internalRemoteDatasource.toggleActive(ServiceModel.fromEntity(service));
+      final payload = await _internalRemoteDatasource
+          .toggleActive(ServiceModel.fromEntity(service));
       return payload.data!;
     });
   }
