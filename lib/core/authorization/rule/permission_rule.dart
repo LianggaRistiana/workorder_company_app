@@ -1,74 +1,36 @@
-import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 
-/// Represents an authorization rule that determines
-/// whether a [UserRole] is allowed to perform an action.
+/// Represents a single **authorization rule** for an action.
 ///
-/// ## Purpose
-/// [PermissionRule] encapsulates **authorization logic**
-/// beyond simple permission ownership.
+/// Each [PermissionRule] instance defines **one rule**.  
+/// One action may require multiple rules to be satisfied.  
+/// In that case, combine them using `ConditionEvaluator` (`allOf` / `anyOf`).
 ///
-/// This abstraction allows permission checks to evolve from:
+/// Rules can depend on:
+/// - User role and permissions
+/// - User-specific attributes (e.g., email, department)
+/// - Object context (e.g., status, ownership)
 ///
-/// - simple role → permission mapping
-/// - to complex business policies
-///
-/// without changing UI, routing, or guards.
-///
-/// ## Why not check permissions directly?
-/// Direct permission checks (e.g. `role.has(permission)`)
-/// only answer:
-/// > "Does the role structurally own this permission?"
-///
-/// While [PermissionRule] answers:
-/// > "Is the role allowed to perform this action **now**?"
-///
-/// ## Typical use cases
-/// - Require **multiple permissions** (AND / OR)
-/// - Apply **business rules**
-/// - Apply **conditional logic**
-///   (ownership, status, environment, time, etc.)
-///
-/// ## Examples
-///
-/// ### Single permission
+/// Example: cancel service request
 /// ```dart
-/// PermissionRule rule =
-///   SinglePermissionRule(workOrderAssign);
+/// class _CancelServiceRequestRule extends PermissionRule {
+///   final RequesterServiceRequestEntity request;
 ///
-/// rule.isAllowed(user.role);
+///   _CancelServiceRequestRule({required this.request});
+///
+///   @override
+///   bool isAllowed(UserEntity user) {
+///     return allOf([
+///       () => user.role.canPermission(ServiceRequestPermission.cancel),
+///       () => request.status == ServiceRequestStatus.received,
+///       () => request.requestedBy.email == user.email,
+///     ]);
+///   }
+/// }
 /// ```
-///
-/// ### Multiple permissions (ALL)
-/// ```dart
-/// PermissionRule rule = AllOfRule([
-///   workOrderRead,
-///   workOrderAssign,
-/// ]);
-/// ```
-///
-/// ### Multiple permissions (ANY)
-/// ```dart
-/// PermissionRule rule = AnyOfRule([
-///   csrRead,
-///   csrCreate,
-/// ]);
-/// ```
-///
-/// ## Architectural rule
-/// - UI, Route Guards, and Widgets **MUST NOT**
-///   check permissions directly
-/// - They should depend only on [PermissionRule]
-///
-/// This ensures:
-/// - Single authorization entry point
-/// - Policy consistency
-/// - Future-proof permission system
 abstract class PermissionRule {
-  /// Evaluates whether the given [user]
-  /// satisfies this authorization rule.
+  /// Evaluates whether the given [user] satisfies this rule.
   ///
-  /// Returns `true` if access is granted,
-  /// otherwise `false`.
+  /// Returns `true` if access is allowed, otherwise `false`.
   bool isAllowed(UserEntity user);
 }

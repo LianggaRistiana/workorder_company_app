@@ -3,63 +3,33 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/core/authorization/rule/permission_rule.dart';
 import 'package:workorder_company_app/features/auth/presentation/bloc/auth_bloc.dart';
 
-/// A reusable widget that conditionally renders its [child]
-/// based on the current user's permissions or business rules.
+/// A widget that conditionally renders its [child] based on a [PermissionRule].
 ///
-/// [PermissionGate] listens to [AuthBloc] and evaluates a
-/// [PermissionRule] to determine if the user is allowed to access
-/// the widget.
+/// [PermissionGate] evaluates a [PermissionRule] against the current authenticated
+/// user (from [AuthBloc]). If the rule passes, the [child] is rendered.
+/// Otherwise, an optional [fallback] widget is displayed (defaults to nothing).
 ///
-/// This widget is designed to:
-/// - Centralize permission-based UI access control
-/// - Prevent unauthorized users from seeing or interacting
-///   with restricted UI components
-/// - Keep UI code clean, declarative, and maintainable
+/// This centralizes permission-based UI control, keeping UI code clean
+/// and consistent with your authorization logic.
 ///
-/// ## Usage
-///
-/// ### Single Permission
+/// Example usage:
 /// ```dart
 /// PermissionGate(
-///   rule: allow(AppPermission.workOrderAssign),
+///   rule: roleCan(AppPermission.workOrderAssign),
 ///   child: ElevatedButton(
 ///     onPressed: () {},
 ///     child: const Text('Assign Work Order'),
 ///   ),
+///   fallback: const Text('Access Denied'),
 /// )
 /// ```
 ///
-/// ### Multiple Permissions (ALL required)
-/// ```dart
-/// PermissionGate(
-///   rule: allOf([
-///     AppPermission.workOrderRead,
-///     AppPermission.workOrderAssign,
-///   ]),
-///   child: AssignButton(),
-/// )
-/// ```
-///
-/// ### Multiple Permissions (ANY required)
-/// ```dart
-/// PermissionGate(
-///   rule: anyOf([
-///     AppPermission.csrRead,
-///     AppPermission.csrCreate,
-///   ]),
-///   child: CsrButton(),
-/// )
-/// ```
-///
-/// ### Fallback UI
-/// You can provide a widget to render if the user is not authorized:
-/// ```dart
-/// PermissionGate(
-///   rule: allow(AppPermission.workOrderAssign),
-///   child: AssignButton(),
-///   fallback: const Text('Not allowed'),
-/// )
-/// ```
+/// ## Notes
+/// - The rule can be any implementation of [PermissionRule], including
+///   custom rules that depend on user attributes, context, or business logic.
+/// - For convenience, you can use your previously defined `.require()` extension
+///   to wrap a widget instead of explicitly creating a `PermissionGate`.
+/// - Avoid checking permissions directly in the UI; always go through [PermissionGate].
 class PermissionGate extends StatelessWidget {
   /// The permission rule to evaluate.
   final PermissionRule rule;

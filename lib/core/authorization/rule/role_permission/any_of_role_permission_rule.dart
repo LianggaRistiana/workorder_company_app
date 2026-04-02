@@ -3,14 +3,15 @@ import 'package:workorder_company_app/core/authorization/rule/permission_rule.da
 import 'package:workorder_company_app/core/authorization/util/check_permission.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 
-/// Rule that grants access if the role
-/// is allowed to perform AT LEAST ONE permission.
+/// A [PermissionRule] that checks if a user's role has **at least one** of the specified permissions.
 ///
-/// Logical equivalent of OR (||).
+/// This rule grants access if the user possesses **any** of the permissions in [permissions].
+/// It is useful for actions where multiple alternative permissions are acceptable.
 ///
-/// Example:
-/// - User may READ or CREATE CSR
+/// The check is performed via `user.role.canAny`, ensuring that authorization logic
+/// remains centralized and consistent across the app.
 class AnyOfRolePermissionRule implements PermissionRule {
+  /// The list of permissions to check against the user's role.
   final List<AppPermission> permissions;
 
   const AnyOfRolePermissionRule(this.permissions);

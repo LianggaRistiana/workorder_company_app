@@ -29,7 +29,6 @@ import 'package:workorder_company_app/core/constants/app_enums.dart';
 /// without breaking UI, routes, or guards.
 /// -------------------------------------------------------------
 extension PermissionChecker on UserRole {
-
   // =============================================================
   // LOW LEVEL — PERMISSION OWNERSHIP
   // (INTERNAL — DO NOT USE IN UI / ROUTE / GUARD)
