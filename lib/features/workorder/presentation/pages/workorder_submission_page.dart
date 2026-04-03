@@ -72,13 +72,13 @@ class _WorkorderSubmissionPageState extends State<WorkorderSubmissionPage> {
       );
     }
 
-    final orderedForms = workorder.workorderForms
-            ?.map((e) => OrderedFormEntity(
-                  form: e.form,
-                  order: e.order ?? 0,
-                ))
-            .toList() ??
-        [];
+    // final orderedForms = workorder.workorderForms
+    //         ?.map((e) => OrderedFormEntity(
+    //               form: e.form,
+    //               order: e.order ?? 0,
+    //             ))
+    //         .toList() ??
+    //     [];
 
     final initialSubs = workorder.workorderForms
             ?.map((e) => e.submission)
@@ -87,10 +87,10 @@ class _WorkorderSubmissionPageState extends State<WorkorderSubmissionPage> {
         [];
 
     /// ⭐ INITIALIZE SUBMISSIONS ONCE — tanpa setState
-    if (!initialized) {
-      submissions = _initialize(orderedForms, initialSubs);
-      initialized = true;
-    }
+    // if (!initialized) {
+    //   submissions = _initialize(orderedForms, initialSubs);
+    //   initialized = true;
+    // }
 
     return BlocConsumer<WorkorderSubmissionsFormsCubit,
         WorkorderSubmissionsState>(
@@ -134,17 +134,17 @@ class _WorkorderSubmissionPageState extends State<WorkorderSubmissionPage> {
                   : const Icon(Icons.save, key: ValueKey("fab_icon")),
             ),
           ),
-          body: Form(
-            key: _formKey,
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
-              child: FormRenderer(
-                orderedForms: orderedForms,
-                submissions: submissions,
-                onChanged: _onFieldChanged,
-              ),
-            ),
-          ),
+          // body: Form(
+          //   key: _formKey,
+          //   child: SingleChildScrollView(
+          //     padding: const EdgeInsets.all(16),
+          //     child: FormRenderer(
+          //       orderedForms: orderedForms,
+          //       submissions: submissions,
+          //       onChanged: _onFieldChanged,
+          //     ),
+          //   ),
+          // ),
         );
       },
     );

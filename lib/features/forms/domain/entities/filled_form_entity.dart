@@ -3,13 +3,11 @@ import 'package:workorder_company_app/features/forms/domain/entities/has_form.da
 import 'package:workorder_company_app/features/submissions/domain/entitties/submission_entity.dart';
 
 class FilledFormEntity implements HasForm {
-  final int? order;
   @override
   final FormEntity form;
   final SubmissionEntity? submission;
 
   const FilledFormEntity({
-    this.order,
     required this.form,
     required this.submission,
   });

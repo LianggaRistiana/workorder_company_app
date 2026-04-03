@@ -26,22 +26,22 @@ class RequesterServiceRequestRepositoryImpl
   }
 
   @override
-  FutureEither<RequesterServiceRequestEntity> submitReviewForm(
-      SubmissionEntity submission) {
-    // TODO: implement submitReview
+  FutureEither<FormEntity> getIntakeForm(String serviceId) {
+    // TODO: implement getIntakeForm
     throw UnimplementedError();
   }
 
   @override
   FutureEither<RequesterServiceRequestEntity> submitIntakeForm(
-      SubmissionEntity submission) {
-    // TODO: implement submitServiceRequestForm
+      String serviceRequestId, SubmissionEntity submission) {
+    // TODO: implement submitIntakeForm
     throw UnimplementedError();
   }
 
   @override
-  FutureEither<FormEntity> getIntakeForm(String serviceId) {
-    // TODO: implement getIntakeForm
+  FutureEither<RequesterServiceRequestEntity> submitReviewForm(
+      String serviceId, SubmissionEntity submission) {
+    // TODO: implement submitReviewForm
     throw UnimplementedError();
   }
 }

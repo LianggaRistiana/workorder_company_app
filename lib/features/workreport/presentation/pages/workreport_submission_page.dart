@@ -74,13 +74,13 @@ class _WorkreportSubmissionStatePage extends State<WorkReportSubmissionPage> {
       );
     }
 
-    final orderedForms = workReport.reportForms
-            ?.map((e) => OrderedFormEntity(
-                  form: e.form,
-                  order: e.order ?? 0,
-                ))
-            .toList() ??
-        [];
+    // final orderedForms = workReport.reportForms
+    //         ?.map((e) => OrderedFormEntity(
+    //               form: e.form,
+    //               // order: e.order ?? 0,
+    //             ))
+    //         .toList() ??
+    //     [];
 
     final initialSubs = workReport.reportForms
             ?.map((e) => e.submission)
@@ -88,11 +88,11 @@ class _WorkreportSubmissionStatePage extends State<WorkReportSubmissionPage> {
             .toList() ??
         [];
 
-    /// ⭐ INITIALIZE SUBMISSIONS ONCE — tanpa setState
-    if (!initialized) {
-      submissions = _initialize(orderedForms, initialSubs);
-      initialized = true;
-    }
+    // /// ⭐ INITIALIZE SUBMISSIONS ONCE — tanpa setState
+    // if (!initialized) {
+    //   submissions = _initialize(orderedForms, initialSubs);
+    //   initialized = true;
+    // }
 
     return BlocConsumer<SubmitWorkReportCubit, WorkReportSubmitState>(
       listener: (context, state) {
@@ -109,40 +109,41 @@ class _WorkreportSubmissionStatePage extends State<WorkReportSubmissionPage> {
         final isLoading = state.status == WorkReportStateStatus.loading;
 
         return Scaffold(
-            appBar: AppBar(),
-            bottomNavigationBar: FilledButton.icon(
-              label: const Text("Simpan"),
-              onPressed: isLoading
-                  ? null
-                  : () {
-                      if (_formKey.currentState?.validate() ?? false) {
-                        context
-                            .read<SubmitWorkReportCubit>()
-                            .submitWorkReport(widget.workorderId, submissions);
-                      }
-                    },
-              icon: isLoading
-                  ? const SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: Colors.white,
-                      ),
-                    )
-                  : const Icon(Icons.save),
-            ),
-            body: Form(
-              key: _formKey,
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
-                child: FormRenderer(
-                  orderedForms: orderedForms,
-                  submissions: submissions,
-                  onChanged: _onFieldChanged,
-                ),
-              ),
-            ));
+          appBar: AppBar(),
+          bottomNavigationBar: FilledButton.icon(
+            label: const Text("Simpan"),
+            onPressed: isLoading
+                ? null
+                : () {
+                    if (_formKey.currentState?.validate() ?? false) {
+                      context
+                          .read<SubmitWorkReportCubit>()
+                          .submitWorkReport(widget.workorderId, submissions);
+                    }
+                  },
+            icon: isLoading
+                ? const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Colors.white,
+                    ),
+                  )
+                : const Icon(Icons.save),
+          ),
+          // body: Form(
+          //   key: _formKey,
+          //   child: SingleChildScrollView(
+          //     padding: const EdgeInsets.all(16),
+          //     child: FormRenderer(
+          //       orderedForms: orderedForms,
+          //       submissions: submissions,
+          //       onChanged: _onFieldChanged,
+          //     ),
+          //   ),
+          // )
+        );
       },
     );
   }
