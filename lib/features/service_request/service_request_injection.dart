@@ -1,0 +1,25 @@
+import 'package:workorder_company_app/core/di/injection.dart';
+import 'package:workorder_company_app/features/service_request/data/datasources/mock/mock_requester_service_request_datasource.dart';
+import 'package:workorder_company_app/features/service_request/data/datasources/requester_service_request_datasource.dart';
+import 'package:workorder_company_app/features/service_request/data/repositories/requester_service_request_repository_impl.dart';
+import 'package:workorder_company_app/features/service_request/domain/repositories/requester_service_request_repository.dart';
+import 'package:workorder_company_app/features/service_request/domain/usecases/requester/requester_get_service_requests_usecase.dart';
+import 'package:workorder_company_app/features/service_request/presentation/state/requester/service_request_detail/requester_service_request_detail_cubit.dart';
+import 'package:workorder_company_app/features/service_request/presentation/state/requester/service_requests_list/requester_service_requests_list_bloc.dart';
+
+Future<void> initServiceRequestFeature() async {
+  sl.registerLazySingleton<RequesterServiceRequestDatasource>(
+      () => MockRequesterServiceRequestDatasource());
+
+  sl.registerLazySingleton<RequesterServiceRequestRepository>(
+      () => RequesterServiceRequestRepositoryImpl(sl()));
+
+  sl.registerLazySingleton<RequesterGetServiceRequestsUsecase>(
+      () => RequesterGetServiceRequestsUsecase(sl()));
+
+  sl.registerFactory<RequesterServiceRequestDetailCubit>(() =>
+      RequesterServiceRequestDetailCubit(getServiceRequestDetailUsecase: sl()));
+
+  sl.registerFactory<RequesterServiceRequestsListBloc>(
+      () => RequesterServiceRequestsListBloc(getServiceRequestsUsecase: sl()));
+}

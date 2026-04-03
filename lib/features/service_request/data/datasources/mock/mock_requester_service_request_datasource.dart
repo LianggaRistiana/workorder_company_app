@@ -5,10 +5,14 @@ import 'package:workorder_company_app/core/network/api_response.dart';
 import 'package:workorder_company_app/core/types/future_api.dart';
 import 'package:workorder_company_app/features/auth/data/model/user_model.dart';
 import 'package:workorder_company_app/features/company/data/models/company_model.dart';
+import 'package:workorder_company_app/features/forms/data/model/field_model.dart';
+import 'package:workorder_company_app/features/forms/data/model/filled_form_model.dart';
 import 'package:workorder_company_app/features/forms/data/model/form_model.dart';
+import 'package:workorder_company_app/features/forms/data/model/option_model.dart';
 import 'package:workorder_company_app/features/service_request/data/datasources/requester_service_request_datasource.dart';
 import 'package:workorder_company_app/features/service_request/data/model/requester_service_request_model.dart';
 import 'package:workorder_company_app/features/services/data/model/service_summary_model.dart';
+import 'package:workorder_company_app/features/submissions/data/model/field_data_model.dart';
 import 'package:workorder_company_app/features/submissions/data/model/submissions_model.dart';
 
 class MockRequesterServiceRequestDatasource
@@ -18,14 +22,14 @@ class MockRequesterServiceRequestDatasource
       id: "req-1",
       code: "SR-001",
       status: ServiceRequestStatus.received,
-      service: ServiceSummaryModel(
+      service: const ServiceSummaryModel(
         isActive: true,
         id: "service-1",
         title: "Cleaning Service",
-        description: "General cleaning",
+        description: "General cleaning for office spaces",
         accessType: ServiceAccessType.public,
       ),
-      requestedBy: UserModel(
+      requestedBy: const UserModel(
         name: "John Doe",
         email: "john@example.com",
         role: UserRole.client,
@@ -34,16 +38,123 @@ class MockRequesterServiceRequestDatasource
         id: "company-1",
         name: "Clean Corp",
         isActive: true,
+        address: "123 Clean St",
+        description: "Best cleaning services in town",
       ),
-      intakeForm: null,
-      reviewForm: null,
+      intakeForm: FilledFormModel(
+        form: const FormModel(
+          id: "intake-service-1",
+          title: "Intake Form",
+          description: "Please fill out the details of your request",
+          formType: FormType.intake,
+          fields: [
+            FieldModel(
+              order: 1,
+              label: "Problem Description",
+              type: FieldType.textarea,
+              required: true,
+              placeholder: "Describe the issue...",
+            ),
+            FieldModel(
+              order: 2,
+              label: "Priority",
+              type: FieldType.singleSelect,
+              required: true,
+              options: [
+                OptionModel(key: "high", value: "High"),
+                OptionModel(key: "medium", value: "Medium"),
+                OptionModel(key: "low", value: "Low"),
+              ],
+            ),
+            FieldModel(
+              order: 3,
+              label: "Preferred Date",
+              type: FieldType.date,
+              required: false,
+            ),
+          ],
+        ),
+        submission: SubmissionsModel(
+          id: "sub-1",
+          formId: "intake-service-1",
+          submissionType: FormType.intake,
+          status: SubmissionStatus.submitted,
+          submittedBy: const UserModel(
+            name: "John Doe",
+            email: "john@example.com",
+            role: UserRole.client,
+          ),
+          createdAt: DateTime.now().subtract(const Duration(days: 1)),
+          fieldsData: [
+            FieldDataModel(
+              order: "1",
+              value: "The hall needs a deep clean, lots of dust.",
+            ),
+            FieldDataModel(
+              order: "2",
+              value: "high",
+            ),
+            FieldDataModel(
+              order: "3",
+              value: "2026-05-01",
+            ),
+          ],
+        ),
+      ),
+      reviewForm: FilledFormModel(
+        form: const FormModel(
+          id: "review-req-1",
+          title: "Review Form",
+          description: "Please evaluate the work done",
+          formType: FormType.report,
+          fields: [
+            FieldModel(
+              order: 1,
+              label: "Rating",
+              type: FieldType.number,
+              required: true,
+              min: 1,
+              max: 5,
+            ),
+            FieldModel(
+              order: 2,
+              label: "Comments",
+              type: FieldType.textarea,
+              required: false,
+              placeholder: "Any additional feedback?",
+            ),
+          ],
+        ),
+        submission: SubmissionsModel(
+          id: "sub-2",
+          formId: "review-req-1",
+          submissionType: FormType.report,
+          status: SubmissionStatus.drafted,
+          submittedBy: const UserModel(
+            name: "John Doe",
+            email: "john@example.com",
+            role: UserRole.client,
+          ),
+          createdAt: DateTime.now(),
+          fieldsData: [
+            FieldDataModel(
+              order: "1",
+              value: "5",
+            ),
+            FieldDataModel(
+              order: "2",
+              value: "Great job so far preparing.",
+            ),
+          ],
+        ),
+      ),
       createdAt: DateTime.now().subtract(const Duration(days: 1)),
     ),
   ];
 
   @override
   ApiFutureList<RequesterServiceRequestModel> getServiceRequests() async {
-    await Future.delayed(const Duration(milliseconds: 300));
+    await Future.delayed(const Duration(milliseconds: 2000));
 
     return ApiResponse(
       message: "Success get service requests",
@@ -71,9 +182,34 @@ class MockRequesterServiceRequestDatasource
     final form = FormModel(
       id: "intake-$serviceId",
       title: "Intake Form",
-      description: "Mock intake form",
+      description: "Please fill out the details of your request",
       formType: FormType.intake,
-      fields: const [],
+      fields: const [
+        FieldModel(
+          order: 1,
+          label: "Problem Description",
+          type: FieldType.textarea,
+          required: true,
+          placeholder: "Describe the issue...",
+        ),
+        FieldModel(
+          order: 2,
+          label: "Priority",
+          type: FieldType.singleSelect,
+          required: true,
+          options: [
+            OptionModel(key: "high", value: "High"),
+            OptionModel(key: "medium", value: "Medium"),
+            OptionModel(key: "low", value: "Low"),
+          ],
+        ),
+        FieldModel(
+          order: 3,
+          label: "Preferred Date",
+          type: FieldType.date,
+          required: false,
+        ),
+      ],
     );
 
     return ApiResponse(
@@ -89,9 +225,25 @@ class MockRequesterServiceRequestDatasource
     final form = FormModel(
       id: "review-$serviceRequestId",
       title: "Review Form",
-      description: "Mock review form",
-      formType: FormType.intake,
-      fields: const [],
+      description: "Please evaluate the work done",
+      formType: FormType.report,
+      fields: const [
+        FieldModel(
+          order: 1,
+          label: "Rating",
+          type: FieldType.number,
+          required: true,
+          min: 1,
+          max: 5,
+        ),
+        FieldModel(
+          order: 2,
+          label: "Comments",
+          type: FieldType.textarea,
+          required: false,
+          placeholder: "Any additional feedback?",
+        ),
+      ],
     );
 
     return ApiResponse(
@@ -123,7 +275,12 @@ class MockRequesterServiceRequestDatasource
       service: existing.service,
       requestedBy: existing.requestedBy,
       company: existing.company,
-      intakeForm: existing.intakeForm,
+      intakeForm: existing.intakeForm != null
+          ? FilledFormModel(
+              form: existing.intakeForm!.form,
+              submission: submission,
+            )
+          : null,
       reviewForm: existing.reviewForm,
       createdAt: existing.createdAt,
     );
@@ -160,7 +317,12 @@ class MockRequesterServiceRequestDatasource
       requestedBy: existing.requestedBy,
       company: existing.company,
       intakeForm: existing.intakeForm,
-      reviewForm: existing.reviewForm,
+      reviewForm: existing.reviewForm != null
+          ? FilledFormModel(
+              form: existing.reviewForm!.form,
+              submission: submission,
+            )
+          : null,
       createdAt: existing.createdAt,
     );
 
