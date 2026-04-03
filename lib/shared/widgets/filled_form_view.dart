@@ -141,7 +141,7 @@ class FilledFormView extends StatelessWidget {
   // FIND ANSWER BASED ON ORDER
   // -------------------------------------------------------------
   dynamic _findAnswer(String order) {
-    final submission = filledForm.submission;
+    final submission = filledForm.submissionHistory!.firstOrNull;
     if (submission == null || submission.fieldsData == null) {
       return null;
     }

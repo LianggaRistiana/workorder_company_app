@@ -159,7 +159,8 @@ class _FillFormPageState extends State<FillFormPage> {
       case FieldType.textarea:
         return TextAreaFieldWidget(
           field: field,
-          onChanged: (val) => _onFieldChanged(formId, field.order.toString(), val),
+          onChanged: (val) =>
+              _onFieldChanged(formId, field.order.toString(), val),
         );
 
       case FieldType.number:

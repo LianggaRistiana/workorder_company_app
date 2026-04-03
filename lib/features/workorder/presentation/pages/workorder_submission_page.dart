@@ -80,11 +80,11 @@ class _WorkorderSubmissionPageState extends State<WorkorderSubmissionPage> {
     //         .toList() ??
     //     [];
 
-    final initialSubs = workorder.workorderForms
-            ?.map((e) => e.submission)
-            .whereType<SubmissionEntity>()
-            .toList() ??
-        [];
+    // final initialSubs = workorder.workorderForms
+    //         ?.map((e) => e.submission)
+    //         .whereType<SubmissionEntity>()
+    //         .toList() ??
+    //     [];
 
     /// ⭐ INITIALIZE SUBMISSIONS ONCE — tanpa setState
     // if (!initialized) {

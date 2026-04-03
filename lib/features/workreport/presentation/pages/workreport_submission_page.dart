@@ -82,11 +82,11 @@ class _WorkreportSubmissionStatePage extends State<WorkReportSubmissionPage> {
     //         .toList() ??
     //     [];
 
-    final initialSubs = workReport.reportForms
-            ?.map((e) => e.submission)
-            .whereType<SubmissionEntity>()
-            .toList() ??
-        [];
+    // final initialSubs = workReport.reportForms
+    //         ?.map((e) => e.submission)
+    //         .whereType<SubmissionEntity>()
+    //         .toList() ??
+    //     [];
 
     // /// ⭐ INITIALIZE SUBMISSIONS ONCE — tanpa setState
     // if (!initialized) {
