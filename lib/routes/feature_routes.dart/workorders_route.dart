@@ -1,6 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
-import 'package:workorder_company_app/features/services_legacy/domain/entities/required_staff_entity.dart';
+import 'package:workorder_company_app/features_legacy/services_legacy/domain/entities/required_staff_entity.dart';
 import 'package:workorder_company_app/features/workorder/presentation/pages/workorder_detail_page.dart';
 import 'package:workorder_company_app/features/workorder/presentation/pages/workorder_staff_config_page.dart';
 import 'package:workorder_company_app/features/workorder/presentation/pages/workorder_submission_page.dart';
