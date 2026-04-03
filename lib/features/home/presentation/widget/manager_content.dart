@@ -29,7 +29,7 @@ class ManagerContent extends StatelessWidget {
                 icon: Icons.inbox_outlined,
                 label: "Pengajuan Layanan",
                 onTap: () {
-                  context.go(AppRoutes.serviceRequest);
+                  context.go(AppRoutes.serviceRequestInbox);
                 }),
             MenuItem(
                 icon: Icons.assignment_outlined,

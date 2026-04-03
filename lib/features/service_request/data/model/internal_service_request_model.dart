@@ -11,6 +11,7 @@ class InternalServiceRequestModel extends InternalServiceRequestEntity {
     required super.approvalAccess,
     super.intakeForm,
     super.reviewForm,
+    required super.createdAt,
   });
 
   // TODO : factory fromjson

@@ -120,7 +120,7 @@ class _InternalCompanyManageMenuPageState
                     icon: AppIcon.serviceRequestInbox,
                     label: "Pengajuan Layanan",
                     onTap: () {
-                      context.push(AppRoutes.serviceRequest);
+                      context.push(AppRoutes.serviceRequestInbox);
                     }),
                 MenuItem(
                     icon: AppIcon.workOrder,

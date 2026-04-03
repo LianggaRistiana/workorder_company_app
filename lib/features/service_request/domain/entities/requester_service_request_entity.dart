@@ -20,6 +20,8 @@ class RequesterServiceRequestEntity implements BaseServiceRequestEntity {
   final FilledFormEntity? intakeForm;
   @override
   final FilledFormEntity? reviewForm;
+  @override
+  final DateTime createdAt;
 
   final CompanyEntity company;
 
@@ -32,5 +34,6 @@ class RequesterServiceRequestEntity implements BaseServiceRequestEntity {
     this.intakeForm,
     this.reviewForm,
     required this.company,
+    required this.createdAt,
   });
 }

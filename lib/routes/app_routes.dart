@@ -11,7 +11,6 @@ class AppRoutes {
   static const forbidden = '/forbidden';
   static const notFound = '/not-found';
 
-
   // Internal Company
   static const company = '/company';
   static const companyUpdate = '/company/update';
@@ -36,6 +35,11 @@ class AppRoutes {
   static const servicesUpdate = '/services/update';
   static const servicesDetail = '/services/:id';
 
+  // Service Request
+  static const serviceRequestInbox = '/service-request/inbox';
+  static const serviceRequestSend = '/service-request/send';
+  static const serviceRequestDetail = '/service-request/:id';
+
   // Employee
   static const employee = '/employee';
   static const employeeInvite = '/employee/invite';
@@ -50,7 +54,6 @@ class AppRoutes {
   static const membershipsCodes = '/memberships/codes';
   static const membershipsClaim = '/memberships/claim';
 
-
   // Work Order
   static const workorders = '/workorders';
   static const workordersAssignStaff = '/workorders/assign-staff/:id';
@@ -62,12 +65,11 @@ class AppRoutes {
   static const workreportsSubmit = '/workorders/:id/report/submit';
 
   // internal side client service request
-  static const serviceRequest = '/service-request';
-  static const serviceRequestDetail = '/service-request/:id';
+  // static const serviceRequest = '/service-request';
 
   // client side  client service request
-  static const serviceRequestClientSide = '/client-service-request';
-  static const serviceRequestDetailClientSide = '/client-service-request/:id';
+  // static const serviceRequestClientSide = '/client-service-request';
+  // static const serviceRequestDetailClientSide = '/client-service-request/:id';
 
   // client side companies
   static const publicCompanies = '/public-companies';

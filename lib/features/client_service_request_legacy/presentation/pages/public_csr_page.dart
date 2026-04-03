@@ -118,8 +118,8 @@ class _PublicCsrPageState extends State<PublicCsrPage> {
                           itemBuilder: (item, _) => CsrItem(
                             csr: item,
                             onTap: () {
-                              context.push(AppRoutes.serviceRequestDetailClientSide
-                                  .fillId(item.id));
+                              // context.push(AppRoutes.serviceRequestDetailClientSide
+                              //     .fillId(item.id));
                             },
                           ),
                         ),

@@ -53,4 +53,7 @@ class AppIcon {
   static const IconData forbidden = LucideIcons.ban;
   static const IconData error = Icons.warning_rounded;
   static const IconData warrning = Icons.warning_rounded;
+
+  // Additional Icon
+  static const IconData user = Icons.person; 
 }

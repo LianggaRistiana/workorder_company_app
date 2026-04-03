@@ -19,6 +19,8 @@ class InternalServiceRequestEntity implements BaseServiceRequestEntity {
   final FilledFormEntity? intakeForm;
   @override
   final FilledFormEntity? reviewForm;
+  @override
+  final DateTime createdAt;
 
   final bool reviewNeed;
   final ServiceRequestApprovalAccess approvalAccess;
@@ -33,5 +35,6 @@ class InternalServiceRequestEntity implements BaseServiceRequestEntity {
     this.reviewForm,
     required this.reviewNeed,
     required this.approvalAccess,
+    required this.createdAt,
   });
 }

@@ -10,6 +10,7 @@ class RequesterServiceRequestModel extends RequesterServiceRequestEntity {
     required super.company,
     super.intakeForm,
     super.reviewForm,
+    required super.createdAt,
   });
 
   // TODO : factory fromjson

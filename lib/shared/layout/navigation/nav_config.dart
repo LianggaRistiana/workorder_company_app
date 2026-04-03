@@ -17,7 +17,7 @@ class NavConfig {
         return const [
           NavItem('Utama', Icons.home_rounded, AppRoutes.home),
           NavItem('Pengajuan Layanan', Icons.inbox_rounded,
-              AppRoutes.serviceRequest),
+              AppRoutes.serviceRequestInbox),
           NavItem(
               'Perintah Kerja', Icons.assignment_rounded, AppRoutes.workorders),
         ];

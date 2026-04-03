@@ -11,6 +11,8 @@ abstract class BaseServiceRequestEntity {
   final UserEntity requestedBy;
   final FilledFormEntity? intakeForm;
   final FilledFormEntity? reviewForm;
+  final DateTime createdAt;
+
 
   const BaseServiceRequestEntity({
     required this.id,
@@ -20,5 +22,6 @@ abstract class BaseServiceRequestEntity {
     required this.requestedBy,
     this.intakeForm,
     this.reviewForm,
+    required this.createdAt,
   });
 }
