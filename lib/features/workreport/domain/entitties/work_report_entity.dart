@@ -1,4 +1,4 @@
-import 'package:workorder_company_app/features/forms/domain/entities/filled_form_entity.dart';
+import 'package:workorder_company_app/features/forms/domain/entities/filled_form_with_history_entity.dart';
 
 class WorkReportEntity {
   final String id;
@@ -8,7 +8,7 @@ class WorkReportEntity {
   final DateTime createdAt;
   final DateTime? startedAt;
   final DateTime? completedAt;
-  final List<FilledFormEntity>? reportForms;
+  final List<FilledFormWithHistoryEntity>? reportForms;
 
   WorkReportEntity({
     required this.id,

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/field_entity.dart';
-import 'package:workorder_company_app/features/forms/domain/entities/filled_form_entity.dart';
+import 'package:workorder_company_app/features/forms/domain/entities/filled_form_with_history_entity.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/option_entity.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 
+
+// FIXME : Later
 class FilledFormView extends StatelessWidget {
-  final FilledFormEntity filledForm;
+  final FilledFormWithHistoryEntity filledForm;
 
   const FilledFormView({super.key, required this.filledForm});
 

@@ -13,7 +13,7 @@ class RequesterServiceRequestRepositoryImpl
   }
 
   @override
-  FutureEitherList<RequesterServiceRequestEntity> getServiceRequest() {
+  FutureEitherList<RequesterServiceRequestEntity> getServiceRequests() {
     // TODO: implement getServiceRequest
     throw UnimplementedError();
   }

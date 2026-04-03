@@ -1,5 +1,6 @@
 import 'package:workorder_company_app/core/utils/safe_parse.dart';
 import 'package:workorder_company_app/features/forms/data/model/filled_form_model.dart';
+import 'package:workorder_company_app/features/forms/data/model/filled_form_with_history_model.dart';
 import 'package:workorder_company_app/features/forms/data/model/ordered_form_model.dart';
 import 'package:workorder_company_app/features/submissions/data/model/submissions_model.dart';
 import 'package:workorder_company_app/features/workreport/domain/entitties/work_report_entity.dart';
@@ -64,6 +65,6 @@ class WorkReportModel extends WorkReportEntity {
             safeParse<DateTime?>(json, "startedAt", requiredField: false),
         completedAt:
             safeParse<DateTime?>(json, "completedAt", requiredField: false),
-        reportForms: filledForms);
+        reportForms: null);
   }
 }

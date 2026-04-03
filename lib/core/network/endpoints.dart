@@ -25,10 +25,18 @@ class Endpoints {
   static const String services = "/services";
   static const String servicesToggleActive = "/services/:id/toggle-active";
 
-  // Client Service Request
-  static const String serviceRequest = "/service-request";
+  // Service Request
+  static const String serviceRequestSended = "/service-request/sended";
+  static const String serviceRequestInbox = "/service-request/inbox";
+  static const String serviceRequestDetail = "/service-request/:id";
+  static const String serviceRequestCancel = "/service-request/:id/cancel";
+  static const String serviceRequestApprove = "/service-request/:id/approve";
+  static const String serviceRequestReject = "/service-request/:id/reject";
+  static const String serviceRequestReview = "/service-request/:id/review";
+  static const String serviceRequestIntake =
+      "/service/:id//service-request/ntake";
 
-  // Mmeberships
+  // Memberships
   static const String memberships = "/memberships";
   static const String membershipCodes = "/memberships/codes";
   static const String generateMembershipCode = "/memberships/codes";
@@ -62,9 +70,11 @@ class Endpoints {
   static const String publicServices = '$clientPrefix/services';
   static const String publicClientServiceRequest =
       '$clientPrefix/client-service-request';
-      
+
   static publicCompanyServices(String id) =>
       '${publicCompanies.byId(id)}/services';
+
+  // TODO : remove this later
   static publicIntakeForms(String id) =>
       '${publicServices.byId(id)}/intake-forms';
 }

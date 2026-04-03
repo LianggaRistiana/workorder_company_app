@@ -1,8 +1,9 @@
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/utils/safe_parse.dart';
 import 'package:workorder_company_app/features/auth/data/model/user_model.dart';
-import 'package:workorder_company_app/features_legacy/client_service_request_legacy/domain/entitties/client_service_request_entity.dart';
 import 'package:workorder_company_app/features/forms/data/model/filled_form_model.dart';
+import 'package:workorder_company_app/features_legacy/client_service_request_legacy/domain/entitties/client_service_request_entity.dart';
+import 'package:workorder_company_app/features/forms/data/model/filled_form_with_history_model.dart';
 import 'package:workorder_company_app/features/forms/data/model/ordered_form_model.dart';
 import 'package:workorder_company_app/features_legacy/services_legacy/data/models/service_model.dart';
 import 'package:workorder_company_app/features/submissions/data/model/submissions_model.dart';
@@ -49,7 +50,7 @@ class ClientServiceRequestModel extends ClientServiceRequestEntity {
       createdAt: DateTime.parse(json['createdAt']),
       client: UserModel.fromJson(json['client']),
       service: ServiceModel.fromJson(json['service']),
-      clientIntakeForms: filledForms,
+      clientIntakeForms: null,
     );
   }
 }

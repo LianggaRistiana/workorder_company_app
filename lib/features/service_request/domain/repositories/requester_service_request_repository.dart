@@ -4,7 +4,7 @@ import 'package:workorder_company_app/features/service_request/domain/entities/r
 import 'package:workorder_company_app/features/submissions/domain/entitties/submission_entity.dart';
 
 abstract class RequesterServiceRequestRepository {
-  FutureEitherList<RequesterServiceRequestEntity> getServiceRequest();
+  FutureEitherList<RequesterServiceRequestEntity> getServiceRequests();
   FutureEither<RequesterServiceRequestEntity> getServiceRequestDetail(
       String id);
   FutureEither<RequesterServiceRequestEntity> cancelServiceRequest(String id);
