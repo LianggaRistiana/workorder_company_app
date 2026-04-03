@@ -32,7 +32,7 @@ final dummyRequesterServiceRequests = List.generate(
   (index) => RequesterServiceRequestEntity(
     id: "req-00$index",
     code: "SR-2026-000$index",
-    status: ServiceRequestStatus.rejected,
+    status: ServiceRequestStatus.received,
     service: ServiceSummaryEntity(
       id: "svc-00$index",
       title: TodoText.title("SR-$index"),

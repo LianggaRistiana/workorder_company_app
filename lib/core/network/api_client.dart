@@ -6,11 +6,48 @@ import 'package:workorder_company_app/core/constants/app_config.dart';
 import 'package:workorder_company_app/core/storage/token_storage.dart';
 import 'dart:convert';
 
-class ApiClient {
+abstract class ApiClient {
+  Future<T> get<T>(
+    String endpoint, {
+    Map<String, dynamic>? queryParams,
+    Options? options,
+    T Function(dynamic data)? fromJson,
+  });
+
+  Future<T> post<T>(
+    String endpoint, {
+    dynamic data,
+    Options? options,
+    T Function(dynamic data)? fromJson,
+  });
+
+  Future<T> patch<T>(
+    String endpoint, {
+    dynamic data,
+    Options? options,
+    T Function(dynamic data)? fromJson,
+  });
+
+  Future<T> put<T>(
+    String endpoint, {
+    dynamic data,
+    Options? options,
+    T Function(dynamic data)? fromJson,
+  });
+
+  Future<T> delete<T>(
+    String endpoint, {
+    dynamic data,
+    Options? options,
+    T Function(dynamic data)? fromJson,
+  });
+}
+
+class DioApiClient implements ApiClient {
   final Dio _dio;
   final TokenStorage tokenStorage;
 
-  ApiClient({Dio? dio, required this.tokenStorage})
+  DioApiClient({Dio? dio, required this.tokenStorage})
       : _dio = dio ??
             Dio(BaseOptions(
               baseUrl: AppConfig.baseApiUrl,
@@ -37,6 +74,7 @@ class ApiClient {
   }
 
   /// GET request
+  @override
   Future<T> get<T>(
     String endpoint, {
     Map<String, dynamic>? queryParams,
@@ -51,6 +89,7 @@ class ApiClient {
   }
 
   /// POST request
+  @override
   Future<T> post<T>(
     String endpoint, {
     dynamic data,
@@ -61,9 +100,10 @@ class ApiClient {
       final response = await _dio.post(endpoint, data: data, options: options);
       return _parseResponse<T>(response.data, fromJson);
     });
-
   }
+
   /// PATCH request
+  @override
   Future<T> patch<T>(
     String endpoint, {
     dynamic data,
@@ -77,6 +117,7 @@ class ApiClient {
   }
 
   /// PUT request
+  @override
   Future<T> put<T>(
     String endpoint, {
     dynamic data,
@@ -90,6 +131,7 @@ class ApiClient {
   }
 
   /// DELETE request
+  @override
   Future<T> delete<T>(
     String endpoint, {
     dynamic data,
@@ -145,7 +187,8 @@ class LoggingInterceptor extends Interceptor {
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    logger.i("✅ ${response.statusCode} ${response.requestOptions.uri} ${response.data}");
+    logger.i(
+        "✅ ${response.statusCode} ${response.requestOptions.uri} ${response.data}");
     // prettyPrintJson(response.data);
     super.onResponse(response, handler);
   }

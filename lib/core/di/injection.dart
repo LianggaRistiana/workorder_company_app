@@ -18,11 +18,10 @@ import 'package:workorder_company_app/features/workreport/workreport_injection.d
 /// Service Locator
 final sl = GetIt.instance;
 
-
 Future<void> init() async {
   /// Core
   sl.registerLazySingleton<TokenStorage>(() => TokenStorage());
-  sl.registerLazySingleton<ApiClient>(() => ApiClient(tokenStorage: sl()));
+  sl.registerLazySingleton<ApiClient>(() => DioApiClient(tokenStorage: sl()));
 
   /// Features
   await initAuthFeature();

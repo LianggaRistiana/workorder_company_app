@@ -9,8 +9,9 @@ abstract class RequesterServiceRequestRepository {
       String id);
   FutureEither<RequesterServiceRequestEntity> cancelServiceRequest(String id);
   FutureEither<FormEntity> getIntakeForm(String serviceId);
+  FutureEither<FormEntity> getReviewForm(String serviceRequestId);
   FutureEither<RequesterServiceRequestEntity> submitReviewForm(
-      String serviceId, SubmissionEntity submission);
-  FutureEither<RequesterServiceRequestEntity> submitIntakeForm(
       String serviceRequestId, SubmissionEntity submission);
+  FutureEither<RequesterServiceRequestEntity> submitIntakeForm(
+      String serviceId, SubmissionEntity submission);
 }
