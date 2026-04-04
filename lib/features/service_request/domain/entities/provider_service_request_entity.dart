@@ -4,7 +4,7 @@ import 'package:workorder_company_app/features/forms/domain/entities/filled_form
 import 'package:workorder_company_app/features/service_request/domain/entities/base_service_request_entity.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_summary_entity.dart';
 
-class InternalServiceRequestEntity implements BaseServiceRequestEntity {
+class ProviderServiceRequestEntity implements BaseServiceRequestEntity {
   @override
   final String id;
   @override
@@ -25,7 +25,7 @@ class InternalServiceRequestEntity implements BaseServiceRequestEntity {
   final bool reviewNeed;
   final ServiceRequestApprovalAccess approvalAccess;
 
-  const InternalServiceRequestEntity({
+  const ProviderServiceRequestEntity({
     required this.id,
     required this.code,
     required this.status,

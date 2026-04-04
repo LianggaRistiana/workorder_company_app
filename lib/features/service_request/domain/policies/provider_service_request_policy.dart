@@ -4,12 +4,12 @@ import 'package:workorder_company_app/core/authorization/util/check_permission.d
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/utils/condition_evaluator.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
-import 'package:workorder_company_app/features/service_request/domain/entities/internal_service_request_entity.dart';
+import 'package:workorder_company_app/features/service_request/domain/entities/provider_service_request_entity.dart';
 
-class InternalServiceRequestPolicy {
-  final InternalServiceRequestEntity request;
+class ProviderServiceRequestPolicy {
+  final ProviderServiceRequestEntity request;
 
-  InternalServiceRequestPolicy({required this.request});
+  ProviderServiceRequestPolicy({required this.request});
 
   PermissionRule get approvalRule =>
       _ServicesRequestApprovalRule(request: request);
@@ -19,7 +19,7 @@ class InternalServiceRequestPolicy {
 
 /// Rule khusus untuk approve service request
 class _ServicesRequestApprovalRule extends PermissionRule {
-  final InternalServiceRequestEntity request;
+  final ProviderServiceRequestEntity request;
 
   _ServicesRequestApprovalRule({required this.request});
 
@@ -34,7 +34,7 @@ class _ServicesRequestApprovalRule extends PermissionRule {
 }
 
 class _ServicesRequestRejectRule extends PermissionRule {
-  final InternalServiceRequestEntity request;
+  final ProviderServiceRequestEntity request;
 
   _ServicesRequestRejectRule({required this.request});
 

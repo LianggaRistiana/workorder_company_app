@@ -1,7 +1,7 @@
-import 'package:workorder_company_app/features/service_request/domain/entities/internal_service_request_entity.dart';
+import 'package:workorder_company_app/features/service_request/domain/entities/provider_service_request_entity.dart';
 
-class InternalServiceRequestModel extends InternalServiceRequestEntity {
-  InternalServiceRequestModel({
+class ProviderServiceRequestModel extends ProviderServiceRequestEntity {
+  ProviderServiceRequestModel({
     required super.id,
     required super.code,
     required super.status,

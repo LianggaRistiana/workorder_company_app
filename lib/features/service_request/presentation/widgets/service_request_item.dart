@@ -6,7 +6,7 @@ import 'package:workorder_company_app/features/service_request/domain/entities/b
 import 'package:workorder_company_app/features/service_request/presentation/widgets/service_request_status_icon.dart';
 import 'package:workorder_company_app/features/service_request/presentation/widgets/user_requester_chip.dart';
 
-enum ServiceRequestType { requester, receiver }
+enum ServiceRequestType { requester, provider }
 
 class ServiceRequestItem extends StatelessWidget {
   final ServiceRequestType type;
@@ -35,14 +35,14 @@ class ServiceRequestItem extends StatelessWidget {
           toCompany: toCompany,
         );
 
-  const ServiceRequestItem.receiver(
+  const ServiceRequestItem.provider(
       {Key? key,
       required CompanyEntity toCompany,
       required BaseServiceRequestEntity serviceRequest,
       required VoidCallback? onTap})
       : this._(
           key: key,
-          type: ServiceRequestType.receiver,
+          type: ServiceRequestType.provider,
           serviceRequest: serviceRequest,
           onTap: onTap,
         );
@@ -76,7 +76,7 @@ class ServiceRequestItem extends StatelessWidget {
                   children: [
                     Text(serviceRequest.service.title,
                         style: Theme.of(context).textTheme.bodySmall),
-                    if (type == ServiceRequestType.receiver) ...[
+                    if (type == ServiceRequestType.provider) ...[
                       const Spacer(),
                       UserRequesterChip(name: serviceRequest.requestedBy.name)
                     ]

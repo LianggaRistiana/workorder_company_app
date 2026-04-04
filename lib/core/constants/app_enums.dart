@@ -392,6 +392,7 @@ enum ServiceRequestStatus {
   approved,
   workOrderCreated,
   completed;
+  
 
   static ServiceRequestStatus fromString(String value) {
     switch (value) {
