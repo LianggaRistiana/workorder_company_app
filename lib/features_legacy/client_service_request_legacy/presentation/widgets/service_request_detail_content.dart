@@ -58,17 +58,17 @@ class ServiceRequestDetailBody extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ServiceRequestHeader(csr: csr),
-          const SizedBox(height: 8),
-          if (csr.clientIntakeForms != null &&
-              csr.clientIntakeForms!.isNotEmpty)
-            CustomList(
-              scrollable: false,
-              separatorHeight: 16,
-              items: csr.clientIntakeForms!,
-              itemBuilder: (item, _) =>
-                  FilledFormView(filledForm: item),
-            ),
+          // ServiceRequestHeader(csr: csr),
+          // const SizedBox(height: 8),
+          // if (csr.clientIntakeForms != null &&
+          //     csr.clientIntakeForms!.isNotEmpty)
+          //   CustomList(
+          //     scrollable: false,
+          //     separatorHeight: 16,
+          //     items: csr.clientIntakeForms!,
+          //     itemBuilder: (item, _) =>
+          //         FilledFormView(filledForm: item),
+          //   ),
         ],
       ),
     );

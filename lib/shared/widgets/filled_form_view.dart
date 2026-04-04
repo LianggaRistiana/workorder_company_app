@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/field_entity.dart';
-import 'package:workorder_company_app/features/forms/domain/entities/filled_form_with_history_entity.dart';
+import 'package:workorder_company_app/features/forms/domain/entities/filled_form_entity.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/option_entity.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 
-
-// FIXME : Later
 class FilledFormView extends StatelessWidget {
-  final FilledFormWithHistoryEntity filledForm;
+  final FilledFormEntity filledForm;
 
   const FilledFormView({super.key, required this.filledForm});
 
@@ -72,11 +70,11 @@ class FilledFormView extends StatelessWidget {
       case FieldType.date:
         try {
           final parsed = DateTime.tryParse(answer.toString());
-          return Text(parsed != null
+          return _textAnswer(parsed != null
               ? "${parsed.day}-${parsed.month}-${parsed.year}"
               : answer.toString());
         } catch (_) {
-          return Text(answer.toString());
+          return _textAnswer(answer.toString());
         }
 
       case FieldType.singleSelect:
@@ -143,7 +141,7 @@ class FilledFormView extends StatelessWidget {
   // FIND ANSWER BASED ON ORDER
   // -------------------------------------------------------------
   dynamic _findAnswer(String order) {
-    final submission = filledForm.submissionHistory!.firstOrNull;
+    final submission = filledForm.submission;
     if (submission == null || submission.fieldsData == null) {
       return null;
     }
@@ -167,17 +165,25 @@ class FilledFormView extends StatelessWidget {
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(4),
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primary,
+                  // color: Theme.of(context).colorScheme.primary,
+                  gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.center,
+                    colors: [
+                      Theme.of(context).colorScheme.primaryFixedDim,
+                      Theme.of(context).colorScheme.primary,
+                    ],
+                  ),
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(12),
                     topRight: Radius.circular(12),
                   ),
                 ),
                 child: const SizedBox(
-                  height: 0.1,
+                  height: 1,
                 ),
               ),
               Container(
@@ -199,7 +205,7 @@ class FilledFormView extends StatelessWidget {
                             style: Theme.of(context).textTheme.bodyMedium),
                       ])),
             ])),
-        const SizedBox(height: 16),
+        const SizedBox(height: 8),
         CustomCard(
           child: Column(
             children: List.generate(

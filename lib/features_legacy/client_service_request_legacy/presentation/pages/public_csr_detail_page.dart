@@ -76,12 +76,12 @@ class _CsrDetailPageState extends State<PublicCsrDetailPage> {
                 //     ],
                 //   ),
                 // ),
-                if (csr.clientIntakeForms != null &&
-                    csr.clientIntakeForms!.isNotEmpty)
-                  CustomList(
-                      items: csr.clientIntakeForms!,
-                      itemBuilder: (item, _) =>
-                          FilledFormView(filledForm: item))
+                // if (csr.clientIntakeForms != null &&
+                //     csr.clientIntakeForms!.isNotEmpty)
+                //   CustomList(
+                //       items: csr.clientIntakeForms!,
+                //       itemBuilder: (item, _) =>
+                //           FilledFormView(filledForm: item))
               ],
             ),
           );

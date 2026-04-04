@@ -56,4 +56,5 @@ class AppIcon {
 
   // Additional Icon
   static const IconData user = Icons.person; 
+  static const IconData code = LucideIcons.ticket; 
 }
