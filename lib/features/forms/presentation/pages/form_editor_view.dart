@@ -119,6 +119,7 @@ class _FormEditorViewState extends State<FormEditorView>
   }
 
   void _submitForm() {
+    debugPrint("_submitForm");
     _coordinator.updateTitle(_controllers.title.text);
     _coordinator.updateDescription(_controllers.description.text);
 
@@ -134,6 +135,7 @@ class _FormEditorViewState extends State<FormEditorView>
     }
 
     if (!(_fieldsKey.currentState?.validate() ?? false)) {
+      // context.showWarning("Pertanyaan tidak valid");
       return;
     }
 
@@ -208,10 +210,13 @@ class _FormEditorViewState extends State<FormEditorView>
                   _coordinator.updateFormType(type);
                 },
               ),
-              FieldsEditorTabView(
-                  formKey: _fieldsKey,
-                  coordinator: _coordinator,
-                  onAddField: _openFieldTypePicker)
+              Form(
+                key: _fieldsKey,
+                child: FieldsEditorTabView(
+                    // formKey: _fieldsKey,
+                    coordinator: _coordinator,
+                    onAddField: _openFieldTypePicker),
+              )
             ],
           ),
         ),

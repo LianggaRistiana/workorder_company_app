@@ -14,50 +14,85 @@ import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 class FieldsEditorTabView extends StatelessWidget {
   final FormEditorCoordinator coordinator;
   final VoidCallback onAddField;
-  final GlobalKey<FormState>? formKey;
+  // final GlobalKey<FormState>? formKey;
 
   const FieldsEditorTabView({
     super.key,
     required this.coordinator,
     required this.onAddField,
-    this.formKey,
+    // this.formKey,
   });
 
   @override
   Widget build(BuildContext context) {
     final fields = coordinator.draft.fields;
 
-    return SingleChildScrollView(
+    return ReorderableCustomList(
       padding: const EdgeInsets.all(16),
-      child: Form(
-        key: formKey,
-        child: Column(
-          children: [
-            ReorderableCustomList(
-              items: fields,
-              emptyWidget: InformationBlock.warning("Pertanyaan kosong"),
-              onReorder: coordinator.moveField,
-              itemBuilder: (_, index) => FieldCardWidget(
-                key: ValueKey(fields[index].uiKey),
-                index: index,
-                coordinator: coordinator,
-              ),
-            ),
-            const SizedBox(height: 8),
-            DashedButton(
-              height: 150,
-              borderRadius: 12,
-              icon: Icons.add,
-              onTap: onAddField,
-              title: 'Tambah Pertanyaan',
-              borderColor: Theme.of(context).disabledColor,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-            const SizedBox(height: 32),
-          ],
-        ),
+      items: fields,
+      emptyWidget: InformationBlock.warning("Pertanyaan kosong"),
+      onReorder: coordinator.moveField,
+      footer: DashedButton(
+        height: 150,
+        borderRadius: 12,
+        icon: Icons.add,
+        onTap: onAddField,
+        title: 'Tambah Pertanyaan',
+        borderColor: Theme.of(context).disabledColor,
+        color: Theme.of(context).colorScheme.primary,
+      ),
+      itemBuilder: (item, index) => FieldCardWidget(
+        key: ValueKey(item.uiKey),
+        index: index,
+        coordinator: coordinator,
       ),
     );
+
+    // TODO : Legacy Code, you can remove after observation step is done
+    // return SingleChildScrollView(
+    //   padding: const EdgeInsets.all(16),
+    //   child: Form(
+    //     key: formKey,
+    //     child: Column(
+    //       children: [
+    //         // FancyReorderableList(
+    //         //   items: fields,
+    //         //   // emptyWidget: InformationBlock.warning("Pertanyaan kosong"),
+    //         //   onReorder: coordinator.moveField,
+    //         //   // itemKeyBuilder: (item) => item.uiKey,
+    //         //   itemBuilder: (_, index) => FieldCardWidget(
+    //         //     key: ValueKey(fields[index].uiKey),
+    //         //     index: index,
+    //         //     coordinator: coordinator,
+    //         //   ),
+    //         // ),
+    //         ReorderableCustomList(
+    //           items: fields,
+    //           emptyWidget: InformationBlock.warning("Pertanyaan kosong"),
+    //           onReorder: coordinator.moveField,
+    //           itemKeyBuilder: (item) => item.uiKey,
+    //           footer: DashedButton(
+    //             height: 150,
+    //             borderRadius: 12,
+    //             icon: Icons.add,
+    //             onTap: onAddField,
+    //             title: 'Tambah Pertanyaan',
+    //             borderColor: Theme.of(context).disabledColor,
+    //             color: Theme.of(context).colorScheme.primary,
+    //           ),
+    //           itemBuilder: (_, index) => FieldCardWidget(
+    //             // key: ValueKey(fields[index].uiKey),
+    //             index: index,
+    //             coordinator: coordinator,
+    //           ),
+    //         ),
+    //         const SizedBox(height: 8),
+
+    //         const SizedBox(height: 32),
+    //       ],
+    //     ),
+    //   ),
+    // );
   }
 }
 
@@ -133,7 +168,7 @@ class _FieldCardWidgetState extends State<FieldCardWidget> {
             validator: (value) {
               return ValidatorUtils.single(
                 value,
-                fieldName: "Pertanyaan Tidak Boleh Kosong",
+                fieldName: "Pertanyaan",
                 ValidatorType.required,
               );
             },
@@ -185,13 +220,14 @@ class _FieldCardWidgetState extends State<FieldCardWidget> {
                     validator: (value) {
                       return ValidatorUtils.single(
                         value,
-                        fieldName: "Minimal Tidak Boleh Kosong",
+                        fieldName: "Minimal",
                         ValidatorType.required,
                       );
                     },
                   ),
                 ),
                 const SizedBox(width: 8),
+                // TODO : validator mis max
                 Expanded(
                   child: CustomInputField(
                     label: "Maksimal",
@@ -204,7 +240,7 @@ class _FieldCardWidgetState extends State<FieldCardWidget> {
                     validator: (value) {
                       return ValidatorUtils.single(
                         value,
-                        fieldName: "Maksimal Tidak Boleh Kosong",
+                        fieldName: "Maksimal",
                         ValidatorType.required,
                       );
                     },
@@ -259,7 +295,7 @@ class _OptionEditorWidgetState extends State<OptionEditorWidget> {
         CustomList(
           items: field.options,
           emptyWidget: InformationBlock.warning("Opsi Kosong"),
-          separatorHeight: 4,
+          separatorHeight: 6,
           itemBuilder: (option, index) {
             _controllers.putIfAbsent(
               option.key,
@@ -272,6 +308,13 @@ class _OptionEditorWidgetState extends State<OptionEditorWidget> {
                   child: CustomInputField(
                     label: 'Opsi ${index + 1}',
                     controller: _controllers[option.key]!,
+                    validator: (value) {
+                      return ValidatorUtils.single(
+                        value,
+                        fieldName: "Opsi",
+                        ValidatorType.required,
+                      );
+                    },
                     onChanged: (val) => widget.coordinator.updateOptionValue(
                       widget.fieldIndex,
                       option.key,
