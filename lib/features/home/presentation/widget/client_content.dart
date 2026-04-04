@@ -31,7 +31,7 @@ class ClientContent extends StatelessWidget {
             MenuItem(
                 icon: AppIcon.serviceRequestSend,
                 label: "Pengajuan Layanan Saya",
-                onTap: () => context.push(AppRoutes.serviceRequestSend)),
+                onTap: () => context.push(AppRoutes.serviceRequestSent)),
             MenuItem(
                 icon: AppIcon.company,
                 label: "Perusahaan langganan",

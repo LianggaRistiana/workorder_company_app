@@ -37,7 +37,7 @@ class AppRoutes {
 
   // Service Request
   static const serviceRequestInbox = '/service-request/inbox';
-  static const serviceRequestSend = '/service-request/send';
+  static const serviceRequestSent = '/service-request/sent';
   static const serviceRequestDetail = '/service-request/:id';
 
   // Employee

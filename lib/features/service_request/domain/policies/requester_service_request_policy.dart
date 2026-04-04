@@ -4,7 +4,7 @@ import 'package:workorder_company_app/core/authorization/util/check_permission.d
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/utils/condition_evaluator.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
-import 'package:workorder_company_app/features/service_request/domain/entities/requester_service_request_entity.dart';
+import 'package:workorder_company_app/features/service_request/domain/entities/service_request_entity.dart';
 
 class RequesterServiceRequestPolicy {
   final RequesterServiceRequestEntity request;

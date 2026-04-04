@@ -26,7 +26,7 @@ class Endpoints {
   static const String servicesToggleActive = "/services/:id/toggle-active";
 
   // Service Request
-  static const String serviceRequestSended = "/service-request/sended";
+  static const String serviceRequestSent = "/service-request/sent";
   static const String serviceRequestInbox = "/service-request/inbox";
   static const String serviceRequestDetail = "/service-request/:id";
   static const String serviceRequestCancel = "/service-request/:id/cancel";

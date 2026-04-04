@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:workorder_company_app/features/service_request/domain/entities/requester_service_request_entity.dart';
+import 'package:workorder_company_app/features/service_request/domain/entities/service_request_entity.dart';
 
 enum RequesterSubmitReviewFormStatus {
   initial,
