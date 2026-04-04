@@ -38,6 +38,15 @@ final publicCompaniesRouter = [
     builder: (_, __) => PublicCompaniesListPage(),
   ),
   GoRoute(
+    path: AppRoutes.publicServiceDetail,
+    builder: (_, state) {
+      final id = state.pathParameters['id']!;
+      return FillFormPage(
+        serviceId: id,
+      );
+    },
+  ),
+  GoRoute(
     path: AppRoutes.publicCompaniesDetail,
     builder: (_, state) {
       final id = state.pathParameters['id']!;
@@ -46,13 +55,4 @@ final publicCompaniesRouter = [
       );
     },
   ),
-  GoRoute(
-    path: AppRoutes.publicServiceDetail,
-    builder: (_, state) {
-      final id = state.pathParameters['id']!;
-      return FillFormPage(
-        serviceId: id,
-      );
-    },
-  )
 ];
