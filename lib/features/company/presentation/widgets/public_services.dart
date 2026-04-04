@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/company/presentation/bloc/public_company_services.dart/public_company_services_cubit.dart';
@@ -68,7 +69,37 @@ class PublicServicesItem extends StatelessWidget {
     return ClickableCustomCard(
         onTap: () {},
         child: Row(children: [
-          IconBox(icon: AppIcon.service),
+          Stack(
+            children: [
+              IconBox(icon: AppIcon.service),
+              if (service.accessType == ServiceAccessType.memberOnly) ...[
+                const SizedBox(height: 8),
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  child: Container(
+                    padding: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      gradient: const LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.center,
+                        colors: [
+                          Color(0xFFFFEB97),
+                          Color.fromARGB(255, 150, 124, 10),
+                        ],
+                      ),
+                    ),
+                    child: Icon(
+                      AppIcon.membership,
+                      size: 18,
+                      color: Colors.white,
+                    ),
+                  ),
+                )
+              ]
+            ],
+          ),
           const SizedBox(width: 12),
           Expanded(
               child: Column(

@@ -17,11 +17,11 @@ class ServiceSummaryItem extends StatelessWidget {
   Color _accessColor(ServiceAccessType type) {
     switch (type) {
       case ServiceAccessType.public:
-        return Colors.green;
+        return Colors.lightGreen.shade500;
       case ServiceAccessType.memberOnly:
-        return Colors.blue;
+        return Colors.blueAccent;
       case ServiceAccessType.internal:
-        return Colors.orange;
+        return Colors.amber;
     }
   }
 
@@ -49,7 +49,7 @@ class ServiceSummaryItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Stack(children: [
-            IconBox(icon: AppIcon.service),
+            IconBox(isDisabled: !service.isActive, icon: AppIcon.service),
             if (!isPublic) ...[
               const SizedBox(height: 8),
               Positioned(
@@ -57,7 +57,9 @@ class ServiceSummaryItem extends StatelessWidget {
                 right: 0,
                 child: CircleAvatar(
                   radius: 12,
-                  backgroundColor: _accessColor(service.accessType),
+                  backgroundColor: !service.isActive
+                      ? Theme.of(context).disabledColor
+                      : _accessColor(service.accessType),
                   child: Icon(
                     _accessIcon(service.accessType),
                     size: 18,

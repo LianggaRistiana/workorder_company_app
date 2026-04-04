@@ -7,10 +7,13 @@ class IconBox extends StatelessWidget {
   final double iconSize;
   final double paddingSize;
   final double borderRadius;
+  final bool isDisabled;
+
   const IconBox(
       {super.key,
       required this.icon,
       this.iconSize = 28,
+      this.isDisabled = false,
       this.paddingSize = AppSpacing.md,
       this.borderRadius = AppRadius.medium});
 
@@ -19,13 +22,17 @@ class IconBox extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(paddingSize),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primaryContainer,
+        color: isDisabled
+            ? Theme.of(context).hoverColor
+            : Theme.of(context).colorScheme.primaryContainer,
         borderRadius: BorderRadius.circular(borderRadius),
       ),
       child: Icon(
         icon,
         size: iconSize,
-        color: Theme.of(context).colorScheme.primary,
+        color: isDisabled
+            ? Theme.of(context).disabledColor
+            : Theme.of(context).colorScheme.primary,
       ),
     );
   }

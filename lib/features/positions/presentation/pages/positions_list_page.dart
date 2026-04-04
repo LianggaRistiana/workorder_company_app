@@ -90,6 +90,7 @@ class _PositionsListView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     IconBox(
+                      isDisabled: !position.isActive,
                       icon: AppIcon.department,
                     ),
                     const SizedBox(width: 12),

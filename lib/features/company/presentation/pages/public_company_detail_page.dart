@@ -7,6 +7,7 @@ import 'package:workorder_company_app/features/company/presentation/bloc/public_
 import 'package:workorder_company_app/features/company/presentation/bloc/public_company_detail/public_company_detail_state.dart';
 import 'package:workorder_company_app/features/company/presentation/bloc/public_company_services.dart/public_company_services_cubit.dart';
 import 'package:workorder_company_app/features/company/presentation/widgets/public_services.dart';
+import 'package:workorder_company_app/features/memberships/presentation/widgets/subcription_chip.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
@@ -118,6 +119,12 @@ class _View extends StatelessWidget {
                           ? "-"
                           : company.description,
                     ),
+
+                    // TODO : fix this later
+                    PropertyItem.widget(
+                        icon: AppIcon.membership,
+                        label: "Status Keanggotaan",
+                        child: SubscriptionChip(isMember: true))
                   ])),
                 PropertyTitle(label: "Daftar Layanan", icon: AppIcon.service),
                 const SizedBox(height: 8),
