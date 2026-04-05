@@ -130,9 +130,13 @@ extension FieldDraftMapper on FieldDraft {
       }
     }
 
+    if (order == null) {
+      throw ValidationException("Field order cannot be null.");
+    }
+
     // 4️⃣ Return mapped entity
     return FieldEntity(
-      order: order,
+      order: order!,
       label: label,
       type: type,
       required: required,

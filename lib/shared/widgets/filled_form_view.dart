@@ -168,7 +168,6 @@ class FilledFormView extends StatelessWidget {
                 padding: const EdgeInsets.all(4),
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  // color: Theme.of(context).colorScheme.primary,
                   gradient: LinearGradient(
                     begin: Alignment.centerLeft,
                     end: Alignment.center,

@@ -21,7 +21,7 @@ class MockRequesterServiceRequestDatasource
     RequesterServiceRequestModel(
       id: "req-1",
       code: "SR-001",
-      status: ServiceRequestStatus.received,
+      status: ServiceRequestStatus.completed,
       service: const ServiceSummaryModel(
         isActive: true,
         id: "service-1",
@@ -123,6 +123,17 @@ class MockRequesterServiceRequestDatasource
               required: false,
               placeholder: "Any additional feedback?",
             ),
+            FieldModel(
+              order: 3,
+              label: "Priority",
+              type: FieldType.singleSelect,
+              required: true,
+              options: [
+                OptionModel(key: "high", value: "High"),
+                OptionModel(key: "medium", value: "Medium"),
+                OptionModel(key: "low", value: "Low"),
+              ],
+            ),
           ],
         ),
         submission: SubmissionsModel(
@@ -144,6 +155,10 @@ class MockRequesterServiceRequestDatasource
             FieldDataModel(
               order: "2",
               value: "Great job so far preparing.",
+            ),
+            FieldDataModel(
+              order: "3",
+              value: "high",
             ),
           ],
         ),

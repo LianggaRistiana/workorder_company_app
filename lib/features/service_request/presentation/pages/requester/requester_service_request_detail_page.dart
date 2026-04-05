@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/authorization/util/permission_gate_on_widget.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
@@ -11,6 +12,7 @@ import 'package:workorder_company_app/features/service_request/presentation/page
 import 'package:workorder_company_app/features/service_request/presentation/state/requester/service_request_detail/requester_service_request_detail_cubit.dart';
 import 'package:workorder_company_app/features/service_request/presentation/state/requester/service_request_detail/requester_service_request_detail_state.dart';
 import 'package:workorder_company_app/features/service_request/presentation/widgets/service_request_cancel.dart';
+import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 
 class RequesterServiceRequestDetailPage extends StatelessWidget {
@@ -59,7 +61,9 @@ class RequesterServiceRequestDetailPage extends StatelessWidget {
         return Padding(
             padding: const EdgeInsets.all(AppSpacing.md),
             child: FilledButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                context.push(AppRoutes.serviceRequestReview, extra: request);
+              },
               label: Text("Isi Ulasan"),
               icon: Icon(AppIcon.review),
             )).require(

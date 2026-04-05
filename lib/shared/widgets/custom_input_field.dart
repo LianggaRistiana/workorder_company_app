@@ -18,6 +18,7 @@ class CustomInputField extends StatefulWidget {
   final VoidCallback? onEditingComplete;
   final FocusNode? focusNode;
   final Color backgroundColor;
+  final TextInputAction? textInputAction;
 
   const CustomInputField({
     super.key,
@@ -36,6 +37,7 @@ class CustomInputField extends StatefulWidget {
     this.maxLines = 1,
     this.onEditingComplete,
     this.focusNode,
+    this.textInputAction,
     this.backgroundColor = Colors.transparent,
   });
 
@@ -89,6 +91,7 @@ class _CustomInputFieldState extends State<CustomInputField> {
       children: [
         TextFormField(
           focusNode: _focusNode,
+          textInputAction: TextInputAction.next,
           onEditingComplete: widget.onEditingComplete,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           controller: widget.controller,
@@ -121,6 +124,10 @@ class _CustomInputFieldState extends State<CustomInputField> {
           },
           decoration: InputDecoration(
             labelText: widget.label,
+            floatingLabelStyle: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
             hintText: widget.hint,
             hintStyle: TextStyle(color: Colors.grey[400]),
             errorText: errorText,

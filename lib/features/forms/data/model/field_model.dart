@@ -5,7 +5,7 @@ import 'package:workorder_company_app/features/forms/domain/entities/field_entit
 
 class FieldModel extends FieldEntity {
   const FieldModel({
-    super.order,
+    required super.order,
     required super.label,
     required super.type,
     required super.required,

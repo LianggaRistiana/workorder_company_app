@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:workorder_company_app/core/constants/app_enums.dart';
-import 'package:workorder_company_app/features/forms/domain/entities/ordered_form_entity.dart';
-import 'package:workorder_company_app/features/submissions/domain/entitties/field_data_entity.dart';
+// import 'package:workorder_company_app/core/constants/app_enums.dart';
+// import 'package:workorder_company_app/features/forms/domain/entities/ordered_form_entity.dart';
+// import 'package:workorder_company_app/features/submissions/domain/entitties/field_data_entity.dart';
 import 'package:workorder_company_app/features/submissions/domain/entitties/submission_entity.dart';
-import 'package:workorder_company_app/features/submissions/presentation/widgets/form_renderer.dart';
+// import 'package:workorder_company_app/features/submissions/presentation/widgets/form_renderer_legacy.dart';
 import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_submissions_forms_cubit.dart';
 import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_bloc.dart';
 import 'package:workorder_company_app/features/workorder/presentation/bloc/workorder_detail_cubit.dart';
@@ -24,43 +24,43 @@ class _WorkorderSubmissionPageState extends State<WorkorderSubmissionPage> {
   List<SubmissionEntity> submissions = [];
   bool initialized = false;
 
-  void _onFieldChanged(String formId, String order, dynamic value) {
-    final updated = List<SubmissionEntity>.from(submissions);
-    final index = updated.indexWhere((s) => s.formId == formId);
-    if (index == -1) return;
+  // void _onFieldChanged(String formId, String order, dynamic value) {
+  //   final updated = List<SubmissionEntity>.from(submissions);
+  //   final index = updated.indexWhere((s) => s.formId == formId);
+  //   if (index == -1) return;
 
-    final submission = updated[index];
-    final updatedFields =
-        List<FieldDataEntity>.from(submission.fieldsData ?? []);
-    final fieldIndex = updatedFields.indexWhere((f) => f.order == order);
+  //   final submission = updated[index];
+  //   final updatedFields =
+  //       List<FieldDataEntity>.from(submission.fieldsData ?? []);
+  //   final fieldIndex = updatedFields.indexWhere((f) => f.order == order);
 
-    if (fieldIndex != -1) {
-      updatedFields[fieldIndex] = FieldDataEntity(order: order, value: value);
-    } else {
-      updatedFields.add(FieldDataEntity(order: order, value: value));
-    }
+  //   if (fieldIndex != -1) {
+  //     updatedFields[fieldIndex] = FieldDataEntity(order: order, value: value);
+  //   } else {
+  //     updatedFields.add(FieldDataEntity(order: order, value: value));
+  //   }
 
-    updated[index] = submission.copyWith(fieldsData: updatedFields);
-    setState(() => submissions = updated);
-  }
+  //   updated[index] = submission.copyWith(fieldsData: updatedFields);
+  //   setState(() => submissions = updated);
+  // }
 
-  List<SubmissionEntity> _initialize(
-    List<OrderedFormEntity> orderedForms,
-    List<SubmissionEntity> initial,
-  ) {
-    if (initial.isNotEmpty) return initial;
+  // List<SubmissionEntity> _initialize(
+  //   List<OrderedFormEntity> orderedForms,
+  //   List<SubmissionEntity> initial,
+  // ) {
+  //   if (initial.isNotEmpty) return initial;
 
-    return orderedForms
-        .map(
-          (e) => SubmissionEntity(
-            id: '',
-            formId: e.form.id,
-            submissionType: FormType.workOrder,
-            fieldsData: [],
-          ),
-        )
-        .toList();
-  }
+  //   return orderedForms
+  //       .map(
+  //         (e) => SubmissionEntity(
+  //           id: '',
+  //           formId: e.form.id,
+  //           submissionType: FormType.workOrder,
+  //           fieldsData: [],
+  //         ),
+  //       )
+  //       .toList();
+  // }
 
   @override
   Widget build(BuildContext context) {
