@@ -12,6 +12,7 @@ class RequesterServiceRequestPolicy {
   const RequesterServiceRequestPolicy({required this.request});
 
   PermissionRule get cancelRule => _CancelServiceRequestRule(request: request);
+  PermissionRule get fillReviewRule => _FillReviewFormRule(request: request);
 }
 
 class _CancelServiceRequestRule extends PermissionRule {
@@ -23,6 +24,20 @@ class _CancelServiceRequestRule extends PermissionRule {
     return allOf([
       () => user.role.canPermission(ServiceRequestPermission.cancel),
       () => request.status == ServiceRequestStatus.received,
+      () => request.requestedBy.email == user.email,
+    ]);
+  }
+}
+
+class _FillReviewFormRule extends PermissionRule {
+  final RequesterServiceRequestEntity request;
+  _FillReviewFormRule({required this.request});
+
+  @override
+  bool isAllowed(UserEntity user) {
+    return allOf([
+      () => user.role.canPermission(ServiceRequestPermission.update),
+      () => request.status == ServiceRequestStatus.completed,
       () => request.requestedBy.email == user.email,
     ]);
   }

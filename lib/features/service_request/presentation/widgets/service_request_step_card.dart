@@ -54,28 +54,33 @@ class _ServiceRequestStepCardAnimatedState
                   child: child,
                 ),
                 child: !isExpanded
-                    ? Row(
-                        key: const ValueKey(1),
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(4),
-                            decoration: BoxDecoration(
-                              color: theme.colorScheme.primaryContainer,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Icon(
+                    ? Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 4),
+                        decoration: BoxDecoration(
+                          color:
+                              _statusColor(widget.currentStatus).withAlpha(50),
+                          borderRadius: BorderRadius.circular(20), // chip style
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
                               _statusIcon(widget.currentStatus),
+                              color: _statusColor(widget.currentStatus),
                               size: 18,
-                              color: theme.colorScheme.primary,
                             ),
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            widget.currentStatus.displayName,
-                            style: const TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.bold),
-                          ),
-                        ],
+                            const SizedBox(width: 6),
+                            Text(
+                              widget.currentStatus.displayName,
+                              style: TextStyle(
+                                color: _statusColor(widget.currentStatus),
+                                fontWeight: FontWeight.w600,
+                                fontSize: 13,
+                              ),
+                            ),
+                          ],
+                        ),
                       )
                     : const SizedBox(key: ValueKey(2)),
               ),
@@ -86,7 +91,7 @@ class _ServiceRequestStepCardAnimatedState
 
           // Step indicator dengan AnimatedContainer
           AnimatedSize(
-            duration: const Duration(milliseconds: 300),
+            duration: const Duration(milliseconds: 200),
             curve: Curves.easeInOut,
             child: isExpanded
                 ? Column(
@@ -95,6 +100,7 @@ class _ServiceRequestStepCardAnimatedState
                           stepOrder.indexOf(widget.currentStatus);
                       return Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        // mainAxisAlignment: MainAxisAlignment.ende,
                         children: [
                           Column(
                             children: [
@@ -107,13 +113,14 @@ class _ServiceRequestStepCardAnimatedState
                                       : theme.disabledColor,
                                   shape: BoxShape.circle,
                                 ),
+                                // child: Icon,
                               ),
                               if (status != stepOrder.last)
                                 Container(
                                   width: 1.5,
                                   height: 40,
                                   margin:
-                                      const EdgeInsets.symmetric(horizontal: 8),
+                                      const EdgeInsets.symmetric(vertical: 4),
                                   color: isActive
                                       ? theme.colorScheme.primary
                                       : theme.disabledColor,
@@ -129,8 +136,9 @@ class _ServiceRequestStepCardAnimatedState
                                 fontWeight: isActive
                                     ? FontWeight.bold
                                     : FontWeight.normal,
-                                color:
-                                    isActive ? Colors.black : Colors.grey[500],
+                                color: isActive
+                                    ? theme.colorScheme.primary
+                                    : theme.disabledColor,
                               ),
                             ),
                           ),
@@ -164,6 +172,23 @@ class _ServiceRequestStepCardAnimatedState
 
       case ServiceRequestStatus.rejected:
         return Icons.block;
+    }
+  }
+
+  Color _statusColor(ServiceRequestStatus status) {
+    switch (status) {
+      case ServiceRequestStatus.received:
+        return Colors.orange;
+      case ServiceRequestStatus.approved:
+        return Colors.blue;
+      case ServiceRequestStatus.workOrderCreated:
+        return Colors.blue;
+      case ServiceRequestStatus.completed:
+        return Colors.green;
+      case ServiceRequestStatus.cancelled:
+        return Colors.red;
+      case ServiceRequestStatus.rejected:
+        return Colors.red;
     }
   }
 }

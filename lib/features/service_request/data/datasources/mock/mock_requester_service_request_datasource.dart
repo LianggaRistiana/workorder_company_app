@@ -31,7 +31,7 @@ class MockRequesterServiceRequestDatasource
       ),
       requestedBy: const UserModel(
         name: "John Doe",
-        email: "john@example.com",
+        email: "hmti@client.com",
         role: UserRole.client,
       ),
       company: CompanyModel(
@@ -81,7 +81,7 @@ class MockRequesterServiceRequestDatasource
           status: SubmissionStatus.submitted,
           submittedBy: const UserModel(
             name: "John Doe",
-            email: "john@example.com",
+            email: "hmti@client.com",
             role: UserRole.client,
           ),
           createdAt: DateTime.now().subtract(const Duration(days: 1)),
