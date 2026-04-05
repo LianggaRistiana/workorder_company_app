@@ -72,16 +72,11 @@ class _LoginPageState extends State<LoginPage> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Row(
-                      children: [
-                        Text(
-                          "Masuk",
-                          style:
-                              Theme.of(context).textTheme.titleLarge?.copyWith(
-                                    fontSize: 32,
-                                  ),
-                        ),
-                      ],
+                    Text(
+                      "Masuk",
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            fontSize: 32,
+                          ),
                     ),
                     Text(
                         "Masukan Email dan Kata Sandi Anda untuk masuk ke aplikasi.",
@@ -89,6 +84,8 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 16),
                     CustomInputField(
                       controller: _emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      textInputAction: TextInputAction.next,
                       label: "Email",
                       prefixIcon: const Icon(LucideIcons.mail),
                       validator: (value) {
@@ -105,6 +102,8 @@ class _LoginPageState extends State<LoginPage> {
                     CustomInputField(
                       controller: _passwordController,
                       obscureText: !_showPassword,
+                      textInputAction: TextInputAction.done,
+                      keyboardType: TextInputType.visiblePassword,
                       label: "Kata Sandi",
                       prefixIcon: const Icon(LucideIcons.lock),
                       suffixIcon: IconButton(

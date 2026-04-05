@@ -186,6 +186,8 @@ class _RegisterCommonPageState extends State<RegisterCommonPage> {
         /// Nama
         CustomInputField(
           label: "Nama Lengkap",
+          keyboardType: TextInputType.name,
+          textInputAction: TextInputAction.next,
           controller: _nameController,
           prefixIcon: const Icon(Icons.person_outline),
           validator: (value) => ValidatorUtils.validate(
@@ -203,6 +205,8 @@ class _RegisterCommonPageState extends State<RegisterCommonPage> {
         /// Email
         CustomInputField(
           label: "Email",
+          keyboardType: TextInputType.emailAddress,
+          textInputAction: TextInputAction.next,
           controller: _emailController,
           prefixIcon: const Icon(Icons.email_outlined),
           validator: (value) => ValidatorUtils.validate(
@@ -219,6 +223,8 @@ class _RegisterCommonPageState extends State<RegisterCommonPage> {
         /// Password
         CustomInputField(
           label: "Kata Sandi",
+          keyboardType: TextInputType.visiblePassword,
+          textInputAction: TextInputAction.next,
           controller: _passwordController,
           obscureText: !_showPassword,
           prefixIcon: const Icon(Icons.lock_outline),
@@ -242,6 +248,8 @@ class _RegisterCommonPageState extends State<RegisterCommonPage> {
         /// Confirm Password
         CustomInputField(
           label: "Konfirmasi Kata Sandi",
+          keyboardType: TextInputType.visiblePassword,
+          textInputAction: TextInputAction.done,
           controller: _confirmPasswordController,
           obscureText: !_showPassword,
           prefixIcon: const Icon(Icons.lock_outline),

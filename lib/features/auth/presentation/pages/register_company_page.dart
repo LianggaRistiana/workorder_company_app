@@ -162,6 +162,8 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
 
         CustomInputField(
           label: "Nama Lengkap",
+          keyboardType: TextInputType.name,
+          textInputAction: TextInputAction.next,
           controller: _nameController,
           prefixIcon: const Icon(Icons.person_outline),
           validator: (value) => ValidatorUtils.validate(
@@ -178,6 +180,8 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
 
         CustomInputField(
           label: "Email",
+          keyboardType: TextInputType.emailAddress,
+          textInputAction: TextInputAction.next,
           controller: _emailController,
           prefixIcon: const Icon(Icons.email_outlined),
           validator: (value) => ValidatorUtils.validate(
@@ -193,6 +197,8 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
 
         CustomInputField(
           label: "Kata Sandi",
+          keyboardType: TextInputType.visiblePassword,
+          textInputAction: TextInputAction.next,
           controller: _passwordController,
           obscureText: !_showPassword,
           prefixIcon: const Icon(Icons.lock_outline),
@@ -215,6 +221,8 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
 
         CustomInputField(
           label: "Konfirmasi Kata Sandi",
+          keyboardType: TextInputType.visiblePassword,
+          textInputAction: TextInputAction.next,
           controller: _confirmPasswordController,
           obscureText: !_showPassword,
           prefixIcon: const Icon(Icons.lock_outline),
@@ -264,6 +272,8 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
 
         CustomInputField(
           label: "Nama Perusahaan",
+          keyboardType: TextInputType.visiblePassword,
+          textInputAction: TextInputAction.done,
           controller: _companyNameController,
           prefixIcon: const Icon(Icons.business_outlined),
           validator: (value) => ValidatorUtils.validate(

@@ -91,7 +91,7 @@ class _CustomInputFieldState extends State<CustomInputField> {
       children: [
         TextFormField(
           focusNode: _focusNode,
-          textInputAction: TextInputAction.next,
+          textInputAction: widget.textInputAction,
           onEditingComplete: widget.onEditingComplete,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           controller: widget.controller,

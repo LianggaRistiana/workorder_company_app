@@ -34,9 +34,14 @@ class RegisterPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "Pilih Jenis Akun",
-                  style: Theme.of(context).textTheme.titleLarge,
+                  "Daftar",
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontSize: 32,
+                      ),
                 ),
+                Text("Pilih jenis akun sesuai kebutuhan anda.",
+                    style: Theme.of(context).textTheme.bodyMedium),
+                const SizedBox(height: 24),
                 HorizontalButton(
                   title: "Kustomer",
                   description:
