@@ -56,6 +56,7 @@ class AppIcon {
   static const IconData warrning = Icons.warning_rounded;
 
   // Additional Icon
-  static const IconData user = Icons.person; 
-  static const IconData code = LucideIcons.ticket; 
+  static const IconData user = Icons.person;
+  static const IconData type = Icons.category_outlined;
+  static const IconData code = LucideIcons.ticket;
 }

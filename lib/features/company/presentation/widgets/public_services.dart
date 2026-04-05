@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/company/presentation/bloc/public_company_services.dart/public_company_services_cubit.dart';
 import 'package:workorder_company_app/features/company/presentation/bloc/public_company_services.dart/public_company_services_state.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_summary_entity.dart';
+import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
@@ -67,7 +69,9 @@ class PublicServicesItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClickableCustomCard(
-        onTap: () {},
+        onTap: () {
+          context.push(AppRoutes.serviceRequestCreate, extra: service);
+        },
         child: Row(children: [
           Stack(
             children: [

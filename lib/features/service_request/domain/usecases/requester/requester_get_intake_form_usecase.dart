@@ -7,6 +7,7 @@ class RequesterGetIntakeFormUsecase {
 
   RequesterGetIntakeFormUsecase(this.repository);
 
+  // TODO : add switcher by user type
   FutureEither<FormEntity> call(String serviceId) async {
     return repository.getIntakeForm(serviceId);
   }

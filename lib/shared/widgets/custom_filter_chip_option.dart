@@ -59,8 +59,11 @@ class CustomFilterChipOption extends StatelessWidget {
           children: [
             Text(label,
                 style: hasError
-                    ? TextStyle(color: Theme.of(context).colorScheme.error)
-                    : Theme.of(context).textTheme.bodyMedium),
+                    ? Theme.of(context)
+                        .textTheme
+                        .titleSmall
+                        ?.copyWith(color: Theme.of(context).colorScheme.error)
+                    : Theme.of(context).textTheme.titleSmall),
             const SizedBox(height: 8),
             Column(
               children: options.map((option) {

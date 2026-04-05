@@ -18,10 +18,12 @@ class Endpoints {
   // Positions
   static const String positions = "/positions";
 
-  // Forms
+  /// Forms Feature
+  /// GET POST PUT DELETE
   static const String forms = "/forms";
 
-  // Service
+  /// Service
+  /// GET POST PUT DELETE
   static const String services = "/services";
   static const String servicesToggleActive = "/services/:id/toggle-active";
 
@@ -33,8 +35,9 @@ class Endpoints {
   static const String serviceRequestApprove = "/service-request/:id/approve";
   static const String serviceRequestReject = "/service-request/:id/reject";
   static const String serviceRequestReview = "/service-request/:id/review";
+  // TODO : fix this later
   static const String serviceRequestIntake =
-      "/service/:id//service-request/ntake";
+      "/service/:id//service-request/intake";
 
   // Memberships
   static const String memberships = "/memberships";
