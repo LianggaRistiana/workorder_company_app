@@ -8,10 +8,14 @@ import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 
 class FormRenderer extends StatelessWidget {
   final FilledFormEntity filledForm;
+  final bool isReadOnly;
   final void Function(String formId, String order, dynamic value) onChanged;
 
   const FormRenderer(
-      {super.key, required this.filledForm, required this.onChanged});
+      {super.key,
+      required this.filledForm,
+      this.isReadOnly = false,
+      required this.onChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +74,8 @@ class FormRenderer extends StatelessWidget {
               formId: filledForm.form.id,
               field: field,
               onChanged: onChanged,
-              value: filledForm.submission?.getFieldByOrder(field.order.toString())),
+              value: filledForm.submission
+                  ?.getFieldByOrder(field.order.toString())),
         ),
       ],
     );

@@ -4,6 +4,7 @@ import 'package:workorder_company_app/features/forms/domain/entities/filled_form
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/option_entity.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
+import 'package:intl/intl.dart';
 
 class FilledFormView extends StatelessWidget {
   final FilledFormEntity filledForm;
@@ -69,10 +70,7 @@ class FilledFormView extends StatelessWidget {
 
       case FieldType.date:
         try {
-          final parsed = DateTime.tryParse(answer.toString());
-          return _textAnswer(parsed != null
-              ? "${parsed.day}-${parsed.month}-${parsed.year}"
-              : answer.toString());
+          return _textAnswer(DateFormat('d MMMM yyyy', 'id_ID').format(answer));
         } catch (_) {
           return _textAnswer(answer.toString());
         }

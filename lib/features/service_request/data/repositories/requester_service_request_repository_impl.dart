@@ -9,7 +9,7 @@ import 'package:workorder_company_app/features/submissions/domain/entitties/subm
 
 class RequesterServiceRequestRepositoryImpl
     implements RequesterServiceRequestRepository {
-  RequesterServiceRequestDatasource _requesterServiceRequestDatasource;
+  final RequesterServiceRequestDatasource _requesterServiceRequestDatasource;
 
   RequesterServiceRequestRepositoryImpl(
       this._requesterServiceRequestDatasource);
@@ -65,8 +65,9 @@ class RequesterServiceRequestRepositoryImpl
   FutureEither<RequesterServiceRequestEntity> submitReviewForm(
       String serviceRequestId, SubmissionEntity submission) {
     return safeCall(() async {
-      final payload = await _requesterServiceRequestDatasource.submitIntakeForm(
+      final payload = await _requesterServiceRequestDatasource.submitReviewForm(
           serviceRequestId, SubmissionsModel.fromEntity(submission));
+
       return payload.data!;
     });
   }

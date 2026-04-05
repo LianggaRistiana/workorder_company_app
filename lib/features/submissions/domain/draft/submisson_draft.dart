@@ -42,4 +42,15 @@ class SubmissionDraft {
       fieldsData[index].updateValue(value);
     }
   }
+
+  SubmissionEntity toEntity() {
+    return SubmissionEntity(
+      id: "",
+      formId: formId,
+      submissionType: submissionType,
+      fieldsData: fieldsData.map((f) => f.toEntity()).toList(),
+      status: SubmissionStatus.drafted,
+      submittedBy: null,
+    );
+  }
 }

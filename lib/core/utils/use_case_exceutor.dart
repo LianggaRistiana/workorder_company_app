@@ -38,6 +38,8 @@ class UseCaseExecutor {
   ///   - Errors from `map` are caught and converted to `ValidationFailure` or `UnknownFailure`.
   ///   - If `policy` fails, a `PolicyFailure` is returned.
   ///   - If no `transform` is provided, the repository result is returned as-is.
+  ///
+  /// // FIXME : entity should not be null
   static FutureEither<R> run<E, T, R>({
     E Function()? map,
     PolicyResult Function(E entity)? policy,

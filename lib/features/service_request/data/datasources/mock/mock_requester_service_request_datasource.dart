@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
+import 'package:workorder_company_app/core/error/error.dart';
 import 'package:workorder_company_app/core/network/api_response.dart';
 import 'package:workorder_company_app/core/types/future_api.dart';
 import 'package:workorder_company_app/features/auth/data/model/user_model.dart';
@@ -96,7 +98,7 @@ class MockRequesterServiceRequestDatasource
             ),
             FieldDataModel(
               order: "3",
-              value: "2026-05-01",
+              value: DateTime.now(),
             ),
           ],
         ),
@@ -312,40 +314,19 @@ class MockRequesterServiceRequestDatasource
   ApiFuture<RequesterServiceRequestModel> submitReviewForm(
       String serviceRequestId, SubmissionsModel submission) async {
     await Future.delayed(const Duration(milliseconds: 300));
+    debugPrint(submission.toString());
 
     final index = _storage.indexWhere((e) => e.id == serviceRequestId);
 
     if (index == -1) {
-      return ApiResponse(
-        message: "Service request not found",
-        data: null,
-      );
+      throw ApiException(404, "Service request not found");
     }
 
     final existing = _storage[index];
 
-    final updated = RequesterServiceRequestModel(
-      id: existing.id,
-      code: existing.code,
-      status: ServiceRequestStatus.completed,
-      service: existing.service,
-      requestedBy: existing.requestedBy,
-      company: existing.company,
-      intakeForm: existing.intakeForm,
-      reviewForm: existing.reviewForm != null
-          ? FilledFormModel(
-              form: existing.reviewForm!.form,
-              submission: submission,
-            )
-          : null,
-      createdAt: existing.createdAt,
-    );
-
-    _storage[index] = updated;
-
     return ApiResponse(
       message: "Success submit review form",
-      data: updated,
+      data: existing,
     );
   }
 
