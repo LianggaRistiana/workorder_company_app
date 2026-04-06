@@ -1,7 +1,7 @@
 import 'package:workorder_company_app/core/authorization/feature/service_request_permission.dart';
 import 'package:workorder_company_app/core/authorization/model/authorization_result.dart';
 import 'package:workorder_company_app/core/authorization/rule/authorization_rule.dart';
-import 'package:workorder_company_app/core/authorization/rule/composite/composite_rule_helper.dart';
+import 'package:workorder_company_app/core/authorization/rule/composite_rule/composite_rule_helper.dart';
 import 'package:workorder_company_app/core/authorization/rule/role_permission_rule/role_permission_helper.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
@@ -39,7 +39,7 @@ class _ServiceRequestOwner extends AuthorizationRule {
     }
 
     return const AuthorizationResult.denied(
-      'You are not the owner of this request',
+      'Anda bukan pemilik permintaan ini',
     );
   }
 }
@@ -60,7 +60,7 @@ class _ServiceRequestStatusRule extends AuthorizationRule {
     }
 
     return AuthorizationResult.denied(
-      'Invalid status: ${request.status}',
+      'Status ${request.status} tidak memenuhi syarat',
     );
   }
 }

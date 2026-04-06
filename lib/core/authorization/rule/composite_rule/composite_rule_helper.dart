@@ -1,5 +1,5 @@
 import 'package:workorder_company_app/core/authorization/rule/authorization_rule.dart';
-import 'package:workorder_company_app/core/authorization/rule/composite/composite_rule.dart';
+import 'package:workorder_company_app/core/authorization/rule/composite_rule/composite_rule.dart';
 
 /// Creates a composite [AuthorizationRule] that combines multiple rules
 /// using logical AND semantics.

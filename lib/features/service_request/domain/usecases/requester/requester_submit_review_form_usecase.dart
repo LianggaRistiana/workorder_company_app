@@ -13,8 +13,7 @@ class RequesterSubmitReviewFormUsecase {
       String serviceRequestId, SubmissionDraft submission) async {
     return UseCaseExecutor.run(
       map: () => submission.toEntity(),
-      action: (entity) =>
-          repository.submitReviewForm(serviceRequestId, entity!),
+      action: (entity) => repository.submitReviewForm(serviceRequestId, entity),
     );
   }
 }
