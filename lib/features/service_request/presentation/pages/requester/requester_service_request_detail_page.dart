@@ -6,8 +6,8 @@ import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
+import 'package:workorder_company_app/features/service_request/domain/authorization/requester_service_request_authorizer.dart';
 import 'package:workorder_company_app/features/service_request/domain/entities/service_request_entity.dart';
-import 'package:workorder_company_app/features/service_request/domain/policies/requester_service_request_policy.dart';
 import 'package:workorder_company_app/features/service_request/presentation/pages/service_request_content.dart';
 import 'package:workorder_company_app/features/service_request/presentation/state/requester/service_request_detail/requester_service_request_detail_cubit.dart';
 import 'package:workorder_company_app/features/service_request/presentation/state/requester/service_request_detail/requester_service_request_detail_state.dart';
@@ -55,7 +55,8 @@ class RequesterServiceRequestDetailPage extends StatelessWidget {
       case ServiceRequestStatus.received:
         return ServiceRequestCancel(
           serviceRequestId: request.id,
-        ).require(RequesterServiceRequestPolicy(request: request).cancelRule);
+        ).require(
+            RequesterServiceRequestAuthorizer(request: request).cancelRule);
 
       case ServiceRequestStatus.completed:
         return Padding(
@@ -67,7 +68,7 @@ class RequesterServiceRequestDetailPage extends StatelessWidget {
               label: Text("Isi Ulasan"),
               icon: Icon(AppIcon.review),
             )).require(
-          RequesterServiceRequestPolicy(request: request).fillReviewRule,
+          RequesterServiceRequestAuthorizer(request: request).reviewRule,
         );
       default:
         return SizedBox.shrink();

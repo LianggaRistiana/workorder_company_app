@@ -1,5 +1,5 @@
 import 'package:workorder_company_app/core/authorization/model/app_permission.dart';
-import 'package:workorder_company_app/core/authorization/rule/authorization_result.dart';
+import 'package:workorder_company_app/core/authorization/model/authorization_result.dart';
 import 'package:workorder_company_app/core/authorization/rule/authorization_rule.dart';
 import 'package:workorder_company_app/core/authorization/util/check_permission.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';

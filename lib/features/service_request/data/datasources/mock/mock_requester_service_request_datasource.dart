@@ -23,7 +23,7 @@ class MockRequesterServiceRequestDatasource
     RequesterServiceRequestModel(
       id: "req-1",
       code: "SR-001",
-      status: ServiceRequestStatus.completed,
+      status: ServiceRequestStatus.received,
       service: const ServiceSummaryModel(
         isActive: true,
         id: "service-1",

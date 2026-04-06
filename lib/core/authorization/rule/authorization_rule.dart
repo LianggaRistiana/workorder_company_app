@@ -1,5 +1,5 @@
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
-import 'authorization_result.dart';
+import '../model/authorization_result.dart';
 
 /// Represents a single authorization rule for an action.
 ///
