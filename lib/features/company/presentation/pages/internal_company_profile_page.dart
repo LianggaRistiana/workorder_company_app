@@ -24,7 +24,7 @@ class _InternalCompanyProfilePageState
   @override
   void initState() {
     super.initState();
-    context.read<InternalCompanyCubit>().loadCompany();
+    context.read<InternalGetCompanyCubit>().loadCompany();
   }
 
   @override
@@ -33,7 +33,7 @@ class _InternalCompanyProfilePageState
       appBar: AppBar(
         title: const Text("Profil Perusahaan"),
       ),
-      body: BlocBuilder<InternalCompanyCubit, InternalCompanyState>(
+      body: BlocBuilder<InternalGetCompanyCubit, InternalGetCompanyState>(
         builder: (context, state) {
           if (state.company == null && state.isLoading) {
             return const Center(child: AppLoading());
@@ -49,7 +49,7 @@ class _InternalCompanyProfilePageState
 
           return RefreshIndicator(
             onRefresh: () async {
-              await context.read<InternalCompanyCubit>().loadCompany();
+              await context.read<InternalGetCompanyCubit>().loadCompany();
             },
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),

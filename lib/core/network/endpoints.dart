@@ -41,7 +41,7 @@ class Endpoints {
   static const String serviceRequestIntakeInternal =
       "/services/:id/intake-form";
 
-  // Memberships  
+  // Memberships
   static const String memberships = "/memberships";
   static const String membershipCodes = "/memberships/codes";
   static const String generateMembershipCode = "/memberships/codes";
@@ -78,10 +78,6 @@ class Endpoints {
 
   static publicCompanyServices(String id) =>
       '${publicCompanies.byId(id)}/services';
-
-  // TODO : remove this later
-  static publicIntakeForms(String id) =>
-      '${publicServices.byId(id)}/intake-forms';
 }
 
 extension EndpointIdExtension on String {

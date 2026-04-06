@@ -50,7 +50,7 @@ Future<void> initCompanyFeature() async {
   sl.registerFactory<PublicCompanyServicesCubit>(
       () => PublicCompanyServicesCubit(sl()));
 
-  sl.registerFactory<InternalCompanyCubit>(() => InternalCompanyCubit(sl()));
+  sl.registerFactory<InternalGetCompanyCubit>(() => InternalGetCompanyCubit(sl()));
 
   sl.registerFactory<InternalUpdateCompanyCubit>(
       () => InternalUpdateCompanyCubit(sl()));

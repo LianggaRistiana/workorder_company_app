@@ -46,7 +46,8 @@ class MyApp extends StatelessWidget {
               di.sl<AuthBloc>()..add(AuthCheckStatus()), // Auth state for UI
         ),
         BlocProvider<NotificationCubit>(create: (_) => di.sl()),
-        BlocProvider<InternalCompanyCubit>(create: (_) => di.sl())
+        BlocProvider<InternalGetCompanyCubit>(
+            create: (_) => di.sl()) // TODO : dont inject here
       ],
       child: MaterialApp.router(
         title: AppConfig.appName,

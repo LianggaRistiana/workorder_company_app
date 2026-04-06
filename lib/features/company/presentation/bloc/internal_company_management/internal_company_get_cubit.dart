@@ -2,11 +2,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/features/company/domain/usecases/internal_get_company_usecase.dart';
 import 'internal_company_get_state.dart';
 
-// TODO : rename this cubit to explicit name ex: InternalCompanyGetCubit
-class InternalCompanyCubit extends Cubit<InternalCompanyState> {
+class InternalGetCompanyCubit extends Cubit<InternalGetCompanyState> {
   final InternalGetCompanyUsecase _usecase;
 
-  InternalCompanyCubit(this._usecase) : super(const InternalCompanyState());
+  InternalGetCompanyCubit(this._usecase) : super(const InternalGetCompanyState());
 
   Future<void> loadCompany() async {
     emit(state.copyWith(isLoading: true, error: null));
