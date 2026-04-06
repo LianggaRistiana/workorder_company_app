@@ -1,8 +1,8 @@
 import 'package:workorder_company_app/core/authorization/model/app_permission.dart';
 import 'package:workorder_company_app/core/authorization/rule/permission_rule.dart';
-import 'package:workorder_company_app/core/authorization/rule/role_permission/all_of_role_permission_rule.dart';
-import 'package:workorder_company_app/core/authorization/rule/role_permission/any_of_role_permission_rule.dart';
-import 'package:workorder_company_app/core/authorization/rule/role_permission/single_role_permission_rule.dart';
+import 'package:workorder_company_app/core/authorization/rule/role_permission_rule/all_of_role_permission_rule.dart';
+import 'package:workorder_company_app/core/authorization/rule/role_permission_rule/any_of_role_permission_rule.dart';
+import 'package:workorder_company_app/core/authorization/rule/role_permission_rule/single_role_permission_rule.dart';
 
 /// Creates a [PermissionRule] that checks if the user's role has a single permission.
 /// Use this for actions that require one specific permission.

@@ -2,8 +2,8 @@ import 'package:workorder_company_app/features/auth/domain/entities/user_entity.
 
 /// Represents a single **authorization rule** for an action.
 ///
-/// Each [PermissionRule] instance defines **one rule**.  
-/// One action may require multiple rules to be satisfied.  
+/// Each [PermissionRule] instance defines **one rule**.
+/// One action may require multiple rules to be satisfied.
 /// In that case, combine them using `ConditionEvaluator` (`allOf` / `anyOf`).
 ///
 /// Rules can depend on:
