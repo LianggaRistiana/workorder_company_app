@@ -13,7 +13,7 @@ import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/error_body.dart';
-import 'package:workorder_company_app/shared/widgets/icon_box.dart';
+import 'package:workorder_company_app/shared/widgets/header_of_page.dart';
 import 'package:workorder_company_app/shared/widgets/property_display.dart';
 
 class FormDetailPage extends StatelessWidget {
@@ -110,26 +110,8 @@ class _FormDetailViewState extends State<_FormDetailView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  IconBox(icon: Icons.assignment_turned_in_outlined),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      form.title,
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
-              ),
+              HeaderOfPage(title: form.title, icon: AppIcon.form),
               const SizedBox(height: 12),
-
-              // ---- Description ----
               CustomCard(
                   child: PropertyDisplay(properties: [
                 PropertyItem.text(
@@ -148,16 +130,12 @@ class _FormDetailViewState extends State<_FormDetailView> {
                   value: form.fields?.length.toString() ?? "-",
                 ),
               ])),
-
               HelpButton(title: "Kenali Tipe Formulir", child: FormTypeTips()),
-
               const SizedBox(height: 16),
               PropertyTitle(
                   label: "Daftar Pertanyaan", icon: Icons.question_mark),
-
               const SizedBox(height: 12),
-
-              // ---- Fields ----
+              // TODO : use custom list instead
               ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
