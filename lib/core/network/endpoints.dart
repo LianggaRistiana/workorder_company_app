@@ -28,20 +28,20 @@ class Endpoints {
   static const String servicesToggleActive = "/services/:id/toggle-active";
 
   // Service Request
-  static const String serviceRequestSent = "/service-request/sent";
-  static const String serviceRequestInbox = "/service-request/inbox";
+  static const String serviceRequestSent = "/service-requests/sent";
+  static const String serviceRequestInbox = "/service-requests/inbox";
   static const String serviceRequestDetail = "/service-request/:id";
   static const String serviceRequestCancel = "/service-request/:id/cancel";
   static const String serviceRequestApprove = "/service-request/:id/approve";
   static const String serviceRequestReject = "/service-request/:id/reject";
   static const String serviceRequestReview = "/service-request/:id/review";
-  static const String serviceRequestCreate = "/service-request/service:id";
+  static const String serviceRequestCreate = "/service-request/service/:id";
   static const String serviceRequestIntakePublic =
-      "public/services/:id/intake-forms";
+      "/public/services/:id/intake-form";
   static const String serviceRequestIntakeInternal =
-      "/services/:id/intake-forms";
+      "/services/:id/intake-form";
 
-  // Memberships
+  // Memberships  
   static const String memberships = "/memberships";
   static const String membershipCodes = "/memberships/codes";
   static const String generateMembershipCode = "/memberships/codes";

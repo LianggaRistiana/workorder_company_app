@@ -26,7 +26,7 @@ class PublicServicesRemoteDatasourceImpl
     return ApiResponse.fromJson(
       response,
       (data) => SafeMapper.mapList(
-        data['services'] as List?,
+        data['services'] as List?, // FIXME : BE SHOULD Fix THIS Response
         (json) => ServiceSummaryModel.fromJson(json),
       ),
     );

@@ -234,6 +234,7 @@ enum ServiceAccessType {
 
 enum FormType {
   intake,
+  review,
   workOrder,
   report;
 
@@ -243,6 +244,8 @@ enum FormType {
         return FormType.workOrder;
       case 'report':
         return FormType.report;
+      case 'review':
+        return FormType.review;
       case 'intake':
         return FormType.intake;
       default:
@@ -260,6 +263,8 @@ enum FormType {
     switch (this) {
       case FormType.workOrder:
         return 'Tugas Kerja';
+      case FormType.review:
+        return 'Ulasan';
       case FormType.report:
         return 'Laporan';
       case FormType.intake:
