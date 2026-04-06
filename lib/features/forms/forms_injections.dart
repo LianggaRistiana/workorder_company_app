@@ -5,7 +5,6 @@ import 'package:workorder_company_app/features/forms/domain/repositories/forms_r
 import 'package:workorder_company_app/features/forms/domain/usecases/create_form_usecase.dart';
 import 'package:workorder_company_app/features/forms/domain/usecases/get_form_byid_usecase.dart';
 import 'package:workorder_company_app/features/forms/domain/usecases/get_forms_usecase.dart';
-import 'package:workorder_company_app/features/forms/domain/usecases/public_get_service_form_usecase.dart';
 import 'package:workorder_company_app/features/forms/domain/usecases/update_form_usecase.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/create/form_create_cubit.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/detail/form_detail_cubit.dart';
@@ -22,8 +21,6 @@ Future<void> initFormsFeature() async {
   sl.registerLazySingleton<GetFormByIdUsecase>(() => GetFormByIdUsecase(sl()));
   sl.registerLazySingleton<CreateFormUsecase>(() => CreateFormUsecase(sl()));
   sl.registerLazySingleton<UpdateFormUsecase>(() => UpdateFormUsecase(sl()));
-  sl.registerLazySingleton<PublicGetServiceFormUsecase>(
-      () => PublicGetServiceFormUsecase(sl()));
 
   sl.registerFactory<FormsListBloc>(() => FormsListBloc(getFormsUsecase: sl()));
   sl.registerFactory<FormDetailCubit>(

@@ -4,15 +4,8 @@ import 'package:workorder_company_app/core/network/endpoints.dart';
 import 'package:workorder_company_app/core/types/future_api.dart';
 import 'package:workorder_company_app/core/utils/safe_mapper.dart';
 import 'package:workorder_company_app/features/forms/data/model/form_model.dart';
-import 'package:workorder_company_app/features/forms/data/model/ordered_form_model.dart';
-import 'package:workorder_company_app/features/submissions/data/model/submissions_model.dart';
 
 abstract class FormsRemoteDatasource {
-  // FIXME : REFACTOR THIS INTO SERVICE REQUEST FEATURE
-  Future<ApiResponse<List<OrderedFormModel>>> publicGetServiceForms(String id);
-  Future<ApiResponse<void>> publicSubmitIntakeForms(
-      String id, List<SubmissionsModel> submissions);
-
   ApiFutureList<FormModel> getForms();
   ApiFuture<FormModel> getFormById(String id);
   ApiFuture<FormModel> createForm(FormModel form);
@@ -52,30 +45,6 @@ class FormsRemoteDatasourceImpl implements FormsRemoteDatasource {
     return ApiResponse<FormModel>.fromJson(
       response,
       (data) => FormModel.fromJson(data),
-    );
-  }
-
-  @override
-  Future<ApiResponse<List<OrderedFormModel>>> publicGetServiceForms(
-      String id) async {
-    final response = await _apiClient.get(Endpoints.publicIntakeForms(id));
-
-    return ApiResponse<List<OrderedFormModel>>.fromJson(
-      response,
-      (data) => (data as List<dynamic>? ?? [])
-          .map((e) => OrderedFormModel.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
-  }
-
-  @override
-  Future<ApiResponse<void>> publicSubmitIntakeForms(
-      String id, List<SubmissionsModel> submissions) async {
-    final response = await _apiClient.post(Endpoints.publicIntakeForms(id),
-        data: {"submissions": submissions});
-    return ApiResponse<void>.fromJson(
-      response,
-      (data) => {},
     );
   }
 

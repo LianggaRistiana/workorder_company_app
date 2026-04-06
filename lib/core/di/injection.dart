@@ -12,7 +12,6 @@ import 'package:workorder_company_app/features/memberships/memberships_injection
 import 'package:workorder_company_app/features/notification/notification_injection.dart';
 import 'package:workorder_company_app/features/positions/positions_injections.dart';
 import 'package:workorder_company_app/features/services/services_injection.dart';
-import 'package:workorder_company_app/features/submissions/submissions_injection.dart';
 import 'package:workorder_company_app/features/workorder/workorder_injection.dart';
 import 'package:workorder_company_app/features/workreport/workreport_injection.dart';
 
@@ -31,7 +30,6 @@ Future<void> init() async {
   await initFormsFeature();
   await initServicesFeature();
   await initCompanyFeature();
-  await initSubmissionsFeature();
   await initClientServiceRequestFeature(); // TODO : remove this later
   await initWorkorderFeature();
   await intiWorkRerportFeature();

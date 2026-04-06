@@ -12,7 +12,7 @@ class UpdateFormUsecase {
   FutureEither<FormEntity> call(FormDraft draft) async {
     return UseCaseExecutor.run(
       map: () => draft.toEntity(),
-      action: (entity) => _repository.updateForm(entity!),
+      action: (entity) => _repository.updateForm(entity),
     );
   }
 }

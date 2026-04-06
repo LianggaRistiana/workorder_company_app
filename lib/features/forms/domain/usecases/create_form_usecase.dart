@@ -11,7 +11,7 @@ class CreateFormUsecase {
   FutureEither<void> call(FormDraft draft) async {
     return UseCaseExecutor.run(
       map: () => draft.toEntity(),
-      action: (entity) => _repository.createForm(entity!),
+      action: (entity) => _repository.createForm(entity),
     );
   }
 }
