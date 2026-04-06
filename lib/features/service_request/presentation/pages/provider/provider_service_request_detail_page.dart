@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:workorder_company_app/core/authorization/util/access_gate_on_widget.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
+import 'package:workorder_company_app/core/theme/app_spacing.dart';
+import 'package:workorder_company_app/features/service_request/domain/authorization/provider_service_request_authorizer.dart';
 import 'package:workorder_company_app/features/service_request/presentation/pages/service_request_content.dart';
 import 'package:workorder_company_app/features/service_request/presentation/state/provider/service_request_detail/provider_service_request_detail_cubit.dart';
 import 'package:workorder_company_app/features/service_request/presentation/state/provider/service_request_detail/provider_service_request_detail_state.dart';
+import 'package:workorder_company_app/features/service_request/presentation/widgets/service_request_provider_action.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 
 class ProviderServiceRequestDetailPage extends StatelessWidget {
@@ -28,9 +32,15 @@ class ProviderServiceRequestDetailPage extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(),
-          // bottomNavigationBar: serviceRequest != null
-          // ? _actionWidget(context, serviceRequest)
-          // : null,
+          bottomNavigationBar: serviceRequest != null
+              ? Padding(
+                  padding: const EdgeInsets.all(
+                    AppSpacing.md,
+                  ),
+                  child: ServiceRequestProviderAction(request: serviceRequest),
+                ).require(
+                  ProviderServiceRequestAuthorizer(serviceRequest).actionRule)
+              : null,
           body: ServiceRequestContent(
             isLoading: isLoading,
             serviceRequest: serviceRequest,

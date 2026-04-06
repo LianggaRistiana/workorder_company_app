@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/features/dashboard/presentation/widgets/dashboard_stat_card.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/widgets/menu_grid.dart';
@@ -46,25 +47,28 @@ class StaffContent extends StatelessWidget {
         MenuGrid(
           items: [
             MenuItem(
-                icon: Icons.people_outline,
+                icon: AppIcon.employee,
                 label: "Rekan Kerja",
                 onTap: () {
                   context.push(AppRoutes.employee);
                 }),
             MenuItem(
-                icon: Icons.assignment_outlined,
+                icon: AppIcon.serviceRequestSend,
+                label: "Permintaan Layanan",
+                onTap: () {
+                  context.push(AppRoutes.serviceRequestSent);
+                }),
+            MenuItem(
+                icon: AppIcon.workOrder,
                 label: "Perintah Kerja",
                 onTap: () {
                   context.go(AppRoutes.workorders);
                 }),
             MenuItem(
-                icon: Icons.history_outlined,
+                icon: AppIcon.workOrder,
                 label: "Riwayat Workorder",
                 onTap: () {}),
-            MenuItem(
-                icon: Icons.help_outline_outlined,
-                label: "Bantuan",
-                onTap: () {}),
+            MenuItem(icon: AppIcon.help, label: "Bantuan", onTap: () {}),
           ],
         ),
       ],

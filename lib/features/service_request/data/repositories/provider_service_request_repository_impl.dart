@@ -5,7 +5,7 @@ import 'package:workorder_company_app/features/service_request/domain/entities/s
 import 'package:workorder_company_app/features/service_request/domain/repositories/provider_service_request_repository.dart';
 
 class ProviderServiceRequestRepositoryImpl
-    implements InternalServiceRequestRepository {
+    implements ProviderServiceRequestRepository {
   final ProviderServiceRequestDatasource _providerServiceRequestDatasource;
 
   const ProviderServiceRequestRepositoryImpl(

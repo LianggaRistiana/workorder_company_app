@@ -41,6 +41,8 @@ class AppIcon {
   static const IconData edit = LucideIcons.edit3;
   static const IconData delete = LucideIcons.trash;
   static const IconData cancel = LucideIcons.trash;
+  static const IconData reject = LucideIcons.x;
+  static const IconData approve = LucideIcons.check;
   static const IconData remove = LucideIcons.trash;
 
   // Icon For Account Action

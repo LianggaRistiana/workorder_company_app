@@ -51,7 +51,9 @@ class _RequesterIntakePageState extends State<RequesterIntakePage> {
           appBar: AppBar(),
           bottomNavigationBar: Padding(
             padding: const EdgeInsets.all(AppSpacing.md),
-            child: ButtonWithLoadingState(
+            child:
+                // Provide Intake state here
+                ButtonWithLoadingState(
               icon: Icons.send,
               isLoading: false,
               onPressed: () {},

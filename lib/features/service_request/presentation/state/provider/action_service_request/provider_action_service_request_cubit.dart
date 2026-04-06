@@ -4,12 +4,12 @@ import 'package:workorder_company_app/features/service_request/domain/usecases/p
 import 'package:workorder_company_app/features/service_request/domain/usecases/provider/provider_reject_service_request_usecase.dart';
 import 'package:workorder_company_app/features/service_request/presentation/state/provider/action_service_request/provider_action_service_request_state.dart';
 
-class ProviderReviewServiceRequestCubit
+class ProviderActionServiceRequestCubit
     extends Cubit<ProviderActionServiceRequestState> {
   final ProviderApproveServiceRequestUsecase approveServiceRequestUsecase;
   final ProviderRejectServiceRequestUsecase rejectServiceRequestUsecase;
 
-  ProviderReviewServiceRequestCubit({
+  ProviderActionServiceRequestCubit({
     required this.approveServiceRequestUsecase,
     required this.rejectServiceRequestUsecase,
   }) : super(const ProviderActionServiceRequestState());
@@ -17,18 +17,18 @@ class ProviderReviewServiceRequestCubit
   Future<void> approveServiceRequest(
       ProviderServiceRequestEntity entity) async {
     emit(state.copyWith(
-        status: ProviderReviewServiceRequestStatus.loading,
+        status: ProviderActionServiceRequestStatus.loading,
         errorMessage: null));
 
     final result = await approveServiceRequestUsecase(entity);
 
     result.fold(
       (failure) => emit(state.copyWith(
-        status: ProviderReviewServiceRequestStatus.error,
+        status: ProviderActionServiceRequestStatus.error,
         errorMessage: failure.message,
       )),
       (request) => emit(state.copyWith(
-        status: ProviderReviewServiceRequestStatus.success,
+        status: ProviderActionServiceRequestStatus.approved,
         request: request,
       )),
     );
@@ -36,18 +36,18 @@ class ProviderReviewServiceRequestCubit
 
   Future<void> rejectServiceRequest(ProviderServiceRequestEntity entity) async {
     emit(state.copyWith(
-        status: ProviderReviewServiceRequestStatus.loading,
+        status: ProviderActionServiceRequestStatus.loading,
         errorMessage: null));
 
     final result = await rejectServiceRequestUsecase(entity);
 
     result.fold(
       (failure) => emit(state.copyWith(
-        status: ProviderReviewServiceRequestStatus.error,
+        status: ProviderActionServiceRequestStatus.error,
         errorMessage: failure.message,
       )),
       (request) => emit(state.copyWith(
-        status: ProviderReviewServiceRequestStatus.success,
+        status: ProviderActionServiceRequestStatus.rejected,
         request: request,
       )),
     );

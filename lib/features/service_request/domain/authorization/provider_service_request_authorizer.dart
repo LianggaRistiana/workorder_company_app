@@ -21,6 +21,14 @@ class ProviderServiceRequestAuthorizer {
         roleCan(ServiceRequestPermission.reject),
         _ServiceRequestStatusRule(request, ServiceRequestStatus.received),
       ]);
+
+  AuthorizationRule get actionRule => rules([
+        roleCanAll([
+          ServiceRequestPermission.reject,
+          ServiceRequestPermission.approve,
+        ]),
+        _ServiceRequestStatusRule(request, ServiceRequestStatus.received),
+      ]);
 }
 
 class _ServiceRequestStatusRule extends AuthorizationRule {

@@ -3,7 +3,7 @@ import 'package:workorder_company_app/features/service_request/domain/entities/s
 import 'package:workorder_company_app/features/service_request/domain/repositories/provider_service_request_repository.dart';
 
 class ProviderRejectServiceRequestUsecase {
-  final InternalServiceRequestRepository repository;
+  final ProviderServiceRequestRepository repository;
 
   ProviderRejectServiceRequestUsecase(this.repository);
 
