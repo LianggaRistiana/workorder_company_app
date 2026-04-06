@@ -120,7 +120,7 @@ class _View extends StatelessWidget {
                           : company.description,
                     ),
 
-                    // TODO : fix this later
+                    // FIXME[API REQUIRED] : fix this later
                     PropertyItem.widget(
                         icon: AppIcon.membership,
                         label: "Status Keanggotaan",

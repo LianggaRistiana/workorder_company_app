@@ -47,52 +47,6 @@ class FieldsEditorTabView extends StatelessWidget {
         coordinator: coordinator,
       ),
     );
-
-    // TODO : Legacy Code, you can remove after observation step is done
-    // return SingleChildScrollView(
-    //   padding: const EdgeInsets.all(16),
-    //   child: Form(
-    //     key: formKey,
-    //     child: Column(
-    //       children: [
-    //         // FancyReorderableList(
-    //         //   items: fields,
-    //         //   // emptyWidget: InformationBlock.warning("Pertanyaan kosong"),
-    //         //   onReorder: coordinator.moveField,
-    //         //   // itemKeyBuilder: (item) => item.uiKey,
-    //         //   itemBuilder: (_, index) => FieldCardWidget(
-    //         //     key: ValueKey(fields[index].uiKey),
-    //         //     index: index,
-    //         //     coordinator: coordinator,
-    //         //   ),
-    //         // ),
-    //         ReorderableCustomList(
-    //           items: fields,
-    //           emptyWidget: InformationBlock.warning("Pertanyaan kosong"),
-    //           onReorder: coordinator.moveField,
-    //           itemKeyBuilder: (item) => item.uiKey,
-    //           footer: DashedButton(
-    //             height: 150,
-    //             borderRadius: 12,
-    //             icon: Icons.add,
-    //             onTap: onAddField,
-    //             title: 'Tambah Pertanyaan',
-    //             borderColor: Theme.of(context).disabledColor,
-    //             color: Theme.of(context).colorScheme.primary,
-    //           ),
-    //           itemBuilder: (_, index) => FieldCardWidget(
-    //             // key: ValueKey(fields[index].uiKey),
-    //             index: index,
-    //             coordinator: coordinator,
-    //           ),
-    //         ),
-    //         const SizedBox(height: 8),
-
-    //         const SizedBox(height: 32),
-    //       ],
-    //     ),
-    //   ),
-    // );
   }
 }
 
@@ -227,7 +181,7 @@ class _FieldCardWidgetState extends State<FieldCardWidget> {
                   ),
                 ),
                 const SizedBox(width: 8),
-                // TODO : validator mis max
+                // TODO[Medium] : validator mis max
                 Expanded(
                   child: CustomInputField(
                     label: "Maksimal",

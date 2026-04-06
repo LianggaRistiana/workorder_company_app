@@ -1,7 +1,8 @@
 import 'package:workorder_company_app/core/authorization/model/app_permission.dart';
 import 'package:workorder_company_app/core/authorization/enums/app_feature.dart';
 import 'package:workorder_company_app/core/authorization/enums/permission_action.dart';
-// TODO : explicit permision rather than update
+
+// TODO[WO DONE FIRST] : explicit permision rather than update
 class WorkOrderPermissions {
   static const view =
       AppPermission(AppFeature.workOrder, PermissionAction.view);

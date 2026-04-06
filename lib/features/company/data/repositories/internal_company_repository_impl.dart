@@ -11,7 +11,7 @@ class InternalCompanyRepositoryImpl implements InternalCompanyRepository {
 
   InternalCompanyRepositoryImpl(this._companyManagementRemoteDatasource);
 
-  // TODO : add cache here
+  // TODO[Medium] : add cache here
 
   @override
   Future<Either<Failure, CompanyEntity>> getCompanyInformation() async {

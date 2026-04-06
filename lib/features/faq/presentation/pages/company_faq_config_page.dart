@@ -8,7 +8,7 @@ class CompanyFaqConfigPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO : inject bloc here
+    // TODO[API REQUIRED] : inject bloc here
     return _CompanyFaqConfigView();
   }
 }
