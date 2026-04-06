@@ -33,7 +33,7 @@ class PublicServicesRemoteDatasourceImpl
 
   @override
   ApiFuture<ServiceModel> getPublicServiceDetails(String serviceId) {
-    // TODO: implement getPublicServiceDetails
+    // TODO[High]: implement getPublicServiceDetails
     throw UnimplementedError();
   }
 }

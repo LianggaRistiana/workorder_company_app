@@ -13,7 +13,7 @@ class RequesterSubmitReviewFormUsecase {
       String serviceRequestId, SubmissionDraft submission) async {
     return UseCaseExecutor.run(
       map: () => submission.toEntity(), 
-      authorize: null, // TODO : add authorization rule here
+      authorize: null, // TODO[Medium] : add authorization rule here
       action: (entity) => repository.submitReviewForm(serviceRequestId, entity),
     );
   }

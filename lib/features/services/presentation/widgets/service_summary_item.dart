@@ -6,7 +6,7 @@ import 'package:workorder_company_app/features/services/domain/entities/service_
 import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
 
-// TODO : Rename ServiceSummaryItemCard
+// TODO[Low] : Rename ServiceSummaryItemCard
 class ServiceSummaryItem extends StatelessWidget {
   final ServiceSummaryEntity service;
   final bool isPublic;

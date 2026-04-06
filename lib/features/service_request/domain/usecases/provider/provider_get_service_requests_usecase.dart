@@ -8,7 +8,6 @@ class ProviderGetServiceRequestsUsecase {
   ProviderGetServiceRequestsUsecase(this.repository);
 
   FutureEitherList<ProviderServiceRequestEntity> call() async {
-    // TODO : add authorization rule here
     return repository.getServiceRequests();
   }
 }

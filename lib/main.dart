@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<NotificationCubit>(create: (_) => di.sl()),
         BlocProvider<InternalGetCompanyCubit>(
-            create: (_) => di.sl()) // TODO : dont inject here
+            create: (_) => di.sl()) // TODO[Medium]: dont inject here
       ],
       child: MaterialApp.router(
         title: AppConfig.appName,

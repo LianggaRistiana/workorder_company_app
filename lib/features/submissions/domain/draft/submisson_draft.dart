@@ -3,6 +3,7 @@ import 'package:workorder_company_app/features/forms/domain/entities/form_entity
 import 'package:workorder_company_app/features/submissions/domain/draft/field_data_draft.dart';
 import 'package:workorder_company_app/features/submissions/domain/entitties/submission_entity.dart';
 
+// TODO[High] : Make coordinator with isDirty feature
 class SubmissionDraft {
   final String formId;
   FormType submissionType;
