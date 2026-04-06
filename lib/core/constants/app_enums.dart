@@ -392,7 +392,6 @@ enum ServiceRequestStatus {
   approved,
   workOrderCreated,
   completed;
-  
 
   static ServiceRequestStatus fromString(String value) {
     switch (value) {
@@ -541,4 +540,4 @@ enum WorkOrderStatus {
 
 enum WorkReportStatus { inProgress, completed, cancelled }
 
-enum BlocState { initial, loading, loaded, error }
+enum ServiceRequestSide { provider, requester }

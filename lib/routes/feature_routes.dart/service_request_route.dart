@@ -1,15 +1,16 @@
 import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/features/service_request/domain/entities/service_request_entity.dart';
+import 'package:workorder_company_app/features/service_request/presentation/pages/provider/provider_service_request_detail_page.dart';
+import 'package:workorder_company_app/features/service_request/presentation/pages/provider/provider_service_request_list_page.dart';
 import 'package:workorder_company_app/features/service_request/presentation/pages/requester/requester_intake_page.dart';
 import 'package:workorder_company_app/features/service_request/presentation/pages/requester/requester_review_page.dart';
 import 'package:workorder_company_app/features/service_request/presentation/pages/requester/requester_service_request_detail_page.dart';
 import 'package:workorder_company_app/features/service_request/presentation/pages/requester/requester_service_request_list_page.dart';
 import 'package:workorder_company_app/features/services/domain/entities/base_service_entity.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
-import 'package:workorder_company_app/shared/page/not_found_page.dart';
-// import 'package:workorder_company_app/shared/page/not_found_page.dart';
+import 'package:workorder_company_app/shared/page/forbidden_page.dart';
 
-// TODO : give permission later
 final serviceRequestRoute = [
   GoRoute(
     path: AppRoutes.serviceRequestSent,
@@ -17,7 +18,7 @@ final serviceRequestRoute = [
   ),
   GoRoute(
     path: AppRoutes.serviceRequestInbox,
-    builder: (_, __) => NotFoundPage(),
+    builder: (_, __) => ProviderServiceRequestListPage(),
   ),
   GoRoute(
     path: AppRoutes.serviceRequestReview,
@@ -32,10 +33,21 @@ final serviceRequestRoute = [
     ),
   ),
   GoRoute(
-      path: AppRoutes.serviceRequestDetail,
-      builder: (_, state) {
-        return RequesterServiceRequestDetailPage(
-          id: state.pathParameters['id']!,
-        );
-      }),
+    path: AppRoutes.serviceRequestDetail,
+    builder: (_, state) {
+      final extra = state.extra;
+      switch (extra) {
+        case ServiceRequestSide.provider as ServiceRequestSide:
+          return ProviderServiceRequestDetailPage(
+            id: state.pathParameters['id']!,
+          );
+        case ServiceRequestSide.requester:
+          return RequesterServiceRequestDetailPage(
+            id: state.pathParameters['id']!,
+          );
+        default:
+          return const ForbiddenPage();
+      }
+    },
+  ),
 ];
