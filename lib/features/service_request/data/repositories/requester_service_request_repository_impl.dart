@@ -1,3 +1,4 @@
+import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/types/future_either.dart';
 import 'package:workorder_company_app/core/utils/safe_call.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
@@ -43,10 +44,17 @@ class RequesterServiceRequestRepositoryImpl
   }
 
   @override
-  FutureEither<FormEntity> getIntakeForm(String serviceId) {
+  FutureEither<FormEntity> getIntakeForm(String serviceId, UserRole role) {
+    if (role == UserRole.client) {
+      return safeCall(() async {
+        final payload = await _requesterServiceRequestDatasource
+            .getIntakeFormForPublic(serviceId);
+        return payload.data!;
+      });
+    }
     return safeCall(() async {
-      final payload =
-          await _requesterServiceRequestDatasource.getIntakeForm(serviceId);
+      final payload = await _requesterServiceRequestDatasource
+          .getIntakeFormForInternal(serviceId);
       return payload.data!;
     });
   }

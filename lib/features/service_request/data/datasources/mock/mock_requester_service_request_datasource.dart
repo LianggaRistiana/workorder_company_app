@@ -193,12 +193,55 @@ class MockRequesterServiceRequestDatasource
   }
 
   @override
-  ApiFuture<FormModel> getIntakeForm(String serviceId) async {
+  ApiFuture<FormModel> getIntakeFormForPublic(String serviceId) async {
     await Future.delayed(const Duration(milliseconds: 300));
 
     final form = FormModel(
       id: "intake-$serviceId",
       title: "Intake Form",
+      description: "Please fill out the details of your request",
+      formType: FormType.intake,
+      fields: const [
+        FieldModel(
+          order: 1,
+          label: "Problem Description",
+          type: FieldType.textarea,
+          required: true,
+          placeholder: "Describe the issue...",
+        ),
+        FieldModel(
+          order: 2,
+          label: "Priority",
+          type: FieldType.singleSelect,
+          required: true,
+          options: [
+            OptionModel(key: "high", value: "High"),
+            OptionModel(key: "medium", value: "Medium"),
+            OptionModel(key: "low", value: "Low"),
+          ],
+        ),
+        FieldModel(
+          order: 3,
+          label: "Preferred Date",
+          type: FieldType.date,
+          required: false,
+        ),
+      ],
+    );
+
+    return ApiResponse(
+      message: "Success get intake form",
+      data: form,
+    );
+  }
+
+  @override
+  ApiFuture<FormModel> getIntakeFormForInternal(String serviceId) async {
+    await Future.delayed(const Duration(milliseconds: 300));
+
+    final form = FormModel(
+      id: "intake-$serviceId",
+      title: "Intake Form INTERNALLLL",
       description: "Please fill out the details of your request",
       formType: FormType.intake,
       fields: const [

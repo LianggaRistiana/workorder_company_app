@@ -35,9 +35,11 @@ class Endpoints {
   static const String serviceRequestApprove = "/service-request/:id/approve";
   static const String serviceRequestReject = "/service-request/:id/reject";
   static const String serviceRequestReview = "/service-request/:id/review";
-  // TODO : fix this later
-  static const String serviceRequestIntake =
-      "/service/:id//service-request/intake";
+  static const String serviceRequestCreate = "/service-request/service:id";
+  static const String serviceRequestIntakePublic =
+      "public/services/:id/intake-forms";
+  static const String serviceRequestIntakeInternal =
+      "/services/:id/intake-forms";
 
   // Memberships
   static const String memberships = "/memberships";

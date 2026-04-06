@@ -31,7 +31,7 @@ Future<void> initServiceRequestFeature() async {
       () => RequesterCancelServiceRequestUsecase(sl()));
 
   sl.registerFactory<RequesterGetIntakeFormUsecase>(
-      () => RequesterGetIntakeFormUsecase(sl()));
+      () => RequesterGetIntakeFormUsecase(sl(),sl()));
 
   sl.registerFactory<RequesterSubmitReviewFormUsecase>(
       () => RequesterSubmitReviewFormUsecase(sl()));

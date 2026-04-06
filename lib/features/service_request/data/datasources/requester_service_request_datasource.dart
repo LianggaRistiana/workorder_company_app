@@ -13,7 +13,8 @@ abstract class RequesterServiceRequestDatasource {
   ApiFutureList<RequesterServiceRequestModel> getServiceRequests();
   ApiFuture<RequesterServiceRequestModel> getServiceRequestDetail(String id);
   ApiFuture<RequesterServiceRequestModel> cancelServiceRequest(String id);
-  ApiFuture<FormModel> getIntakeForm(String serviceId);
+  ApiFuture<FormModel> getIntakeFormForPublic(String serviceId);
+  ApiFuture<FormModel> getIntakeFormForInternal(String serviceId);
   ApiFuture<FormModel> getReviewForm(String serviceRequestId);
   ApiFuture<RequesterServiceRequestModel> submitReviewForm(
       String serviceRequestId, SubmissionsModel submission);
@@ -63,7 +64,7 @@ class RequesterServiceRequestDatasourceImpl
   ApiFuture<RequesterServiceRequestModel> submitIntakeForm(
       String serviceId, SubmissionsModel submission) {
     return _submitForm(
-      Endpoints.serviceRequestIntake.fillId(serviceId),
+      Endpoints.serviceRequestCreate.fillId(serviceId),
       submission,
     );
   }
@@ -78,9 +79,16 @@ class RequesterServiceRequestDatasourceImpl
   }
 
   @override
-  ApiFuture<FormModel> getIntakeForm(String serviceId) {
+  ApiFuture<FormModel> getIntakeFormForPublic(String serviceId) {
     return _getForm(
-      Endpoints.serviceRequestIntake.fillId(serviceId),
+      Endpoints.serviceRequestIntakePublic.fillId(serviceId),
+    );
+  }
+
+  @override
+  ApiFuture<FormModel> getIntakeFormForInternal(String serviceId) {
+    return _getForm(
+      Endpoints.serviceRequestIntakeInternal.fillId(serviceId),
     );
   }
 
