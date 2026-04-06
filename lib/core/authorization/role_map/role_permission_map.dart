@@ -1,5 +1,4 @@
 import 'package:workorder_company_app/core/authorization/feature/company_permission.dart';
-import 'package:workorder_company_app/core/authorization/feature/csr_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/employee_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/form_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/invitation_permission.dart';
@@ -23,7 +22,6 @@ extension UserRolePermissions on UserRole {
           ...EmployeePermission.all,
           ...FormPermission.all,
           ...ServicePermission.all,
-          ...CsrPermission.all,
           ...WorkOrderPermissions.all,
           ...WorkReportPermissions.all,
           ...InvitationPermission.admin,
@@ -37,7 +35,6 @@ extension UserRolePermissions on UserRole {
           EmployeePermission.view,
           FormPermission.view,
           ServicePermission.view,
-          ...CsrPermission.all,
           ...WorkOrderPermissions.all,
           ...WorkReportPermissions.all,
           ...ServiceRequestPermission.receiver,
@@ -50,7 +47,6 @@ extension UserRolePermissions on UserRole {
           EmployeePermission.view,
           FormPermission.view,
           ServicePermission.view,
-          CsrPermission.view,
           WorkOrderPermissions.view,
           ...ServiceRequestPermission.requester,
           ...WorkReportPermissions.all
@@ -58,7 +54,6 @@ extension UserRolePermissions on UserRole {
       case UserRole.client:
         return {
           PublicCompanies.view,
-          CsrPermission.view,
           MembershipsPermission.claim,
           ...ServiceRequestPermission.requester,
         };
