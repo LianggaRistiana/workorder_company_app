@@ -21,7 +21,7 @@ class ProviderServiceRequestModel extends ProviderServiceRequestEntity {
 
   factory ProviderServiceRequestModel.fromJson(Map<String, dynamic> json) {
     return ProviderServiceRequestModel(
-      id: json['id'],
+      id: json['_id'],
       code: json['code'],
       status: ServiceRequestStatus.fromString(json['status']),
       service: ServiceSummaryModel.fromJson(json['service']),
