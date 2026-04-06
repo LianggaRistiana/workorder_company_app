@@ -4,7 +4,7 @@ import 'package:workorder_company_app/core/authorization/feature/form_permission
 import 'package:workorder_company_app/core/authorization/feature/invitation_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/memberships_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/positions_permission.dart';
-import 'package:workorder_company_app/core/authorization/feature/public_companies.dart';
+import 'package:workorder_company_app/core/authorization/feature/public_companies_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/service_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/service_request_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/workreport_permission.dart';
@@ -53,7 +53,7 @@ extension UserRolePermissions on UserRole {
         };
       case UserRole.client:
         return {
-          PublicCompanies.view,
+          PublicCompaniesPermission.view,
           MembershipsPermission.claim,
           ...ServiceRequestPermission.requester,
         };
