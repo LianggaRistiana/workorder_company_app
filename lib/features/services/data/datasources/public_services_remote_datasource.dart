@@ -19,7 +19,6 @@ class PublicServicesRemoteDatasourceImpl
 
   @override
   ApiFutureList<ServiceSummaryModel> getPublicServices(String companyId) async {
-    // TODO : BE should fix this response
     final response =
         await _apiClient.get(Endpoints.publicCompanyServices(companyId));
 

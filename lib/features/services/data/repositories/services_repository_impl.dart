@@ -36,7 +36,7 @@ class ServicesRepositoryImpl implements ServicesRepository {
   }
 
   @override
-  FutureEither<ServiceEntity> getPublicServiceById(String id) {
+  FutureEither<ServiceEntity> getPublicServiceDetail(String id) {
     // TODO: implement getPublicServiceById
     throw UnimplementedError();
   }

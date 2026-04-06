@@ -128,7 +128,7 @@ class _View extends StatelessWidget {
                   ])),
                 PropertyTitle(label: "Daftar Layanan", icon: AppIcon.service),
                 const SizedBox(height: 8),
-                PublicServices()
+                PublicServicesList()
               ],
             ),
           ),

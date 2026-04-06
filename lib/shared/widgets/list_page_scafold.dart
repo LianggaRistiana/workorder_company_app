@@ -62,7 +62,6 @@ class ListPageScaffold<T> extends StatelessWidget {
       );
     }
 
-    // TODO : fix later (empty and loaded should have on refresindicator)
     // EMPTY
     else if (items.isEmpty) {
       content = RefreshIndicator(

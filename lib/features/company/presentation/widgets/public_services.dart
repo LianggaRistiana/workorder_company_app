@@ -16,9 +16,8 @@ import 'package:workorder_company_app/shared/widgets/error_body.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
 import 'package:workorder_company_app/shared/widgets/information_block.dart';
 
-// TODO : Rename this later add "widget" or "list"
-class PublicServices extends StatelessWidget {
-  const PublicServices({super.key});
+class PublicServicesList extends StatelessWidget {
+  const PublicServicesList({super.key});
 
   @override
   Widget build(BuildContext context) {
