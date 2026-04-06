@@ -7,45 +7,24 @@ import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 import 'package:workorder_company_app/features/service_request/domain/entities/service_request_entity.dart';
 
-class RequesterServiceRequestAuthorizer {
-  final RequesterServiceRequestEntity request;
+class ProviderServiceRequestAuthorizer {
+  final ProviderServiceRequestEntity request;
 
-  const RequesterServiceRequestAuthorizer({
-    required this.request,
-  });
+  const ProviderServiceRequestAuthorizer(this.request);
 
-  AuthorizationRule get cancelRule => rules([
-        roleCan(ServiceRequestPermission.cancel),
+  AuthorizationRule get approveRule => rules([
+        roleCan(ServiceRequestPermission.approve),
         _ServiceRequestStatusRule(request, ServiceRequestStatus.received),
-        _ServiceRequestOwner(request)
       ]);
 
-  AuthorizationRule get reviewRule => rules([
-        roleCan(ServiceRequestPermission.update),
-        _ServiceRequestStatusRule(request, ServiceRequestStatus.completed),
-        _ServiceRequestOwner(request)
+  AuthorizationRule get rejectRule => rules([
+        roleCan(ServiceRequestPermission.reject),
+        _ServiceRequestStatusRule(request, ServiceRequestStatus.received),
       ]);
-}
-
-class _ServiceRequestOwner extends AuthorizationRule {
-  final RequesterServiceRequestEntity request;
-
-  _ServiceRequestOwner(this.request);
-
-  @override
-  AuthorizationResult evaluate(UserEntity user) {
-    if (request.requestedBy.email == user.email) {
-      return const AuthorizationResult.allowed();
-    }
-
-    return const AuthorizationResult.denied(
-      'Anda bukan pemilik permintaan ini',
-    );
-  }
 }
 
 class _ServiceRequestStatusRule extends AuthorizationRule {
-  final RequesterServiceRequestEntity request;
+  final ProviderServiceRequestEntity request;
   final ServiceRequestStatus expectedStatus;
 
   _ServiceRequestStatusRule(
