@@ -55,3 +55,12 @@ class NetworkException implements Exception {
   @override
   String toString() => message ?? 'NetworkException';
 }
+
+class PolicyException implements Exception {
+  final String? message;
+
+  PolicyException([this.message]);
+
+  @override
+  String toString() => message ?? 'NetworkException';
+}

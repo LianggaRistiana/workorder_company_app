@@ -1,23 +1,52 @@
 import 'package:workorder_company_app/core/authorization/model/app_permission.dart';
-import 'package:workorder_company_app/core/authorization/rule/permission_rule.dart';
+import 'package:workorder_company_app/core/authorization/rule/authorization_result.dart';
+import 'package:workorder_company_app/core/authorization/rule/authorization_rule.dart';
 import 'package:workorder_company_app/core/authorization/util/check_permission.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 
-/// A [PermissionRule] that checks if a user's role has **at least one** of the specified permissions.
+/// A role-based [AuthorizationRule] that grants access if
+/// the user's role contains **at least one** of the specified
+/// [AppPermission]s.
 ///
-/// This rule grants access if the user possesses **any** of the permissions in [permissions].
-/// It is useful for actions where multiple alternative permissions are acceptable.
+/// This rule performs a logical OR permission check at the role level.
+/// Authorization succeeds as soon as one permission in the
+/// [permissions] list is granted.
 ///
-/// The check is performed via `user.role.canAny`, ensuring that authorization logic
-/// remains centralized and consistent across the app.
-class AnyOfRolePermissionRule implements PermissionRule {
-  /// The list of permissions to check against the user's role.
+/// This is useful when multiple permissions are considered
+/// equivalent for performing the same action.
+///
+/// Example:
+/// ```dart
+/// AnyOfRolePermissionRule([
+///   AppPermission.workOrderUpdate,
+///   AppPermission.workOrderApprove,
+/// ]);
+/// ```
+///
+/// In this case, the user only needs one of the permissions
+/// to be authorized.
+///
+/// Notes:
+/// - Evaluation is delegated to the role's permission logic.
+/// - Access is denied only if none of the permissions are present.
+/// - The denial result contains a generic authorization message.
+class AnyOfRolePermissionRule implements AuthorizationRule {
   final List<AppPermission> permissions;
 
-  const AnyOfRolePermissionRule(this.permissions);
+  const AnyOfRolePermissionRule(this.permissions)
+      : assert(permissions.length > 1,
+            'Permissions list must have at least 2 items.');
 
   @override
-  bool isAllowed(UserEntity user) {
-    return user.role.canAny(permissions);
+  AuthorizationResult evaluate(UserEntity user) {
+    final hasAnyPermission = user.role.canAny(permissions);
+
+    if (!hasAnyPermission) {
+      return AuthorizationResult.denied(
+        "Anda tidak memiliki izin yang diperlukan untuk melakukan aksi ini.",
+      );
+    }
+
+    return const AuthorizationResult.allowed();
   }
 }

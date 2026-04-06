@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:workorder_company_app/core/authorization/feature/workorder_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/workreport_permission.dart';
 import 'package:workorder_company_app/core/authorization/rule/role_permission_rule/role_permission_helper.dart';
-import 'package:workorder_company_app/core/authorization/util/permission_gate_on_widget.dart';
+import 'package:workorder_company_app/core/authorization/util/access_gate_on_widget.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
