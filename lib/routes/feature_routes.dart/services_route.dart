@@ -9,7 +9,16 @@ import 'package:workorder_company_app/routes/app_routes.dart';
 final serviceRoute = [
   GoRoute(
     path: AppRoutes.services,
-    builder: (_, __) => const ServicesListPage(),
+    builder: (_, state) {
+      final extra = state.extra;
+      if (extra is NextStepMode) {
+        return ServicesListPage(
+          nextStepMode: extra,
+        );
+      } else {
+        return ServicesListPage();
+      }
+    },
   ),
   GoRoute(
     path: AppRoutes.servicesCreate,

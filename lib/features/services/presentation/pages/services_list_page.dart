@@ -15,20 +15,27 @@ import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
 import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
 import 'package:workorder_company_app/shared/widgets/list_page_scafold.dart';
 
+enum NextStepMode { detail, createServiceRequest }
+
 class ServicesListPage extends StatelessWidget {
-  const ServicesListPage({super.key});
+  final NextStepMode nextStepMode;
+  const ServicesListPage({super.key, this.nextStepMode = NextStepMode.detail});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => sl<ServicesListBloc>()..add(GetServicesRequested()),
-      child: const _ServicesListView(),
+      child: _ServicesListView(nextStepMode),
     );
   }
 }
 
 class _ServicesListView extends StatelessWidget {
-  const _ServicesListView();
+  final NextStepMode nextStepMode;
+
+  const _ServicesListView(
+    this.nextStepMode,
+  );
 
   Future<void> _onRefresh(BuildContext context) async {
     context
@@ -76,13 +83,28 @@ class _ServicesListView extends StatelessWidget {
                   service: item,
                   isPublic: false,
                   onTap: () async {
-                    final result = await context
-                        .push(AppRoutes.servicesDetail.fillId(item.id));
-                    if (!context.mounted) return;
-                    if (result == true) {
-                      context
-                          .read<ServicesListBloc>()
-                          .add(GetServicesRequested());
+                    switch (nextStepMode) {
+                      case NextStepMode.detail:
+                        final result = await context.push(
+                          AppRoutes.servicesDetail.fillId(item.id),
+                        );
+                        if (!context.mounted) return;
+                        if (result == true) {
+                          context
+                              .read<ServicesListBloc>()
+                              .add(GetServicesRequested());
+                        }
+                        break;
+                      case NextStepMode.createServiceRequest:
+                        await context.push(
+                          AppRoutes.serviceRequestCreate.fillId(item.id),
+                        );
+                        // if (!context.mounted) return;
+                        // if (result == true) {
+                        //   context
+                        //       .read<ServicesListBloc>()
+                        //       .add(GetServicesRequested());
+                        break;
                     }
                   },
                 ));

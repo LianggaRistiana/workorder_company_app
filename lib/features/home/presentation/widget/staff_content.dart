@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
-import 'package:workorder_company_app/features/dashboard/presentation/widgets/dashboard_stat_card.dart';
+// import 'package:workorder_company_app/features/dashboard/presentation/widgets/dashboard_stat_card.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/widgets/menu_grid.dart';
 import 'package:workorder_company_app/shared/widgets/menu_item.dart';
@@ -16,31 +16,31 @@ class StaffContent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 4),
-        Row(
-          children: [
-            Expanded(
-              child: DashboardStatCard(
-                icon: Icons.assignment_outlined,
-                label: "Tugas Saya",
-                value: 2,
-                onTap: () {
-                  context.go(AppRoutes.workorders);
-                },
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: DashboardStatCard(
-                icon: Icons.assignment_outlined,
-                label: "Tugas Aktif Saya",
-                value: 1,
-                onTap: () {
-                  context.go(AppRoutes.workorders);
-                },
-              ),
-            ),
-          ],
-        ),
+        // Row(
+        //   children: [
+        //     Expanded(
+        //       child: DashboardStatCard(
+        //         icon: Icons.assignment_outlined,
+        //         label: "Tugas Saya",
+        //         value: 2,
+        //         onTap: () {
+        //           context.go(AppRoutes.workorders);
+        //         },
+        //       ),
+        //     ),
+        //     const SizedBox(width: 12),
+        //     Expanded(
+        //       child: DashboardStatCard(
+        //         icon: Icons.assignment_outlined,
+        //         label: "Tugas Aktif Saya",
+        //         value: 1,
+        //         onTap: () {
+        //           context.go(AppRoutes.workorders);
+        //         },
+        //       ),
+        //     ),
+        //   ],
+        // ),
         const SizedBox(height: 8),
         const SectionTitle("Menu"),
         const SizedBox(height: 12),

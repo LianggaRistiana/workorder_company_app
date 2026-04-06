@@ -3,7 +3,9 @@ import 'package:workorder_company_app/core/authorization/model/authorization_res
 import 'package:workorder_company_app/core/authorization/rule/authorization_rule.dart';
 import 'package:workorder_company_app/core/authorization/rule/composite_rule/composite_rule_helper.dart';
 import 'package:workorder_company_app/core/authorization/rule/role_permission_rule/role_permission_helper.dart';
+import 'package:workorder_company_app/core/authorization/util/check_permission.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
+import 'package:workorder_company_app/core/utils/condition_evaluator.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 import 'package:workorder_company_app/features/service_request/domain/entities/service_request_entity.dart';
 
@@ -25,6 +27,27 @@ class RequesterServiceRequestAuthorizer {
         _ServiceRequestStatusRule(request, ServiceRequestStatus.completed),
         _ServiceRequestOwner(request)
       ]);
+
+  // AuthorizationRule get internalCreateRule => rules([
+  //       roleCan(ServiceRequestPermission.create),
+  //       _InternalServiceRequestCreate()
+  //     ]);
+}
+
+class InternalServiceRequestCreateRule extends AuthorizationRule {
+  @override
+  AuthorizationResult evaluate(UserEntity user) {
+    if (allOf([
+      () => user.role.canPermission(ServiceRequestPermission.create),
+      () => user.role == UserRole.staffCompany
+    ])) {
+      return const AuthorizationResult.allowed();
+    } else {
+      return const AuthorizationResult.denied(
+        'Anda tidak dapat melakukan ini',
+      );
+    }
+  }
 }
 
 class _ServiceRequestOwner extends AuthorizationRule {
