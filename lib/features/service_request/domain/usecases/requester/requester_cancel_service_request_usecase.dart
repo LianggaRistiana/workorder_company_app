@@ -8,6 +8,7 @@ class RequesterCancelServiceRequestUsecase {
   RequesterCancelServiceRequestUsecase(this.repository);
 
   FutureEither<RequesterServiceRequestEntity> call(String id) async {
+    // TODO : add authorization rule here
     return repository.cancelServiceRequest(id);
   }
 }

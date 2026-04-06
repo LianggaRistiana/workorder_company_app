@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:workorder_company_app/core/model/property_key.dart';
 
 abstract class Failure extends Equatable {
-  final String message; // optional pesan error
+  final String message;
   const Failure({required this.message});
 
   @override

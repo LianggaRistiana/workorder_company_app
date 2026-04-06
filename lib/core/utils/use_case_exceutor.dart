@@ -96,4 +96,44 @@ class UseCaseExecutor {
     // Transform the Either<Failure, T> into Either<Failure, R>
     return transform(result.fold((l) => Left(l), (r) => r));
   }
+
+  /// Runs a use case directly with a provided entity, optionally performing authorization.
+  ///
+  /// This method is useful when you already have a fully constructed domain entity
+  /// and do not need to map raw input.
+  ///
+  /// Example usage:
+  /// ```dart
+  /// final result = await UseCaseExecutor.runDirect<MyEntity, String>(
+  ///   entity: MyEntity.fromForm(form),
+  ///   authorize: (entity) => entity.canEdit(),
+  ///   action: (entity) => repository.updateEntity(entity),
+  /// );
+  /// ```
+
+  static FutureEither<R> runDirect<E, R>({
+    AuthorizationResult Function(E entity)? authorize,
+    required FutureEither<R> Function(E entity) action,
+    required E entity,
+  }) async {
+    // Authorization
+    if (authorize != null) {
+      final result = authorize(entity);
+      if (!result.isAllowed) {
+        return Left(PolicyFailure(result.message));
+      }
+    }
+
+    // Action
+    try {
+      return await action(entity);
+    } on ValidationException catch (e) {
+      return Left(
+        ValidationFailure(
+            message: e.message ?? "Terjadi Kesalahan", errors: {}),
+      );
+    } catch (e) {
+      return Left(UnexpectedFailure(message: e.toString()));
+    }
+  }
 }

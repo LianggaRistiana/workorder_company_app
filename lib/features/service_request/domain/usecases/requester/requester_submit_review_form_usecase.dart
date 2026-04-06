@@ -8,11 +8,12 @@ class RequesterSubmitReviewFormUsecase {
   final RequesterServiceRequestRepository repository;
 
   RequesterSubmitReviewFormUsecase(this.repository);
-
+  
   FutureEither<RequesterServiceRequestEntity> call(
       String serviceRequestId, SubmissionDraft submission) async {
     return UseCaseExecutor.run(
-      map: () => submission.toEntity(),
+      map: () => submission.toEntity(), 
+      authorize: null, // TODO : add authorization rule here
       action: (entity) => repository.submitReviewForm(serviceRequestId, entity),
     );
   }
