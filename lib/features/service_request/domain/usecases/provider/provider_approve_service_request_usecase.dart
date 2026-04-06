@@ -1,0 +1,14 @@
+import 'package:workorder_company_app/core/types/future_either.dart';
+import 'package:workorder_company_app/features/service_request/domain/entities/service_request_entity.dart';
+import 'package:workorder_company_app/features/service_request/domain/repositories/provider_service_request_repository.dart';
+
+class ProviderApproveServiceRequestUsecase {
+  final InternalServiceRequestRepository repository;
+
+  ProviderApproveServiceRequestUsecase(this.repository);
+
+  FutureEither<ProviderServiceRequestEntity> call(ProviderServiceRequestEntity entity) async {
+    // TODO : add authorization rule here
+    return repository.approveServiceRequest(entity.id);
+  }
+}

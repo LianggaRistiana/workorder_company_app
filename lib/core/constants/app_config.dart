@@ -12,7 +12,7 @@ class AppConfig {
     'development.dede': 'http://192.168.1.193:3000',
     'development.ngrok': 'http://172.16.153.108:3000',
     'staging': 'https://workorder-team.vercel.app/',
-    'production': 'https://workorder-portal-production.up.railway.app',
+    'production': 'https://workorder-portal-production-219f.up.railway.app',
   };
 
   static String get baseApiUrl => baseApiUrls[appFlavor]!;
