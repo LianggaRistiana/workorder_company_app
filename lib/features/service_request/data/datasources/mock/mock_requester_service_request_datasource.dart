@@ -320,10 +320,7 @@ class MockRequesterServiceRequestDatasource
     final index = _storage.indexWhere((e) => e.service.id == serviceId);
 
     if (index == -1) {
-      return ApiResponse(
-        message: "Service not found",
-        data: null,
-      );
+      throw ApiException(404, "service not found");
     }
 
     final existing = _storage[index];

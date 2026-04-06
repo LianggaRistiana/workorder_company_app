@@ -41,7 +41,7 @@ class RequesterServiceRequestDatasourceImpl
 
   @override
   ApiFutureList<RequesterServiceRequestModel> getServiceRequests() async {
-    final response = await _apiClient.get(Endpoints.serviceRequestInbox);
+    final response = await _apiClient.get(Endpoints.serviceRequestSent);
     return ApiResponse.fromJson(
       response,
       (data) => SafeMapper.mapList(

@@ -26,6 +26,7 @@ class RegisterPage extends StatelessWidget {
           ],
         ),
       ),
+      // FIXME : Scrollable here
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.lg),

@@ -30,6 +30,7 @@ import 'package:workorder_company_app/features/service_request/presentation/stat
 Future<void> initServiceRequestFeature() async {
   /// Data Source
   sl.registerLazySingleton<RequesterServiceRequestDatasource>(
+      // () => RequesterServiceRequestDatasourceImpl(sl()));
       () => MockRequesterServiceRequestDatasource());
 
   sl.registerLazySingleton<ProviderServiceRequestDatasource>(

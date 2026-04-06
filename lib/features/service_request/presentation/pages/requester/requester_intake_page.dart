@@ -6,6 +6,8 @@ import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/filled_form_entity.dart';
 import 'package:workorder_company_app/features/service_request/presentation/state/requester/get_intake_form/requester_get_intake_form_cubit.dart';
 import 'package:workorder_company_app/features/service_request/presentation/state/requester/get_intake_form/requester_get_intake_form_state.dart';
+import 'package:workorder_company_app/features/service_request/presentation/state/requester/submit_intake_form/requester_submit_intake_form_cubit.dart';
+import 'package:workorder_company_app/features/service_request/presentation/state/requester/submit_intake_form/requester_submit_intake_form_state.dart';
 import 'package:workorder_company_app/features/services/domain/entities/base_service_entity.dart';
 import 'package:workorder_company_app/features/services/presentation/widgets/service_summary_property_view.dart';
 import 'package:workorder_company_app/features/submissions/domain/draft/submisson_draft.dart';
@@ -49,17 +51,15 @@ class _RequesterIntakePageState extends State<RequesterIntakePage> {
         },
         builder: (context, state) => Scaffold(
           appBar: AppBar(),
-          bottomNavigationBar: Padding(
-            padding: const EdgeInsets.all(AppSpacing.md),
-            child:
-                // Provide Intake state here
-                ButtonWithLoadingState(
-              icon: Icons.send,
-              isLoading: false,
-              onPressed: () {},
-              label: "Kirim",
-            ),
-          ),
+          bottomNavigationBar: state.status ==
+                      RequesterGetIntakeFormStatus.loaded &&
+                  state.form != null
+              ? Padding(
+                  padding: const EdgeInsets.all(AppSpacing.md),
+                  child:
+                      _buildSubmitButton(context, draft, widget.baseService.id),
+                )
+              : null,
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
             child: SingleChildScrollView(
@@ -85,6 +85,36 @@ class _RequesterIntakePageState extends State<RequesterIntakePage> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildSubmitButton(
+      BuildContext context, SubmissionDraft draft, String serviceId) {
+    return BlocProvider(
+      create: (_) => sl<RequesterSubmitIntakeFormCubit>(),
+      child: BlocConsumer<RequesterSubmitIntakeFormCubit,
+              RequesterSubmitIntakeFormState>(
+          listener: (context, state) {
+            if (state.status == RequesterSubmitIntakeFormStatus.error) {
+              context.showError(state.errorMessage ?? "Terjadi Kesalahan");
+            }
+            if (state.status == RequesterSubmitIntakeFormStatus.success) {
+              // TODO : redirect to detail sr page
+              context.pop();
+            }
+          },
+          builder: (context, state) => ButtonWithLoadingState(
+                icon: Icons.send,
+                isLoading:
+                    state.status == RequesterSubmitIntakeFormStatus.loading,
+                onPressed: () {
+                  FocusScope.of(context).unfocus();
+                  context
+                      .read<RequesterSubmitIntakeFormCubit>()
+                      .submitIntakeForm(serviceId, draft);
+                },
+                label: "Kirim",
+              )),
     );
   }
 }
