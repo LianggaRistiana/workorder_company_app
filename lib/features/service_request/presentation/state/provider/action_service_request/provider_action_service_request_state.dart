@@ -1,30 +1,30 @@
 import 'package:equatable/equatable.dart';
 import 'package:workorder_company_app/features/service_request/domain/entities/service_request_entity.dart';
 
-enum ProviderRejectServiceRequestStatus {
+enum ProviderReviewServiceRequestStatus {
   initial,
   loading,
   success,
   error,
 }
 
-class ProviderRejectServiceRequestState extends Equatable {
-  final ProviderRejectServiceRequestStatus status;
+class ProviderActionServiceRequestState extends Equatable {
+  final ProviderReviewServiceRequestStatus status;
   final ProviderServiceRequestEntity? request;
   final String? errorMessage;
 
-  const ProviderRejectServiceRequestState({
-    this.status = ProviderRejectServiceRequestStatus.initial,
+  const ProviderActionServiceRequestState({
+    this.status = ProviderReviewServiceRequestStatus.initial,
     this.request,
     this.errorMessage,
   });
 
-  ProviderRejectServiceRequestState copyWith({
-    ProviderRejectServiceRequestStatus? status,
+  ProviderActionServiceRequestState copyWith({
+    ProviderReviewServiceRequestStatus? status,
     ProviderServiceRequestEntity? request,
     String? errorMessage,
   }) {
-    return ProviderRejectServiceRequestState(
+    return ProviderActionServiceRequestState(
       status: status ?? this.status,
       request: request ?? this.request,
       errorMessage: errorMessage ?? this.errorMessage,
