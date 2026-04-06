@@ -1,4 +1,9 @@
+import 'package:workorder_company_app/core/constants/app_enums.dart';
+import 'package:workorder_company_app/core/utils/safe_parse.dart';
+import 'package:workorder_company_app/features/auth/data/model/user_model.dart';
+import 'package:workorder_company_app/features/forms/data/model/filled_form_model.dart';
 import 'package:workorder_company_app/features/service_request/domain/entities/service_request_entity.dart';
+import 'package:workorder_company_app/features/services/data/model/service_summary_model.dart';
 
 class ProviderServiceRequestModel extends ProviderServiceRequestEntity {
   ProviderServiceRequestModel({
@@ -14,5 +19,25 @@ class ProviderServiceRequestModel extends ProviderServiceRequestEntity {
     required super.createdAt,
   });
 
-  // TODO : factory fromjson
+  factory ProviderServiceRequestModel.fromJson(Map<String, dynamic> json) {
+    return ProviderServiceRequestModel(
+      id: json['id'],
+      code: json['code'],
+      status: ServiceRequestStatus.fromString(json['status']),
+      service: ServiceSummaryModel.fromJson(json['service']),
+      requestedBy: UserModel.fromJson(json['requestedBy']),
+      reviewNeed: safeParse<bool>(json, "reviewNeed", requiredField: true),
+      approvalAccess:
+          ServiceRequestApprovalAccess.fromString(json['approvalAccess']),
+      intakeForm: json['intakeForm'] == null
+          ? null
+          : FilledFormModel.fromJson(
+              json['intakeForm'], json['intakeSubmission']),
+      reviewForm: json['reviewForm'] == null
+          ? null
+          : FilledFormModel.fromJson(
+              json['reviewForm'], json['reviewSubmission']),
+      createdAt: DateTime.parse(json['createdAt']),
+    );
+  }
 }

@@ -12,7 +12,7 @@ class RequesterServiceRequestRepositoryImpl
     implements RequesterServiceRequestRepository {
   final RequesterServiceRequestDatasource _requesterServiceRequestDatasource;
 
-  RequesterServiceRequestRepositoryImpl(
+  const RequesterServiceRequestRepositoryImpl(
       this._requesterServiceRequestDatasource);
 
   @override

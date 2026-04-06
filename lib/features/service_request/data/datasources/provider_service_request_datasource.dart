@@ -1,3 +1,67 @@
 // TODO : rename this later add to remote datasource
 
-abstract class ProviderServiceRequestDatasource {}
+import 'package:workorder_company_app/core/network/api_client.dart';
+import 'package:workorder_company_app/core/network/api_response.dart';
+import 'package:workorder_company_app/core/network/endpoints.dart';
+import 'package:workorder_company_app/core/types/future_api.dart';
+import 'package:workorder_company_app/core/utils/safe_mapper.dart';
+import 'package:workorder_company_app/features/service_request/data/model/provider_service_request_model.dart';
+import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
+
+abstract class ProviderServiceRequestDatasource {
+  ApiFutureList<ProviderServiceRequestModel> getServiceRequests();
+  ApiFuture<ProviderServiceRequestModel> getServiceRequestDetail(String id);
+  ApiFuture<ProviderServiceRequestModel> approveServiceRequest(String id);
+  ApiFuture<ProviderServiceRequestModel> rejectServiceRequest(String id);
+}
+
+class ProviderServiceRequestDatasourceImpl
+    implements ProviderServiceRequestDatasource {
+  final ApiClient _apiClient;
+
+  ProviderServiceRequestDatasourceImpl(this._apiClient);
+
+  @override
+  ApiFuture<ProviderServiceRequestModel> approveServiceRequest(
+      String id) async {
+    final response =
+        await _apiClient.patch(Endpoints.serviceRequestApprove.fillId(id));
+    return ApiResponse.fromJson(
+      response,
+      (json) => ProviderServiceRequestModel.fromJson(json),
+    );
+  }
+
+  @override
+  ApiFuture<ProviderServiceRequestModel> getServiceRequestDetail(
+      String id) async {
+    final response =
+        await _apiClient.get(Endpoints.serviceRequestDetail.fillId(id));
+    return ApiResponse.fromJson(
+      response,
+      (data) => ProviderServiceRequestModel.fromJson(data),
+    );
+  }
+
+  @override
+  ApiFutureList<ProviderServiceRequestModel> getServiceRequests() async {
+    final response = await _apiClient.get(Endpoints.serviceRequestSent);
+    return ApiResponse.fromJson(
+      response,
+      (data) => SafeMapper.mapList(
+        data,
+        (json) => ProviderServiceRequestModel.fromJson(json),
+      ),
+    );
+  }
+
+  @override
+  ApiFuture<ProviderServiceRequestModel> rejectServiceRequest(String id) async {
+    final response =
+        await _apiClient.patch(Endpoints.serviceRequestReject.fillId(id));
+    return ApiResponse.fromJson(
+      response,
+      (json) => ProviderServiceRequestModel.fromJson(json),
+    );
+  }
+}
