@@ -7,7 +7,7 @@ import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/company/presentation/bloc/public_companies_list/public_companies_list_bloc.dart';
 import 'package:workorder_company_app/features/company/presentation/bloc/public_companies_list/public_companies_list_event.dart';
 import 'package:workorder_company_app/features/company/presentation/bloc/public_companies_list/public_companies_list_state.dart';
-import 'package:workorder_company_app/features/company/presentation/widgets/company_card.dart';
+import 'package:workorder_company_app/features/company/presentation/widgets/company_item_card.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
@@ -49,7 +49,7 @@ class PublicCompaniesListPage extends StatelessWidget {
                       .read<PublicCompaniesListBloc>()
                       .add(GetPublicCompaniesRequested());
                 },
-                itemBuilder: (company) => CompanyCard(
+                itemBuilder: (company) => CompanyItemCard(
                       company: company,
                       onTap: () {
                         context.push(

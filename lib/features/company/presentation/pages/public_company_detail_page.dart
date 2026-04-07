@@ -6,7 +6,7 @@ import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/company/presentation/bloc/public_company_detail/public_company_detail_cubit.dart';
 import 'package:workorder_company_app/features/company/presentation/bloc/public_company_detail/public_company_detail_state.dart';
 import 'package:workorder_company_app/features/company/presentation/bloc/public_company_services.dart/public_company_services_cubit.dart';
-import 'package:workorder_company_app/features/company/presentation/widgets/public_services.dart';
+import 'package:workorder_company_app/features/company/presentation/widgets/public_services_list.dart';
 import 'package:workorder_company_app/features/memberships/presentation/widgets/subcription_chip.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
