@@ -86,6 +86,7 @@ class ListPageScaffold<T> extends StatelessWidget {
     }
 
     // LOADED
+    // FIXME[High] : Use Listview builder to lazy load and header should shown either loaded or not
     else {
       content = RefreshIndicator(
         onRefresh: onRefresh,

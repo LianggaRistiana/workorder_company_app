@@ -5,6 +5,8 @@ import 'package:workorder_company_app/features/company/domain/entities/company_e
 import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
 
+
+// TODO[Low] : Rename this to CompanyItemCard
 class CompanyCard extends StatelessWidget {
   final CompanyEntity company;
   final VoidCallback? onTap;

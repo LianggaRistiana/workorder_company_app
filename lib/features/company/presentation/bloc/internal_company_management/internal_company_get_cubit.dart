@@ -5,7 +5,8 @@ import 'internal_company_get_state.dart';
 class InternalGetCompanyCubit extends Cubit<InternalGetCompanyState> {
   final InternalGetCompanyUsecase _usecase;
 
-  InternalGetCompanyCubit(this._usecase) : super(const InternalGetCompanyState());
+  InternalGetCompanyCubit(this._usecase)
+      : super(const InternalGetCompanyState());
 
   Future<void> loadCompany() async {
     emit(state.copyWith(isLoading: true, error: null));

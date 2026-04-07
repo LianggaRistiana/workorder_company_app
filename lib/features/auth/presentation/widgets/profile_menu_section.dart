@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/notification/presentation/widgets/notification_toggle.dart';
 import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
 import 'package:workorder_company_app/shared/widgets/horizontal_switch.dart';
@@ -12,21 +13,19 @@ class ProfileMenuSection extends StatelessWidget {
     return Column(
       children: [
         const NotificationToggle(),
-
         HorizontalSwitch(
+          margin: EdgeInsets.only(bottom: AppSpacing.xs),
           title: "Petunjuk",
           leadingIcon: Icons.info_outline,
-          description:
-              "Tampilkan petunjuk penggunaan aplikasi Anda",
+          description: "Tampilkan petunjuk penggunaan aplikasi Anda",
           value: false,
           onChanged: (_) {},
         ),
-
         HorizontalButton(
+          margin: EdgeInsets.only(bottom: AppSpacing.xs),
           title: "Coba versi website",
           leadingIcon: Icons.public,
-          description:
-              "Versi website disarankan untuk penggunaan desktop",
+          description: "Versi website disarankan untuk penggunaan desktop",
           onTap: () {
             showAppBottomSheet(
               context,
@@ -39,8 +38,8 @@ class ProfileMenuSection extends StatelessWidget {
             );
           },
         ),
-
         HorizontalButton(
+          margin: EdgeInsets.only(bottom: AppSpacing.xs),
           title: "Bantuan",
           leadingIcon: Icons.help_outline,
           description:

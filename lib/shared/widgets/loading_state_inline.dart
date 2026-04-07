@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 
 class LoadingStateInline extends StatelessWidget {
-  const LoadingStateInline({super.key});
+  final bool isEndAlign;
+
+  const LoadingStateInline({super.key, this.isEndAlign = true});
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisAlignment:
+          isEndAlign ? MainAxisAlignment.end : MainAxisAlignment.center,
       children: [
         CircleAvatar(
           radius: 12,

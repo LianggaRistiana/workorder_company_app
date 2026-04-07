@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/notification/domain/entitties/notification_os_status.dart';
 import 'package:workorder_company_app/features/notification/presentation/bloc/notification_cubit.dart';
 import 'package:workorder_company_app/features/notification/presentation/bloc/notification_state.dart';
@@ -21,6 +22,7 @@ class _NotificationToggleState extends State<NotificationToggle> {
         final isEnabled = state.osStatus.isEnabled;
 
         return HorizontalSwitch(
+          margin: EdgeInsets.only(bottom: AppSpacing.xs),
           title: "Notifikasi",
           description: "Dapatkan informasi terbaru melalui notifikasi",
           leadingIcon: Icons.notifications_none_outlined,
