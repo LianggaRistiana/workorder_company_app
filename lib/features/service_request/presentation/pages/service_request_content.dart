@@ -52,6 +52,7 @@ class ServiceRequestContent extends StatelessWidget {
               // HeaderOfPage(title: serviceRequest!.code, icon: AppIcon.service),
               // const SizedBox(height: 8),
               CustomCard(
+                  margin: const EdgeInsets.only(bottom: AppSpacing.xs),
                   child: PropertyDisplay(properties: [
                 PropertyItem.text(
                     label: "Kode Permintaan",
@@ -77,7 +78,7 @@ class ServiceRequestContent extends StatelessWidget {
                   PropertyItem.text(
                       label: "Disetujui oleh",
                       value: serviceRequest!.approvedBy!.name,
-                      icon: AppIcon.user),
+                      icon: AppIcon.approve),
                 PropertyItem.text(
                     label: "Diajukan pada",
                     value: DateFormat('d MMMM yyyy', 'id_ID')
@@ -90,7 +91,10 @@ class ServiceRequestContent extends StatelessWidget {
                 const SizedBox(
                   height: AppSpacing.md,
                 ),
-                FilledFormView(filledForm: serviceRequest!.intakeForm!)
+                FilledFormView(filledForm: serviceRequest!.intakeForm!),
+                const SizedBox(
+                  height: AppSpacing.lg,
+                ),
               ]
             ],
           ),
