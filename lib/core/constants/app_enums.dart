@@ -316,6 +316,7 @@ enum FieldType {
   }
 
   String toKebabCase() {
+    // TODO[Low] : Remove this later
     return name.toKebabCase();
   }
 
@@ -397,6 +398,7 @@ enum ServiceRequestStatus {
   approved,
   workOrderCreated,
   completed;
+  // FIXME[High] : add closed status
 
   static ServiceRequestStatus fromString(String value) {
     switch (value) {
@@ -409,6 +411,8 @@ enum ServiceRequestStatus {
       case 'approved':
         return ServiceRequestStatus.approved;
       case 'work_order_created':
+        return ServiceRequestStatus.workOrderCreated;
+      case 'workOrderCreated': // FIXME[API REQUIRED] : remove this later after Backend fix this missmatch to contract
         return ServiceRequestStatus.workOrderCreated;
       case 'completed':
         return ServiceRequestStatus.completed;
