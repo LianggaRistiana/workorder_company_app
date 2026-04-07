@@ -97,7 +97,8 @@ class _ServicesListView extends StatelessWidget {
                         break;
                       case NextStepMode.createServiceRequest:
                         await context.push(
-                          AppRoutes.serviceRequestCreate.fillId(item.id),
+                          AppRoutes.serviceRequestCreate.fillId(item.id,),
+                          extra: item,
                         );
                         // if (!context.mounted) return;
                         // if (result == true) {

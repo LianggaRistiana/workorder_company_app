@@ -12,6 +12,7 @@ class RequesterServiceRequestModel extends RequesterServiceRequestEntity {
     required super.status,
     required super.service,
     required super.requestedBy,
+    super.approvedBy,
     required super.company,
     super.intakeForm,
     super.reviewForm,
@@ -22,9 +23,12 @@ class RequesterServiceRequestModel extends RequesterServiceRequestEntity {
     return RequesterServiceRequestModel(
       id: json['_id'],
       code: json['code'],
-      status: ServiceRequestStatus.fromString(json['status']),
+      status: ServiceRequestStatus.fromString(json['serviceRequestStatus']),
       service: ServiceSummaryModel.fromJson(json['service']),
       requestedBy: UserModel.fromJson(json['requestedBy']),
+      approvedBy: json['approvedBy'] == null
+          ? null
+          : UserModel.fromJson(json['approvedBy']),
       company: CompanyModel.fromJson(json['company']),
       intakeForm: json['intakeForm'] == null
           ? null

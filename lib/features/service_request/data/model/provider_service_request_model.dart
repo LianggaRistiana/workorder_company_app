@@ -14,6 +14,7 @@ class ProviderServiceRequestModel extends ProviderServiceRequestEntity {
     required super.requestedBy,
     required super.reviewNeed,
     required super.approvalAccess,
+    super.approvedBy,
     super.intakeForm,
     super.reviewForm,
     required super.createdAt,
@@ -23,12 +24,16 @@ class ProviderServiceRequestModel extends ProviderServiceRequestEntity {
     return ProviderServiceRequestModel(
       id: json['_id'],
       code: json['code'],
-      status: ServiceRequestStatus.fromString(json['status']),
+      status: ServiceRequestStatus.fromString(json['serviceRequestStatus']),
       service: ServiceSummaryModel.fromJson(json['service']),
       requestedBy: UserModel.fromJson(json['requestedBy']),
+      approvedBy: json['approvedBy'] == null
+          ? null
+          : UserModel.fromJson(json['approvedBy']),
       reviewNeed: safeParse<bool>(json, "reviewNeed", requiredField: true),
+      // reviewNeed: false,
       approvalAccess:
-          ServiceRequestApprovalAccess.fromString(json['approvalAccess']),
+          ServiceRequestApprovalAccess.fromString(json['serviceRequestApprovalAccessType']),
       intakeForm: json['intakeForm'] == null
           ? null
           : FilledFormModel.fromJson(

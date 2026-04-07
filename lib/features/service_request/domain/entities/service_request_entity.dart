@@ -10,6 +10,7 @@ sealed class ServiceRequestEntity {
   final ServiceSummaryEntity service;
   final ServiceRequestStatus status;
   final UserEntity requestedBy;
+  final UserEntity? approvedBy;
   final FilledFormEntity? intakeForm;
   final FilledFormEntity? reviewForm;
   final DateTime createdAt;
@@ -19,6 +20,7 @@ sealed class ServiceRequestEntity {
     required this.code,
     required this.status,
     required this.service,
+    this.approvedBy,
     required this.requestedBy,
     this.intakeForm,
     this.reviewForm,
@@ -38,6 +40,8 @@ class ProviderServiceRequestEntity implements ServiceRequestEntity {
   @override
   final UserEntity requestedBy;
   @override
+  final UserEntity? approvedBy;
+  @override
   final FilledFormEntity? intakeForm;
   @override
   final FilledFormEntity? reviewForm;
@@ -53,6 +57,7 @@ class ProviderServiceRequestEntity implements ServiceRequestEntity {
     required this.status,
     required this.service,
     required this.requestedBy,
+    this.approvedBy,
     this.intakeForm,
     this.reviewForm,
     required this.reviewNeed,
@@ -60,7 +65,6 @@ class ProviderServiceRequestEntity implements ServiceRequestEntity {
     required this.createdAt,
   });
 }
-
 
 class RequesterServiceRequestEntity implements ServiceRequestEntity {
   @override
@@ -73,6 +77,8 @@ class RequesterServiceRequestEntity implements ServiceRequestEntity {
   final ServiceRequestStatus status;
   @override
   final UserEntity requestedBy;
+  @override
+  final UserEntity? approvedBy;
   @override
   final FilledFormEntity? intakeForm;
   @override
@@ -88,6 +94,7 @@ class RequesterServiceRequestEntity implements ServiceRequestEntity {
     required this.status,
     required this.service,
     required this.requestedBy,
+    this.approvedBy,
     this.intakeForm,
     this.reviewForm,
     required this.company,

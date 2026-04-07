@@ -7,7 +7,7 @@ class ServiceSummaryModel extends ServiceSummaryEntity {
   const ServiceSummaryModel(
       {required super.id,
       required super.title,
-      required super.description,
+      required super.description, // FIXME[HIGH] : nullable
       required super.accessType,
       required super.isActive});
 
@@ -16,6 +16,7 @@ class ServiceSummaryModel extends ServiceSummaryEntity {
       id: safeParse<String>(json, "_id"),
       title: safeParse<String>(json, "title"),
       description: safeParse<String>(json, "description"),
+      // description: "TEST",
       accessType:
           ServiceAccessType.fromString(safeParse<String>(json, "accessType")),
       isActive: safeParse<bool>(json, "isActive"),

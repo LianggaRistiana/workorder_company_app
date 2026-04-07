@@ -100,6 +100,7 @@ class _RequesterIntakePageState extends State<RequesterIntakePage> {
             }
             if (state.status == RequesterSubmitIntakeFormStatus.success) {
               // TODO[High] : redirect to detail sr page
+              context.showSuccess("Berhasil mengirim formulir");
               context.pop();
             }
           },

@@ -37,14 +37,6 @@ class ServiceRequestContent extends StatelessWidget {
       );
     }
 
-    // if (serviceRequest is RequesterServiceRequestEntity) {
-    //   return _buildRequesterContent(
-    //       serviceRequest as RequesterServiceRequestEntity);
-    // } else if (serviceRequest is ProviderServiceRequestEntity) {
-    //   return _buildProviderContent(
-    //       serviceRequest as ProviderServiceRequestEntity);
-    // }
-
     return RefreshIndicator(
         onRefresh: () async {
           if (onRefresh != null) {
@@ -80,6 +72,11 @@ class ServiceRequestContent extends StatelessWidget {
                   PropertyItem.text(
                       label: "Diajukan oleh",
                       value: serviceRequest!.requestedBy.name,
+                      icon: AppIcon.user),
+                if (serviceRequest!.approvedBy != null)
+                  PropertyItem.text(
+                      label: "Disetujui oleh",
+                      value: serviceRequest!.approvedBy!.name,
                       icon: AppIcon.user),
                 PropertyItem.text(
                     label: "Diajukan pada",

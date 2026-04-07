@@ -9,7 +9,7 @@ class ServiceModel extends ServiceEntity {
   const ServiceModel({
     required super.id,
     required super.title,
-    required super.description,
+    required super.description, // TODO : nullable
     required super.accessType,
     required super.isActive,
     required super.serviceRequestConfig,

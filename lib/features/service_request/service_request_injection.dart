@@ -1,5 +1,4 @@
 import 'package:workorder_company_app/core/di/injection.dart';
-import 'package:workorder_company_app/features/service_request/data/datasources/mock/mock_provider_service_request_datasource.dart';
 import 'package:workorder_company_app/features/service_request/data/datasources/provider_service_request_remote_datasource.dart';
 import 'package:workorder_company_app/features/service_request/data/datasources/requester_service_request_remote_datasource.dart';
 import 'package:workorder_company_app/features/service_request/data/repositories/provider_service_request_repository_impl.dart';
@@ -38,7 +37,7 @@ Future<void> _initDataSources() async {
       () => RequesterServiceRequestRemoteDatasourceImpl(sl()));
 
   sl.registerLazySingleton<ProviderServiceRequestRemoteDatasource>(
-      () => MockProviderServiceRequestDatasource());
+      () => ProviderServiceRequestRemoteDatasourceImpl(sl()));
 }
 
 Future<void> _initRepositories() async {
