@@ -27,21 +27,29 @@ import 'package:workorder_company_app/features/service_request/presentation/stat
 import 'package:workorder_company_app/features/service_request/presentation/state/requester/submit_review_form/requester_submit_review_form_cubit.dart';
 
 Future<void> initServiceRequestFeature() async {
-  /// Data Source
+  _initDataSources();
+  _initRepositories();
+  _initUseCases();
+  _initUiStates();
+}
+
+Future<void> _initDataSources() async {
   sl.registerLazySingleton<RequesterServiceRequestRemoteDatasource>(
       () => RequesterServiceRequestRemoteDatasourceImpl(sl()));
 
   sl.registerLazySingleton<ProviderServiceRequestRemoteDatasource>(
       () => MockProviderServiceRequestDatasource());
+}
 
-  /// Repository
+Future<void> _initRepositories() async {
   sl.registerLazySingleton<RequesterServiceRequestRepository>(
       () => RequesterServiceRequestRepositoryImpl(sl()));
 
   sl.registerLazySingleton<ProviderServiceRequestRepository>(
       () => ProviderServiceRequestRepositoryImpl(sl()));
+}
 
-  /// Usecase
+Future<void> _initUseCases() async {
   /// [Usecase].Requester
   sl.registerLazySingleton<RequesterGetServiceRequestsUsecase>(
       () => RequesterGetServiceRequestsUsecase(sl()));
@@ -73,8 +81,9 @@ Future<void> initServiceRequestFeature() async {
 
   sl.registerLazySingleton<ProviderRejectServiceRequestUsecase>(
       () => ProviderRejectServiceRequestUsecase(sl()));
+}
 
-  /// State Management
+Future<void> _initUiStates() async {
   /// [State Management].Requester
   sl.registerFactory<RequesterServiceRequestsListBloc>(
       () => RequesterServiceRequestsListBloc(getServiceRequestsUsecase: sl()));
