@@ -1,6 +1,6 @@
 import 'package:go_router/go_router.dart';
-import 'package:workorder_company_app/features/workreport/presentation/pages/workreport_page.dart';
-import 'package:workorder_company_app/features/workreport/presentation/pages/workreport_submission_page.dart';
+import 'package:workorder_company_app/features_legacy/workreport_legacy/presentation/pages/workreport_page.dart';
+import 'package:workorder_company_app/features_legacy/workreport_legacy/presentation/pages/workreport_submission_page.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/wrapper/workreport_wrapper.dart';
 

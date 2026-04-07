@@ -11,8 +11,8 @@ import 'package:workorder_company_app/features/memberships/memberships_injection
 import 'package:workorder_company_app/features/notification/notification_injection.dart';
 import 'package:workorder_company_app/features/positions/positions_injections.dart';
 import 'package:workorder_company_app/features/services/services_injection.dart';
-import 'package:workorder_company_app/features/workorder/workorder_injection.dart';
-import 'package:workorder_company_app/features/workreport/workreport_injection.dart';
+import 'package:workorder_company_app/features_legacy/workorder_legacy/workorder_injection.dart';
+import 'package:workorder_company_app/features_legacy/workreport_legacy/workreport_injection.dart';
 
 /// Service Locator
 final sl = GetIt.instance;

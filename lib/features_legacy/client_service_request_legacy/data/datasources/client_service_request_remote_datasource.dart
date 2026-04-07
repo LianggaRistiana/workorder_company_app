@@ -1,7 +1,7 @@
 import 'package:workorder_company_app/core/network/api_client.dart';
 import 'package:workorder_company_app/core/network/api_response.dart';
 import 'package:workorder_company_app/features_legacy/client_service_request_legacy/data/model/client_service_request_model.dart';
-import 'package:workorder_company_app/features/workorder/data/model/workorder_model.dart';
+import 'package:workorder_company_app/features_legacy/workorder_legacy/data/model/workorder_model.dart';
 
 abstract class ClientServiceRequestRemoteDatasource {
   Future<ApiResponse<List<ClientServiceRequestModel>>>

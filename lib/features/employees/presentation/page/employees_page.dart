@@ -8,7 +8,7 @@ import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 import 'package:workorder_company_app/features/employees/presentation/bloc/employees_bloc.dart';
-import 'package:workorder_company_app/features/workorder/presentation/widgets/staff_chip.dart';
+import 'package:workorder_company_app/features_legacy/workorder_legacy/presentation/widgets/staff_chip.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
