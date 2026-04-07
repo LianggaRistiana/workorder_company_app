@@ -11,7 +11,7 @@ import 'package:workorder_company_app/features/employees/presentation/bloc/emplo
 import 'package:workorder_company_app/features/workorder/presentation/widgets/staff_chip.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
-import 'package:workorder_company_app/shared/widgets/custom_card.dart';
+import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
 import 'package:workorder_company_app/shared/widgets/list_page_scafold.dart';
 
@@ -50,7 +50,8 @@ class EmployeesPage extends StatelessWidget {
               icon: const Icon(Icons.person_add_alt_1),
             ).require(roleCan(InvitationPermission.create)),
             itemBuilder: (item) {
-              return CustomCard(
+              return ClickableCustomCard(
+                onTap: () {},
                 margin: const EdgeInsets.symmetric(
                   horizontal: AppSpacing.md,
                   vertical: AppSpacing.xs,

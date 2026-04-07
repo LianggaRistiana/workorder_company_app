@@ -6,6 +6,7 @@ import 'package:workorder_company_app/core/authorization/rule/role_permission_ru
 import 'package:workorder_company_app/core/authorization/util/access_gate_on_widget.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
+import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/list/positions_list_bloc.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/list/positions_list_event.dart';
@@ -78,32 +79,32 @@ class _PositionsListView extends StatelessWidget {
             icon: const Icon(Icons.add),
             label: const Text('Tambah Departemen'),
           ).require(roleCan(PositionsPermission.create)),
-          itemBuilder: (position) => Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-            child: ClickableCustomCard(
-              margin: EdgeInsets.zero,
-              onTap: () {
-                context.push(AppRoutes.positionsDetail.fillId(position.id));
-              },
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    IconBox(
-                      isDisabled: !position.isActive,
-                      icon: AppIcon.department,
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        position.name,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                    ),
-                  ]),
+          itemBuilder: (position) => ClickableCustomCard(
+            margin: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.md,
+              vertical: AppSpacing.xs,
             ),
+            onTap: () {
+              context.push(AppRoutes.positionsDetail.fillId(position.id));
+            },
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  IconBox(
+                    isDisabled: !position.isActive,
+                    icon: AppIcon.department,
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      position.name,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                  ),
+                ]),
           ),
         );
       },

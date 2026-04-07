@@ -12,7 +12,7 @@ import 'package:workorder_company_app/features/forms/presentation/bloc/list/form
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
-import 'package:workorder_company_app/shared/widgets/custom_card.dart';
+import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
 import 'package:workorder_company_app/shared/widgets/list_page_scafold.dart';
@@ -71,54 +71,44 @@ class FormsListPage extends StatelessWidget {
                   label: const Text("Tambah Form"),
                   icon: const Icon(Icons.add),
                 ).require(roleCan(FormPermission.create)),
-                itemBuilder: (form) => Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-                  child: CustomCard(
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                    padding: EdgeInsets.zero,
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(12),
-                      onTap: () async {
-                        final result = await context
-                            .push(AppRoutes.formsDetail.fillId(form.id));
-                        if (!context.mounted) return;
-                        if (result != null && result == true) {
-                          context
-                              .read<FormsListBloc>()
-                              .add(GetFormsListRequested(forceRefresh: false));
-                        }
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Row(
+                itemBuilder: (form) => ClickableCustomCard(
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.md,
+                    vertical: AppSpacing.xs,
+                  ),
+                  onTap: () async {
+                    final result = await context
+                        .push(AppRoutes.formsDetail.fillId(form.id));
+                    if (!context.mounted) return;
+                    if (result != null && result == true) {
+                      context
+                          .read<FormsListBloc>()
+                          .add(GetFormsListRequested(forceRefresh: false));
+                    }
+                  },
+                  child: Row(
+                    children: [
+                      IconBox(icon: AppIcon.form),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            IconBox(icon: AppIcon.form),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    form.title,
-                                    style:
-                                        Theme.of(context).textTheme.titleLarge,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    form.description,
-                                    style:
-                                        Theme.of(context).textTheme.bodyMedium,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ],
-                              ),
+                            Text(
+                              form.title,
+                              style: Theme.of(context).textTheme.titleLarge,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              form.description,
+                              style: Theme.of(context).textTheme.bodyMedium,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ],
                         ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
               );
