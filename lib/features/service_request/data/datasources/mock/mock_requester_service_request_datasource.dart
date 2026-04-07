@@ -11,14 +11,14 @@ import 'package:workorder_company_app/features/forms/data/model/field_model.dart
 import 'package:workorder_company_app/features/forms/data/model/filled_form_model.dart';
 import 'package:workorder_company_app/features/forms/data/model/form_model.dart';
 import 'package:workorder_company_app/features/forms/data/model/option_model.dart';
-import 'package:workorder_company_app/features/service_request/data/datasources/requester_service_request_datasource.dart';
+import 'package:workorder_company_app/features/service_request/data/datasources/requester_service_request_remote_datasource.dart';
 import 'package:workorder_company_app/features/service_request/data/model/requester_service_request_model.dart';
 import 'package:workorder_company_app/features/services/data/model/service_summary_model.dart';
 import 'package:workorder_company_app/features/submissions/data/model/field_data_model.dart';
 import 'package:workorder_company_app/features/submissions/data/model/submissions_model.dart';
 
 class MockRequesterServiceRequestDatasource
-    implements RequesterServiceRequestDatasource {
+    implements RequesterServiceRequestRemoteDatasource {
   final List<RequesterServiceRequestModel> _storage = [
     RequesterServiceRequestModel(
       id: "req-1",

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
+import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/detail/form_detail_cubit.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/detail/form_detail_state.dart';
@@ -12,8 +13,10 @@ import 'package:workorder_company_app/features/helps/presentation/widgets/help_b
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
+import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/error_body.dart';
 import 'package:workorder_company_app/shared/widgets/header_of_page.dart';
+import 'package:workorder_company_app/shared/widgets/information_block.dart';
 import 'package:workorder_company_app/shared/widgets/property_display.dart';
 
 class FormDetailPage extends StatelessWidget {
@@ -135,16 +138,15 @@ class _FormDetailViewState extends State<_FormDetailView> {
               PropertyTitle(
                   label: "Daftar Pertanyaan", icon: Icons.question_mark),
               const SizedBox(height: 12),
-              // TODO[Low] : use custom list instead
-              ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: form.fields?.length ?? 0,
+              CustomList(
+                items: form.fields ?? [],
+                emptyFooterHeight: AppSpacing.lg,
+                emptyWidget: InformationBlock.empty("Belum ada pertanyaan"),
                 itemBuilder: (context, index) {
                   final field = form.fields![index];
                   return FormFieldCard(field: field);
                 },
-              ),
+              )
             ],
           ),
         );

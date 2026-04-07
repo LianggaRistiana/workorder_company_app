@@ -1,12 +1,12 @@
 import 'package:workorder_company_app/core/types/future_either.dart';
 import 'package:workorder_company_app/core/utils/safe_call.dart';
-import 'package:workorder_company_app/features/service_request/data/datasources/provider_service_request_datasource.dart';
+import 'package:workorder_company_app/features/service_request/data/datasources/provider_service_request_remote_datasource.dart';
 import 'package:workorder_company_app/features/service_request/domain/entities/service_request_entity.dart';
 import 'package:workorder_company_app/features/service_request/domain/repositories/provider_service_request_repository.dart';
 
 class ProviderServiceRequestRepositoryImpl
     implements ProviderServiceRequestRepository {
-  final ProviderServiceRequestDatasource _providerServiceRequestDatasource;
+  final ProviderServiceRequestRemoteDatasource _providerServiceRequestDatasource;
 
   const ProviderServiceRequestRepositoryImpl(
       this._providerServiceRequestDatasource);

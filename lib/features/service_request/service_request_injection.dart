@@ -1,7 +1,7 @@
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features/service_request/data/datasources/mock/mock_provider_service_request_datasource.dart';
-import 'package:workorder_company_app/features/service_request/data/datasources/provider_service_request_datasource.dart';
-import 'package:workorder_company_app/features/service_request/data/datasources/requester_service_request_datasource.dart';
+import 'package:workorder_company_app/features/service_request/data/datasources/provider_service_request_remote_datasource.dart';
+import 'package:workorder_company_app/features/service_request/data/datasources/requester_service_request_remote_datasource.dart';
 import 'package:workorder_company_app/features/service_request/data/repositories/provider_service_request_repository_impl.dart';
 import 'package:workorder_company_app/features/service_request/data/repositories/requester_service_request_repository_impl.dart';
 import 'package:workorder_company_app/features/service_request/domain/repositories/provider_service_request_repository.dart';
@@ -28,10 +28,10 @@ import 'package:workorder_company_app/features/service_request/presentation/stat
 
 Future<void> initServiceRequestFeature() async {
   /// Data Source
-  sl.registerLazySingleton<RequesterServiceRequestDatasource>(
-      () => RequesterServiceRequestDatasourceImpl(sl()));
+  sl.registerLazySingleton<RequesterServiceRequestRemoteDatasource>(
+      () => RequesterServiceRequestRemoteDatasourceImpl(sl()));
 
-  sl.registerLazySingleton<ProviderServiceRequestDatasource>(
+  sl.registerLazySingleton<ProviderServiceRequestRemoteDatasource>(
       () => MockProviderServiceRequestDatasource());
 
   /// Repository

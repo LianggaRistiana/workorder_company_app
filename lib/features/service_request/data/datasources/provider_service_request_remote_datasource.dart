@@ -6,19 +6,18 @@ import 'package:workorder_company_app/core/utils/safe_mapper.dart';
 import 'package:workorder_company_app/features/service_request/data/model/provider_service_request_model.dart';
 import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
 
-// TODO[Low] : rename this later add to remote datasource
-abstract class ProviderServiceRequestDatasource {
+abstract class ProviderServiceRequestRemoteDatasource {
   ApiFutureList<ProviderServiceRequestModel> getServiceRequests();
   ApiFuture<ProviderServiceRequestModel> getServiceRequestDetail(String id);
   ApiFuture<ProviderServiceRequestModel> approveServiceRequest(String id);
   ApiFuture<ProviderServiceRequestModel> rejectServiceRequest(String id);
 }
 
-class ProviderServiceRequestDatasourceImpl
-    implements ProviderServiceRequestDatasource {
+class ProviderServiceRequestRemoteDatasourceImpl
+    implements ProviderServiceRequestRemoteDatasource {
   final ApiClient _apiClient;
 
-  ProviderServiceRequestDatasourceImpl(this._apiClient);
+  ProviderServiceRequestRemoteDatasourceImpl(this._apiClient);
 
   @override
   ApiFuture<ProviderServiceRequestModel> approveServiceRequest(
