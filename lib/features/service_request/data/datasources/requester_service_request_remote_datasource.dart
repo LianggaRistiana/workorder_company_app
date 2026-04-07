@@ -118,8 +118,7 @@ class RequesterServiceRequestRemoteDatasourceImpl
 
     return ApiResponse.fromJson(
       response,
-      (json) => FormModel.fromJson(
-          json), // FIXME[API REQUIRED] : BE SHOULD Fix THIS Response
+      (json) => FormModel.fromJson(json),
     );
   }
 }
