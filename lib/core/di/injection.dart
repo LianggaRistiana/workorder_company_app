@@ -22,6 +22,8 @@ Future<void> init() async {
   sl.registerLazySingleton<TokenStorage>(() => TokenStorage());
   sl.registerLazySingleton<ApiClient>(() => DioApiClient(tokenStorage: sl()));
 
+  // FIXME[High] : register chace registry here for clear all chace when logout
+
   /// Features
   await initAuthFeature();
   await initEmployeesFeature();
