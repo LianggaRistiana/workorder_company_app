@@ -30,12 +30,12 @@ class Endpoints {
   // Service Request
   static const String serviceRequestSent = "/service-requests/sent";
   static const String serviceRequestInbox = "/service-requests/inbox";
-  static const String serviceRequestDetail = "/service-request/:id";
-  static const String serviceRequestCancel = "/service-request/:id/cancel";
-  static const String serviceRequestApprove = "/service-request/:id/approve";
-  static const String serviceRequestReject = "/service-request/:id/reject";
-  static const String serviceRequestReview = "/service-request/:id/review";
-  static const String serviceRequestCreate = "/service-request/service/:id";
+  static const String serviceRequestDetail = "/service-requests/:id";
+  static const String serviceRequestCancel = "/service-requests/:id/cancel";
+  static const String serviceRequestApprove = "/service-requests/:id/approve";
+  static const String serviceRequestReject = "/service-requests/:id/reject";
+  static const String serviceRequestReview = "/service-requests/:id/review";
+  static const String serviceRequestCreate = "/service-requests/service/:id";
   static const String serviceRequestIntakePublic =
       "/public/services/:id/intake-form";
   static const String serviceRequestIntakeInternal =
@@ -57,6 +57,7 @@ class Endpoints {
   static const String cancelInvitations = "/invitations/:id";
 
   // Workorder
+  // TODO[REFACTOR WO] : avoid to using func
   static const String workorder = "/workorders";
   static workorderSetAssignedStaff(String id) =>
       "${workorder.byId(id)}/assign-staffs";
@@ -66,6 +67,7 @@ class Endpoints {
   static workorderStart(String id) => "${workorder.byId(id)}/start";
 
   // WorkReport
+  // TODO[REFACTOR WO] : avoid to using func
   static workorderReport(String id) => "${workorder.byId(id)}/report";
   static workorderReportSubmissions(String id) =>
       "${workorder.byId(id)}/report";

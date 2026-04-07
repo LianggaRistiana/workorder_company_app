@@ -19,7 +19,6 @@
 ///   showSnackbar(result.message);
 /// }
 /// ```
-
 class AuthorizationResult {
   final bool isAllowed;
   final String? message;
