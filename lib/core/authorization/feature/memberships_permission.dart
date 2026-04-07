@@ -10,7 +10,7 @@ class MembershipsPermission {
   static const claim =
       AppPermission(AppFeature.claimCodeMembership, PermissionAction.create);
 
-  static final Set<AppPermission> company = {
+  static final Set<AppPermission> provider = {
     view,
     create,
   };

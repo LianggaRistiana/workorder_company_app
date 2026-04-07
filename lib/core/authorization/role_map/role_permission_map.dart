@@ -24,8 +24,8 @@ extension UserRolePermissions on UserRole {
           ...ServicePermission.all,
           ...WorkOrderPermissions.all,
           ...WorkReportPermissions.all,
-          ...InvitationPermission.admin,
-          ...MembershipsPermission.company,
+          ...InvitationPermission.sender,
+          ...MembershipsPermission.provider,
           ...ServiceRequestPermission.receiver
         };
       case UserRole.managerCompany:
@@ -58,7 +58,7 @@ extension UserRolePermissions on UserRole {
           ...ServiceRequestPermission.requester,
         };
       case UserRole.staffUnassigned:
-        return {...InvitationPermission.unassigned};
+        return {...InvitationPermission.receiver};
     }
   }
 }

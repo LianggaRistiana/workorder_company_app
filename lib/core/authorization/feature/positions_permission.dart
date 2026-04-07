@@ -12,10 +12,5 @@ class PositionsPermission {
   static const delete =
       AppPermission(AppFeature.positions, PermissionAction.delete);
 
-  static final Set<AppPermission> all = {
-    view,
-    create,
-    update,
-    delete
-  };
+  static final Set<AppPermission> all = {view, create, update, delete};
 }

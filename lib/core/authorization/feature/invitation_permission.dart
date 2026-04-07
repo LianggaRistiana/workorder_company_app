@@ -17,7 +17,7 @@ class InvitationPermission {
   static const approve =
       AppPermission(AppFeature.receiverInvitation, PermissionAction.approve);
 
-  static final Set<AppPermission> admin = {adminView, create, cancel};
+  static final Set<AppPermission> sender = {adminView, create, cancel};
 
-  static final Set<AppPermission> unassigned = {receiverView, reject, approve};
+  static final Set<AppPermission> receiver = {receiverView, reject, approve};
 }

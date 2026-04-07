@@ -3,8 +3,7 @@ import 'package:workorder_company_app/core/authorization/enums/permission_action
 import 'package:workorder_company_app/core/authorization/model/app_permission.dart';
 
 class ServicePermission {
-  static const view =
-      AppPermission(AppFeature.service, PermissionAction.view);
+  static const view = AppPermission(AppFeature.service, PermissionAction.view);
   static const create =
       AppPermission(AppFeature.service, PermissionAction.create);
   static const update =
@@ -12,10 +11,5 @@ class ServicePermission {
   static const delete =
       AppPermission(AppFeature.service, PermissionAction.delete);
 
-  static final Set<AppPermission> all = {
-    view,
-    create,
-    update,
-    delete
-  };
+  static final Set<AppPermission> all = {view, create, update, delete};
 }
