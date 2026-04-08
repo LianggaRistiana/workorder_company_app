@@ -30,6 +30,7 @@ class AdaptiveSplitColumn extends StatelessWidget {
 
         if (!isMediumUp) {
           return SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
             padding: padding,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,

@@ -42,6 +42,11 @@ class ProviderServiceRequestDetailPage extends StatelessWidget {
                   ProviderServiceRequestAuthorizer(serviceRequest).actionRule)
               : null,
           body: ServiceRequestContent(
+            onRefresh: () async {
+              await context
+                  .read<ProviderServiceRequestDetailCubit>()
+                  .getServiceRequestDetail(id);
+            },
             isLoading: isLoading,
             serviceRequest: serviceRequest,
           ),

@@ -17,10 +17,6 @@ class InternalCompanyCard extends StatelessWidget {
 
     return BlocBuilder<InternalGetCompanyCubit, InternalGetCompanyState>(
       builder: (context, state) {
-        if (state.company == null) {
-          return SizedBox.shrink();
-        }
-
         final company = state.company!;
 
         return AnimatedSwitcher(
@@ -35,64 +31,66 @@ class InternalCompanyCard extends StatelessWidget {
                       child: LoadingStateInline(
                         isEndAlign: false,
                       )))
-              : Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(24),
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [Color(0xFFADC6FF), Color(0xFFDEBCDF)],
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: theme.colorScheme.primary.withAlpha(25),
-                        blurRadius: 18,
-                        offset: const Offset(0, 8),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Icon(
-                        AppIcon.company,
-                        color: Colors.black,
-                        size: 30,
-                      ),
-                      const SizedBox(width: 8),
-                      // Text
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              company.name,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: theme.textTheme.titleLarge?.copyWith(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            if (company.address.isNotEmpty) ...[
-                              const SizedBox(height: 6),
-                              Text(
-                                company.address,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: theme.textTheme.bodyMedium?.copyWith(
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ]
-                          ],
+              : state.company == null
+                  ? null
+                  : Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(24),
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [Color(0xFFADC6FF), Color(0xFFDEBCDF)],
                         ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: theme.colorScheme.primary.withAlpha(25),
+                            blurRadius: 18,
+                            offset: const Offset(0, 8),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(
+                            AppIcon.company,
+                            color: Colors.black,
+                            size: 30,
+                          ),
+                          const SizedBox(width: 8),
+                          // Text
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  company.name,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: theme.textTheme.titleLarge?.copyWith(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                if (company.address.isNotEmpty) ...[
+                                  const SizedBox(height: 6),
+                                  Text(
+                                    company.address,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: theme.textTheme.bodyMedium?.copyWith(
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ]
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
         );
       },
     );

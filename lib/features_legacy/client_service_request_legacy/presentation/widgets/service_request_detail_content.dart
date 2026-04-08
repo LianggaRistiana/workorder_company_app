@@ -8,9 +8,7 @@ import 'package:workorder_company_app/features_legacy/client_service_request_leg
 import 'package:workorder_company_app/features_legacy/client_service_request_legacy/presentation/widgets/csr_status_chip.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
-import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
-import 'package:workorder_company_app/shared/widgets/filled_form_view.dart';
 
 class ServiceRequestDetailContent extends StatelessWidget {
   const ServiceRequestDetailContent({super.key});
@@ -121,4 +119,3 @@ class ServiceRequestHeader extends StatelessWidget {
     );
   }
 }
-

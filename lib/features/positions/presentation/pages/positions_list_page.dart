@@ -26,19 +26,14 @@ class PositionsListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => sl<PositionsListBloc>()..add(GetPositionsListRequested()),
-      child: const _PositionsListView(),
+      child: _PositionsListView(),
     );
   }
 }
 
 class _PositionsListView extends StatelessWidget {
-  const _PositionsListView();
-
-  Future<void> _onRefresh(BuildContext context) async {
-    context
-        .read<PositionsListBloc>()
-        .add(GetPositionsListRequested(forceRefresh: true));
-  }
+  _PositionsListView();
+  final refreshKey = GlobalKey<RefreshIndicatorState>();
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +54,11 @@ class _PositionsListView extends StatelessWidget {
           errorMessage: errorMessage,
           items: positions,
           loadingMessage: "Memuat Departemen...",
-          onRefresh: () => _onRefresh(context),
+          onRefresh: () async {
+            context
+                .read<PositionsListBloc>()
+                .add(GetPositionsListRequested(forceRefresh: true));
+          },
           emptyWidget: const EmptyStateWidget(
             text: "Tidak ada departemen",
           ),

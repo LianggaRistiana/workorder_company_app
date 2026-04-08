@@ -10,6 +10,7 @@ import 'package:workorder_company_app/features/positions/presentation/bloc/detai
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/active_status_chip.dart';
+import 'package:workorder_company_app/shared/widgets/adaptive_split_column.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/header_of_page.dart';
@@ -27,7 +28,7 @@ class PositionDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => sl<PositionDetailCubit>()..getPositionById(positionId),
-      child: const PositionDetailView(),
+      child: const PositionDetailView(), // nanti kita ganti const
     );
   }
 }
@@ -46,36 +47,41 @@ class PositionDetailView extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          switch (state.status) {
-            case PositionDetailStatus.initial:
-              return const SizedBox();
+          final position = state.position;
 
-            case PositionDetailStatus.loading:
-              return const Center(
-                child: AppLoading(),
-              );
-
-            case PositionDetailStatus.error:
-              return Center(
-                child: Text(
-                  state.errorMessages ?? "Terjadi kesalahan",
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.error,
-                  ),
-                ),
-              );
-
-            case PositionDetailStatus.loaded:
-              final position = state.position;
-
-              if (position == null) {
-                return const Center(
-                  child: Text("Data tidak ditemukan"),
-                );
-              }
-
-              return _DetailContent(position: position);
+          // Loading
+          if (state.status == PositionDetailStatus.loading &&
+              position == null) {
+            return const Center(
+              child: AppLoading(),
+            );
           }
+
+          // Error
+          if (state.status == PositionDetailStatus.error) {
+            return Center(
+              child: Text(
+                state.errorMessages ?? "Terjadi kesalahan",
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.error,
+                ),
+              ),
+            );
+          }
+
+          // Loaded
+          if ((state.status == PositionDetailStatus.loaded) ||
+              state.status == PositionDetailStatus.loading) {
+            if (position == null) {
+              return const Center(
+                child: Text("Data tidak ditemukan"),
+              );
+            }
+            return _DetailContent(position: position);
+          }
+
+          // Initial / fallback
+          return const SizedBox.shrink();
         },
       ),
     );
@@ -89,20 +95,17 @@ class _DetailContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppSpacing.md,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          /// Header
+    return SafeArea(
+      child: RefreshIndicator(
+        onRefresh: () async => await context
+            .read<PositionDetailCubit>()
+            .getPositionById(position.id),
+        child: AdaptiveSplitColumn(leftChildren: [
           HeaderOfPage(
             title: position.name,
             icon: AppIcon.department,
           ),
 
-          /// ===== SECTION: INFORMASI =====
           CustomCard(
               margin: const EdgeInsets.only(
                   top: AppSpacing.md, bottom: AppSpacing.sm),
@@ -146,21 +149,15 @@ class _DetailContent extends StatelessWidget {
             ),
           ),
 
-          const Divider(),
-
           const SizedBox(height: AppSpacing.lg),
-
-          /// ===== SECTION: DAFTAR PEGAWAI =====
+        ], rightChildren: [
           PropertyTitle(
             label: "Daftar Pegawai",
             icon: AppIcon.employee,
           ),
-
           const SizedBox(height: AppSpacing.md),
-
-          /// Placeholder
           const Text("Belum ada pegawai."),
-        ],
+        ]),
       ),
     );
   }

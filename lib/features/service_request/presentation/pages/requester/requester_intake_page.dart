@@ -13,6 +13,7 @@ import 'package:workorder_company_app/features/services/presentation/widgets/ser
 import 'package:workorder_company_app/features/submissions/domain/draft/submisson_draft.dart';
 import 'package:workorder_company_app/features/submissions/presentation/widgets/form_renderer.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
+import 'package:workorder_company_app/shared/widgets/adaptive_split_column.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 import 'package:workorder_company_app/shared/widgets/button_with_loading_state.dart';
 
@@ -50,22 +51,25 @@ class _RequesterIntakePageState extends State<RequesterIntakePage> {
           }
         },
         builder: (context, state) => Scaffold(
-          appBar: AppBar(),
-          bottomNavigationBar: state.status ==
-                      RequesterGetIntakeFormStatus.loaded &&
-                  state.form != null
-              ? Padding(
-                  padding: const EdgeInsets.all(AppSpacing.md),
-                  child:
-                      _buildSubmitButton(context, draft, widget.baseService.id),
-                )
-              : null,
-          body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
+            appBar: AppBar(),
+            bottomNavigationBar:
+                state.status == RequesterGetIntakeFormStatus.loaded &&
+                        state.form != null
+                    ? SafeArea(
+                        child: Padding(
+                          padding: const EdgeInsets.all(AppSpacing.md),
+                          child: _buildSubmitButton(
+                              context, draft, widget.baseService.id),
+                        ),
+                      )
+                    : null,
+            body: SafeArea(
+              child: AdaptiveSplitColumn(
+                leftChildren: [
                   ServiceSummaryPropertyView(service: widget.baseService),
+                  const SizedBox(height: 16),
+                ],
+                rightChildren: [
                   if (state.status == RequesterGetIntakeFormStatus.loading) ...[
                     const SizedBox(height: 16),
                     AppLoading()
@@ -81,9 +85,7 @@ class _RequesterIntakePageState extends State<RequesterIntakePage> {
                   ]
                 ],
               ),
-            ),
-          ),
-        ),
+            )),
       ),
     );
   }

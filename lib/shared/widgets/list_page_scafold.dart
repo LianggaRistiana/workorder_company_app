@@ -65,7 +65,7 @@ class ListPageScaffold<T> extends StatelessWidget {
     // EMPTY
     else if (items.isEmpty) {
       content = RefreshIndicator(
-        onRefresh: onRefresh,
+        onRefresh: () async => await onRefresh(),
         child: ListView(
           physics: const AlwaysScrollableScrollPhysics(),
           children: [
@@ -86,10 +86,9 @@ class ListPageScaffold<T> extends StatelessWidget {
     }
 
     // LOADED
-    // FIXME[High] : Use Listview builder to lazy load and header should shown either loaded or not
     else {
       content = RefreshIndicator(
-        onRefresh: onRefresh,
+        onRefresh: () async => await onRefresh(),
         child: ListView(
           padding: EdgeInsets.only(bottom: bottomSpacing),
           physics: const AlwaysScrollableScrollPhysics(),
@@ -109,6 +108,7 @@ class ListPageScaffold<T> extends StatelessWidget {
         bottom: bottomAppBar,
       ),
       floatingActionButton: floatingActionButton,
+      // FIXME[High] : Use Listview builder to lazy load and header should shown either loaded or not
       body: SafeArea(child: content),
       bottomNavigationBar: AnimatedSlide(
         duration: const Duration(milliseconds: 200),

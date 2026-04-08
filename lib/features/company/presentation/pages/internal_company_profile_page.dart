@@ -47,49 +47,52 @@ class _InternalCompanyProfilePageState
 
           final company = state.company!;
 
-          return RefreshIndicator(
-            onRefresh: () async {
-              await context.read<InternalGetCompanyCubit>().loadCompany();
-            },
-            child: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-              children: [
-                Hero(
-                  tag: "company-card",
-                  child: InternalCompanyCard(), // FIXME[HIGH] : fix this later
-                  // child: _CompanyHeader(company: company)
-                ),
-                // const SizedBox(height: 24)
-                CustomCard(
-                    child: PropertyDisplay(properties: [
-                  PropertyItem.text(
-                      label: "Nama Perusahaan",
-                      icon: AppIcon.company,
-                      value: company.name),
-                  PropertyItem.text(
-                    label: "Alamat",
-                    icon: Icons.location_on_outlined,
-                    value: company.address.isEmpty
-                        ? "Alamat belum diisi"
-                        : company.address,
+          return SafeArea(
+            child: RefreshIndicator(
+              onRefresh: () async {
+                await context.read<InternalGetCompanyCubit>().loadCompany();
+              },
+              child: ListView(
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+                children: [
+                  Hero(
+                    tag: "company-card",
+                    child:
+                        InternalCompanyCard(), // FIXME[HIGH] : fix this later
+                    // child: _CompanyHeader(company: company)
                   ),
-                  PropertyItem.text(
-                    label: "Deskripsi",
-                    icon: AppIcon.desc,
-                    value: company.description.isEmpty
-                        ? "Deskripsi belum diisi"
-                        : company.description,
+                  const SizedBox(height: AppSpacing.md),
+                  CustomCard(
+                      child: PropertyDisplay(properties: [
+                    PropertyItem.text(
+                        label: "Nama Perusahaan",
+                        icon: AppIcon.company,
+                        value: company.name),
+                    PropertyItem.text(
+                      label: "Alamat",
+                      icon: Icons.location_on_outlined,
+                      value: company.address.isEmpty
+                          ? "Alamat belum diisi"
+                          : company.address,
+                    ),
+                    PropertyItem.text(
+                      label: "Deskripsi",
+                      icon: AppIcon.desc,
+                      value: company.description.isEmpty
+                          ? "Deskripsi belum diisi"
+                          : company.description,
+                    ),
+                  ])),
+                  TextButton.icon(
+                    onPressed: () {
+                      debugPrint("Edit Profil Perusahaan");
+                      context.push(AppRoutes.companyUpdate, extra: company);
+                    },
+                    label: Text("Edit Profil Perusahaan"),
+                    icon: Icon(AppIcon.edit),
                   ),
-                ])),
-                TextButton.icon(
-                  onPressed: () {
-                    debugPrint("Edit Profil Perusahaan");
-                    context.push(AppRoutes.companyUpdate, extra: company);
-                  },
-                  label: Text("Edit Profil Perusahaan"),
-                  icon: Icon(AppIcon.edit),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         },

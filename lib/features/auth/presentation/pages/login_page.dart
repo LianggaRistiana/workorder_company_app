@@ -62,83 +62,88 @@ class _LoginPageState extends State<LoginPage> {
         builder: (context, state) {
           final isLoading = state is AuthLoading;
 
-          return Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      "Masuk",
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontSize: 32,
-                          ),
-                    ),
-                    Text(
-                        "Masukan Email dan Kata Sandi Anda untuk masuk ke aplikasi.",
-                        style: Theme.of(context).textTheme.bodyMedium),
-                    const SizedBox(height: 16),
-                    CustomInputField(
-                      controller: _emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      textInputAction: TextInputAction.next,
-                      label: "Email",
-                      prefixIcon: const Icon(LucideIcons.mail),
-                      validator: (value) {
-                        // gunakan ValidatorUtils + placeholder TODO
-                        final result = ValidatorUtils.validate(
-                          value,
-                          fieldName: "Email",
-                          [ValidatorType.required, ValidatorType.email],
-                        );
-                        return result;
-                      },
-                    ),
-                    const SizedBox(height: 16),
-                    CustomInputField(
-                      controller: _passwordController,
-                      obscureText: !_showPassword,
-                      textInputAction: TextInputAction.done,
-                      keyboardType: TextInputType.visiblePassword,
-                      label: "Kata Sandi",
-                      prefixIcon: const Icon(LucideIcons.lock),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _showPassword ? LucideIcons.eye : LucideIcons.eyeOff,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _showPassword = !_showPassword;
-                          });
+          return SafeArea(
+            child: SingleChildScrollView(
+              child: Container(
+                height: MediaQuery.of(context).size.height,
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        "Masuk",
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                              fontSize: 32,
+                            ),
+                      ),
+                      Text(
+                          "Masukan Email dan Kata Sandi Anda untuk masuk ke aplikasi.",
+                          style: Theme.of(context).textTheme.bodyMedium),
+                      const SizedBox(height: 16),
+                      CustomInputField(
+                        controller: _emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        textInputAction: TextInputAction.next,
+                        label: "Email",
+                        prefixIcon: const Icon(LucideIcons.mail),
+                        validator: (value) {
+                          // gunakan ValidatorUtils + placeholder TODO
+                          final result = ValidatorUtils.validate(
+                            value,
+                            fieldName: "Email",
+                            [ValidatorType.required, ValidatorType.email],
+                          );
+                          return result;
                         },
                       ),
-                      validator: (value) {
-                        final result = ValidatorUtils.validate(
-                          value,
-                          fieldName: "Kata Sandi",
-                          [ValidatorType.required],
-                        );
-                        return result;
-                      },
-                    ),
-                    const SizedBox(height: 32),
-                    ButtonWithLoadingState(
-                        onPressed: _onLoginPressed,
-                        isLoading: isLoading,
-                        icon: AppIcon.login,
-                        label: "Masuk"),
-                    TextButton(
-                      onPressed: () {
-                        // Logger().d(GoRouterState.of(context).uri.toString());
-                        GoRouter.of(context).go(AppRoutes.register);
-                      },
-                      child: Text("Buat akun baru"),
-                    ),
-                  ],
+                      const SizedBox(height: 16),
+                      CustomInputField(
+                        controller: _passwordController,
+                        obscureText: !_showPassword,
+                        textInputAction: TextInputAction.done,
+                        keyboardType: TextInputType.visiblePassword,
+                        label: "Kata Sandi",
+                        prefixIcon: const Icon(LucideIcons.lock),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _showPassword
+                                ? LucideIcons.eye
+                                : LucideIcons.eyeOff,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _showPassword = !_showPassword;
+                            });
+                          },
+                        ),
+                        validator: (value) {
+                          final result = ValidatorUtils.validate(
+                            value,
+                            fieldName: "Kata Sandi",
+                            [ValidatorType.required],
+                          );
+                          return result;
+                        },
+                      ),
+                      const SizedBox(height: 32),
+                      ButtonWithLoadingState(
+                          onPressed: _onLoginPressed,
+                          isLoading: isLoading,
+                          icon: AppIcon.login,
+                          label: "Masuk"),
+                      TextButton(
+                        onPressed: () {
+                          // Logger().d(GoRouterState.of(context).uri.toString());
+                          GoRouter.of(context).go(AppRoutes.register);
+                        },
+                        child: Text("Buat akun baru"),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
