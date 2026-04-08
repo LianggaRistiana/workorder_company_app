@@ -8,6 +8,7 @@ import 'package:workorder_company_app/features/service_request/domain/entities/s
 import 'package:workorder_company_app/features/service_request/presentation/state/requester/submit_review_form/requester_submit_review_form_cubit.dart';
 import 'package:workorder_company_app/features/service_request/presentation/state/requester/submit_review_form/requester_submit_review_form_state.dart';
 import 'package:workorder_company_app/features/submissions/domain/draft/submisson_draft.dart';
+import 'package:workorder_company_app/features/submissions/presentation/coordinator/form_renderer_coordinator.dart';
 import 'package:workorder_company_app/features/submissions/presentation/widgets/form_renderer.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/button_with_loading_state.dart';
@@ -21,7 +22,7 @@ class RequesterReviewPage extends StatefulWidget {
 }
 
 class _RequesterReviewPageState extends State<RequesterReviewPage> {
-  late final SubmissionDraft draft;
+  late final FormRendererCoordinator coordinator;
 
   @override
   void initState() {
@@ -34,7 +35,7 @@ class _RequesterReviewPageState extends State<RequesterReviewPage> {
         context.showError("Formulir tidak tersedia");
       });
     } else {
-      draft = SubmissionDraft.fromFormEntity(form);
+      coordinator = FormRendererCoordinator.form(form);
     }
   }
 
@@ -62,7 +63,7 @@ class _RequesterReviewPageState extends State<RequesterReviewPage> {
                 onPressed: () {
                   context
                       .read<RequesterSubmitReviewFormCubit>()
-                      .submitReviewForm(widget.request.id, draft);
+                      .submitReviewForm(widget.request.id, coordinator.draft);
                 },
                 isLoading:
                     state.status == RequesterSubmitReviewFormStatus.loading,
@@ -74,10 +75,12 @@ class _RequesterReviewPageState extends State<RequesterReviewPage> {
                 child: Column(children: [
               widget.request.reviewForm?.form != null
                   ? FormRenderer(
-                      filledForm: widget.request.reviewForm!,
-                      onChanged: (formId, order, value) {
-                        draft.updateValue(order, value);
-                      })
+                      coordinator: coordinator,
+                      // filledForm: widget.request.reviewForm!,
+                      // onChanged: (formId, order, value) {
+                      //   draft.updateValue(order, value);
+                      // }
+                    )
                   : const SizedBox(),
               const SizedBox(height: 16),
             ])),

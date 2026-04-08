@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/ordered_form_entity.dart';
 import 'package:workorder_company_app/features/submissions/domain/entitties/field_data_entity.dart';
 import 'package:workorder_company_app/features/submissions/domain/entitties/submission_entity.dart';
-import 'field_renderer.dart';
+import '../../features/submissions/presentation/widgets/field_renderer.dart';
 
-@Deprecated("Use Form Renderer isntead")
+@Deprecated("Use Form Renderer instead")
 class FormRendererLegacy extends StatelessWidget {
   final List<OrderedFormEntity> orderedForms;
   final List<SubmissionEntity> submissions;
@@ -44,32 +44,32 @@ class FormRendererLegacy extends StatelessWidget {
       children: [
         for (final orderedForm in orderedForms) ...[
           // === FORM HEADER ===
-          Text(
-            orderedForm.form.title,
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-          if (orderedForm.form.description.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: Text(
-                orderedForm.form.description,
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-            ),
+          // Text(
+          //   orderedForm.form.title,
+          //   style: Theme.of(context).textTheme.titleLarge,
+          // ),
+          // if (orderedForm.form.description.isNotEmpty)
+          //   Padding(
+          //     padding: const EdgeInsets.only(bottom: 8),
+          //     child: Text(
+          //       orderedForm.form.description,
+          //       style: Theme.of(context).textTheme.bodySmall,
+          //     ),
+          //   ),
 
-          const SizedBox(height: 8),
+          // const SizedBox(height: 8),
 
-          // === RENDER FIELDS ===
-          for (final field in orderedForm.form.fields ?? [])
-            Padding(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: FieldRenderer(
-                formId: orderedForm.form.id,
-                field: field,
-                onChanged: onChanged,
-                value: lookup[orderedForm.form.id]?[field.order.toString()],
-              ),
-            ),
+          // // === RENDER FIELDS ===
+          // for (final field in orderedForm.form.fields ?? [])
+          //   Padding(
+          //     padding: const EdgeInsets.only(bottom: 16),
+          //     child: FieldRenderer(
+          //       formId: orderedForm.form.id,
+          //       field: field,
+          //       onChanged: onChanged,
+          //       value: lookup[orderedForm.form.id]?[field.order.toString()],
+          //     ),
+          //   ),
 
           const Divider(height: 32),
         ],

@@ -1,22 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/field_entity.dart';
-import 'package:workorder_company_app/features/forms/domain/entities/filled_form_entity.dart';
-import 'package:workorder_company_app/features/submissions/domain/entitties/submission_entity.dart';
+import 'package:workorder_company_app/features/submissions/presentation/coordinator/form_renderer_coordinator.dart';
 import 'package:workorder_company_app/features/submissions/presentation/widgets/field_renderer.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 
-class FormRenderer extends StatelessWidget {
-  final FilledFormEntity filledForm;
+class FormRenderer extends StatefulWidget {
+  final FormRendererCoordinator coordinator;
   final bool isReadOnly;
-  final void Function(String formId, String order, dynamic value) onChanged;
+  // final void Function(String formId, String order, dynamic value) onChanged;
 
-  const FormRenderer(
-      {super.key,
-      required this.filledForm,
-      this.isReadOnly = false,
-      required this.onChanged});
+  const FormRenderer({
+    super.key,
+    required this.coordinator,
+    this.isReadOnly = false,
+    // required this.onChanged
+  });
 
+  @override
+  State<FormRenderer> createState() => _FormRendererState();
+}
+
+class _FormRendererState extends State<FormRenderer> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -59,23 +64,23 @@ class FormRenderer extends StatelessWidget {
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(filledForm.form.title,
+                        Text(widget.coordinator.form.title,
                             style: Theme.of(context).textTheme.titleMedium),
                         const SizedBox(height: 2),
-                        Text(filledForm.form.description,
+                        Text(widget.coordinator.form.description,
                             style: Theme.of(context).textTheme.bodyMedium),
                       ])),
             ])),
         const SizedBox(height: 16),
         CustomList<FieldEntity>(
-          items: filledForm.form.fields ?? [],
+          items: widget.coordinator.form.fields ?? [],
           separatorHeight: 12,
           itemBuilder: (field, _) => FieldRenderer(
-              formId: filledForm.form.id,
+              // formId: widget.coordinator.form.id,
               field: field,
-              onChanged: onChanged,
-              value: filledForm.submission
-                  ?.getFieldByOrder(field.order.toString())),
+              onChanged: widget.coordinator.updateValue,
+              value: widget.coordinator.draft
+                  .getFieldByOrder(field.order.toString())),
         ),
       ],
     );

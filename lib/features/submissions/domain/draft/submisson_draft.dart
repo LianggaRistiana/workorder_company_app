@@ -44,6 +44,14 @@ class SubmissionDraft {
     }
   }
 
+  FieldDataDraft? getFieldByOrder(String order) {
+    try {
+      return fieldsData.firstWhere((e) => e.order == order);
+    } catch (_) {
+      return null;
+    }
+  }
+
   SubmissionEntity toEntity() {
     return SubmissionEntity(
       id: "",

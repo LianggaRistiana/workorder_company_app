@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
-import 'package:workorder_company_app/features/forms/domain/entities/filled_form_entity.dart';
 import 'package:workorder_company_app/features/service_request/presentation/state/requester/get_intake_form/requester_get_intake_form_cubit.dart';
 import 'package:workorder_company_app/features/service_request/presentation/state/requester/get_intake_form/requester_get_intake_form_state.dart';
 import 'package:workorder_company_app/features/service_request/presentation/state/requester/submit_intake_form/requester_submit_intake_form_cubit.dart';
@@ -11,6 +10,7 @@ import 'package:workorder_company_app/features/service_request/presentation/stat
 import 'package:workorder_company_app/features/services/domain/entities/base_service_entity.dart';
 import 'package:workorder_company_app/features/services/presentation/widgets/service_summary_property_view.dart';
 import 'package:workorder_company_app/features/submissions/domain/draft/submisson_draft.dart';
+import 'package:workorder_company_app/features/submissions/presentation/coordinator/form_renderer_coordinator.dart';
 import 'package:workorder_company_app/features/submissions/presentation/widgets/form_renderer.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/adaptive_split_column.dart';
@@ -27,7 +27,7 @@ class RequesterIntakePage extends StatefulWidget {
 }
 
 class _RequesterIntakePageState extends State<RequesterIntakePage> {
-  late final SubmissionDraft draft;
+  late final FormRendererCoordinator coordinator;
 
   @override
   void initState() {
@@ -47,22 +47,22 @@ class _RequesterIntakePageState extends State<RequesterIntakePage> {
             context.pop();
           }
           if (state.status == RequesterGetIntakeFormStatus.loaded) {
-            draft = SubmissionDraft.fromFormEntity(state.form!);
+            coordinator = FormRendererCoordinator.form(state.form!);
           }
         },
         builder: (context, state) => Scaffold(
             appBar: AppBar(),
-            bottomNavigationBar:
-                state.status == RequesterGetIntakeFormStatus.loaded &&
-                        state.form != null
-                    ? SafeArea(
-                        child: Padding(
-                          padding: const EdgeInsets.all(AppSpacing.md),
-                          child: _buildSubmitButton(
-                              context, draft, widget.baseService.id),
-                        ),
-                      )
-                    : null,
+            bottomNavigationBar: state.status ==
+                        RequesterGetIntakeFormStatus.loaded &&
+                    state.form != null
+                ? SafeArea(
+                    child: Padding(
+                      padding: const EdgeInsets.all(AppSpacing.md),
+                      child: _buildSubmitButton(
+                          context, coordinator.draft, widget.baseService.id),
+                    ),
+                  )
+                : null,
             body: SafeArea(
               child: AdaptiveSplitColumn(
                 leftChildren: [
@@ -77,10 +77,8 @@ class _RequesterIntakePageState extends State<RequesterIntakePage> {
                   if (state.status == RequesterGetIntakeFormStatus.loaded &&
                       state.form != null) ...[
                     FormRenderer(
-                        filledForm: FilledFormEntity(form: state.form!),
-                        onChanged: (formId, order, value) {
-                          draft.updateValue(order, value);
-                        }),
+                      coordinator: coordinator,
+                    ),
                     const SizedBox(height: 16)
                   ]
                 ],
