@@ -12,6 +12,7 @@ import 'package:workorder_company_app/features/home/presentation/widget/staff_un
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/orientation_helper.dart';
 import 'package:workorder_company_app/shared/widgets/adaptive_wrapper.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -88,28 +89,22 @@ class _Homepage extends State<Homepage> {
     return SizedBox.expand(
       child: Stack(
         children: [
-          // ==========================
-          // BACKGROUND IMAGE
-          // ==========================
           SizedBox(
             width: double.infinity,
-            height: 220,
-            child: Image.asset(
-              "assets/images/header-home.png",
+            height: 200,
+            child: SvgPicture.asset(
+              "assets/images/hero-home-page.svg",
               fit: BoxFit.cover,
+              alignment: Alignment.center,
             ),
           ),
-
-          // ==========================
-          // WHITE FLOATING CARD
-          // ==========================
           Positioned(
             top: 140,
             left: 0,
             right: 0,
             bottom: 0,
             child: Container(
-              height: double.infinity, // WAJIB untuk memenuhi area
+              height: double.infinity,
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surface,
@@ -124,9 +119,11 @@ class _Homepage extends State<Homepage> {
                   ),
                 ],
               ),
-
               child: SingleChildScrollView(
-                child: content,
+                child: Material(
+                  color: Colors.transparent,
+                  child: content,
+                ),
               ),
             ),
           )
@@ -141,35 +138,38 @@ class _Homepage extends State<Homepage> {
       SizedBox(
         width: double.infinity,
         height: double.infinity,
-        child: Image.asset(
-          "assets/images/header-home.png",
-          fit: BoxFit.cover,
+        child: SvgPicture.asset(
+          "assets/images/hero-home-page.svg",
+          fit: BoxFit.fill,
+          alignment: Alignment.center,
         ),
       ),
       Positioned(
         top: 0,
-        left: MediaQuery.of(context).size.width / 2,
-        right: 0,
+        left: MediaQuery.of(context).size.width / 4,
+        right: MediaQuery.of(context).size.width / 4,
         bottom: 0,
         child: Container(
-          height: double.infinity, // WAJIB untuk memenuhi area
+          height: double.infinity,
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
-            borderRadius: const BorderRadius.horizontal(
-              left: Radius.circular(24),
+            borderRadius: const BorderRadius.vertical(
+              top: Radius.circular(24),
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withAlpha(8),
-                blurRadius: 12,
-                offset: const Offset(0, -2),
+                color: Colors.black.withAlpha(10),
+                blurRadius: 20,
+                offset: const Offset(0, -5),
               ),
             ],
           ),
-
           child: SingleChildScrollView(
-            child: content,
+            child: Material(
+              color: Colors.transparent,
+              child: content,
+            ),
           ),
         ),
       )

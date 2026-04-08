@@ -98,34 +98,41 @@ class HelpButton extends StatelessWidget {
   void _openBottomSheet(BuildContext context, _HelpButtonColors colors) {
     showAppBottomSheet(
       context,
-      header: Container(
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: colors.backgroundColor,
-          borderRadius: borderRadius,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.tips_and_updates, color: colors.textColor),
-            const SizedBox(width: 8),
-            Text(
-              title,
-              style: TextStyle(
-                color: colors.textColor,
-                fontWeight: FontWeight.w600,
+      header: Row(
+        children: [
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: colors.backgroundColor,
+                borderRadius: borderRadius,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.tips_and_updates, color: colors.textColor),
+                  const SizedBox(width: 8),
+                  Text(
+                    title,
+                    style: TextStyle(
+                      color: colors.textColor,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
-      footer: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          FilledButton(
-            onPressed: () => context.pop(),
-            child: const Text("Tutup"),
           ),
+          const SizedBox(width: 8),
+          IconButton.filled(
+            onPressed: () => context.pop(),
+            tooltip: "Tutup",
+            style: IconButton.styleFrom(
+              backgroundColor: Theme.of(context).disabledColor,
+              foregroundColor: colors.textColor,
+            ),
+            icon: const Icon(Icons.close),
+          )
         ],
       ),
       content: child,

@@ -15,9 +15,11 @@ class AdaptiveSplitColumn extends StatelessWidget {
     required this.leftChildren,
     required this.rightChildren,
     this.breakpoint = 768,
-    this.heightSpacing = AppSpacing.md,
+    this.heightSpacing = 0,
     this.widthSpacing = AppSpacing.md,
-    this.padding = const EdgeInsets.all(AppSpacing.md),
+    this.padding = const EdgeInsets.symmetric(
+      horizontal: AppSpacing.md,
+    ),
   });
 
   @override
@@ -27,7 +29,6 @@ class AdaptiveSplitColumn extends StatelessWidget {
         final isMediumUp = constraints.maxWidth >= breakpoint;
 
         if (!isMediumUp) {
-          // 🔹 Small → gabung jadi 1 column
           return SingleChildScrollView(
             padding: padding,
             child: Column(
@@ -40,7 +41,6 @@ class AdaptiveSplitColumn extends StatelessWidget {
           );
         }
 
-        // 🔹 Medium+ → 2 column scrollable terpisah
         return Padding(
           padding: padding,
           child: Row(

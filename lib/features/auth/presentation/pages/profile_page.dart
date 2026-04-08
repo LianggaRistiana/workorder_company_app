@@ -6,6 +6,7 @@ import 'package:workorder_company_app/core/authorization/rule/role_permission_ru
 import 'package:workorder_company_app/core/authorization/util/access_gate_on_widget.dart';
 import 'package:workorder_company_app/core/authorization/util/check_permission.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
+import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 import 'package:workorder_company_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:workorder_company_app/features/auth/presentation/widgets/profile_card_user.dart';
 import 'package:workorder_company_app/features/auth/presentation/widgets/profile_logout_button.dart';
@@ -14,6 +15,7 @@ import 'package:workorder_company_app/features/auth/presentation/widgets/user_pr
 import 'package:workorder_company_app/features/company/presentation/bloc/internal_company_management/internal_company_get_cubit.dart';
 import 'package:workorder_company_app/features/company/presentation/widgets/internal_company_card.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/widgets/adaptive_split_column.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -58,28 +60,9 @@ class _ProfilePageState extends State<ProfilePage> {
             return Scaffold(
               appBar: AppBar(),
               body: SafeArea(
-                child: SingleChildScrollView(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-                  child: Column(
-                    children: [
-                      Column(
-                        children: [
-                          InternalCompanyCard(),
-                          const SizedBox(height: AppSpacing.md),
-                        ],
-                      ).require(roleCan(CompanyPermission.view)),
-                      ProfileUserCard(user: state.user),
-                      UserPropertyDisplay(user: state.user),
-                      const Divider(),
-                      const ProfileMenuSection(),
-                      const SizedBox(height: AppSpacing.md),
-                      const ProfileLogoutButton(),
-                      const SizedBox(height: AppSpacing.lg),
-                    ],
-                  ),
-                ),
-              ),
+                  child: AdaptiveSplitColumn(
+                      leftChildren: _profileData(state.user),
+                      rightChildren: _menuSettings())),
             );
           }
 
@@ -87,5 +70,27 @@ class _ProfilePageState extends State<ProfilePage> {
         },
       ),
     );
+  }
+
+  List<Widget> _profileData(UserEntity user) {
+    return [
+      Column(
+        children: [
+          InternalCompanyCard(),
+          const SizedBox(height: AppSpacing.md),
+        ],
+      ).require(roleCan(CompanyPermission.view)),
+      ProfileUserCard(user: user),
+      UserPropertyDisplay(user: user),
+    ];
+  }
+
+  List<Widget> _menuSettings() {
+    return [
+      const ProfileMenuSection(),
+      const SizedBox(height: AppSpacing.md),
+      const ProfileLogoutButton(),
+      const SizedBox(height: AppSpacing.lg),
+    ];
   }
 }

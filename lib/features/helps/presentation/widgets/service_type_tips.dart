@@ -9,7 +9,7 @@ class ServiceAccessTypeTips extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Padding(
+    return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -27,7 +27,6 @@ class ServiceAccessTypeTips extends StatelessWidget {
             style: theme.textTheme.bodyMedium,
           ),
           const SizedBox(height: 16),
-
           InfoItem(
             icon: Icons.public_rounded,
             title: "Public",
@@ -35,7 +34,6 @@ class ServiceAccessTypeTips extends StatelessWidget {
                 "Layanan dapat diakses oleh semua pengguna tanpa batasan khusus. "
                 "Cocok untuk layanan umum yang terbuka bagi seluruh pelanggan.",
           ),
-
           InfoItem(
             icon: Icons.workspace_premium_rounded,
             title: "Member Only",
@@ -43,7 +41,6 @@ class ServiceAccessTypeTips extends StatelessWidget {
                 "Layanan hanya dapat diakses oleh pelanggan yang telah terdaftar "
                 "atau memiliki status langganan di perusahaan.",
           ),
-
           InfoItem(
             icon: Icons.business_center_rounded,
             title: "Internal",
@@ -51,9 +48,7 @@ class ServiceAccessTypeTips extends StatelessWidget {
                 "Layanan hanya dapat diakses oleh pihak internal perusahaan, "
                 "seperti admin, supervisor, atau tim operasional.",
           ),
-
           const SizedBox(height: 16),
-
           InformationBlock.info(
             "Tips: Gunakan Public untuk layanan umum, "
             "Member Only untuk layanan eksklusif pelanggan berlangganan, "
