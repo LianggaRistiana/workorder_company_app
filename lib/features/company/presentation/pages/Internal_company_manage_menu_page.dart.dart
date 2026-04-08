@@ -5,7 +5,7 @@ import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/features/company/presentation/bloc/internal_company_management/internal_company_get_cubit.dart';
 import 'package:workorder_company_app/features/company/presentation/widgets/internal_company_card.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
-import 'package:workorder_company_app/shared/utils/orientation_helper.dart';
+import 'package:workorder_company_app/shared/widgets/adaptive_split_column.dart';
 import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
 import 'package:workorder_company_app/shared/widgets/info_bottom_sheet.dart';
 import 'package:workorder_company_app/shared/widgets/menu_grid.dart';
@@ -26,146 +26,167 @@ class _InternalCompanyManageMenuPageState
   void initState() {
     super.initState();
     context.read<InternalGetCompanyCubit>().loadCompany();
-    OrientationHelper.portraitOnly();
   }
 
   @override
   void dispose() {
-    OrientationHelper.all();
+    // OrientationHelper.all();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        bottom: PreferredSize(
-          preferredSize: Size(50, 60),
-          child: Padding(
+      body: SafeArea(
+          child: Column(
+        children: [
+          Padding(
             padding: const EdgeInsets.all(8.0),
-            child: InternalCompanyCard(),
+            child: Hero(
+              tag: "company-card",
+              child: InternalCompanyCard(),
+            ),
           ),
-        ),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // /// --- Section Title ---
-            SectionTitle("Menu Konfigurasi Perusahaan"),
-            HorizontalButton(
-              leadingIcon: AppIcon.template,
-              title: "Konfigurasi Cepat",
-              description:
-                  "Konfigurasi Departemen, Formulir, Layanan dengan memilih template yang tersedia",
-              onTap: () {},
+          Expanded(
+            child: AdaptiveSplitColumn(
+              heightSpacing: 0,
+              leftChildren: _configMenu(),
+              rightChildren: _operationalMenu(),
             ),
-            const SizedBox(height: 12),
-            MenuGrid(
-              items: [
-                MenuItem(
-                    icon: AppIcon.form,
-                    label: "Formulir",
-                    onTap: () {
-                      context.push(AppRoutes.forms);
-                    }),
-                MenuItem(
-                    icon: AppIcon.service,
-                    label: "Layanan",
-                    onTap: () {
-                      context.push(AppRoutes.services);
-                    }),
-                MenuItem(
-                    icon: AppIcon.department,
-                    label: "Departemen",
-                    onTap: () {
-                      context.push(AppRoutes.positions);
-                    }),
-                MenuItem(
-                    icon: AppIcon.info,
-                    label: "Informasi Perusahaan",
-                    onTap: () {
-                      context.push(AppRoutes.company);
-                    }),
-                MenuItem(
-                    icon: AppIcon.memberCode,
-                    label: "Kode Unik Langganan",
-                    onTap: () {
-                      context.push(AppRoutes.membershipsCodes);
-                    }),
-                MenuItem(
-                    icon: AppIcon.qna,
-                    label: "Konfigurasi Tanya Jawab",
-                    onTap: () {
-                      context.push(AppRoutes.companyFaqConfig);
-                    }),
-                MenuItem(
-                    icon: AppIcon.help,
-                    label: "Bantuan",
-                    onTap: () {
-                      showAppBottomSheet(context,
-                          content: SizedBox(
-                            height: 200,
-                            child: Center(
-                              child: Text("Fitur ini belum tersedia"),
-                            ),
-                          ));
-                    }),
-              ],
-            ),
-            const SizedBox(height: 24),
-            const SectionTitle("Menu Operasional"),
-            const SizedBox(height: 12),
-            MenuGrid(
-              items: [
-                MenuItem(
-                    icon: AppIcon.serviceRequestInbox,
-                    label: "Pengajuan Layanan",
-                    onTap: () {
-                      context.push(AppRoutes.serviceRequestInbox);
-                    }),
-                MenuItem(
-                    icon: AppIcon.workOrder,
-                    label: "Tugas Kerja",
-                    onTap: () {
-                      context.push(AppRoutes.workorders);
-                    }),
-                MenuItem(
-                    icon: AppIcon.employee,
-                    label: "Pegawai",
-                    onTap: () {
-                      context.push(AppRoutes.employee);
-                    }),
-                MenuItem(
-                    icon: AppIcon.history,
-                    label: "Riwayat Undangan Pegawai",
-                    onTap: () {
-                      context.push(AppRoutes.invitationsHistory);
-                    }),
-                MenuItem(
-                    icon: AppIcon.membership,
-                    label: "Pelanggan",
-                    onTap: () {
-                      context.push(AppRoutes.memberships);
-                    }),
-                MenuItem(
-                    icon: AppIcon.help,
-                    label: "Bantuan",
-                    onTap: () {
-                      showAppBottomSheet(context,
-                          content: SizedBox(
-                            height: 200,
-                            child: Center(
-                              child: Text("Fitur ini belum tersedia"),
-                            ),
-                          ));
-                    }),
-              ],
-            ),
-          ],
-        ),
-      ),
+          ),
+        ],
+      )),
     );
+  }
+
+  List<Widget> _configMenu() {
+    return [
+      SectionTitle(
+        "Menu Konfigurasi Perusahaan",
+        style: Theme.of(context).textTheme.titleLarge,
+      ),
+      const SizedBox(height: 12),
+      HorizontalButton(
+        key: const Key("horizontal-button-config"),
+        margin: EdgeInsets.all(0),
+        leadingIcon: AppIcon.template,
+        title: "Konfigurasi Cepat",
+        description:
+            "Konfigurasi Departemen, Formulir, Layanan dengan memilih template yang tersedia",
+        onTap: () {},
+      ),
+      const SizedBox(height: 12),
+      MenuGrid(
+        key: const Key("menu-grid-config"),
+        items: [
+          MenuItem(
+              icon: AppIcon.form,
+              label: "Formulir",
+              onTap: () {
+                context.push(AppRoutes.forms);
+              }),
+          MenuItem(
+              icon: AppIcon.service,
+              label: "Layanan",
+              onTap: () {
+                context.push(AppRoutes.services);
+              }),
+          MenuItem(
+              icon: AppIcon.department,
+              label: "Departemen",
+              onTap: () {
+                context.push(AppRoutes.positions);
+              }),
+          MenuItem(
+              icon: AppIcon.info,
+              label: "Informasi Perusahaan",
+              onTap: () {
+                context.push(AppRoutes.company);
+              }),
+          MenuItem(
+              icon: AppIcon.memberCode,
+              label: "Kode Unik Langganan",
+              onTap: () {
+                context.push(AppRoutes.membershipsCodes);
+              }),
+          MenuItem(
+              icon: AppIcon.qna,
+              label: "Konfigurasi Tanya Jawab",
+              onTap: () {
+                context.push(AppRoutes.companyFaqConfig);
+              }),
+          MenuItem(
+              icon: AppIcon.help,
+              label: "Bantuan",
+              onTap: () {
+                showAppBottomSheet(context,
+                    content: SizedBox(
+                      height: 200,
+                      child: Center(
+                        child: Text("Fitur ini belum tersedia"),
+                      ),
+                    ));
+              }),
+        ],
+      ),
+      const SizedBox(height: 16),
+    ];
+  }
+
+  List<Widget> _operationalMenu() {
+    return [
+      SectionTitle(
+        "Menu Operasional",
+        style: Theme.of(context).textTheme.titleLarge,
+      ),
+      const SizedBox(height: 12),
+      MenuGrid(
+        key: const Key("menu-grid-operational"),
+        items: [
+          MenuItem(
+              icon: AppIcon.serviceRequestInbox,
+              label: "Pengajuan Layanan",
+              onTap: () {
+                context.push(AppRoutes.serviceRequestInbox);
+              }),
+          MenuItem(
+              icon: AppIcon.workOrder,
+              label: "Tugas Kerja",
+              onTap: () {
+                context.push(AppRoutes.workorders);
+              }),
+          MenuItem(
+              icon: AppIcon.employee,
+              label: "Pegawai",
+              onTap: () {
+                context.push(AppRoutes.employee);
+              }),
+          MenuItem(
+              icon: AppIcon.history,
+              label: "Riwayat Undangan Pegawai",
+              onTap: () {
+                context.push(AppRoutes.invitationsHistory);
+              }),
+          MenuItem(
+              icon: AppIcon.membership,
+              label: "Pelanggan",
+              onTap: () {
+                context.push(AppRoutes.memberships);
+              }),
+          MenuItem(
+              icon: AppIcon.help,
+              label: "Bantuan",
+              onTap: () {
+                showAppBottomSheet(context,
+                    content: SizedBox(
+                      height: 200,
+                      child: Center(
+                        child: Text("Fitur ini belum tersedia"),
+                      ),
+                    ));
+              }),
+        ],
+      ),
+    ];
   }
 }

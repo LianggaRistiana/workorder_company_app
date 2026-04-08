@@ -16,7 +16,10 @@ class OwnerContent extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SectionTitle("Menu Konfigurasi Perusahaan"),
+        SectionTitle(
+          "Menu Konfigurasi Perusahaan",
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
         const SizedBox(height: 12),
         MenuGrid(
           items: [
@@ -42,19 +45,15 @@ class OwnerContent extends StatelessWidget {
                 icon: AppIcon.help,
                 label: "Bantuan",
                 onTap: () {
-                  // showAppBottomSheet(context,
-                  //     content: SizedBox(
-                  //       height: 200,
-                  //       child: Center(
-                  //         child: Text("Fitur ini belum tersedia"),
-                  //       ),
-                  //     ));
                   context.push(AppRoutes.forbidden);
                 }),
           ],
         ),
         const SizedBox(height: 12),
-        const SectionTitle("Menu Operasional"),
+        SectionTitle(
+          "Menu Operasional",
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
         const SizedBox(height: 12),
         MenuGrid(
           items: [

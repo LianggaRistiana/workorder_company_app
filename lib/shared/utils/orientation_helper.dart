@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class OrientationHelper {
@@ -14,4 +15,12 @@ class OrientationHelper {
       DeviceOrientation.landscapeRight,
     ]);
   }
+}
+
+extension OrientationExtension on BuildContext {
+  bool get isLandscape =>
+      MediaQuery.of(this).orientation == Orientation.landscape;
+
+  bool get isPortrait =>
+      MediaQuery.of(this).orientation == Orientation.portrait;
 }

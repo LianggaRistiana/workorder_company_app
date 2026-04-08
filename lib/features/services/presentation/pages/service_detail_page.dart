@@ -102,6 +102,12 @@ class _ServiceDetailView extends StatelessWidget {
                   ),
                 ],
               ),
+              // floatingActionButton: FloatingActionButton(
+              //   child: const Icon(AppIcon.service),
+              //   onPressed: () {
+                  
+              //   },
+              // ),
               bottomNavigationBar: Padding(
                 padding: const EdgeInsets.all(AppSpacing.lg),
                 child: BlocConsumer<ServiceActionCubit, ServiceActionState>(
@@ -135,60 +141,62 @@ class _ServiceDetailView extends StatelessWidget {
                   }
                 }),
               ),
-              body: DefaultTabController(
-                length: 3,
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: AppSpacing.md,
-                      ),
-                      child: HeaderOfPage(
-                        title: service.title,
-                        icon: icon,
-                      ),
-                    ),
-                    const TabBar(
-                      dividerColor: Colors.transparent,
-                      tabs: [
-                        Tab(child: FittedBox(child: Text("Konfigurasi"))),
-                        Tab(child: FittedBox(child: Text("Permintaan"))),
-                        Tab(
-                          child: FittedBox(
-                            child: Text("Perintah Kerja\ndan Laporan"),
-                          ),
+              body: SafeArea(
+                child: DefaultTabController(
+                  length: 3,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppSpacing.md,
                         ),
-                      ],
-                    ),
-                    Expanded(
-                      child: TabBarView(
-                        children: [
-                          SingleChildScrollView(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: AppSpacing.md,
-                              ),
-                              child: Column(
-                                children: [
-                                  ServiceConfigView(service: service),
-                                  HelpButton(
-                                    title: "Ketahui jenis akses layanan",
-                                    child: ServiceAccessTypeTips(),
-                                  ),
-                                ],
-                              ),
+                        child: HeaderOfPage(
+                          title: service.title,
+                          icon: icon,
+                        ),
+                      ),
+                      const TabBar(
+                        dividerColor: Colors.transparent,
+                        tabs: [
+                          Tab(child: FittedBox(child: Text("Konfigurasi"))),
+                          Tab(child: FittedBox(child: Text("Permintaan"))),
+                          Tab(
+                            child: FittedBox(
+                              child: Text("Perintah Kerja\ndan Laporan"),
                             ),
-                          ),
-                          ServiceRequestTabView(
-                            config: service.serviceRequestConfig,
-                          ),
-                          ServiceWorkOrderTabView(
-                            configs: service.workOrdersConfig,
                           ),
                         ],
                       ),
-                    ),
-                  ],
+                      Expanded(
+                        child: TabBarView(
+                          children: [
+                            SingleChildScrollView(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: AppSpacing.md,
+                                ),
+                                child: Column(
+                                  children: [
+                                    ServiceConfigView(service: service),
+                                    HelpButton(
+                                      title: "Ketahui jenis akses layanan",
+                                      child: ServiceAccessTypeTips(),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            ServiceRequestTabView(
+                              config: service.serviceRequestConfig,
+                            ),
+                            ServiceWorkOrderTabView(
+                              configs: service.workOrdersConfig,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );

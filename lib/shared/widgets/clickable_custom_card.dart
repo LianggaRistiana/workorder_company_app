@@ -31,6 +31,7 @@ class ClickableCustomCard extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Card(
+      clipBehavior: Clip.antiAlias,
       elevation: elevation,
       shadowColor: Colors.black.withAlpha(60),
       margin: margin ?? const EdgeInsets.only(bottom: 8),

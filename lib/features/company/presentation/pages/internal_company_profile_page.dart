@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
-import 'package:workorder_company_app/features/company/domain/entities/company_entity.dart';
 import 'package:workorder_company_app/features/company/presentation/bloc/internal_company_management/internal_company_get_cubit.dart';
 import 'package:workorder_company_app/features/company/presentation/bloc/internal_company_management/internal_company_get_state.dart';
+import 'package:workorder_company_app/features/company/presentation/widgets/internal_company_card.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
@@ -54,7 +54,11 @@ class _InternalCompanyProfilePageState
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
               children: [
-                _CompanyHeader(company: company),
+                Hero(
+                  tag: "company-card",
+                  child: InternalCompanyCard(), // FIXME[HIGH] : fix this later
+                  // child: _CompanyHeader(company: company)
+                ),
                 // const SizedBox(height: 24)
                 CustomCard(
                     child: PropertyDisplay(properties: [
@@ -89,56 +93,6 @@ class _InternalCompanyProfilePageState
             ),
           );
         },
-      ),
-    );
-  }
-}
-
-class _CompanyHeader extends StatelessWidget {
-  final CompanyEntity company;
-
-  const _CompanyHeader({required this.company});
-
-  @override
-  Widget build(BuildContext context) {
-    final color = company.isActive ? Colors.green : Colors.red;
-
-    return CustomCard(
-      child: Row(
-        children: [
-          CircleAvatar(
-            radius: 28,
-            child: Text(
-              company.name.substring(0, 1).toUpperCase(),
-              style: const TextStyle(fontSize: 20),
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  company.name,
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    Icon(Icons.circle, size: 10, color: color),
-                    const SizedBox(width: 6),
-                    Text(
-                      company.isActive
-                          ? "Perusahaan Aktif"
-                          : "Perusahaan Tidak Aktif",
-                      style: TextStyle(color: color),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }

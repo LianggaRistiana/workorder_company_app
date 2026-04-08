@@ -28,9 +28,8 @@ class CustomNavigationBar extends StatelessWidget {
         return NavigationDestination(
           icon: Icon(
             item.icon,
-            color: isSelected
-                ? colorScheme.primary
-                : colorScheme.onSurfaceVariant,
+            color:
+                isSelected ? colorScheme.primary : colorScheme.onSurfaceVariant,
           ),
           label: item.label,
         );

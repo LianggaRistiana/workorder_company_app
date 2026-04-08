@@ -24,7 +24,7 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
     _items = NavConfig.byRole(widget.role);
   }
 
- void _onItemTapped(int index) {
+  void _onItemTapped(int index) {
     setState(() => _currentIndex = index);
     final currentLocation = GoRouterState.of(context).uri.toString();
 

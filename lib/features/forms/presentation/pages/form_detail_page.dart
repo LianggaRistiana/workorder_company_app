@@ -11,6 +11,7 @@ import 'package:workorder_company_app/features/forms/presentation/widgets/form_f
 import 'package:workorder_company_app/features/helps/presentation/widgets/form_type_tips.dart';
 import 'package:workorder_company_app/features/helps/presentation/widgets/help_button.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/widgets/adaptive_split_column.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
@@ -71,14 +72,16 @@ class _FormDetailViewState extends State<_FormDetailView> {
                 ),
             ],
           ),
-          body: PopScope(
-              canPop: false,
-              onPopInvokedWithResult: (didPop, result) {
-                if (didPop) return;
-                if (!context.mounted) return;
-                context.pop(isUpdated);
-              },
-              child: _buildBody(context, state)),
+          body: SafeArea(
+            child: PopScope(
+                canPop: false,
+                onPopInvokedWithResult: (didPop, result) {
+                  if (didPop) return;
+                  if (!context.mounted) return;
+                  context.pop(isUpdated);
+                },
+                child: _buildBody(context, state)),
+          ),
         );
       },
     );
@@ -108,51 +111,62 @@ class _FormDetailViewState extends State<_FormDetailView> {
           );
         }
 
-        return SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              HeaderOfPage(title: form.title, icon: AppIcon.form),
-              const SizedBox(height: 12),
-              CustomCard(
-                  child: PropertyDisplay(properties: [
-                PropertyItem.text(
-                  label: 'Deskripsi',
-                  icon: Icons.info_outline,
-                  value: form.description,
-                ),
-                PropertyItem.text(
-                  label: 'Tipe Formulir',
-                  icon: Icons.category_outlined,
-                  value: form.formType.displayName,
-                ),
-                PropertyItem.text(
-                  label: 'Jumlah Pertanyaan',
-                  icon: Icons.question_mark_outlined,
-                  value: form.fields?.length.toString() ?? "-",
-                ),
-              ])),
-              HelpButton(title: "Kenali Tipe Formulir", child: FormTypeTips()),
-              const SizedBox(height: 16),
-              PropertyTitle(
-                  label: "Daftar Pertanyaan", icon: Icons.question_mark),
-              const SizedBox(height: 12),
-              CustomList(
-                items: form.fields ?? [],
-                emptyFooterHeight: AppSpacing.lg,
-                emptyWidget: InformationBlock.empty("Belum ada pertanyaan"),
-                itemBuilder: (context, index) {
-                  final field = form.fields![index];
-                  return FormFieldCard(field: field);
-                },
-              )
-            ],
+        return RefreshIndicator(
+          onRefresh: () async {
+            context.read<FormDetailCubit>().getFormById(widget.formId);
+          },
+          child: AdaptiveSplitColumn(
+            heightSpacing: 0,
+            leftChildren: _formMetaData(form),
+            rightChildren: _formFields(form),
           ),
         );
 
       case FormDetailStatus.initial:
         return const SizedBox.shrink();
     }
+  }
+
+  List<Widget> _formMetaData(FormEntity form) {
+    return [
+      HeaderOfPage(title: form.title, icon: AppIcon.form),
+      const SizedBox(height: 12),
+      CustomCard(
+          child: PropertyDisplay(properties: [
+        PropertyItem.text(
+          label: 'Deskripsi',
+          icon: Icons.info_outline,
+          value: form.description,
+        ),
+        PropertyItem.text(
+          label: 'Tipe Formulir',
+          icon: Icons.category_outlined,
+          value: form.formType.displayName,
+        ),
+        PropertyItem.text(
+          label: 'Jumlah Pertanyaan',
+          icon: Icons.question_mark_outlined,
+          value: form.fields?.length.toString() ?? "-",
+        ),
+      ])),
+      HelpButton(title: "Kenali Tipe Formulir", child: FormTypeTips()),
+      const SizedBox(height: 16),
+    ];
+  }
+
+  List<Widget> _formFields(FormEntity form) {
+    return [
+      PropertyTitle(label: "Daftar Pertanyaan", icon: Icons.question_mark),
+      const SizedBox(height: 12),
+      CustomList(
+        items: form.fields ?? [],
+        emptyFooterHeight: AppSpacing.lg,
+        emptyWidget: InformationBlock.empty("Belum ada pertanyaan"),
+        itemBuilder: (context, index) {
+          final field = form.fields![index];
+          return FormFieldCard(field: field);
+        },
+      )
+    ];
   }
 }

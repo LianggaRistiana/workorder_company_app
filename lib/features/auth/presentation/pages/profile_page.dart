@@ -57,24 +57,27 @@ class _ProfilePageState extends State<ProfilePage> {
           if (state is Authenticated) {
             return Scaffold(
               appBar: AppBar(),
-              body: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-                child: Column(
-                  children: [
-                    Column(
-                      children: [
-                        InternalCompanyCard(),
-                        const SizedBox(height: AppSpacing.md),
-                      ],
-                    ).require(roleCan(CompanyPermission.view)),
-                    ProfileUserCard(user: state.user),
-                    UserPropertyDisplay(user: state.user),
-                    const Divider(),
-                    const ProfileMenuSection(),
-                    const SizedBox(height: AppSpacing.md),
-                    const ProfileLogoutButton(),
-                    const SizedBox(height: AppSpacing.lg),
-                  ],
+              body: SafeArea(
+                child: SingleChildScrollView(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+                  child: Column(
+                    children: [
+                      Column(
+                        children: [
+                          InternalCompanyCard(),
+                          const SizedBox(height: AppSpacing.md),
+                        ],
+                      ).require(roleCan(CompanyPermission.view)),
+                      ProfileUserCard(user: state.user),
+                      UserPropertyDisplay(user: state.user),
+                      const Divider(),
+                      const ProfileMenuSection(),
+                      const SizedBox(height: AppSpacing.md),
+                      const ProfileLogoutButton(),
+                      const SizedBox(height: AppSpacing.lg),
+                    ],
+                  ),
                 ),
               ),
             );

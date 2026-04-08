@@ -109,7 +109,7 @@ class ListPageScaffold<T> extends StatelessWidget {
         bottom: bottomAppBar,
       ),
       floatingActionButton: floatingActionButton,
-      body: content,
+      body: SafeArea(child: content),
       bottomNavigationBar: AnimatedSlide(
         duration: const Duration(milliseconds: 200),
         offset:

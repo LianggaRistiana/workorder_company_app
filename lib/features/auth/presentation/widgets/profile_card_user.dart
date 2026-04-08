@@ -12,34 +12,37 @@ class ProfileUserCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    return CustomCard(
-      padding: const EdgeInsets.all(16),
-      margin: const EdgeInsets.only(bottom: AppSpacing.xs),
-      child: Row(
-        children: [
-          CircleAvatar(
-            radius: 24,
-            backgroundColor: colorScheme.primaryContainer,
-            child: Text(
-              user.name.isNotEmpty ? user.name[0].toUpperCase() : "?",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: colorScheme.onPrimaryContainer,
+    return Hero(
+      tag: "user_info_chip",
+      child: CustomCard(
+        padding: const EdgeInsets.all(16),
+        margin: const EdgeInsets.only(bottom: AppSpacing.xs),
+        child: Row(
+          children: [
+            CircleAvatar(
+              radius: 24,
+              backgroundColor: colorScheme.primaryContainer,
+              child: Text(
+                user.name.isNotEmpty ? user.name[0].toUpperCase() : "?",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: colorScheme.onPrimaryContainer,
+                ),
               ),
             ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Text(
-              user.name,
-              style: Theme.of(context)
-                  .textTheme
-                  .titleMedium
-                  ?.copyWith(fontWeight: FontWeight.w700),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Text(
+                user.name,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium
+                    ?.copyWith(fontWeight: FontWeight.w700),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
