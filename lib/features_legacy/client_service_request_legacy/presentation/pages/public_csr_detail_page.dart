@@ -4,9 +4,9 @@ import 'package:intl/intl.dart';
 import 'package:workorder_company_app/features_legacy/client_service_request_legacy/domain/entitties/client_service_request_entity.dart';
 import 'package:workorder_company_app/features_legacy/client_service_request_legacy/presentation/bloc/public_client_service_request/csr_bloc.dart';
 import 'package:workorder_company_app/features_legacy/client_service_request_legacy/presentation/bloc/public_client_service_request/csr_detail_cubit.dart';
-import 'package:workorder_company_app/features_legacy/client_service_request_legacy/presentation/widgets/csr_status_step.dart';
-import 'package:workorder_company_app/shared/widgets/custom_list.dart';
-import 'package:workorder_company_app/shared/widgets/filled_form_view.dart';
+// import 'package:workorder_company_app/features_legacy/client_service_request_legacy/presentation/widgets/csr_status_step.dart';
+// import 'package:workorder_company_app/shared/widgets/custom_list.dart';
+// import 'package:workorder_company_app/shared/widgets/filled_form_view.dart';
 
 class PublicCsrDetailPage extends StatefulWidget {
   final String csrId;
@@ -113,7 +113,7 @@ class _CsrDetailPageState extends State<PublicCsrDetailPage> {
           ],
         ),
         const SizedBox(height: 4),
-        CsrStatusStep(status: csr.status),
+        // CsrStatusStep(status: csr.status),
         const SizedBox(height: 12),
       ],
     );

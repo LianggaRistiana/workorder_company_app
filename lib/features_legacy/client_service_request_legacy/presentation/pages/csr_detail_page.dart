@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features_legacy/client_service_request_legacy/presentation/bloc/internal_client_service_request/internal_csr_actions_cubit.dart';
 import 'package:workorder_company_app/features_legacy/client_service_request_legacy/presentation/bloc/internal_client_service_request/internal_csr_detail_cubit.dart';
-import 'package:workorder_company_app/features_legacy/client_service_request_legacy/presentation/widgets/service_request_detail_content.dart';
+// import 'package:workorder_company_app/features_legacy/client_service_request_legacy/presentation/widgets/service_request_detail_content.dart';
 
 class CsrDetailPage extends StatelessWidget {
   final String csrId;
@@ -45,7 +45,7 @@ class CsrDetailPage extends StatelessWidget {
           //     );
           //   },
           // ),
-          body: ServiceRequestDetailContent()),
+          body: SizedBox.shrink()),
     );
   }
 }

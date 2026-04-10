@@ -450,63 +450,6 @@ enum ServiceRequestStatus {
   String toString() => displayName;
 }
 
-// TODO[WO DONE FIRST] : remove this later
-enum ClientServiceRequestStatus {
-  received,
-  cancelled,
-  rejected,
-  approved,
-  workOrderCreated,
-  completed;
-
-  static ClientServiceRequestStatus fromString(String value) {
-    switch (value) {
-      case 'received':
-        return ClientServiceRequestStatus.received;
-      case 'cancelled':
-        return ClientServiceRequestStatus.cancelled;
-      case 'rejected':
-        return ClientServiceRequestStatus.rejected;
-      case 'approved':
-        return ClientServiceRequestStatus.approved;
-      case 'work_order_created':
-        return ClientServiceRequestStatus.workOrderCreated;
-      case 'completed':
-        return ClientServiceRequestStatus.completed;
-      default:
-        throw ParsingException('Unknown ClientServiceRequestStatus: $value');
-    }
-  }
-
-  String toSnakeCase() {
-    return name.toSnakeCase();
-  }
-
-  String toKebabCase() {
-    return name.toKebabCase();
-  }
-
-  String get displayName {
-    switch (this) {
-      case ClientServiceRequestStatus.received:
-        return 'Menunggu';
-      case ClientServiceRequestStatus.cancelled:
-        return 'Dibatalkan';
-      case ClientServiceRequestStatus.rejected:
-        return 'Ditolak';
-      case ClientServiceRequestStatus.approved:
-        return 'Disetujui';
-      case ClientServiceRequestStatus.workOrderCreated:
-        return 'Diproses';
-      case ClientServiceRequestStatus.completed:
-        return 'Selesai';
-    }
-  }
-
-  @override
-  String toString() => displayName;
-}
-
 enum WorkReportStatus { onProgress, completed, cancelled }
 
 enum ServiceRequestSide { provider, requester }

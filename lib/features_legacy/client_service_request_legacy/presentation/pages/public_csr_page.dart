@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features_legacy/client_service_request_legacy/presentation/bloc/public_client_service_request/csr_bloc.dart';
-import 'package:workorder_company_app/features_legacy/client_service_request_legacy/presentation/widgets/csr_item.dart';
+// import 'package:workorder_company_app/features_legacy/client_service_request_legacy/presentation/widgets/csr_item.dart';
 import 'package:workorder_company_app/shared/widgets/custom_back_buttom.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
@@ -112,13 +112,7 @@ class _PublicCsrPageState extends State<PublicCsrPage> {
                           scrollable: false,
                           separatorHeight: 0,
                           items: state.clientServiceRequests,
-                          itemBuilder: (item, _) => CsrItem(
-                            csr: item,
-                            onTap: () {
-                              // context.push(AppRoutes.serviceRequestDetailClientSide
-                              //     .fillId(item.id));
-                            },
-                          ),
+                          itemBuilder: (item, _) => SizedBox.shrink(),
                         ),
                       ],
                     )),
