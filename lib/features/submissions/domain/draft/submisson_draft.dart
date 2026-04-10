@@ -58,7 +58,6 @@ class SubmissionDraft {
       formId: formId,
       submissionType: submissionType,
       fieldsData: fieldsData.map((f) => f.toEntity()).toList(),
-      status: SubmissionStatus.drafted,
       submittedBy: null,
     );
   }

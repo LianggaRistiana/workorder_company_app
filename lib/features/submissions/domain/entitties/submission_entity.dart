@@ -6,7 +6,7 @@ class SubmissionEntity {
   final String id;
   final String formId;
   final FormType submissionType;
-  final SubmissionStatus? status;
+  // final SubmissionStatus? status; // TODO[Low] : remove this later
   final UserEntity? submittedBy;
   final List<FieldDataEntity>? fieldsData;
   final DateTime? createdAt;
@@ -15,7 +15,7 @@ class SubmissionEntity {
     required this.id,
     required this.formId,
     required this.submissionType,
-    this.status,
+    // this.status,
     this.submittedBy,
     this.fieldsData,
     this.createdAt,
@@ -25,7 +25,7 @@ class SubmissionEntity {
     String? id,
     String? formId,
     FormType? submissionType,
-    SubmissionStatus? status,
+    // SubmissionStatus? status,
     UserEntity? submittedBy,
     List<FieldDataEntity>? fieldsData,
     DateTime? createdAt,
@@ -34,27 +34,19 @@ class SubmissionEntity {
       id: id ?? this.id,
       formId: formId ?? this.formId,
       submissionType: submissionType ?? this.submissionType,
-      status: status ?? this.status,
+      // status: status ?? this.status,
       submittedBy: submittedBy ?? this.submittedBy,
       fieldsData: fieldsData ?? this.fieldsData,
       createdAt: createdAt ?? this.createdAt,
     );
   }
-
-  @override
-  String toString() {
-    return 'SubmissionEntity(id: $id, formId: $formId, submissionType: $submissionType, status: $status, submittedBy: $submittedBy, fieldsData: ${fieldsData?.map((e) => e.toString()).toList() ?? []})';
-  }
 }
 
 extension SubmissionEntityTools on SubmissionEntity {
-  /// Apakah submission sudah punya field data
   bool get hasFields => fieldsData != null && fieldsData!.isNotEmpty;
 
-  /// Ambil semua field (non-null & immutable)
   List<FieldDataEntity> get safeFields => List.unmodifiable(fieldsData ?? []);
 
-  /// Ambil field berdasarkan order
   FieldDataEntity? getFieldByOrder(String order) {
     try {
       return safeFields.firstWhere((e) => e.order == order);
@@ -63,28 +55,23 @@ extension SubmissionEntityTools on SubmissionEntity {
     }
   }
 
-  /// Ambil value berdasarkan order
   dynamic getValue(String order) {
     return getFieldByOrder(order)?.value;
   }
 
-  /// Hapus field berdasarkan order
   SubmissionEntity removeField(String order) {
     final updated = safeFields.where((e) => e.order != order).toList();
 
     return copyWith(fieldsData: updated);
   }
 
-  /// Urutkan field berdasarkan order (ascending)
   List<FieldDataEntity> get sortedFields {
     final list = [...safeFields];
     list.sort((a, b) => a.order.compareTo(b.order));
     return list;
   }
 
-  /// Apakah submission sudah dibuat
   bool get isCreated => createdAt != null;
 
-  /// Apakah submission sudah memiliki status
-  bool get hasStatus => status != null;
+  // bool get hasStatus => status != null;
 }

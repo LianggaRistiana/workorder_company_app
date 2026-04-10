@@ -74,7 +74,6 @@ class MockProviderServiceRequestDatasource
           id: "sub-1",
           formId: "intake-service-1",
           submissionType: FormType.intake,
-          status: SubmissionStatus.submitted,
           submittedBy: const UserModel(
             name: "John Doe",
             email: "hmti@client.com",

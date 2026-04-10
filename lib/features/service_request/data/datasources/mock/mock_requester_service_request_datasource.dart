@@ -81,7 +81,6 @@ class MockRequesterServiceRequestDatasource
           id: "sub-1",
           formId: "intake-service-1",
           submissionType: FormType.intake,
-          status: SubmissionStatus.submitted,
           submittedBy: const UserModel(
             name: "John Doe",
             email: "hmti@client.com",
@@ -143,7 +142,6 @@ class MockRequesterServiceRequestDatasource
           id: "sub-2",
           formId: "review-req-1",
           submissionType: FormType.report,
-          status: SubmissionStatus.drafted,
           submittedBy: const UserModel(
             name: "John Doe",
             email: "john@example.com",
