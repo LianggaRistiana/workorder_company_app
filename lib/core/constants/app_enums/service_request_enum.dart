@@ -41,3 +41,8 @@ extension ServiceRequestStatusX on ServiceRequestStatus {
     return name.toSnakeCase();
   }
 }
+
+/// Used to identify the Service Request detail page in routing.
+/// The same route is reused, but the displayed page depends on
+/// the extra value provided through this enum.
+enum ServiceRequestSide { provider, requester }

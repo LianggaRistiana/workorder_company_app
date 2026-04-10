@@ -1,5 +1,5 @@
 import 'package:go_router/go_router.dart';
-import 'package:workorder_company_app/core/constants/app_enums.dart';
+import 'package:workorder_company_app/core/constants/app_enums/service_request_enum.dart';
 import 'package:workorder_company_app/features/service_request/domain/entities/service_request_entity.dart';
 import 'package:workorder_company_app/features/service_request/presentation/pages/provider/provider_service_request_detail_page.dart';
 import 'package:workorder_company_app/features/service_request/presentation/pages/provider/provider_service_request_list_page.dart';

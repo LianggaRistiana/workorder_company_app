@@ -395,4 +395,3 @@ enum SubmissionStatus {
 
 enum WorkReportStatus { onProgress, completed, cancelled }
 
-enum ServiceRequestSide { provider, requester }
