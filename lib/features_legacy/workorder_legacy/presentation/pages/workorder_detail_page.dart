@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
-import 'package:workorder_company_app/core/authorization/feature/workorder_permission.dart';
-import 'package:workorder_company_app/core/authorization/feature/workreport_permission.dart';
-import 'package:workorder_company_app/core/authorization/rule/role_permission_rule/role_permission_helper.dart';
-import 'package:workorder_company_app/core/authorization/util/access_gate_on_widget.dart';
-import 'package:workorder_company_app/core/constants/app_enums.dart';
+// import 'package:intl/intl.dart';
+// import 'package:workorder_company_app/core/authorization/feature/workorder_permission.dart';
+// import 'package:workorder_company_app/core/authorization/feature/workreport_permission.dart';
+// import 'package:workorder_company_app/core/authorization/rule/role_permission_rule/role_permission_helper.dart';
+// import 'package:workorder_company_app/core/authorization/util/access_gate_on_widget.dart';
+// import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 import 'package:workorder_company_app/features_legacy/client_service_request_legacy/presentation/widgets/client_name_chip.dart';
@@ -14,17 +14,17 @@ import 'package:workorder_company_app/features_legacy/services_legacy/domain/ent
 import 'package:workorder_company_app/features_legacy/workorder_legacy/domain/entitties/workorder__entity.dart';
 import 'package:workorder_company_app/features_legacy/workorder_legacy/presentation/bloc/workorder_bloc.dart';
 import 'package:workorder_company_app/features_legacy/workorder_legacy/presentation/bloc/workorder_detail_cubit.dart';
-import 'package:workorder_company_app/features_legacy/workorder_legacy/presentation/widgets/workorder_action_buttons.dart';
-import 'package:workorder_company_app/features_legacy/workorder_legacy/presentation/widgets/workorder_status_chip.dart';
-import 'package:workorder_company_app/routes/app_routes.dart';
+// import 'package:workorder_company_app/features_legacy/workorder_legacy/presentation/widgets/workorder_action_buttons.dart';
+// import 'package:workorder_company_app/features_legacy/workorder_legacy/presentation/widgets/workorder_status_chip.dart';
+// import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
-import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
+// import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
-import 'package:workorder_company_app/shared/widgets/filled_form_view.dart';
-import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
+// import 'package:workorder_company_app/shared/widgets/filled_form_view.dart';
+// import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
 import 'package:workorder_company_app/shared/widgets/staff_quota_chip.dart';
 
@@ -45,10 +45,10 @@ class _WorkorderDetailPageState extends State<WorkorderDetailPage> {
 
   bool isDataUpdated = false;
 
-  void _refresh() {
-    isDataUpdated = true;
-    context.read<WorkorderDetailCubit>().getWorkorderDetail(widget.workorderId);
-  }
+  // void _refresh() {
+  //   isDataUpdated = true;
+  //   context.read<WorkorderDetailCubit>().getWorkorderDetail(widget.workorderId);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -67,24 +67,24 @@ class _WorkorderDetailPageState extends State<WorkorderDetailPage> {
                 context.pop(isDataUpdated);
               }),
             ),
-            floatingActionButton: (workorder != null &&
-                    workorder.status == WorkOrderStatus.inProgress)
-                ? FloatingActionButton.extended(
-                    label: Text("Laporan"),
-                    icon: Icon(Icons.assignment_turned_in_outlined),
-                    onPressed: () {
-                      context.push(AppRoutes.workreports.fillId(workorder.id));
-                    }).require(roleCan(WorkReportPermissions.update))
-                : null,
-            bottomNavigationBar: workorder == null
-                ? const SizedBox.shrink()
-                : WorkorderActionButtons(
-                    workorderStatus: workorder.status,
-                    workorderId: widget.workorderId,
-                    onRefresh: () {
-                      _refresh();
-                    },
-                  ).require(roleCan(WorkOrderPermissions.update)),
+            // floatingActionButton: (workorder != null &&
+            //         workorder.status == WorkOrderStatus.inProgress)
+            //     ? FloatingActionButton.extended(
+            //         label: Text("Laporan"),
+            //         icon: Icon(Icons.assignment_turned_in_outlined),
+            //         onPressed: () {
+            //           context.push(AppRoutes.workreports.fillId(workorder.id));
+            //         }).require(roleCan(WorkReportPermissions.update))
+            //     : null,
+            // bottomNavigationBar: workorder == null
+            //     ? const SizedBox.shrink()
+            //     : WorkorderActionButtons(
+            //         workorderStatus: workorder.status,
+            //         workorderId: widget.workorderId,
+            //         onRefresh: () {
+            //           _refresh();
+            //         },
+            //       ).require(roleCan(WorkOrderPermissions.update)),
             body: workorder == null
                 ? SizedBox.shrink()
                 : state.status == WorkorderStateStatus.loading
@@ -98,7 +98,7 @@ class _WorkorderDetailPageState extends State<WorkorderDetailPage> {
   }
 
   Widget _mainContent(WorkorderEntity workorder, BuildContext context) {
-    final WorkOrderStatus woStatus = workorder.status;
+    // final WorkOrderStatus woStatus = workorder.status;
 
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
@@ -107,32 +107,32 @@ class _WorkorderDetailPageState extends State<WorkorderDetailPage> {
         children: [
           _woServiceName(workorder.service.title),
           const SizedBox(height: AppSpacing.xs),
-          _woStatusAndCreatedTime(
-              workorder.createdBy, workorder.status, workorder.createdAt),
+          // _woStatusAndCreatedTime(
+          //     workorder.createdBy, workorder.status, workorder.createdAt),
           const SizedBox(height: AppSpacing.md),
 
           // Employee worked
           Text("Pegawai bertugas",
               style: Theme.of(context).textTheme.titleMedium),
 
-          if (woStatus == WorkOrderStatus.drafted)
-            HorizontalButton(
-              title: "Edit pegawai yang bertugas",
-              leadingIcon: Icons.person_add_outlined,
-              description:
-                  "pegawai yang betugas harus sesuai dengan posisi yang dibutuhkan layanan",
-              onTap: () async {
-                final result = await context.push(
-                    AppRoutes.workordersAssignStaff.fillId(workorder.id),
-                    extra: {
-                      'requiredStaff': workorder.service.requiredStaff,
-                      'assignedStaff': workorder.assignedStaffs
-                    });
-                if (result == true) {
-                  _refresh();
-                }
-              },
-            ).require(roleCan(WorkOrderPermissions.update)),
+          // if (woStatus == WorkOrderStatus.drafted)
+          //   HorizontalButton(
+          //     title: "Edit pegawai yang bertugas",
+          //     leadingIcon: Icons.person_add_outlined,
+          //     description:
+          //         "pegawai yang betugas harus sesuai dengan posisi yang dibutuhkan layanan",
+          //     onTap: () async {
+          //       final result = await context.push(
+          //           AppRoutes.workordersAssignStaff.fillId(workorder.id),
+          //           extra: {
+          //             'requiredStaff': workorder.service.requiredStaff,
+          //             'assignedStaff': workorder.assignedStaffs
+          //           });
+          //       if (result == true) {
+          //         _refresh();
+          //       }
+          //     },
+          //   ).require(roleCan(WorkOrderPermissions.update)),
           _woAssignedStaff(
               workorder.service.requiredStaff, workorder.assignedStaffs ?? []),
 
@@ -141,21 +141,21 @@ class _WorkorderDetailPageState extends State<WorkorderDetailPage> {
           Text("Formulir Perintah Kerja",
               style: Theme.of(context).textTheme.titleMedium),
 
-          if (woStatus == WorkOrderStatus.drafted)
-            HorizontalButton(
-              title: "Edit Formulir Perintah Kerja",
-              leadingIcon: Icons.assignment_outlined,
-              description:
-                  "Anda dapat mengedit perintah kerja selama perintah kerja belum berstatus Siap ",
-              onTap: () async {
-                final result =
-                    await context.push(AppRoutes.workordersSubmission);
-                if (!context.mounted) return;
-                if (result == true) {
-                  _refresh();
-                }
-              },
-            ).require(roleCan(WorkOrderPermissions.update)),
+          // if (woStatus == WorkOrderStatus.drafted)
+          //   HorizontalButton(
+          //     title: "Edit Formulir Perintah Kerja",
+          //     leadingIcon: Icons.assignment_outlined,
+          //     description:
+          //         "Anda dapat mengedit perintah kerja selama perintah kerja belum berstatus Siap ",
+          //     onTap: () async {
+          //       final result =
+          //           await context.push(AppRoutes.workordersSubmission);
+          //       if (!context.mounted) return;
+          //       if (result == true) {
+          //         _refresh();
+          //       }
+          //     },
+          //   ).require(roleCan(WorkOrderPermissions.update)),
 
           if (workorder.workorderForms != null &&
               workorder.workorderForms!.isNotEmpty)
@@ -165,7 +165,7 @@ class _WorkorderDetailPageState extends State<WorkorderDetailPage> {
             //   items: workorder.workorderForms!,
             //   itemBuilder: (item, _) => FilledFormView(filledForm: item),
             // ),
-          const SizedBox(height: AppSpacing.md),
+            const SizedBox(height: AppSpacing.md),
         ],
       ),
     );
@@ -186,35 +186,35 @@ class _WorkorderDetailPageState extends State<WorkorderDetailPage> {
     );
   }
 
-  Widget _woStatusAndCreatedTime(
-      UserEntity createdBy, WorkOrderStatus status, DateTime createdAt) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Column(
-          // mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("Dibuat oleh", style: Theme.of(context).textTheme.titleSmall),
-            ClientNameChip(name: createdBy.name),
-          ],
-        ),
-        Column(
-          // mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Text(
-              DateFormat('d MMM yyyy', 'id_ID').format(createdAt),
-              textAlign: TextAlign.end,
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-            const SizedBox(height: 4),
-            WorkOrderStatusChip(status: status),
-          ],
-        ),
-      ],
-    );
-  }
+  // Widget _woStatusAndCreatedTime(
+  //     UserEntity createdBy, WorkOrderStatus status, DateTime createdAt) {
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //     children: [
+  //       Column(
+  //         // mainAxisAlignment: MainAxisAlignment.start,
+  //         crossAxisAlignment: CrossAxisAlignment.start,
+  //         children: [
+  //           Text("Dibuat oleh", style: Theme.of(context).textTheme.titleSmall),
+  //           ClientNameChip(name: createdBy.name),
+  //         ],
+  //       ),
+  //       Column(
+  //         // mainAxisAlignment: MainAxisAlignment.start,
+  //         crossAxisAlignment: CrossAxisAlignment.end,
+  //         children: [
+  //           Text(
+  //             DateFormat('d MMM yyyy', 'id_ID').format(createdAt),
+  //             textAlign: TextAlign.end,
+  //             style: Theme.of(context).textTheme.bodySmall,
+  //           ),
+  //           const SizedBox(height: 4),
+  //           WorkOrderStatusChip(status: status),
+  //         ],
+  //       ),
+  //     ],
+  //   );
+  // }
 
   Widget _woAssignedStaff(
     List<RequiredStaffEntity> requiredStaff,

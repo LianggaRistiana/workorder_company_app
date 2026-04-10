@@ -11,7 +11,7 @@ class WorkorderEntity {
   final ServiceEntity service;
   final String? relatedWorkOrderId;
   final List<UserEntity>? assignedStaffs;
-  final WorkOrderStatus status;
+  // final WorkOrderStatus status;
   final DateTime createdAt;
   final DateTime? startedAt;
   final DateTime? completedAt;
@@ -23,7 +23,7 @@ class WorkorderEntity {
     required this.clientServiceRequestId,
     required this.createdAt,
     required this.service,
-    required this.status,
+    // required this.status,
     this.relatedWorkOrderId,
     this.assignedStaffs,
     this.startedAt,
