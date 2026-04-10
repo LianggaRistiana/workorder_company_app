@@ -7,6 +7,20 @@ enum WorkOrderStatus {
   onProgress,
   completed,
   failed;
+
+  static WorkOrderStatus fromString(String value) {
+    return switch (value) {
+      'drafted' => WorkOrderStatus.drafted,
+      'sent' => WorkOrderStatus.sent,
+      'approved' => WorkOrderStatus.approved,
+      'rejected' => WorkOrderStatus.rejected,
+      'on_progress' => WorkOrderStatus.onProgress,
+      'completed' => WorkOrderStatus.completed,
+      'cancelled' => WorkOrderStatus.cancelled,
+      'failed' => WorkOrderStatus.failed,
+      _ => throw Exception('Unknown WorkOrderStatus: $value'),
+    };
+  }
 }
 
 extension WorkOrderStatusX on WorkOrderStatus {
@@ -33,20 +47,6 @@ extension WorkOrderStatusX on WorkOrderStatus {
       WorkOrderStatus.completed => 'Selesai',
       WorkOrderStatus.cancelled => 'Dibatalkan',
       WorkOrderStatus.failed => 'Gagal',
-    };
-  }
-
-  static WorkOrderStatus fromString(String value) {
-    return switch (value) {
-      'drafted' => WorkOrderStatus.drafted,
-      'sent' => WorkOrderStatus.sent,
-      'approved' => WorkOrderStatus.approved,
-      'rejected' => WorkOrderStatus.rejected,
-      'on_progress' => WorkOrderStatus.onProgress,
-      'completed' => WorkOrderStatus.completed,
-      'cancelled' => WorkOrderStatus.cancelled,
-      'failed' => WorkOrderStatus.failed,
-      _ => throw Exception('Unknown WorkOrderStatus: $value'),
     };
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:workorder_company_app/core/constants/app_enums.dart';
+import 'package:workorder_company_app/core/constants/app_enums/service_request_enum.dart';
 
 class ServiceRequestStatusIcon extends StatelessWidget {
   final ServiceRequestStatus status;
@@ -24,12 +24,15 @@ class ServiceRequestStatusIcon extends StatelessWidget {
   }
 
   Color _statusColor(ServiceRequestStatus status) {
+    // TODO[Low] : fix color of this color
     switch (status) {
       case ServiceRequestStatus.received:
         return Colors.orange;
       case ServiceRequestStatus.approved:
         return Colors.blue;
-      case ServiceRequestStatus.workOrderCreated:
+      case ServiceRequestStatus.onProgress:
+        return Colors.amber;
+      case ServiceRequestStatus.closed:
         return Colors.blue;
       case ServiceRequestStatus.completed:
         return Colors.green;
@@ -47,9 +50,10 @@ class ServiceRequestStatusIcon extends StatelessWidget {
 
       case ServiceRequestStatus.approved:
         return Icons.check_circle;
-
-      case ServiceRequestStatus.workOrderCreated:
-        return Icons.article;
+      case ServiceRequestStatus.closed:
+        return Icons.check_circle;
+      case ServiceRequestStatus.onProgress:
+        return Icons.scale;
 
       case ServiceRequestStatus.completed:
         return Icons.done_all;

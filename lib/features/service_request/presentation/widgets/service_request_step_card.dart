@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:workorder_company_app/core/constants/app_enums.dart';
+import 'package:workorder_company_app/core/constants/app_enums/service_request_enum.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
 
@@ -28,8 +28,8 @@ class _ServiceRequestStepCardAnimatedState
     return [
       ServiceRequestStatus.received,
       ServiceRequestStatus.approved,
-      ServiceRequestStatus.workOrderCreated,
       ServiceRequestStatus.completed,
+      ServiceRequestStatus.closed,
     ];
   }
 
@@ -153,6 +153,26 @@ class _ServiceRequestStepCardAnimatedState
     );
   }
 
+  Color _statusColor(ServiceRequestStatus status) {
+    // TODO[Low] : fix color of this color
+    switch (status) {
+      case ServiceRequestStatus.received:
+        return Colors.orange;
+      case ServiceRequestStatus.approved:
+        return Colors.blue;
+      case ServiceRequestStatus.onProgress:
+        return Colors.amber;
+      case ServiceRequestStatus.closed:
+        return Colors.blue;
+      case ServiceRequestStatus.completed:
+        return Colors.green;
+      case ServiceRequestStatus.cancelled:
+        return Colors.red;
+      case ServiceRequestStatus.rejected:
+        return Colors.red;
+    }
+  }
+
   IconData _statusIcon(ServiceRequestStatus status) {
     switch (status) {
       case ServiceRequestStatus.received:
@@ -160,9 +180,10 @@ class _ServiceRequestStepCardAnimatedState
 
       case ServiceRequestStatus.approved:
         return Icons.check_circle;
-
-      case ServiceRequestStatus.workOrderCreated:
-        return Icons.article; // atau Icons.playlist_add_check
+      case ServiceRequestStatus.closed:
+        return Icons.check_circle;
+      case ServiceRequestStatus.onProgress:
+        return Icons.scale;
 
       case ServiceRequestStatus.completed:
         return Icons.done_all;
@@ -172,23 +193,6 @@ class _ServiceRequestStepCardAnimatedState
 
       case ServiceRequestStatus.rejected:
         return Icons.block;
-    }
-  }
-
-  Color _statusColor(ServiceRequestStatus status) {
-    switch (status) {
-      case ServiceRequestStatus.received:
-        return Colors.orange;
-      case ServiceRequestStatus.approved:
-        return Colors.blue;
-      case ServiceRequestStatus.workOrderCreated:
-        return Colors.blue;
-      case ServiceRequestStatus.completed:
-        return Colors.green;
-      case ServiceRequestStatus.cancelled:
-        return Colors.red;
-      case ServiceRequestStatus.rejected:
-        return Colors.red;
     }
   }
 }
