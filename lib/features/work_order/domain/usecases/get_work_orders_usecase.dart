@@ -7,7 +7,7 @@ class GetWorkOrdersUsecase {
 
   GetWorkOrdersUsecase(this._repository);
 
-  FutureEitherList<WorkOrderEntity> call() {
-    return _repository.getWorkOrders();
+  FutureEitherList<WorkOrderEntity> call({bool forceRefresh = false}) {
+    return _repository.getWorkOrders(forceRefresh: forceRefresh);
   }
 }
