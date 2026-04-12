@@ -1,16 +1,15 @@
 import 'package:workorder_company_app/core/constants/app_enums.dart';
+import 'package:workorder_company_app/core/model/meta_model.dart';
 import 'package:workorder_company_app/core/utils/safe_parse.dart';
 import 'package:workorder_company_app/features/work_order/domain/entities/work_order_meta_entity.dart';
 
-class WorkOrderMetaModel extends WorkOrderMeta {
+class WorkOrderMetaModel extends WorkOrderMeta implements MetaModel {
   const WorkOrderMetaModel({
     required super.capabilities,
     required super.siblings,
   });
 
-  factory WorkOrderMetaModel.fromJson(
-    Map<String, dynamic> json,
-  ) {
+  factory WorkOrderMetaModel.fromJson(Map<String, dynamic> json) {
     return WorkOrderMetaModel(
       capabilities: json
           .field('capabilities')
@@ -18,14 +17,6 @@ class WorkOrderMetaModel extends WorkOrderMeta {
       siblings:
           json.field('siblings').reqListModel(WorkOrderSiblingModel.fromJson),
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'capabilities': (capabilities as WorkOrderCapabilitiesModel).toJson(),
-      'siblings':
-          siblings.map((e) => (e as WorkOrderSiblingModel).toJson()).toList(),
-    };
   }
 }
 

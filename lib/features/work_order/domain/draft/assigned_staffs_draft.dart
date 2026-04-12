@@ -8,4 +8,11 @@ class AssignedStaffsDraft {
     this.staffPic,
     required this.assignedStaff,
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'staff_pic': staffPic?.email,
+      'assigned_staff': assignedStaff.map((staff) => staff.email).toList(),
+    };
+  }
 }

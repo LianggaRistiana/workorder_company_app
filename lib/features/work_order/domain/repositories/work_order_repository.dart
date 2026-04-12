@@ -23,7 +23,10 @@ abstract class WorkOrderRepository {
   FutureEitherWithMeta<WorkOrderEntity> sendWorkOrder(String workOrderId);
   FutureEitherWithMeta<WorkOrderEntity> cancelWorkOrder(String workOrderId);
   FutureEitherWithMeta<WorkOrderEntity> approveWorkOrder(String workOrderId);
-  FutureEitherWithMeta<WorkOrderEntity> rejectWorkOrder(String workOrderId);
+  FutureEitherWithMeta<WorkOrderEntity> rejectWorkOrder(
+    String workOrderId,
+    String? issueNote,
+  );
   FutureEitherWithMeta<WorkOrderEntity> startWorkOrder(String workOrderId);
   FutureEitherWithMeta<WorkOrderEntity> completeWorkOrder(
     String workOrderId,
