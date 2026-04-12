@@ -32,6 +32,7 @@ class ServiceSummaryModel extends ServiceSummaryEntity {
       isActive: isActive,
     );
   }
+
   factory ServiceSummaryModel.fromServiceEntity(ServiceEntity entity) {
     return ServiceSummaryModel(
       id: entity.id,
@@ -39,7 +40,6 @@ class ServiceSummaryModel extends ServiceSummaryEntity {
       description: entity.description,
       accessType: entity.accessType,
       isActive: entity.isActive,
-
     );
   }
 }

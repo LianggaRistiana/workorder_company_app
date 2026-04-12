@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:workorder_company_app/core/constants/app_enums/work_order_enum.dart';
 
-class WorkOrderStatusDate {
+class WorkOrderStatusDateEntity {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final DateTime? sentAt;
@@ -12,7 +12,7 @@ class WorkOrderStatusDate {
   final DateTime? cancelledAt;
   final DateTime? failedAt;
 
-  const WorkOrderStatusDate({
+  const WorkOrderStatusDateEntity({
     this.createdAt,
     this.updatedAt,
     this.sentAt,

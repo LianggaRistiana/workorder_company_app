@@ -1,10 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
-import 'package:workorder_company_app/core/constants/app_enums/work_order_enum.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/filled_form_with_history_entity.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_summary_entity.dart';
-import 'package:workorder_company_app/features/work_order/domain/entities/work_order_status_date.dart';
+import 'package:workorder_company_app/features/work_order/domain/entities/work_order_status_date_entity.dart';
 
 class WorkOrderEntity extends Equatable {
   final String id;
@@ -23,7 +22,7 @@ class WorkOrderEntity extends Equatable {
   final FilledFormWithHistoryEntity workOrderForm;
   final bool hasIssue;
   final String? issueNote;
-  final WorkOrderStatusDate statusDate;
+  final WorkOrderStatusDateEntity statusDate;
 
   const WorkOrderEntity({
     required this.id,
