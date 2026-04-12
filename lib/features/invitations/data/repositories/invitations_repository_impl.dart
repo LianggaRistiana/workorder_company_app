@@ -19,7 +19,7 @@ class InvitationsRepositoryImpl implements InvitationsRepository {
   Future<Either<Failure, InvitationEntity>> acceptInvitation(String id) {
     return safeCall(() async {
       final payload = await _receiverRemoteDataSource.acceptInvitation(id);
-      return payload.data!;
+      return payload.data;
     });
   }
 
@@ -27,7 +27,7 @@ class InvitationsRepositoryImpl implements InvitationsRepository {
   Future<Either<Failure, InvitationEntity>> cancelInvitation(String id) {
     return safeCall(() async {
       final payload = await _senderRemoteDatasource.cancelInvitation(id);
-      return payload.data!;
+      return payload.data;
     });
   }
 
@@ -35,7 +35,7 @@ class InvitationsRepositoryImpl implements InvitationsRepository {
   Future<Either<Failure, List<InvitationEntity>>> getInvitationsHistory() {
     return safeCall(() async {
       final payload = await _senderRemoteDatasource.getInvitationsHistory();
-      return payload.data ?? [];
+      return payload.data;
     });
   }
 
@@ -47,7 +47,7 @@ class InvitationsRepositoryImpl implements InvitationsRepository {
           invitationsData
               .map((e) => InvitationDraftModel.fromEntity(e))
               .toList());
-      return payload.data ?? [];
+      return payload.data;
     });
   }
 
@@ -55,7 +55,7 @@ class InvitationsRepositoryImpl implements InvitationsRepository {
   Future<Either<Failure, InvitationEntity>> rejectInvitation(String id) {
     return safeCall(() async {
       final payload = await _receiverRemoteDataSource.rejectInvitation(id);
-      return payload.data!;
+      return payload.data;
     });
   }
 
@@ -63,7 +63,7 @@ class InvitationsRepositoryImpl implements InvitationsRepository {
   Future<Either<Failure, List<InvitationEntity>>> getPendingInvitations() {
     return safeCall(() async {
       final payload = await _receiverRemoteDataSource.getPendingInvitations();
-      return payload.data ?? [];
+      return payload.data;
     });
   }
 }

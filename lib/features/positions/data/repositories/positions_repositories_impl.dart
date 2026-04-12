@@ -23,7 +23,7 @@ class PositionsRepositoryImpl implements PositionsRepository {
     return _cache.fetchList(
       remoteCall: () async {
         final response = await _remoteDatasource.getPositions();
-        return response.data ?? [];
+        return response.data;
       },
       forceRefresh: refresh,
     );
@@ -35,7 +35,7 @@ class PositionsRepositoryImpl implements PositionsRepository {
     final result = await safeCall(() async {
       final response = await _remoteDatasource
           .createPosition(PositionModel.fromEntity(position));
-      return response.data!;
+      return response.data;
     });
 
     return result.onSuccess((updated) {
@@ -52,7 +52,7 @@ class PositionsRepositoryImpl implements PositionsRepository {
     final result = await safeCall(() async {
       final response = await _remoteDatasource
           .updatePosition(PositionModel.fromEntity(position));
-      return response.data!;
+      return response.data;
     });
 
     return result.onSuccess((updated) {
@@ -67,7 +67,7 @@ class PositionsRepositoryImpl implements PositionsRepository {
   Future<Either<Failure, PositionEntity>> getPositionById(String id) {
     return safeCall(() async {
       final payload = await _remoteDatasource.getPositionById(id);
-      return payload.data!;
+      return payload.data;
     });
   }
 }

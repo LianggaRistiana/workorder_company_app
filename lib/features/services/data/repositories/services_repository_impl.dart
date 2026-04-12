@@ -24,7 +24,7 @@ class ServicesRepositoryImpl implements ServicesRepository {
     final result = await safeCall(() async {
       final payload = await _internalRemoteDatasource
           .createService(ServiceModel.fromEntity(service));
-      return payload.data!;
+      return payload.data;
     });
 
     return result.onSuccess((updated) {
@@ -46,7 +46,7 @@ class ServicesRepositoryImpl implements ServicesRepository {
     return safeCall(() async {
       final payload =
           await _publicRemoteDatasource.getPublicServices(companyId);
-      return payload.data ?? [];
+      return payload.data;
     });
   }
 
@@ -54,7 +54,7 @@ class ServicesRepositoryImpl implements ServicesRepository {
   FutureEither<ServiceEntity> getServiceById(String id) {
     return safeCall(() async {
       final service = await _internalRemoteDatasource.getServiceById(id);
-      return service.data!;
+      return service.data;
     });
   }
 
@@ -64,7 +64,7 @@ class ServicesRepositoryImpl implements ServicesRepository {
     return _cache.fetchList(
       remoteCall: () async {
         final response = await _internalRemoteDatasource.getServices();
-        return response.data ?? [];
+        return response.data;
       },
       forceRefresh: forceRefresh,
     );
@@ -75,7 +75,7 @@ class ServicesRepositoryImpl implements ServicesRepository {
     final result = await safeCall(() async {
       final payload = await _internalRemoteDatasource
           .updateService(ServiceModel.fromEntity(service));
-      return payload.data!;
+      return payload.data;
     });
 
     return result.onSuccess((updated) {
@@ -94,7 +94,7 @@ class ServicesRepositoryImpl implements ServicesRepository {
   FutureEither<ServiceEntity> removeService(String serviceId) async {
     final result = await safeCall(() async {
       final payload = await _internalRemoteDatasource.removeService(serviceId);
-      return payload.data!;
+      return payload.data;
     });
 
     return result.onSuccess((updated) {
@@ -110,7 +110,7 @@ class ServicesRepositoryImpl implements ServicesRepository {
     return safeCall(() async {
       final payload = await _internalRemoteDatasource
           .toggleActive(ServiceModel.fromEntity(service));
-      return payload.data!;
+      return payload.data;
     });
   }
 }

@@ -17,7 +17,7 @@ class MembershipsRepositoryImpl extends MembershipsRepository {
   FutureEither<CompanyEntity> claimMembership(String code) {
     return safeCall(() async {
       final response = await _remoteDatasource.claimMembership(code);
-      return response.data!;
+      return response.data;
     });
   }
 
@@ -25,7 +25,7 @@ class MembershipsRepositoryImpl extends MembershipsRepository {
   FutureEither<MembershipCodeEntity> deleteMembership(String id) {
     return safeCall(() async {
       final response = await _remoteDatasource.deleteMembership(id);
-      return response.data!;
+      return response.data;
     });
   }
 
@@ -35,7 +35,7 @@ class MembershipsRepositoryImpl extends MembershipsRepository {
     return safeCall(() async {
       final response = await _remoteDatasource.generateMembershipCodes(
           MembershipCodesGenerateDraftModel.fromEntity(draft));
-      return response.data ?? [];
+      return response.data;
     });
   }
 
@@ -43,7 +43,7 @@ class MembershipsRepositoryImpl extends MembershipsRepository {
   FutureEitherList<MembershipCodeEntity> getMembershipCodes() {
     return safeCall(() async {
       final response = await _remoteDatasource.getMembershipCodes();
-      return response.data ?? [];
+      return response.data;
     });
   }
 
@@ -51,7 +51,7 @@ class MembershipsRepositoryImpl extends MembershipsRepository {
   FutureEitherList<MemberEntity> getMembers() {
     return safeCall(() async {
       final response = await _remoteDatasource.getMembers();
-      return response.data ?? [];
+      return response.data;
     });
   }
 }
