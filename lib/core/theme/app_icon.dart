@@ -61,4 +61,6 @@ class AppIcon {
   static const IconData user = Icons.person;
   static const IconData type = Icons.category_outlined;
   static const IconData code = LucideIcons.ticket;
+  static const IconData next = LucideIcons.moveRight;
+  static const IconData step = LucideIcons.circle;
 }

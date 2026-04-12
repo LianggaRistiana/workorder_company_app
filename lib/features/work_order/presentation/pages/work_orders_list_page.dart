@@ -1,11 +1,14 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/list/work_orders_list_bloc.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/list/work_orders_list_event.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/list/work_orders_list_state.dart';
 import 'package:workorder_company_app/features/work_order/presentation/widgets/work_order_item_card.dart';
+import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
+import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
 import 'package:workorder_company_app/shared/widgets/list_page_scafold.dart';
 
 class WorkOrdersListPage extends StatelessWidget {
@@ -33,7 +36,9 @@ class WorkOrdersListPage extends StatelessWidget {
             },
             itemBuilder: (item) => WorkOrderItemCard(
               workOrder: item,
-              onTap: () {},
+              onTap: () {
+                context.push(AppRoutes.workOrdersDetail.fillId(item.id));
+              },
             ),
           );
         }));

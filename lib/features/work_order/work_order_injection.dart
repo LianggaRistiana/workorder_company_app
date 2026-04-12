@@ -15,6 +15,7 @@ import 'package:workorder_company_app/features/work_order/domain/usecases/reject
 import 'package:workorder_company_app/features/work_order/domain/usecases/send_work_order_usecase.dart';
 import 'package:workorder_company_app/features/work_order/domain/usecases/start_work_order_usecase.dart';
 import 'package:workorder_company_app/features/work_order/domain/usecases/submit_work_order_submission_usecase.dart';
+import 'package:workorder_company_app/features/work_order/presentation/bloc/detail/work_order_detail_cubit.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/list/work_orders_list_bloc.dart';
 
 Future<void> initWorkOrderFeature() async {
@@ -45,7 +46,7 @@ Future<void> _initUseCases() async {
   sl.registerLazySingleton<ApproveWorkOrderUseCase>(
     () => ApproveWorkOrderUseCase(sl()),
   );
-  
+
   sl.registerLazySingleton<AssignStaffsUseCase>(
     () => AssignStaffsUseCase(sl()),
   );
@@ -86,5 +87,9 @@ Future<void> _initUseCases() async {
 Future<void> _initUiStates() async {
   sl.registerFactory<WorkOrdersListBloc>(() => WorkOrdersListBloc(
         getWorkOrdersUseCase: sl(),
+      ));
+
+  sl.registerFactory<WorkOrderDetailCubit>(() => WorkOrderDetailCubit(
+        getDetailWorkOrderUseCase: sl(),
       ));
 }

@@ -6,6 +6,7 @@ import 'package:workorder_company_app/core/types/future_api.dart';
 import 'package:workorder_company_app/features/auth/data/model/user_model.dart';
 import 'package:workorder_company_app/features/forms/data/model/filled_form_with_history_model.dart';
 import 'package:workorder_company_app/features/forms/data/model/form_model.dart';
+import 'package:workorder_company_app/features/forms/domain/entities/field_entity.dart';
 import 'package:workorder_company_app/features/services/data/model/service_summary_model.dart';
 import 'package:workorder_company_app/features/submissions/data/model/submissions_model.dart';
 import 'package:workorder_company_app/features/work_order/data/datasources/work_order_remote_datasource.dart';
@@ -39,7 +40,7 @@ class MockWorkOrderRemoteDatasource implements WorkOrderRemoteDatasource {
       minStaff: 1,
       maxStaff: 5,
       status: WorkOrderStatus.drafted,
-      assignedStaffs: const [mockUser],
+      assignedStaffs: const [mockUser, mockUser, mockUser],
       staffPic: mockUser,
       workOrderForm: const FilledFormWithHistoryModel(
         form: FormModel(
@@ -47,7 +48,24 @@ class MockWorkOrderRemoteDatasource implements WorkOrderRemoteDatasource {
           title: "Work Order Intake",
           description: "Intake description",
           formType: FormType.workOrder,
-          fields: [],
+          fields: [
+            FieldEntity(
+                order: 1, label: "Name", type: FieldType.text, required: true),
+            FieldEntity(
+                order: 2,
+                label: "Address",
+                type: FieldType.text,
+                required: true),
+            FieldEntity(
+                order: 3, label: "Phone", type: FieldType.text, required: true),
+            FieldEntity(
+                order: 4, label: "Email", type: FieldType.text, required: true),
+            FieldEntity(
+                order: 5,
+                label: "Description",
+                type: FieldType.text,
+                required: true),
+          ],
         ),
         submissionHistory: [],
       ),
