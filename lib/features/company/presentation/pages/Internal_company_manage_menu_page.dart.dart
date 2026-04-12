@@ -153,7 +153,7 @@ class _InternalCompanyManageMenuPageState
               icon: AppIcon.workOrder,
               label: "Tugas Kerja",
               onTap: () {
-                context.push(AppRoutes.workorders);
+                context.push(AppRoutes.workOrders);
               }),
           MenuItem(
               icon: AppIcon.employee,

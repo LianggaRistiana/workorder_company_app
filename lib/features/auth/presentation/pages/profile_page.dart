@@ -30,14 +30,18 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     super.initState();
 
-    final authBloc = context.read<AuthBloc>();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final authBloc = context.read<AuthBloc>();
 
-    if (authBloc.state is Authenticated) {
-      final user = (authBloc.state as Authenticated).user;
-      if (user.role.canPermission(CompanyPermission.view)) {
-        context.read<InternalGetCompanyCubit>().loadCompany();
+      final state = authBloc.state;
+      if (state is Authenticated) {
+        final user = state.user;
+
+        if (user.role.canPermission(CompanyPermission.view)) {
+          context.read<InternalGetCompanyCubit>().loadCompany();
+        }
       }
-    }
+    });
   }
 
   @override

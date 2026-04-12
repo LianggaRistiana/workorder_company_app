@@ -57,16 +57,14 @@ class AppRoutes {
   static const membershipsClaim = '/memberships/claim';
 
   // Work Order
-  // TODO[WO DONE FIRST] : Fix Later
-  static const workorders = '/workorders';
-  static const workordersAssignStaff = '/workorders/assign-staff/:id';
-  static const workordersSubmission = '/workorders/submissions';
-  static const workordersDetail = '/workorders/:id';
+  static const workOrders = '/workorders';
+  static const workOrdersAssignStaff = '/workorders/assign-staff';
+  static const workOrdersSubmission = '/workorders/submissions';
+  static const workOrdersDetail = '/workorders/:id';
 
-  // Work Report
-  // TODO[WO DONE FIRST] : Fix Later
-  static const workreports = '/workorders/:id/report';
-  static const workreportsSubmit = '/workorders/:id/report/submit';
+  // // Work Report
+  // static const workreports = '/workorders/:id/report';
+  // static const workreportsSubmit = '/workorders/:id/report/submit';
 
   // client side companies
   static const publicCompanies = '/public-companies';

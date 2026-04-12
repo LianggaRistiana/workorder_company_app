@@ -19,7 +19,7 @@ class NavConfig {
           NavItem('Pengajuan Layanan', Icons.inbox_rounded,
               AppRoutes.serviceRequestInbox),
           NavItem(
-              'Perintah Kerja', Icons.assignment_rounded, AppRoutes.workorders),
+              'Perintah Kerja', Icons.assignment_rounded, AppRoutes.workOrders),
         ];
 
       case UserRole.staffCompany:
@@ -27,7 +27,7 @@ class NavConfig {
           NavItem('Utama', Icons.home_rounded, AppRoutes.home),
           // NavItem('Tugas', Icons.task_rounded, AppRoutes.staffWorkorder),
           NavItem(
-              'Perintah Kerja', Icons.assignment_rounded, AppRoutes.workorders),
+              'Perintah Kerja', Icons.assignment_rounded, AppRoutes.workOrders),
         ];
 
       case UserRole.client:

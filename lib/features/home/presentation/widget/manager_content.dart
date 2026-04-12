@@ -36,7 +36,7 @@ class ManagerContent extends StatelessWidget {
                 icon: AppIcon.workOrder,
                 label: "Perintah Kerja",
                 onTap: () {
-                  context.go(AppRoutes.workorders);
+                  context.go(AppRoutes.workOrders);
                 }),
             MenuItem(
                 icon: AppIcon.employee,

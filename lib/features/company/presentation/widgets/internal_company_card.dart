@@ -13,57 +13,44 @@ class InternalCompanyCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return BlocBuilder<InternalGetCompanyCubit, InternalGetCompanyState>(
       builder: (context, state) {
-        final company = state.company!;
+        final theme = Theme.of(context);
+        final company = state.company;
 
         return AnimatedSwitcher(
           duration: const Duration(milliseconds: 300),
-          switchInCurve: Curves.easeIn,
           child: state.isLoading
               ? SizedBox(
+                  key: const ValueKey('loading'),
                   width: double.infinity,
                   height: 72,
                   child: CustomCard(
-                      margin: const EdgeInsets.all(0),
-                      child: LoadingStateInline(
-                        isEndAlign: false,
-                      )))
-              : state.company == null
-                  ? null
+                    margin: const EdgeInsets.all(0),
+                    child: LoadingStateInline(isEndAlign: false),
+                  ),
+                )
+              : company == null
+                  ? const SizedBox.shrink(key: ValueKey('empty'))
                   : Container(
+                      key: const ValueKey('company'),
                       width: double.infinity,
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(24),
-                        gradient: LinearGradient(
+                        gradient: const LinearGradient(
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                           colors: [Color(0xFFADC6FF), Color(0xFFDEBCDF)],
                         ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: theme.colorScheme.primary.withAlpha(25),
-                            blurRadius: 18,
-                            offset: const Offset(0, 8),
-                          ),
-                        ],
                       ),
                       child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Icon(
-                            AppIcon.company,
-                            color: Colors.black,
-                            size: 30,
-                          ),
+                          Icon(AppIcon.company, size: 30, color: Colors.black),
                           const SizedBox(width: 8),
-                          // Text
                           Expanded(
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   company.name,

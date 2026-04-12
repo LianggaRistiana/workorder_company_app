@@ -46,9 +46,9 @@ final Map<UserRole, List<String>> _roleMainPages = {
   UserRole.managerCompany: [
     AppRoutes.home,
     AppRoutes.serviceRequestInbox,
-    AppRoutes.workorders
+    AppRoutes.workOrders
   ],
-  UserRole.staffCompany: [AppRoutes.home, AppRoutes.workorders],
+  UserRole.staffCompany: [AppRoutes.home, AppRoutes.workOrders],
   UserRole.staffUnassigned: [AppRoutes.home, AppRoutes.invitationsPending],
   UserRole.client: [AppRoutes.home, AppRoutes.publicCompanies],
 };

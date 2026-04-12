@@ -11,8 +11,7 @@ import 'package:workorder_company_app/features/memberships/memberships_injection
 import 'package:workorder_company_app/features/notification/notification_injection.dart';
 import 'package:workorder_company_app/features/positions/positions_injections.dart';
 import 'package:workorder_company_app/features/services/services_injection.dart';
-import 'package:workorder_company_app/features_legacy/workorder_legacy/workorder_injection.dart';
-import 'package:workorder_company_app/features_legacy/workreport_legacy/workreport_injection.dart';
+import 'package:workorder_company_app/features/work_order/work_order_injection.dart';
 
 /// Service Locator
 final sl = GetIt.instance;
@@ -31,8 +30,7 @@ Future<void> init() async {
   await initFormsFeature();
   await initServicesFeature();
   await initCompanyFeature();
-  await initWorkorderFeature();
-  await intiWorkRerportFeature();
+  await initWorkOrderFeature();
   await initNotificationFeature();
   await initInvitationsFeature();
   await initMembershipsFeature();

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
-// import 'package:workorder_company_app/features/services/presentation/pages/services_list_page.dart';
-// import 'package:workorder_company_app/features/dashboard/presentation/widgets/dashboard_stat_card.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/widgets/menu_grid.dart';
 import 'package:workorder_company_app/shared/widgets/menu_item.dart';
@@ -70,7 +68,7 @@ class StaffContent extends StatelessWidget {
                 icon: AppIcon.workOrder,
                 label: "Perintah Kerja",
                 onTap: () {
-                  context.go(AppRoutes.workorders);
+                  context.go(AppRoutes.workOrders);
                 }),
             MenuItem(
                 icon: AppIcon.workOrder,
