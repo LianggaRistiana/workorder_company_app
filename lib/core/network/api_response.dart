@@ -1,4 +1,5 @@
-import 'package:workorder_company_app/core/model/meta_model.dart';
+import 'package:workorder_company_app/core/error/error.dart';
+import 'package:workorder_company_app/core/result/result.dart';
 
 class ApiResponse<T> {
   final String message;
@@ -22,29 +23,56 @@ class ApiResponse<T> {
   }
 }
 
-class ApiResponseWithMeta<T, M extends MetaModel> {
+class ApiResponseWithMeta<T> {
   final String message;
   final T? data;
-  final M? meta;
+  final Map<String, dynamic>? meta;
 
   ApiResponseWithMeta({
     required this.message,
     this.data,
     this.meta,
   });
+
   factory ApiResponseWithMeta.fromJson(
     Map<String, dynamic> json,
-    T Function(Map<String, dynamic> json)? fromJsonT,
-    M Function(Map<String, dynamic> json)? fromJsonM,
+    T Function(dynamic json)? fromJsonT,
   ) {
-    return ApiResponseWithMeta<T, M>(
+    return ApiResponseWithMeta<T>(
       message: json['message'] ?? '',
       data: fromJsonT != null && json['data'] != null
           ? fromJsonT(json['data'])
           : null,
-      meta: fromJsonM != null && json['meta'] != null
-          ? fromJsonM(json['meta'] as Map<String, dynamic>)
-          : null,
+      meta: json['meta'] as Map<String, dynamic>?,
+    );
+  }
+}
+
+extension ApiResponseMapper<T> on ApiResponseWithMeta<T> {
+  Result<T> toResult({
+    Map<String, ResultMeta Function(Map<String, dynamic>)>? metaFactories,
+  }) {
+    if (data == null) {
+      throw NetworkException("Data is null");
+    }
+
+    final metaMap = <Type, ResultMeta>{};
+
+    final rawMeta = meta;
+
+    if (rawMeta != null && metaFactories != null) {
+      rawMeta.forEach((key, value) {
+        final factory = metaFactories[key];
+        if (factory != null && value is Map<String, dynamic>) {
+          final metaObj = factory(value);
+          metaMap[metaObj.runtimeType] = metaObj;
+        }
+      });
+    }
+
+    return Result<T>(
+      data: data as T,
+      meta: metaMap,
     );
   }
 }
