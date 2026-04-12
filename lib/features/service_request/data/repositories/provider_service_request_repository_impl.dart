@@ -6,7 +6,8 @@ import 'package:workorder_company_app/features/service_request/domain/repositori
 
 class ProviderServiceRequestRepositoryImpl
     implements ProviderServiceRequestRepository {
-  final ProviderServiceRequestRemoteDatasource _providerServiceRequestDatasource;
+  final ProviderServiceRequestRemoteDatasource
+      _providerServiceRequestDatasource;
 
   const ProviderServiceRequestRepositoryImpl(
       this._providerServiceRequestDatasource);
@@ -16,7 +17,7 @@ class ProviderServiceRequestRepositoryImpl
     return safeCall(() async {
       final payload =
           await _providerServiceRequestDatasource.approveServiceRequest(id);
-      return payload.data!;
+      return payload.data;
     });
   }
 
@@ -25,7 +26,7 @@ class ProviderServiceRequestRepositoryImpl
     return safeCall(() async {
       final payload =
           await _providerServiceRequestDatasource.getServiceRequests();
-      return payload.data ?? [];
+      return payload.data;
     });
   }
 
@@ -35,7 +36,7 @@ class ProviderServiceRequestRepositoryImpl
     return safeCall(() async {
       final payload =
           await _providerServiceRequestDatasource.getServiceRequestDetail(id);
-      return payload.data!;
+      return payload.data;
     });
   }
 
@@ -44,7 +45,7 @@ class ProviderServiceRequestRepositoryImpl
     return safeCall(() async {
       final payload =
           await _providerServiceRequestDatasource.rejectServiceRequest(id);
-      return payload.data!;
+      return payload.data;
     });
   }
 }

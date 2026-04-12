@@ -10,7 +10,8 @@ import 'package:workorder_company_app/features/submissions/domain/entitties/subm
 
 class RequesterServiceRequestRepositoryImpl
     implements RequesterServiceRequestRepository {
-  final RequesterServiceRequestRemoteDatasource _requesterServiceRequestDatasource;
+  final RequesterServiceRequestRemoteDatasource
+      _requesterServiceRequestDatasource;
 
   const RequesterServiceRequestRepositoryImpl(
       this._requesterServiceRequestDatasource);
@@ -20,7 +21,7 @@ class RequesterServiceRequestRepositoryImpl
     return safeCall(() async {
       final payload =
           await _requesterServiceRequestDatasource.cancelServiceRequest(id);
-      return payload.data!;
+      return payload.data;
     });
   }
 
@@ -29,7 +30,7 @@ class RequesterServiceRequestRepositoryImpl
     return safeCall(() async {
       final payload =
           await _requesterServiceRequestDatasource.getServiceRequests();
-      return payload.data ?? [];
+      return payload.data;
     });
   }
 
@@ -39,7 +40,7 @@ class RequesterServiceRequestRepositoryImpl
     return safeCall(() async {
       final payload =
           await _requesterServiceRequestDatasource.getServiceRequestDetail(id);
-      return payload.data!;
+      return payload.data;
     });
   }
 
@@ -49,13 +50,13 @@ class RequesterServiceRequestRepositoryImpl
       return safeCall(() async {
         final payload = await _requesterServiceRequestDatasource
             .getIntakeFormForPublic(serviceId);
-        return payload.data!;
+        return payload.data;
       });
     }
     return safeCall(() async {
       final payload = await _requesterServiceRequestDatasource
           .getIntakeFormForInternal(serviceId);
-      return payload.data!;
+      return payload.data;
     });
   }
 
@@ -65,7 +66,7 @@ class RequesterServiceRequestRepositoryImpl
     return safeCall(() async {
       final payload = await _requesterServiceRequestDatasource.submitIntakeForm(
           serviceId, SubmissionsModel.fromEntity(submission));
-      return payload.data!;
+      return payload.data;
     });
   }
 
@@ -76,7 +77,7 @@ class RequesterServiceRequestRepositoryImpl
       final payload = await _requesterServiceRequestDatasource.submitReviewForm(
           serviceRequestId, SubmissionsModel.fromEntity(submission));
 
-      return payload.data!;
+      return payload.data;
     });
   }
 
@@ -85,7 +86,7 @@ class RequesterServiceRequestRepositoryImpl
     return safeCall(() async {
       final payload = await _requesterServiceRequestDatasource
           .getReviewForm(serviceRequestId);
-      return payload.data!;
+      return payload.data;
     });
   }
 }

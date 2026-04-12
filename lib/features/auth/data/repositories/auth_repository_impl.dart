@@ -32,10 +32,7 @@ class AuthRepositoryImpl implements AuthRepository {
       String email, String password) async {
     try {
       final response = await _remoteDatasource.login(email, password);
-      if (response.data == null) {
-        return Left(ServerFailure(message: response.message));
-      }
-      return Right(response.data!);
+      return Right(response.data);
     } on ApiException catch (e) {
       return Left(ServerFailure(message: e.message));
     } catch (e) {
@@ -59,9 +56,9 @@ class AuthRepositoryImpl implements AuthRepository {
           _cache = remoteUser.data;
 
           // update local storage
-          await _localDatasource.saveUser(remoteUser.data!);
+          await _localDatasource.saveUser(remoteUser.data);
 
-          return Right(remoteUser.data!);
+          return Right(remoteUser.data);
         } catch (e) {
           // fallback ke cache kalau ada
           if (_cache != null) {

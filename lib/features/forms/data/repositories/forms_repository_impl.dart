@@ -19,7 +19,7 @@ class FormsRepositoryImpl implements FormsRepository {
     return _cache.fetchList(
         remoteCall: () async {
           final forms = await _remoteDatasource.getForms();
-          return forms.data ?? [];
+          return forms.data;
         },
         forceRefresh: forceRefresh);
   }
@@ -28,7 +28,7 @@ class FormsRepositoryImpl implements FormsRepository {
   FutureEither<FormEntity> getForm(String id) {
     return safeCall(() async {
       final form = await _remoteDatasource.getFormById(id);
-      return form.data!;
+      return form.data;
     });
   }
 
@@ -37,7 +37,7 @@ class FormsRepositoryImpl implements FormsRepository {
     final result = await safeCall(() async {
       final formModel = FormModel.fromEntity(form);
       final payload = await _remoteDatasource.createForm(formModel);
-      return payload.data!;
+      return payload.data;
     });
 
     return result.onSuccess((updated) {
@@ -53,7 +53,7 @@ class FormsRepositoryImpl implements FormsRepository {
     final result = await safeCall(() async {
       final formModel = FormModel.fromEntity(form);
       final payload = await _remoteDatasource.updateForm(formModel);
-      return payload.data!;
+      return payload.data;
     });
 
     return result.onSuccess((updated) {
