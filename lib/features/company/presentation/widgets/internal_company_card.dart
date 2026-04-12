@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/features/company/presentation/bloc/internal_company_management/internal_company_get_cubit.dart';
 import 'package:workorder_company_app/features/company/presentation/bloc/internal_company_management/internal_company_get_state.dart';
-import 'package:workorder_company_app/shared/widgets/custom_card.dart';
-import 'package:workorder_company_app/shared/widgets/loading_state_inline.dart';
+import 'package:workorder_company_app/shared/widgets/shimmer_placeholder.dart';
+import 'package:workorder_company_app/shared/widgets/smart_shimmer.dart';
 
 class InternalCompanyCard extends StatelessWidget {
   const InternalCompanyCard({
@@ -21,20 +21,19 @@ class InternalCompanyCard extends StatelessWidget {
         return AnimatedSwitcher(
           duration: const Duration(milliseconds: 300),
           child: state.isLoading
-              ? SizedBox(
+              ? SmartShimmer(
                   key: const ValueKey('loading'),
-                  width: double.infinity,
-                  height: 72,
-                  child: CustomCard(
-                    margin: const EdgeInsets.all(0),
-                    child: LoadingStateInline(isEndAlign: false),
-                  ),
+                  placeholders: [
+                    ShimmerPlaceholder(
+                        height: 90, width: double.infinity, borderRadius: 24),
+                  ],
                 )
               : company == null
                   ? const SizedBox.shrink(key: ValueKey('empty'))
                   : Container(
                       key: const ValueKey('company'),
                       width: double.infinity,
+                      height: 90,
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(24),

@@ -7,7 +7,11 @@ class InternalGetCompanyUsecase {
 
   InternalGetCompanyUsecase(this._repository);
 
-  FutureEither<CompanyEntity> call() async {
-    return await _repository.getCompanyInformation();
+  FutureEither<CompanyEntity> call({
+    bool forceRefresh = false,
+  }) async {
+    return await _repository.getCompanyInformation(
+      forceRefresh: forceRefresh,
+    );
   }
 }

@@ -8,10 +8,12 @@ class InternalGetCompanyCubit extends Cubit<InternalGetCompanyState> {
   InternalGetCompanyCubit(this._usecase)
       : super(const InternalGetCompanyState());
 
-  Future<void> loadCompany() async {
+  Future<void> loadCompany({bool forceRefresh = false}) async {
     emit(state.copyWith(isLoading: true, error: null));
 
-    final result = await _usecase();
+    final result = await _usecase(
+      forceRefresh: forceRefresh,
+    );
 
     result.fold(
       (failure) {

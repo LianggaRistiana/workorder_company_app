@@ -3,24 +3,34 @@ import 'package:workorder_company_app/core/result/result.dart';
 
 class ApiResponse<T> {
   final String message;
-  final T? data;
+  final T _data;
 
-  ApiResponse({
+  const ApiResponse({
     required this.message,
-    this.data,
-  });
+    required T data,
+  }) : _data = data;
 
   factory ApiResponse.fromJson(
     Map<String, dynamic> json,
-    T Function(dynamic json)? fromJsonT,
+    T Function(dynamic json) fromJsonT,
   ) {
+    final rawData = json['data'];
+
+    if (rawData == null) {
+      throw NetworkException("Data is null");
+    }
+
     return ApiResponse<T>(
       message: json['message'] ?? '',
-      data: fromJsonT != null && json['data'] != null
-          ? fromJsonT(json['data'])
-          : null,
+      data: fromJsonT(rawData),
     );
   }
+
+  T get data => _data;
+}
+
+class Empty {
+  const Empty();
 }
 
 class ApiResponseWithMeta<T> {

@@ -52,7 +52,7 @@ class WorkOrderRepositoryImpl implements WorkOrderRepository {
     return _cache.fetchList(
       remoteCall: () async {
         final response = await _remoteDatasource.getWorkOrders();
-        return response.data ?? [];
+        return response.data;
       },
       forceRefresh: forceRefresh,
     );

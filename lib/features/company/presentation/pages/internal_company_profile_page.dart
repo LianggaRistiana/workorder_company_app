@@ -50,7 +50,9 @@ class _InternalCompanyProfilePageState
           return SafeArea(
             child: RefreshIndicator(
               onRefresh: () async {
-                await context.read<InternalGetCompanyCubit>().loadCompany();
+                await context
+                    .read<InternalGetCompanyCubit>()
+                    .loadCompany(forceRefresh: true);
               },
               child: ListView(
                 padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),

@@ -13,7 +13,7 @@ class PublicCompaniesRepositoryImpl implements PublicCompaniesRepository {
   FutureEitherList<CompanyEntity> getCompanies() {
     return safeCall(() async {
       final payload = await _companyRemoteDatasource.getCompanies();
-      return payload.data ?? [];
+      return payload.data;
     });
   }
 
@@ -21,7 +21,7 @@ class PublicCompaniesRepositoryImpl implements PublicCompaniesRepository {
   FutureEither<CompanyEntity> getCompanyById(String id) {
     return safeCall(() async {
       final payload = await _companyRemoteDatasource.getCompanyById(id);
-      return payload.data!;
+      return payload.data;
     });
   }
 }
