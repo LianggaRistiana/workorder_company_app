@@ -1,5 +1,4 @@
 import 'package:workorder_company_app/core/constants/app_enums.dart';
-import 'package:workorder_company_app/core/constants/app_enums/service_request_enum.dart';
 import 'package:workorder_company_app/core/utils/safe_parse.dart';
 import 'package:workorder_company_app/features/auth/data/model/user_model.dart';
 import 'package:workorder_company_app/features/forms/data/model/filled_form_model.dart';
@@ -21,6 +20,7 @@ class ProviderServiceRequestModel extends ProviderServiceRequestEntity {
     required super.createdAt,
   });
 
+  // TODO : use safe parser for safety
   factory ProviderServiceRequestModel.fromJson(Map<String, dynamic> json) {
     return ProviderServiceRequestModel(
       id: json['_id'],

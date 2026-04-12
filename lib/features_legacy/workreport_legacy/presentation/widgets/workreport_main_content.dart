@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features_legacy/workreport_legacy/domain/entitties/work_report_entity.dart';
 import 'package:workorder_company_app/features_legacy/workreport_legacy/presentation/widgets/workreport_header.dart';
-import 'package:workorder_company_app/shared/widgets/custom_list.dart';
-import 'package:workorder_company_app/shared/widgets/filled_form_view.dart';
-
 class WorkreportMainContent extends StatelessWidget {
   final WorkReportEntity? workReport;
   const WorkreportMainContent({super.key, this.workReport});

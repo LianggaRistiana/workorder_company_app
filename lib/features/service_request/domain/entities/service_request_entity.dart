@@ -3,7 +3,6 @@ import 'package:workorder_company_app/features/auth/domain/entities/user_entity.
 import 'package:workorder_company_app/features/company/domain/entities/company_entity.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/filled_form_entity.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_summary_entity.dart';
-import 'package:workorder_company_app/core/constants/app_enums/service_request_enum.dart';
 
 sealed class ServiceRequestEntity {
   final String id;
