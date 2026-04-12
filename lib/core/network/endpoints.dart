@@ -56,28 +56,8 @@ class Endpoints {
   static const String acceptInvitations = "/invitations/:id/accept";
   static const String cancelInvitations = "/invitations/:id";
 
-  // Workorder
-  // TODO[REFACTOR WO] : avoid to using func
-  static const String workorder = "/workorders";
-  static workorderSetAssignedStaff(String id) =>
-      "${workorder.byId(id)}/assign-staffs";
-  static workorderSetSubmissions(String id) =>
-      "${workorder.byId(id)}/submissions";
-  static workorderSetToReady(String id) => "${workorder.byId(id)}/ready";
-  static workorderStart(String id) => "${workorder.byId(id)}/start";
-
-  // WorkReport
-  // TODO[REFACTOR WO] : avoid to using func
-  static workorderReport(String id) => "${workorder.byId(id)}/report";
-  static workorderReportSubmissions(String id) =>
-      "${workorder.byId(id)}/report";
-
-  // Public Endpoint
   static const String publicCompanies = '$clientPrefix/companies';
   static const String publicServices = '$clientPrefix/services';
-  static const String publicClientServiceRequest =
-      '$clientPrefix/client-service-request';
-
   static publicCompanyServices(String id) =>
       '${publicCompanies.byId(id)}/services';
 }

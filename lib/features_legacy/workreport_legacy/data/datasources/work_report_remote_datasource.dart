@@ -18,22 +18,26 @@ class WorkReportRemoteDatasourceImpl implements WorkReportRemoteDatasource {
   @override
   Future<ApiResponse<WorkReportModel>> getWorkReportByWorkorderId(
       String id) async {
-    final response = await _apiClient.get(Endpoints.workorderReport(id));
-    return ApiResponse.fromJson(
-      response,
-      (json) => WorkReportModel.fromJson(json),
-    );
+    throw UnimplementedError();
+
+    // final response = await _apiClient.get(Endpoints.workorderReport(id));
+    // return ApiResponse.fromJson(
+    //   response,
+    //   (json) => WorkReportModel.fromJson(json),
+    // );
   }
 
   @override
   Future<ApiResponse<WorkReportModel>> submitWorkReportByWorkorderId(
       String id, List<SubmissionsModel> submissions) async {
-    final response = await _apiClient.put(
-        Endpoints.workorderReportSubmissions(id),
-        data: {"submissions": submissions});
-    return ApiResponse.fromJson(
-      response,
-      (json) => WorkReportModel.fromJson(json),
-    );
+    throw UnimplementedError();
+
+    // final response = await _apiClient.put(
+    //     Endpoints.workorderReportSubmissions(id),
+    //     data: {"submissions": submissions});
+    // return ApiResponse.fromJson(
+    //   response,
+    //   (json) => WorkReportModel.fromJson(json),
+    // );
   }
 }

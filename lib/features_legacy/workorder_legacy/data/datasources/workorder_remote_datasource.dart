@@ -25,46 +25,53 @@ class WorkorderRemoteDatasourceImpl implements WorkorderRemoteDatasource {
 
   @override
   Future<ApiResponse<WorkorderModel>> getWorkorderById(String id) async {
-    final response = await _apiClient.get(Endpoints.workorder.byId(id));
-    return ApiResponse.fromJson(
-      response,
-      (json) => WorkorderModel.fromJson(json),
-    );
+    throw UnimplementedError();
+    // final response = await _apiClient.get(Endpoints.workorder.byId(id));
+    // return ApiResponse.fromJson(
+    //   response,
+    //   (json) => WorkorderModel.fromJson(json),
+    // );
   }
 
   @override
   Future<ApiResponse<List<WorkorderModel>>> getWorkorders() async {
-    final response = await _apiClient.get(Endpoints.workorder);
-    return ApiResponse.fromJson(
-      response,
-      (data) => SafeMapper.mapList(
-        data,
-        (json) => WorkorderModel.fromJson(json),
-      ),
-    );
+    throw UnimplementedError();
+
+    // final response = await _apiClient.get(Endpoints.workorder);
+    // return ApiResponse.fromJson(
+    //   response,
+    //   (data) => SafeMapper.mapList(
+    //     data,
+    //     (json) => WorkorderModel.fromJson(json),
+    //   ),
+    // );
   }
 
   @override
   Future<ApiResponse<WorkorderModel>> setAssignedStaffs(
       List<String> staffEmail, String workorderId) async {
-    final response = await _apiClient.put(
-        Endpoints.workorderSetAssignedStaff(workorderId),
-        data: {"staffEmail": staffEmail});
-    return ApiResponse.fromJson(
-      response,
-      (json) => WorkorderModel.fromJson(json),
-    );
+    throw UnimplementedError();
+
+    // final response = await _apiClient.put(
+    //     Endpoints.workorderSetAssignedStaff(workorderId),
+    //     data: {"staffEmail": staffEmail});
+    // return ApiResponse.fromJson(
+    //   response,
+    //   (json) => WorkorderModel.fromJson(json),
+    // );
   }
 
   @override
   Future<ApiResponse<WorkorderModel>> setSubmissions(
       String id, List<SubmissionsModel> submissions) async {
-    final response = await _apiClient.put(Endpoints.workorderSetSubmissions(id),
-        data: {"submissions": submissions});
-    return ApiResponse.fromJson(
-      response,
-      (json) => WorkorderModel.fromJson(json),
-    );
+    throw UnimplementedError();
+
+    // final response = await _apiClient.put(Endpoints.workorderSetSubmissions(id),
+    //     data: {"submissions": submissions});
+    // return ApiResponse.fromJson(
+    //   response,
+    //   (json) => WorkorderModel.fromJson(json),
+    // );
   }
 
   @override
@@ -81,19 +88,23 @@ class WorkorderRemoteDatasourceImpl implements WorkorderRemoteDatasource {
 
   @override
   Future<ApiResponse<WorkorderModel>> setToReady(String id) async {
-    final response = await _apiClient.put(Endpoints.workorderSetToReady(id));
-    return ApiResponse.fromJson(
-      response,
-      (json) => WorkorderModel.fromJson(json),
-    );
+    throw UnimplementedError();
+
+    // final response = await _apiClient.put(Endpoints.workorderSetToReady(id));
+    // return ApiResponse.fromJson(
+    //   response,
+    //   (json) => WorkorderModel.fromJson(json),
+    // );
   }
 
   @override
   Future<ApiResponse<WorkorderModel>> setToStart(String id) async {
-    final response = await _apiClient.put(Endpoints.workorderStart(id));
-    return ApiResponse.fromJson(
-      response,
-      (json) => WorkorderModel.fromJson(json),
-    );
+    throw UnimplementedError();
+
+    // final response = await _apiClient.put(Endpoints.workorderStart(id));
+    // return ApiResponse.fromJson(
+    //   response,
+    //   (json) => WorkorderModel.fromJson(json),
+    // );
   }
 }
