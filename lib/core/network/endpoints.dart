@@ -41,6 +41,22 @@ class Endpoints {
   static const String serviceRequestIntakeInternal =
       "/services/:id/intake-form";
 
+  // Work Order
+  static const String workorders = "/workorders";
+  static const String workorderDetail = "/workorders/:id";
+  static const String workorderCreate = "/services/:id/create-work-order";
+  static const String workorderRecreate = "/workorders/:id/recreate";
+  static const String workorderSetSubmissions = "/workorders/:id/submissions";
+  static const String workorderSetAssignedStaff =
+      "/workorders/:id/assign-staff";
+  static const String workorderSent = "/workorders/:id/sent";
+  static const String workorderStart = "/workorders/:id/start";
+  static const String workorderApprove = "/workorders/:id/approve";
+  static const String workorderReject = "/workorders/:id/reject";
+  static const String workorderCancel = "/workorders/:id/cancel";
+  static const String workorderComplete = "/workorders/:id/complete";
+  static const String workorderFail = "/workorders/:id/fail";
+
   // Memberships
   static const String memberships = "/memberships";
   static const String membershipCodes = "/memberships/codes";
