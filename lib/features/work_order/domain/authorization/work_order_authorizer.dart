@@ -18,17 +18,20 @@ class WorkOrderAuthorizer {
   });
 
   AuthorizationRule get sendWorkOrder => rules([
-        roleCan(WorkOrderPermissions.fill),
+        roleCan(WorkOrderPermissions.send),
+        _Ownership(workOrder),
         _StatusValidation(workOrder.status, WorkOrderStatus.drafted)
       ]);
 
   AuthorizationRule get fillWorkOrder => rules([
         roleCan(WorkOrderPermissions.fill),
+        _Ownership(workOrder),
         _StatusValidation(workOrder.status, WorkOrderStatus.drafted)
       ]);
 
   AuthorizationRule get recreateWorkOrder => rules([
         roleCan(WorkOrderPermissions.create),
+        _Ownership(workOrder),
         _StatusValidation(workOrder.status, WorkOrderStatus.rejected)
       ]);
 
@@ -56,12 +59,14 @@ class WorkOrderAuthorizer {
 
   AuthorizationRule get cancelWorkOrder => rules([
         roleCan(WorkOrderPermissions.cancel),
+        _Ownership(workOrder),
         _ValidCancelStatus(workOrder.status)
       ]);
 
   AuthorizationRule get completeWorkOrder => rules([
         roleCan(WorkOrderPermissions.complete),
         _StatusValidation(workOrder.status, WorkOrderStatus.onProgress),
+        _Ownership(workOrder),
         _WorkOrderCapabilityRule(
             capabilities: capabilities, checker: (c) => c.canComplete)
       ]);
@@ -69,9 +74,31 @@ class WorkOrderAuthorizer {
   AuthorizationRule get failWorkOrder => rules([
         roleCan(WorkOrderPermissions.fail),
         _StatusValidation(workOrder.status, WorkOrderStatus.onProgress),
+        _Ownership(workOrder),
         _WorkOrderCapabilityRule(
             capabilities: capabilities, checker: (c) => c.canFail)
       ]);
+}
+
+class _Ownership extends AuthorizationRule {
+  final WorkOrderEntity workOrder;
+
+  _Ownership(this.workOrder);
+
+  @override
+  AuthorizationResult evaluate(UserEntity user) {
+    if (user.role == UserRole.ownerCompany) {
+      return const AuthorizationResult.allowed();
+    }
+
+    if (user.email == workOrder.createdBy.email) {
+      return const AuthorizationResult.allowed();
+    }
+
+    return const AuthorizationResult.denied(
+      "Hanya Pembuat Perintah Kerja yang dapat melakukan aksi ini",
+    );
+  }
 }
 
 class _OnlyStaffPic extends AuthorizationRule {

@@ -7,6 +7,8 @@ class WorkOrderPermissions {
       AppPermission(AppFeature.workOrder, PermissionAction.view);
   static const create =
       AppPermission(AppFeature.workOrder, PermissionAction.create);
+  static const send =
+      AppPermission(AppFeature.workOrder, PermissionAction.send);
   static const approve =
       AppPermission(AppFeature.workOrder, PermissionAction.approve);
   static const reject =
@@ -31,7 +33,8 @@ class WorkOrderPermissions {
     cancel,
     fill,
     complete,
-    fail
+    fail,
+    send
   };
 
   static final Set<AppPermission> creator = {
@@ -39,7 +42,8 @@ class WorkOrderPermissions {
     create,
     cancel,
     complete,
-    fail
+    fail,
+    send
   };
 
   static final Set<AppPermission> worker = {

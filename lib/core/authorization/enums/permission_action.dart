@@ -8,6 +8,7 @@ enum PermissionAction {
   reject,
   complete,
   fail,
+  send,
   start,
   fill
 }
