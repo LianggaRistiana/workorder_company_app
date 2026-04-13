@@ -33,4 +33,19 @@ class WorkOrderPermissions {
     complete,
     fail
   };
+
+  static final Set<AppPermission> creator = {
+    view,
+    create,
+    cancel,
+    complete,
+    fail
+  };
+
+  static final Set<AppPermission> worker = {
+    view,
+    approve,
+    start,
+    reject,
+  };
 }

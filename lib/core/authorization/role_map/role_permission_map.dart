@@ -35,7 +35,7 @@ extension UserRolePermissions on UserRole {
           EmployeePermission.view,
           FormPermission.view,
           ServicePermission.view,
-          ...WorkOrderPermissions.all,
+          ...WorkOrderPermissions.creator,
           ...WorkReportPermissions.all,
           ...ServiceRequestPermission.receiver,
           MembershipsPermission.view
@@ -47,7 +47,7 @@ extension UserRolePermissions on UserRole {
           EmployeePermission.view,
           FormPermission.view,
           ServicePermission.view,
-          WorkOrderPermissions.view,
+          ...WorkOrderPermissions.worker,
           ...ServiceRequestPermission.requester,
           ...WorkReportPermissions.all
         };

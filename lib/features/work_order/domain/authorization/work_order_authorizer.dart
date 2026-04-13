@@ -30,18 +30,21 @@ class WorkOrderAuthorizer {
   AuthorizationRule get approveWorkOrder => rules([
         roleCan(WorkOrderPermissions.approve),
         _StatusValidation(workOrder.status, WorkOrderStatus.sent),
-        _ApprovalTypeIsNotAuto(workOrder.approvalAccess)
+        _OnlyStaffPic(workOrder),
+        _ApprovalRequiresManual(workOrder.approvalAccess)
       ]);
 
   AuthorizationRule get rejectWorkOrder => rules([
         roleCan(WorkOrderPermissions.reject),
         _StatusValidation(workOrder.status, WorkOrderStatus.sent),
-        _ApprovalTypeIsNotAuto(workOrder.approvalAccess)
+        _OnlyStaffPic(workOrder),
+        _ApprovalRequiresManual(workOrder.approvalAccess)
       ]);
 
   AuthorizationRule get startWorkOrder => rules([
         roleCan(WorkOrderPermissions.start),
         _StatusValidation(workOrder.status, WorkOrderStatus.approved),
+        _OnlyStaffPic(workOrder),
         _WorkOrderCapabilityRule(
             capabilities: capabilities, checker: (c) => c.canStart)
       ]);
@@ -64,6 +67,35 @@ class WorkOrderAuthorizer {
         _WorkOrderCapabilityRule(
             capabilities: capabilities, checker: (c) => c.canFail)
       ]);
+}
+
+class _OnlyStaffPic extends AuthorizationRule {
+  final WorkOrderEntity workOrder;
+
+  _OnlyStaffPic(this.workOrder);
+
+  @override
+  AuthorizationResult evaluate(UserEntity user) {
+    if (workOrder.approvalAccess != WorkOrderAprrovalAccess.staffPic) {
+      return const AuthorizationResult.allowed();
+    }
+
+    final staffPic = workOrder.staffPic;
+
+    if (staffPic == null) {
+      return const AuthorizationResult.denied(
+        "Staff PIC belum ditentukan",
+      );
+    }
+
+    if (staffPic.email == user.email) {
+      return const AuthorizationResult.allowed();
+    }
+
+    return const AuthorizationResult.denied(
+      "Hanya Staff PIC yang dapat melakukan aksi ini",
+    );
+  }
 }
 
 class _WorkOrderCapabilityRule extends AuthorizationRule {
@@ -133,10 +165,10 @@ class _StatusValidation extends AuthorizationRule {
   }
 }
 
-class _ApprovalTypeIsNotAuto extends AuthorizationRule {
+class _ApprovalRequiresManual extends AuthorizationRule {
   final WorkOrderAprrovalAccess type;
 
-  _ApprovalTypeIsNotAuto(this.type);
+  _ApprovalRequiresManual(this.type);
 
   @override
   AuthorizationResult evaluate(UserEntity user) {
