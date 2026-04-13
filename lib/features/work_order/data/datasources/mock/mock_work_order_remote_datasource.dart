@@ -183,11 +183,23 @@ class MockWorkOrderRemoteDatasource implements WorkOrderRemoteDatasource {
         "can_complete": true,
         "can_fail": true,
       },
-      "workOrderSiblings": {
-        "_id": "wo-sib-1",
-        "code": "WO-SIB-001",
-        "status": "drafted",
-      }
+      "workOrderSiblings": [
+        {
+          "_id": "wo-sib-1",
+          "code": "WO-SIB-001",
+          "status": "drafted",
+        },
+        {
+          "_id": "wo-sib-2",
+          "code": "WO-SIB-002",
+          "status": "drafted",
+        },
+        {
+          "_id": "wo-sib-3",
+          "code": "WO-SIB-001",
+          "status": "drafted",
+        },
+      ]
     };
   }
 

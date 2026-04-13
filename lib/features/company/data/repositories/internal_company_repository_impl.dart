@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
 import 'package:workorder_company_app/core/error/failures.dart';
 import 'package:workorder_company_app/core/utils/either_helper.dart';
 import 'package:workorder_company_app/core/utils/safe_call.dart';
@@ -22,6 +23,7 @@ class InternalCompanyRepositoryImpl implements InternalCompanyRepository {
     if (!forceRefresh && _cache.hasValidValue) {
       final cached = _cache.value;
       if (cached != null) {
+        debugPrint("internal company cache hit");
         return Right(cached);
       }
     }

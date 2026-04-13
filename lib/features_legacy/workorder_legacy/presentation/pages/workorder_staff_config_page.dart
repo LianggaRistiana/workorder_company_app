@@ -12,7 +12,7 @@ import 'package:workorder_company_app/features_legacy/workorder_legacy/presentat
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
-import 'package:workorder_company_app/shared/widgets/staff_quota_chip.dart';
+import 'package:workorder_company_app/features/work_order/presentation/widgets/staff_quota_chip.dart';
 
 class WorkorderStaffConfigPage extends StatefulWidget {
   final String workorderId;

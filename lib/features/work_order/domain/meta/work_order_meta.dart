@@ -1,6 +1,26 @@
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/result/result.dart';
 
+class WorkOrderSiblings extends ResultMeta {
+  final List<WorkOrderSibling> siblings;
+  const WorkOrderSiblings({
+    required this.siblings,
+  });
+
+  factory WorkOrderSiblings.fromJson(dynamic json) {
+    final list = json as List<dynamic>?;
+
+    return WorkOrderSiblings(
+      siblings: list
+              ?.map((e) => WorkOrderSibling.fromJson(
+                    e as Map<String, dynamic>,
+                  ))
+              .toList() ??
+          [],
+    );
+  }
+}
+
 class WorkOrderSibling extends ResultMeta {
   final String id;
   final String code;

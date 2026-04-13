@@ -203,28 +203,29 @@ class FilledFormView extends StatelessWidget {
                       ])),
             ])),
         const SizedBox(height: 8),
-        CustomCard(
-          child: Column(
-            children: List.generate(
-              filledForm.form.fields!.length,
-              (index) {
-                final field = filledForm.form.fields![index];
+        if (filledForm.form.fields?.isNotEmpty ?? false)
+          CustomCard(
+            child: Column(
+              children: List.generate(
+                filledForm.form.fields!.length,
+                (index) {
+                  final field = filledForm.form.fields![index];
 
-                return Column(
-                  children: [
-                    _filledField(
-                      context,
-                      field,
-                      _findAnswer(field.order.toString()),
-                    ),
-                    if (index != filledForm.form.fields!.length - 1)
-                      const Divider(height: 1),
-                  ],
-                );
-              },
+                  return Column(
+                    children: [
+                      _filledField(
+                        context,
+                        field,
+                        _findAnswer(field.order.toString()),
+                      ),
+                      if (index != filledForm.form.fields!.length - 1)
+                        const Divider(height: 1),
+                    ],
+                  );
+                },
+              ),
             ),
           ),
-        ),
       ],
     );
   }

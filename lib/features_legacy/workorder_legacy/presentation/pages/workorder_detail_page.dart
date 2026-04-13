@@ -26,7 +26,7 @@ import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
 // import 'package:workorder_company_app/shared/widgets/filled_form_view.dart';
 // import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
-import 'package:workorder_company_app/shared/widgets/staff_quota_chip.dart';
+import 'package:workorder_company_app/features/work_order/presentation/widgets/staff_quota_chip.dart';
 
 class WorkorderDetailPage extends StatefulWidget {
   final String workorderId;

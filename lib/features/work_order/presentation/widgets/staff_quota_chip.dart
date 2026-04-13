@@ -51,10 +51,10 @@ class StaffQuotaChip extends StatelessWidget {
                 const SizedBox(width: 4),
                 Text(
                   "$currentCount",
-                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                        fontWeight: FontWeight.w800,
-                        color: color
-                      ),
+                  style: Theme.of(context)
+                      .textTheme
+                      .labelMedium
+                      ?.copyWith(fontWeight: FontWeight.w800, color: color),
                 ),
               ],
             ),

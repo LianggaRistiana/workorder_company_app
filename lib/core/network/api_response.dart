@@ -85,4 +85,30 @@ extension ApiResponseMapper<T> on ApiResponseWithMeta<T> {
       meta: metaMap,
     );
   }
+
+   Result<T> toResultDynamic({
+    Map<String, ResultMeta Function(dynamic)>? metaFactories,
+  }) {
+    if (data == null) {
+      throw NetworkException("Data is null");
+    }
+
+    final metaMap = <Type, ResultMeta>{};
+    final rawMeta = meta;
+
+    if (rawMeta != null && metaFactories != null) {
+      rawMeta.forEach((key, value) {
+        final factory = metaFactories[key];
+        if (factory != null) {
+          final metaObj = factory(value);
+          metaMap[metaObj.runtimeType] = metaObj;
+        }
+      });
+    }
+
+    return Result<T>(
+      data: data as T,
+      meta: metaMap,
+    );
+  }
 }

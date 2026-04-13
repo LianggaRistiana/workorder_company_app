@@ -3,10 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_radius.dart';
+import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/filled_form_entity.dart';
 import 'package:workorder_company_app/features/work_order/domain/entities/work_order_entity.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/detail/work_order_detail_cubit.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/detail/work_order_detail_state.dart';
+import 'package:workorder_company_app/features/work_order/presentation/widgets/fab_group_work_order_approval.dart';
+import 'package:workorder_company_app/features/work_order/presentation/widgets/fab_work_order_sibling.dart';
 import 'package:workorder_company_app/features/work_order/presentation/widgets/work_order_status_step_card.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/adaptive_split_column.dart';
@@ -15,8 +18,10 @@ import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/error_body.dart';
 import 'package:workorder_company_app/shared/widgets/filled_form_view.dart';
+import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
 import 'package:workorder_company_app/shared/widgets/property_display.dart';
 import 'package:workorder_company_app/shared/widgets/section_title.dart';
+import 'package:workorder_company_app/features/work_order/presentation/widgets/staff_quota_chip.dart';
 
 class WorkOrderDetailPage extends StatelessWidget {
   final String workOrderId;
@@ -34,7 +39,23 @@ class WorkOrderDetailPage extends StatelessWidget {
             }
           },
           builder: (context, state) {
-            return Scaffold(appBar: AppBar(), body: _buildBody(state));
+            return Scaffold(
+              appBar: AppBar(),
+              body: _buildBody(state),
+              floatingActionButton: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  if (state.workOrderSibling != null) ...[
+                    FabWorkOrderSibling(siblings: state.workOrderSibling!),
+                    const SizedBox(
+                      height: 10,
+                    )
+                  ],
+                  FabGroupWorkOrderApproval(),
+                ],
+              ),
+            );
           },
         ));
   }
@@ -74,13 +95,13 @@ class _WorkOrderBody extends StatelessWidget {
                 .getWorkOrderDetail(workOrder.id);
           },
           child: AdaptiveSplitColumn(
-            leftChildren: _leftChildren(),
-            rightChildren: _rightChildren(),
+            leftChildren: _leftChildren(context),
+            rightChildren: _rightChildren(context),
           )),
     );
   }
 
-  List<Widget> _leftChildren() {
+  List<Widget> _leftChildren(BuildContext context) {
     return [
       CustomCard(
         child: PropertyDisplay(properties: [
@@ -107,27 +128,52 @@ class _WorkOrderBody extends StatelessWidget {
           )
         ]),
       ),
-      SectionTitle(
-        "Pegawai Bertugas",
+      Row(
+        children: [
+          SectionTitle(
+            "Pegawai Bertugas",
+          ),
+          const Spacer(),
+          StaffQuotaChip(
+            currentCount: workOrder.assignedStaffs.length,
+            min: workOrder.minStaff,
+            max: workOrder.maxStaff,
+          )
+        ],
       ),
       CustomCard(
         margin: EdgeInsets.all(0),
         child: CustomList(
-            items: workOrder.assignedStaffs,
-            itemBuilder: (item, index) => Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    CircleAvatar(
-                      radius: 12,
-                      child: Icon(
-                        AppIcon.user,
-                        size: AppRadius.medium,
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Text(item.name),
-                  ],
-                )),
+          separatorHeight: 6,
+          items: workOrder.assignedStaffs,
+          itemBuilder: (item, index) => Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CircleAvatar(
+                radius: 18,
+                child: Icon(
+                  AppIcon.user,
+                  size: AppRadius.medium,
+                ),
+              ),
+              const SizedBox(width: AppSpacing.sm),
+              Expanded(
+                  child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    item.name,
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                  Text(
+                    item.email,
+                    style: Theme.of(context).textTheme.labelSmall,
+                  ),
+                ],
+              )),
+            ],
+          ),
+        ),
       ),
       Row(
         children: [
@@ -139,13 +185,43 @@ class _WorkOrderBody extends StatelessWidget {
               label: Text("Edit Pegawai Bertugas"))
         ],
       ),
+      const SizedBox(height: AppSpacing.md),
     ];
   }
 
-  List<Widget> _rightChildren() {
+  List<Widget> _rightChildren(BuildContext context) {
     return [
+      SectionTitle(
+        "Intruksi Perintah Kerja",
+      ),
       FilledFormView(
-          filledForm: FilledFormEntity(form: workOrder.workOrderForm.form))
+        filledForm: FilledFormEntity(form: workOrder.workOrderForm.form),
+      ),
+      Row(
+        children: [
+          const Spacer(),
+          TextButton.icon(
+              iconAlignment: IconAlignment.end,
+              icon: Icon(AppIcon.next),
+              onPressed: () {},
+              label: Text("Edit Instruksi Kerja"))
+        ],
+      ),
+      const SizedBox(height: AppSpacing.lg),
+      HorizontalButton(
+        title: "Laporan Kerja",
+        leadingIcon: AppIcon.workReport,
+        description: "Lihat hasil pekerjaan oleh pegawai bertugas",
+        onTap: () {},
+      ),
+      HorizontalButton(
+          onTap: () {},
+          isDanger: true,
+          title: "Batalkan Perintah Kerja",
+          description:
+              "Saat Perintah Kerja dibatalkan, semua perintah kerja terkait akan ikut dibatalkan",
+          leadingIcon: AppIcon.cancel),
+      const SizedBox(height: 100),
     ];
   }
 }

@@ -19,10 +19,9 @@ class WorkOrderRepositoryImpl implements WorkOrderRepository {
 
   final ListCacheHelper<WorkOrderEntity> _cache = ListCacheHelper();
 
-  late final Map<String, ResultMeta Function(Map<String, dynamic>)>
-      _metaFactories = {
-    "workOrderCapabilities": WorkOrderCapabilities.fromJson,
-    "workOrderSiblings": WorkOrderSibling.fromJson,
+  late final Map<String, ResultMeta Function(dynamic)> _metaFactories = {
+    "workOrderCapabilities": (json) => WorkOrderCapabilities.fromJson(json),
+    "workOrderSiblings": (json) => WorkOrderSiblings.fromJson(json),
   };
 
   FutureEitherWithMeta<WorkOrderEntity> _handleMetaCall(
@@ -30,7 +29,7 @@ class WorkOrderRepositoryImpl implements WorkOrderRepository {
   ) async {
     final result = await safeCall(() async {
       final response = await remoteCall();
-      return response.toResult(metaFactories: _metaFactories);
+      return response.toResultDynamic(metaFactories: _metaFactories);
     });
 
     return result.onSuccess((updated) {

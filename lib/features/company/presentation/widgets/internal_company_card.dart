@@ -20,7 +20,7 @@ class InternalCompanyCard extends StatelessWidget {
 
         return AnimatedSwitcher(
           duration: const Duration(milliseconds: 300),
-          child: state.isLoading
+          child: state.isLoading && company == null
               ? SmartShimmer(
                   key: const ValueKey('loading'),
                   placeholders: [
