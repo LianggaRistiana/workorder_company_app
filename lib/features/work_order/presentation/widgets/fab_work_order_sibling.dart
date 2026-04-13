@@ -64,8 +64,8 @@ class FabWorkOrderSibling extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton.small(
-      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-      foregroundColor: Theme.of(context).colorScheme.primary,
+      backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+      foregroundColor: Theme.of(context).colorScheme.onSecondaryContainer,
       onPressed: () => _openBottomSheet(context),
       child: Icon(AppIcon.branch),
     );
