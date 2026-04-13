@@ -1,0 +1,151 @@
+import 'package:workorder_company_app/core/authorization/feature/work_order_permission.dart';
+import 'package:workorder_company_app/core/authorization/model/authorization_result.dart';
+import 'package:workorder_company_app/core/authorization/rule/authorization_rule.dart';
+import 'package:workorder_company_app/core/authorization/rule/composite_rule/composite_rule_helper.dart';
+import 'package:workorder_company_app/core/authorization/rule/role_permission_rule/role_permission_helper.dart';
+import 'package:workorder_company_app/core/constants/app_enums.dart';
+import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
+import 'package:workorder_company_app/features/work_order/domain/entities/work_order_entity.dart';
+import 'package:workorder_company_app/features/work_order/domain/meta/work_order_meta.dart';
+
+class WorkOrderAuthorizer {
+  final WorkOrderEntity workOrder;
+  final WorkOrderCapabilities? capabilities;
+
+  const WorkOrderAuthorizer({
+    required this.workOrder,
+    this.capabilities,
+  });
+
+  AuthorizationRule get fillWorkOrder => rules([
+        roleCan(WorkOrderPermissions.fill),
+        _StatusValidation(workOrder.status, WorkOrderStatus.drafted)
+      ]);
+
+  AuthorizationRule get recreateWorkOrder => rules([
+        roleCan(WorkOrderPermissions.create),
+        _StatusValidation(workOrder.status, WorkOrderStatus.rejected)
+      ]);
+
+  AuthorizationRule get approveWorkOrder => rules([
+        roleCan(WorkOrderPermissions.approve),
+        _StatusValidation(workOrder.status, WorkOrderStatus.sent),
+        _ApprovalTypeIsNotAuto(workOrder.approvalAccess)
+      ]);
+
+  AuthorizationRule get rejectWorkOrder => rules([
+        roleCan(WorkOrderPermissions.reject),
+        _StatusValidation(workOrder.status, WorkOrderStatus.sent),
+        _ApprovalTypeIsNotAuto(workOrder.approvalAccess)
+      ]);
+
+  AuthorizationRule get startWorkOrder => rules([
+        roleCan(WorkOrderPermissions.start),
+        _StatusValidation(workOrder.status, WorkOrderStatus.approved),
+        _WorkOrderCapabilityRule(
+            capabilities: capabilities, checker: (c) => c.canStart)
+      ]);
+
+  AuthorizationRule get cancelWorkOrder => rules([
+        roleCan(WorkOrderPermissions.cancel),
+        _ValidCancelStatus(workOrder.status)
+      ]);
+
+  AuthorizationRule get completeWorkOrder => rules([
+        roleCan(WorkOrderPermissions.complete),
+        _StatusValidation(workOrder.status, WorkOrderStatus.onProgress),
+        _WorkOrderCapabilityRule(
+            capabilities: capabilities, checker: (c) => c.canComplete)
+      ]);
+
+  AuthorizationRule get failWorkOrder => rules([
+        roleCan(WorkOrderPermissions.fail),
+        _StatusValidation(workOrder.status, WorkOrderStatus.onProgress),
+        _WorkOrderCapabilityRule(
+            capabilities: capabilities, checker: (c) => c.canFail)
+      ]);
+}
+
+class _WorkOrderCapabilityRule extends AuthorizationRule {
+  final WorkOrderCapabilities? capabilities;
+  final bool Function(WorkOrderCapabilities) checker;
+
+  _WorkOrderCapabilityRule({
+    required this.capabilities,
+    required this.checker,
+  });
+
+  @override
+  AuthorizationResult evaluate(UserEntity user) {
+    if (capabilities == null) {
+      return const AuthorizationResult.denied(
+        'Capability tidak tersedia',
+      );
+    }
+
+    if (checker(capabilities!)) {
+      return const AuthorizationResult.allowed();
+    }
+
+    return AuthorizationResult.denied("Aksi Tidak Dapat Dilakukan");
+  }
+}
+
+class _ValidCancelStatus extends AuthorizationRule {
+  final WorkOrderStatus currentStatus;
+
+  _ValidCancelStatus(this.currentStatus);
+
+  static const Set<WorkOrderStatus> _allowedStatuses = {
+    WorkOrderStatus.drafted,
+    WorkOrderStatus.approved,
+    WorkOrderStatus.sent,
+    WorkOrderStatus.rejected,
+  };
+
+  @override
+  AuthorizationResult evaluate(UserEntity user) {
+    if (_allowedStatuses.contains(currentStatus)) {
+      return const AuthorizationResult.allowed();
+    }
+
+    return AuthorizationResult.denied(
+      'Status ${currentStatus.displayName} tidak memenuhi syarat',
+    );
+  }
+}
+
+class _StatusValidation extends AuthorizationRule {
+  final WorkOrderStatus currentStatus;
+  final WorkOrderStatus expectedStatus;
+
+  _StatusValidation(this.currentStatus, this.expectedStatus);
+
+  @override
+  AuthorizationResult evaluate(UserEntity user) {
+    if (currentStatus == expectedStatus) {
+      return const AuthorizationResult.allowed();
+    }
+
+    return AuthorizationResult.denied(
+      'Status ${currentStatus.displayName} tidak memenuhi syarat',
+    );
+  }
+}
+
+class _ApprovalTypeIsNotAuto extends AuthorizationRule {
+  final WorkOrderAprrovalAccess type;
+
+  _ApprovalTypeIsNotAuto(this.type);
+
+  @override
+  AuthorizationResult evaluate(UserEntity user) {
+    if (type != WorkOrderAprrovalAccess.auto) {
+      return const AuthorizationResult.allowed();
+    }
+
+    return AuthorizationResult.denied(
+      'Status $type tidak memenuhi syarat',
+    );
+  }
+}

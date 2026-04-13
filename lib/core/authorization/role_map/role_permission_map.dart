@@ -9,7 +9,7 @@ import 'package:workorder_company_app/core/authorization/feature/service_permiss
 import 'package:workorder_company_app/core/authorization/feature/service_request_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/workreport_permission.dart';
 import 'package:workorder_company_app/core/authorization/model/app_permission.dart';
-import 'package:workorder_company_app/core/authorization/feature/workorder_permission.dart';
+import 'package:workorder_company_app/core/authorization/feature/work_order_permission.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 
 extension UserRolePermissions on UserRole {
