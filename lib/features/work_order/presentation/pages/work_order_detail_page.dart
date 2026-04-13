@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:workorder_company_app/core/authorization/util/access_gate_on_widget.dart';
+import 'package:workorder_company_app/core/constants/app_enums/work_order_enum.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_radius.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/filled_form_entity.dart';
+import 'package:workorder_company_app/features/work_order/domain/authorization/work_order_authorizer.dart';
 import 'package:workorder_company_app/features/work_order/domain/entities/work_order_entity.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/detail/work_order_detail_cubit.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/detail/work_order_detail_state.dart';
@@ -220,19 +223,21 @@ class _WorkOrderBody extends StatelessWidget {
         ],
       ),
       const SizedBox(height: AppSpacing.lg),
-      HorizontalButton(
-        title: "Laporan Kerja",
-        leadingIcon: AppIcon.workReport,
-        description: "Lihat hasil pekerjaan oleh pegawai bertugas",
-        onTap: () {},
-      ),
-      HorizontalButton(
+      if (workOrder.status.isReportable)
+        HorizontalButton(
+          title: "Laporan Kerja",
+          leadingIcon: AppIcon.workReport,
+          description: "Lihat hasil pekerjaan oleh pegawai bertugas",
           onTap: () {},
-          isDanger: true,
-          title: "Batalkan Perintah Kerja",
-          description:
-              "Saat Perintah Kerja dibatalkan, semua perintah kerja terkait akan ikut dibatalkan",
-          leadingIcon: AppIcon.cancel),
+        ),
+      HorizontalButton(
+              onTap: () {},
+              isDanger: true,
+              title: "Batalkan Perintah Kerja",
+              description:
+                  "Saat Perintah Kerja dibatalkan, semua perintah kerja terkait akan ikut dibatalkan",
+              leadingIcon: AppIcon.cancel)
+          .require(WorkOrderAuthorizer(workOrder: workOrder).cancelWorkOrder),
       const SizedBox(height: 100),
     ];
   }

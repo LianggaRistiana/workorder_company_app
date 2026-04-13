@@ -160,16 +160,9 @@ class _ValidCancelStatus extends AuthorizationRule {
 
   _ValidCancelStatus(this.currentStatus);
 
-  static const Set<WorkOrderStatus> _allowedStatuses = {
-    WorkOrderStatus.drafted,
-    WorkOrderStatus.approved,
-    WorkOrderStatus.sent,
-    WorkOrderStatus.rejected,
-  };
-
   @override
   AuthorizationResult evaluate(UserEntity user) {
-    if (_allowedStatuses.contains(currentStatus)) {
+    if (currentStatus.isCancellable) {
       return const AuthorizationResult.allowed();
     }
 

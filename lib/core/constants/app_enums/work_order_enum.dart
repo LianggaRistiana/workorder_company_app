@@ -1,3 +1,5 @@
+import 'package:workorder_company_app/shared/utils/string_case_utils.dart';
+
 enum WorkOrderStatus {
   drafted,
   sent,
@@ -23,18 +25,53 @@ enum WorkOrderStatus {
   }
 }
 
+extension WorkOrderStatusFlowStateX on WorkOrderStatus {
+  static const finalStates = {
+    WorkOrderStatus.completed,
+    WorkOrderStatus.failed,
+    WorkOrderStatus.cancelled,
+  };
+
+  static const cancellableStates = {
+    WorkOrderStatus.drafted,
+    WorkOrderStatus.approved,
+    WorkOrderStatus.sent,
+    WorkOrderStatus.rejected,
+  };
+
+  static const reportableStates = {
+    WorkOrderStatus.completed,
+    WorkOrderStatus.failed,
+    WorkOrderStatus.onProgress,
+  };
+
+  static const notStartedStates = {
+    WorkOrderStatus.drafted,
+    WorkOrderStatus.sent,
+    WorkOrderStatus.approved,
+  };
+
+  static const reviewedStates = {
+    WorkOrderStatus.approved,
+    WorkOrderStatus.rejected
+  };
+
+  bool get isCancellable => cancellableStates.contains(this);
+
+  bool get isReportable => reportableStates.contains(this);
+
+  bool get isFinal => finalStates.contains(this);
+
+  bool get isReviewed => reviewedStates.contains(this);
+
+  bool get isNotStarted => notStartedStates.contains(this);
+
+  bool get isActive => this == WorkOrderStatus.onProgress;
+}
+
 extension WorkOrderStatusX on WorkOrderStatus {
   String get toJsonString {
-    return switch (this) {
-      WorkOrderStatus.drafted => 'drafted',
-      WorkOrderStatus.sent => 'sent',
-      WorkOrderStatus.approved => 'approved',
-      WorkOrderStatus.rejected => 'rejected',
-      WorkOrderStatus.onProgress => 'on_progress',
-      WorkOrderStatus.completed => 'completed',
-      WorkOrderStatus.cancelled => 'cancelled',
-      WorkOrderStatus.failed => 'failed',
-    };
+    return name.toSnakeCase();
   }
 
   String get displayName {
