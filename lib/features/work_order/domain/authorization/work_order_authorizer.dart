@@ -17,6 +17,11 @@ class WorkOrderAuthorizer {
     this.capabilities,
   });
 
+  AuthorizationRule get sendWorkOrder => rules([
+        roleCan(WorkOrderPermissions.fill),
+        _StatusValidation(workOrder.status, WorkOrderStatus.drafted)
+      ]);
+
   AuthorizationRule get fillWorkOrder => rules([
         roleCan(WorkOrderPermissions.fill),
         _StatusValidation(workOrder.status, WorkOrderStatus.drafted)

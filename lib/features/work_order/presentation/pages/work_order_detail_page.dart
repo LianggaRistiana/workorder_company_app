@@ -8,7 +8,7 @@ import 'package:workorder_company_app/features/forms/domain/entities/filled_form
 import 'package:workorder_company_app/features/work_order/domain/entities/work_order_entity.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/detail/work_order_detail_cubit.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/detail/work_order_detail_state.dart';
-import 'package:workorder_company_app/features/work_order/presentation/widgets/fab_group_work_order_approval.dart';
+import 'package:workorder_company_app/features/work_order/presentation/widgets/fab_mapper.dart';
 import 'package:workorder_company_app/features/work_order/presentation/widgets/fab_work_order_sibling.dart';
 import 'package:workorder_company_app/features/work_order/presentation/widgets/work_order_status_step_card.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
@@ -42,19 +42,31 @@ class WorkOrderDetailPage extends StatelessWidget {
             return Scaffold(
               appBar: AppBar(),
               body: _buildBody(state),
-              floatingActionButton: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  if (state.workOrderSibling != null) ...[
-                    FabWorkOrderSibling(siblings: state.workOrderSibling!),
-                    const SizedBox(
-                      height: 10,
+              floatingActionButton: state.workOrder != null
+                  ? Builder(
+                      builder: (_) {
+                        final workOrder = state.workOrder!;
+                        final mainFab = workOrder.status.buildFab(workOrder);
+                        final sibling = state.workOrderSibling;
+
+                        if (mainFab == null && sibling == null) {
+                          return const SizedBox.shrink();
+                        }
+
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            if (sibling != null) ...[
+                              FabWorkOrderSibling(siblings: sibling),
+                              const SizedBox(height: 10),
+                            ],
+                            if (mainFab != null) mainFab,
+                          ],
+                        );
+                      },
                     )
-                  ],
-                  FabGroupWorkOrderApproval(),
-                ],
-              ),
+                  : null,
             );
           },
         ));

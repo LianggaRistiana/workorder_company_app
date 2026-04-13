@@ -66,5 +66,6 @@ class AppIcon {
   static const IconData complete = LucideIcons.checkCircle;
   static const IconData fail = LucideIcons.clipboardX;
   static const IconData recreate = LucideIcons.replace;
+  static const IconData start = LucideIcons.navigation2;
   static const IconData branch = LucideIcons.gitBranch;
 }

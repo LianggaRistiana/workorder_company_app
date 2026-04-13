@@ -4,17 +4,19 @@ import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/features/work_order/domain/authorization/work_order_authorizer.dart';
 import 'package:workorder_company_app/features/work_order/domain/entities/work_order_entity.dart';
 
-class FabWorkOrderRecreate extends StatelessWidget {
+class FabWorkOrderStart extends StatelessWidget {
   final WorkOrderEntity workOrder;
 
-  const FabWorkOrderRecreate({super.key, required this.workOrder});
+  const FabWorkOrderStart({super.key, required this.workOrder});
 
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton.extended(
-            icon: Icon(AppIcon.recreate),
-            onPressed: () {},
-            label: Text('Buat Ulang'))
-        .require(WorkOrderAuthorizer(workOrder: workOrder).recreateWorkOrder);
+      icon: Icon(AppIcon.start),
+      onPressed: () {},
+      label: Text('Mulai'),
+    ).require(
+      WorkOrderAuthorizer(workOrder: workOrder).startWorkOrder,
+    );
   }
 }
