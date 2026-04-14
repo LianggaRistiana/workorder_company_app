@@ -37,3 +37,14 @@ class LoadingStateInline extends StatelessWidget {
     );
   }
 }
+
+extension LoadingWidgetExtension on Widget {
+  Widget withInlineLoading(bool isLoading, {bool isEndAlign = true}) {
+    if (isLoading) {
+      return LoadingStateInline(
+        isEndAlign: isEndAlign,
+      );
+    }
+    return this;
+  }
+}

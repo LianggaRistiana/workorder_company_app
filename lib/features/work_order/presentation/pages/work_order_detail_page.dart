@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/detail/work_order_detail_cubit.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/detail/work_order_detail_state.dart';
+import 'package:workorder_company_app/features/work_order/presentation/bloc/send/send_work_order_cubit.dart';
+import 'package:workorder_company_app/features/work_order/presentation/bloc/send/send_work_order_state.dart';
 import 'package:workorder_company_app/features/work_order/presentation/pages/work_order_detail_body.dart';
 import 'package:workorder_company_app/features/work_order/presentation/widgets/fab_mapper.dart';
 import 'package:workorder_company_app/features/work_order/presentation/widgets/fab_work_order_sibling.dart';
@@ -16,28 +18,53 @@ class WorkOrderDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-        create: (_) =>
-            sl<WorkOrderDetailCubit>()..getWorkOrderDetail(workOrderId),
-        child: BlocConsumer<WorkOrderDetailCubit, WorkOrderDetailState>(
-          listener: (context, state) {
-            if (state.status == WorkOrderDetailStatus.error) {
-              context.showError(state.errorMessage ?? "Terjadi kesalahan");
-            }
-          },
-          builder: (context, state) {
-            return Scaffold(
-              appBar: AppBar(),
-              body: _buildBody(
-                context,
-                state,
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider(
+              create: (_) =>
+                  sl<WorkOrderDetailCubit>()..getWorkOrderDetail(workOrderId)),
+          BlocProvider(create: (_) => sl<SendWorkOrderCubit>()),
+        ],
+        child: MultiBlocListener(
+            listeners: [
+              BlocListener<WorkOrderDetailCubit, WorkOrderDetailState>(
+                listener: (context, state) {
+                  if (state.status == WorkOrderDetailStatus.error) {
+                    context
+                        .showError(state.errorMessage ?? "Terjadi kesalahan");
+                  }
+                },
               ),
-              floatingActionButtonAnimator:
-                  FloatingActionButtonAnimator.noAnimation,
-              floatingActionButton: _buildFab(state),
-            );
-          },
-        ));
+              BlocListener<SendWorkOrderCubit, SendWorkOrderState>(
+                listener: (context, state) {
+                  if (state.status == SendWorkOrderStatus.error) {
+                    context
+                        .showError(state.errorMessage ?? "Terjadi kesalahan");
+                  }
+                  if (state.status == SendWorkOrderStatus.success &&
+                      state.result != null) {
+                    context
+                        .read<WorkOrderDetailCubit>()
+                        .updateResult(state.result!);
+                    context.showSuccess("Berhasil mengirim perintah kerja");
+                  }
+                },
+              ),
+            ],
+            child: BlocBuilder<WorkOrderDetailCubit, WorkOrderDetailState>(
+              builder: (context, state) {
+                return Scaffold(
+                  appBar: AppBar(),
+                  body: _buildBody(
+                    context,
+                    state,
+                  ),
+                  floatingActionButtonAnimator:
+                      FloatingActionButtonAnimator.noAnimation,
+                  floatingActionButton: _buildFab(state),
+                );
+              },
+            )));
   }
 
   Widget? _buildFab(WorkOrderDetailState state) {

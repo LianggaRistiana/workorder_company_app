@@ -16,7 +16,7 @@ class SendWorkOrderCubit extends Cubit<SendWorkOrderState> {
       (failure) => emit(state.copyWith(
           status: SendWorkOrderStatus.error, errorMessage: failure.message)),
       (metaResult) => emit(state.copyWith(
-          status: SendWorkOrderStatus.success, workOrder: metaResult.data)),
+          status: SendWorkOrderStatus.success, result: metaResult)),
     );
   }
 }

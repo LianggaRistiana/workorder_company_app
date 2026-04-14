@@ -17,6 +17,7 @@ import 'package:workorder_company_app/features/work_order/domain/usecases/start_
 import 'package:workorder_company_app/features/work_order/domain/usecases/submit_work_order_submission_usecase.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/detail/work_order_detail_cubit.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/list/work_orders_list_bloc.dart';
+import 'package:workorder_company_app/features/work_order/presentation/bloc/send/send_work_order_cubit.dart';
 
 Future<void> initWorkOrderFeature() async {
   _initDataSource();
@@ -91,5 +92,9 @@ Future<void> _initUiStates() async {
 
   sl.registerFactory<WorkOrderDetailCubit>(() => WorkOrderDetailCubit(
         getDetailWorkOrderUseCase: sl(),
+      ));
+
+  sl.registerFactory<SendWorkOrderCubit>(() => SendWorkOrderCubit(
+        useCase: sl(),
       ));
 }
