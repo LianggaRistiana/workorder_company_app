@@ -2,12 +2,16 @@ import 'package:equatable/equatable.dart';
 import 'package:workorder_company_app/core/result/result.dart';
 import 'package:workorder_company_app/features/work_order/domain/entities/work_order_entity.dart';
 
-enum ApprovalWorkOrderStatus { initial, loading, success, error }
+enum ApprovalWorkOrderStatus { initial, loading, approved, rejected, error }
 
 class ApprovalWorkOrderState extends Equatable {
   final ApprovalWorkOrderStatus status;
   final Result<WorkOrderEntity>? result;
   final String? errorMessage;
+
+  bool get isRejected => status == ApprovalWorkOrderStatus.rejected;
+  bool get isApproved => status == ApprovalWorkOrderStatus.approved;
+  bool get isSuccess => isApproved || isRejected;
 
   WorkOrderEntity? get workOrder => result?.data;
 

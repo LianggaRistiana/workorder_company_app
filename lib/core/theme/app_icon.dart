@@ -44,6 +44,11 @@ class AppIcon {
   static const IconData reject = LucideIcons.x;
   static const IconData approve = LucideIcons.check;
   static const IconData remove = LucideIcons.trash;
+  static const IconData complete = LucideIcons.checkCircle;
+  static const IconData fail = LucideIcons.clipboardX;
+  static const IconData recreate = LucideIcons.replace;
+  static const IconData start = LucideIcons.navigation2;
+  static const IconData next = LucideIcons.moveRight;
 
   // Icon For Account Action
   static const IconData logout = LucideIcons.logOut;
@@ -61,11 +66,6 @@ class AppIcon {
   static const IconData user = Icons.person;
   static const IconData type = Icons.category_outlined;
   static const IconData code = LucideIcons.ticket;
-  static const IconData next = LucideIcons.moveRight;
   static const IconData step = LucideIcons.circle;
-  static const IconData complete = LucideIcons.checkCircle;
-  static const IconData fail = LucideIcons.clipboardX;
-  static const IconData recreate = LucideIcons.replace;
-  static const IconData start = LucideIcons.navigation2;
   static const IconData branch = LucideIcons.fileStack;
 }

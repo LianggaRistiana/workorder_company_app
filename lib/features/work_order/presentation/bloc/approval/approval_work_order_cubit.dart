@@ -21,7 +21,7 @@ class ApprovalWorkOrderCubit extends Cubit<ApprovalWorkOrderState> {
           status: ApprovalWorkOrderStatus.error,
           errorMessage: failure.message)),
       (metaResult) => emit(state.copyWith(
-          status: ApprovalWorkOrderStatus.success, result: metaResult)),
+          status: ApprovalWorkOrderStatus.approved, result: metaResult)),
     );
   }
 
@@ -34,7 +34,7 @@ class ApprovalWorkOrderCubit extends Cubit<ApprovalWorkOrderState> {
           status: ApprovalWorkOrderStatus.error,
           errorMessage: failure.message)),
       (metaResult) => emit(state.copyWith(
-          status: ApprovalWorkOrderStatus.success, result: metaResult)),
+          status: ApprovalWorkOrderStatus.rejected, result: metaResult)),
     );
   }
 }
