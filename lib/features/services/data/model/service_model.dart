@@ -9,7 +9,7 @@ class ServiceModel extends ServiceEntity {
   const ServiceModel({
     required super.id,
     required super.title,
-    required super.description, // TODO : nullable
+    super.description,
     required super.accessType,
     required super.isActive,
     required super.serviceRequestConfig,
@@ -20,7 +20,8 @@ class ServiceModel extends ServiceEntity {
     return ServiceModel(
       id: safeParse<String>(json, "_id"),
       title: safeParse<String>(json, "title"),
-      description: safeParse<String>(json, "description"),
+      description:
+          safeParse<String?>(json, "description", requiredField: false),
       accessType:
           ServiceAccessType.fromString(safeParse<String>(json, "accessType")),
       isActive: safeParse<bool>(json, "isActive"),

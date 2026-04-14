@@ -23,7 +23,7 @@ class ServiceConfigView extends StatelessWidget {
           ),
           PropertyItem.text(
             label: "Deskripsi",
-            value: service.description,
+            value: service.description ?? "-",
             icon: Icons.info_outline,
           ),
           PropertyItem.text(

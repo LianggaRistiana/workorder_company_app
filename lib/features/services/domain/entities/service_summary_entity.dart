@@ -8,7 +8,7 @@ class ServiceSummaryEntity extends Equatable implements BaseServiceEntity {
   @override
   final String title;
   @override
-  final String description;
+  final String? description;
   @override
   final ServiceAccessType accessType;
   @override

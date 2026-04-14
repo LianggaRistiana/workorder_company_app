@@ -81,11 +81,12 @@ class ServiceSummaryItem extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               const SizedBox(height: 4),
-              Text(
-                service.description,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
+              if (service.description != null)
+                Text(
+                  service.description!,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
             ],
           ))
         ],

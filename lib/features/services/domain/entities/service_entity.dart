@@ -10,19 +10,19 @@ class ServiceEntity extends Equatable implements BaseServiceEntity {
   @override
   final String title;
   @override
-  final String description;
+  final String? description;
   @override
   final ServiceAccessType accessType;
   @override
   final bool isActive;
-  
+
   final ServiceRequestConfigEntity serviceRequestConfig;
   final List<WorkOrderConfigEntity> workOrdersConfig;
 
   const ServiceEntity({
     required this.id,
     required this.title,
-    required this.description,
+    this.description,
     required this.accessType,
     required this.isActive,
     required this.serviceRequestConfig,

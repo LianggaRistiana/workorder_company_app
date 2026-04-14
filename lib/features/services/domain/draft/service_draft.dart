@@ -51,7 +51,7 @@ class ServiceDraft extends Equatable {
       id: entity.id,
       isActive: entity.isActive,
       title: entity.title,
-      description: entity.description,
+      description: entity.description ?? '',
       accessType: entity.accessType,
       requestApprovalAccess:
           entity.serviceRequestConfig.serviceRequestApprovalAccessType,
@@ -234,7 +234,7 @@ extension ServiceDraftMapper on ServiceDraft {
         intakeForm: intakeForm!,
         reviewForm: reviewForm!,
         serviceRequestApprovalAccessType: requestApprovalAccess,
-        reviewNeed: true, 
+        reviewNeed: true,
       ),
       workOrdersConfig: workOrders.map((e) => e.toEntity()).toList(),
     );

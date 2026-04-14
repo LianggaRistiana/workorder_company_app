@@ -15,7 +15,9 @@ class ServiceSummaryPropertyView extends StatelessWidget {
         PropertyItem.text(
             icon: AppIcon.service, label: "Layanan", value: service.title),
         PropertyItem.text(
-            icon: AppIcon.desc, label: "Deskripsi", value: service.description),
+            icon: AppIcon.desc,
+            label: "Deskripsi",
+            value: service.description ?? "-"),
         PropertyItem.text(
             icon: AppIcon.type,
             label: "Akses Layanan",
