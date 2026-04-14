@@ -34,30 +34,32 @@ class FabWorkOrderSibling extends StatelessWidget {
           )
         ],
       ),
-      content: CustomList(
-          items: siblings.siblings,
-          separatorHeight: AppSpacing.sm,
-          itemBuilder: (item, _) => InkWell(
-                onTap: () {
-                  context.pop();
-                  context.push(AppRoutes.workOrdersDetail.fillId(item.id));
-                },
-                child: Row(
-                  children: [
-                    WorkOrderStatusIcon(status: item.status),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    Expanded(
-                        child: Text(
-                      item.code,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      style: Theme.of(context).textTheme.titleSmall,
-                    )),
-                  ],
-                ),
-              )),
+      content: SingleChildScrollView(
+        child: CustomList(
+            items: siblings.siblings,
+            separatorHeight: AppSpacing.sm,
+            itemBuilder: (item, _) => InkWell(
+                  onTap: () {
+                    context.pop();
+                    context.push(AppRoutes.workOrdersDetail.fillId(item.id));
+                  },
+                  child: Row(
+                    children: [
+                      WorkOrderStatusIcon(status: item.status),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      Expanded(
+                          child: Text(
+                        item.code,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: Theme.of(context).textTheme.titleSmall,
+                      )),
+                    ],
+                  ),
+                )),
+      ),
     );
   }
 

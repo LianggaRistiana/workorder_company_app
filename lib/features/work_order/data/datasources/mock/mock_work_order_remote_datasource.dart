@@ -17,7 +17,7 @@ import 'package:workorder_company_app/features/work_order/domain/draft/assigned_
 class MockWorkOrderRemoteDatasource implements WorkOrderRemoteDatasource {
   static const mockUser = UserModel(
     name: "John Doe",
-    email: "john@example.com",
+    email: "pegawai@staff.com",
     role: UserRole.staffCompany,
   );
 
@@ -39,7 +39,7 @@ class MockWorkOrderRemoteDatasource implements WorkOrderRemoteDatasource {
       approvalAccess: WorkOrderAprrovalAccess.staffPic,
       minStaff: 1,
       maxStaff: 5,
-      status: WorkOrderStatus.drafted,
+      status: WorkOrderStatus.sent,
       assignedStaffs: const [mockUser, mockUser, mockUser],
       staffPic: mockUser,
       workOrderForm: const FilledFormWithHistoryModel(
@@ -184,6 +184,11 @@ class MockWorkOrderRemoteDatasource implements WorkOrderRemoteDatasource {
         "can_fail": true,
       },
       "workOrderSiblings": [
+        {
+          "_id": "wo-sib-6",
+          "code": "WO-SIB-005",
+          "status": "approved",
+        },
         {
           "_id": "wo-sib-1",
           "code": "WO-SIB-001",
