@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:workorder_company_app/core/result/result.dart';
 import 'package:workorder_company_app/features/work_order/domain/entities/work_order_entity.dart';
 import 'package:workorder_company_app/features/work_order/domain/meta/work_order_meta.dart';
 
@@ -11,14 +12,16 @@ enum WorkOrderDetailStatus {
 
 class WorkOrderDetailState extends Equatable {
   final WorkOrderDetailStatus status;
-  final WorkOrderEntity? workOrder;
-  final WorkOrderSiblings? workOrderSibling;
+  final Result<WorkOrderEntity>? result;
   final String? errorMessage;
+
+  WorkOrderEntity? get workOrder => result?.data;
+  WorkOrderSiblings? get workOrderSiblings => result?.getMeta<WorkOrderSiblings>();
+
 
   const WorkOrderDetailState({
     required this.status,
-    this.workOrder,
-    this.workOrderSibling,
+    this.result,
     this.errorMessage,
   });
 
@@ -30,19 +33,16 @@ class WorkOrderDetailState extends Equatable {
 
   WorkOrderDetailState copyWith({
     WorkOrderDetailStatus? status,
-    WorkOrderEntity? workOrder,
-    WorkOrderSiblings? siblings,
+    Result<WorkOrderEntity>? result,
     String? errorMessage,
   }) {
     return WorkOrderDetailState(
       status: status ?? this.status,
-      workOrder: workOrder ?? this.workOrder,
-      workOrderSibling: siblings ?? workOrderSibling,
+      result: result ?? this.result,
       errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 
   @override
-  List<Object?> get props =>
-      [status, workOrder, workOrderSibling, errorMessage];
+  List<Object?> get props => [status, result, errorMessage];
 }

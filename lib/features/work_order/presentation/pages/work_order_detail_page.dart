@@ -45,7 +45,7 @@ class WorkOrderDetailPage extends StatelessWidget {
     if (workOrder == null) return null;
 
     final mainFab = workOrder.status.buildFab(workOrder);
-    final sibling = state.workOrderSibling;
+    final sibling = state.workOrderSiblings;
 
     if (mainFab == null && sibling == null) {
       return null;

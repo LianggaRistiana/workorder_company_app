@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/features/work_order/domain/entities/work_order_entity.dart';
 import 'package:workorder_company_app/features/work_order/domain/usecases/submit_work_order_submission_usecase.dart';
-import 'package:workorder_company_app/features/work_order/presentation/bloc/submit/submit_work_order_submission_state.dart';
+import 'package:workorder_company_app/features/work_order/presentation/bloc/submit_submission/submit_work_order_submission_state.dart';
 import 'package:workorder_company_app/features/submissions/domain/entitties/submission_entity.dart';
 
 class SubmitWorkOrderSubmissionCubit
