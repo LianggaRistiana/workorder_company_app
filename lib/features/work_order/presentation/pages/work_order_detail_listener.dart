@@ -10,6 +10,8 @@ import 'package:workorder_company_app/features/work_order/presentation/bloc/fina
 import 'package:workorder_company_app/features/work_order/presentation/bloc/finalize/finalize_work_order_state.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/send/send_work_order_cubit.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/send/send_work_order_state.dart';
+import 'package:workorder_company_app/features/work_order/presentation/bloc/start/start_work_order_cubit.dart';
+import 'package:workorder_company_app/features/work_order/presentation/bloc/start/start_work_order_state.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 
 class WorkOrderDetailListener extends StatelessWidget {
@@ -25,6 +27,7 @@ class WorkOrderDetailListener extends StatelessWidget {
         _sendListener(),
         _cancelListener(),
         _approvalListener(),
+        _startListener(),
         _finalizeListener(),
       ],
       child: child,
@@ -53,6 +56,22 @@ class WorkOrderDetailListener extends StatelessWidget {
             state.result != null) {
           context.read<WorkOrderDetailCubit>().updateResult(state.result!);
           context.showSuccess("Berhasil membatalkan perintah kerja");
+        }
+      },
+    );
+  }
+
+  BlocListener _startListener() {
+    return BlocListener<StartWorkOrderCubit, StartWorkOrderState>(
+      listenWhen: (p, c) => p.status != c.status,
+      listener: (context, state) {
+        if (state.status == StartWorkOrderStatus.error) {
+          context.showError(state.errorMessage ?? "Terjadi kesalahan");
+        }
+        if (state.status == StartWorkOrderStatus.success &&
+            state.result != null) {
+          context.read<WorkOrderDetailCubit>().updateResult(state.result!);
+          context.showSuccess("Berhasil memulai perintah kerja");
         }
       },
     );

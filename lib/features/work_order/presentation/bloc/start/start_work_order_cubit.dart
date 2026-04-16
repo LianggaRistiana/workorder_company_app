@@ -16,7 +16,7 @@ class StartWorkOrderCubit extends Cubit<StartWorkOrderState> {
       (failure) => emit(state.copyWith(
           status: StartWorkOrderStatus.error, errorMessage: failure.message)),
       (metaResult) => emit(state.copyWith(
-          status: StartWorkOrderStatus.success, workOrder: metaResult.data)),
+          status: StartWorkOrderStatus.success, result: metaResult)),
     );
   }
 }
