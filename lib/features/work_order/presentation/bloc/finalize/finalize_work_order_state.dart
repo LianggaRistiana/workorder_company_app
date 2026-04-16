@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:workorder_company_app/core/result/result.dart';
 import 'package:workorder_company_app/features/work_order/domain/entities/work_order_entity.dart';
 
-enum FinalizeWorkOrderStatus { initial, loading, success, error }
+enum FinalizeWorkOrderStatus { initial, loading, complete, fail, error }
 
 class FinalizeWorkOrderState extends Equatable {
   final FinalizeWorkOrderStatus status;
@@ -10,6 +10,11 @@ class FinalizeWorkOrderState extends Equatable {
   final String? errorMessage;
 
   WorkOrderEntity? get workOrder => result?.data;
+
+  bool get isLoading => status == FinalizeWorkOrderStatus.loading;
+  bool get isComplete => status == FinalizeWorkOrderStatus.complete;
+  bool get isFail => status == FinalizeWorkOrderStatus.fail;
+  bool get isSuccess => isComplete || isFail;
 
   const FinalizeWorkOrderState(
       {required this.status, this.result, this.errorMessage});

@@ -22,7 +22,7 @@ class FinalizeWorkOrderCubit extends Cubit<FinalizeWorkOrderState> {
           status: FinalizeWorkOrderStatus.error,
           errorMessage: failure.message)),
       (metaResult) => emit(state.copyWith(
-          status: FinalizeWorkOrderStatus.success, result: metaResult)),
+          status: FinalizeWorkOrderStatus.complete, result: metaResult)),
     );
   }
 
@@ -35,7 +35,7 @@ class FinalizeWorkOrderCubit extends Cubit<FinalizeWorkOrderState> {
           status: FinalizeWorkOrderStatus.error,
           errorMessage: failure.message)),
       (metaResult) => emit(state.copyWith(
-          status: FinalizeWorkOrderStatus.success, result: metaResult)),
+          status: FinalizeWorkOrderStatus.fail, result: metaResult)),
     );
   }
 }

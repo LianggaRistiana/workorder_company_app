@@ -6,6 +6,8 @@ import 'package:workorder_company_app/features/work_order/presentation/bloc/canc
 import 'package:workorder_company_app/features/work_order/presentation/bloc/cancel/cancel_work_order_state.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/detail/work_order_detail_cubit.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/detail/work_order_detail_state.dart';
+import 'package:workorder_company_app/features/work_order/presentation/bloc/finalize/finalize_work_order_cubit.dart';
+import 'package:workorder_company_app/features/work_order/presentation/bloc/finalize/finalize_work_order_state.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/send/send_work_order_cubit.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/send/send_work_order_state.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
@@ -23,6 +25,7 @@ class WorkOrderDetailListener extends StatelessWidget {
         _sendListener(),
         _cancelListener(),
         _approvalListener(),
+        _finalizeListener(),
       ],
       child: child,
     );
@@ -87,6 +90,27 @@ class WorkOrderDetailListener extends StatelessWidget {
             state.isApproved
                 ? "Berhasil menyetujui perintah kerja"
                 : "Berhasil menolak perintah kerja",
+          );
+        }
+      },
+    );
+  }
+
+  BlocListener _finalizeListener() {
+    return BlocListener<FinalizeWorkOrderCubit, FinalizeWorkOrderState>(
+      listenWhen: (p, c) => p.status != c.status,
+      listener: (context, state) {
+        if (state.status == FinalizeWorkOrderStatus.error) {
+          context.showError(state.errorMessage ?? "Terjadi kesalahan");
+        }
+
+        if (state.isSuccess && state.result != null) {
+          context.read<WorkOrderDetailCubit>().updateResult(state.result!);
+
+          context.showSuccess(
+            state.isComplete
+                ? "Berhasil menyatakan perintah kerja selesai"
+                : "Berhasil menyatakan perintah kerja gagal",
           );
         }
       },
