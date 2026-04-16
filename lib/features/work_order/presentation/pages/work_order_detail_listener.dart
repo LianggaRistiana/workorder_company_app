@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/approval/approval_work_order_cubit.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/approval/approval_work_order_state.dart';
+import 'package:workorder_company_app/features/work_order/presentation/bloc/cancel/cancel_work_order_cubit.dart';
+import 'package:workorder_company_app/features/work_order/presentation/bloc/cancel/cancel_work_order_state.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/detail/work_order_detail_cubit.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/detail/work_order_detail_state.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/send/send_work_order_cubit.dart';
@@ -19,6 +21,7 @@ class WorkOrderDetailListener extends StatelessWidget {
       listeners: [
         _detailListener(),
         _sendListener(),
+        _cancelListener(),
         _approvalListener(),
       ],
       child: child,
@@ -31,6 +34,22 @@ class WorkOrderDetailListener extends StatelessWidget {
       listener: (context, state) {
         if (state.status == WorkOrderDetailStatus.error) {
           context.showError(state.errorMessage ?? "Terjadi kesalahan");
+        }
+      },
+    );
+  }
+
+  BlocListener _cancelListener() {
+    return BlocListener<CancelWorkOrderCubit, CancelWorkOrderState>(
+      listenWhen: (p, c) => p.status != c.status,
+      listener: (context, state) {
+        if (state.status == CancelWorkOrderStatus.error) {
+          context.showError(state.errorMessage ?? "Terjadi kesalahan");
+        }
+        if (state.status == CancelWorkOrderStatus.success &&
+            state.result != null) {
+          context.read<WorkOrderDetailCubit>().updateResult(state.result!);
+          context.showSuccess("Berhasil membatalkan perintah kerja");
         }
       },
     );

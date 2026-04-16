@@ -16,7 +16,7 @@ class CancelWorkOrderCubit extends Cubit<CancelWorkOrderState> {
       (failure) => emit(state.copyWith(
           status: CancelWorkOrderStatus.error, errorMessage: failure.message)),
       (metaResult) => emit(state.copyWith(
-          status: CancelWorkOrderStatus.success, workOrder: metaResult.data)),
+          status: CancelWorkOrderStatus.success, result: metaResult)),
     );
   }
 }
