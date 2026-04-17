@@ -1,7 +1,10 @@
-import 'package:dartz/dartz.dart';
-import 'package:workorder_company_app/core/error/error.dart';
+import 'package:workorder_company_app/core/types/future_either.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
+import 'package:workorder_company_app/features/employees/domain/params/employees_params.dart';
 
 abstract class EmployeesRepository {
-  Future<Either<Failure, List<UserEntity>>> getEmployees();
+  FutureEitherList<UserEntity> getEmployees({
+    EmployeesParams? params,
+    bool forceRefresh = false,
+  });
 }

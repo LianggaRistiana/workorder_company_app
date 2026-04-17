@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
+import 'package:workorder_company_app/features/employees/domain/params/employees_params.dart';
 import 'package:workorder_company_app/features/employees/domain/usecases/get_employees_usecase.dart';
 import 'package:equatable/equatable.dart';
 
@@ -18,11 +19,17 @@ class EmployeesBloc extends Bloc<EmployeesEvent, EmployeesState> {
     GetEmployeesRequested event,
     Emitter<EmployeesState> emit,
   ) async {
+    if (state.isLoading) return;
 
-    // 🔥 Loading tanpa menghapus data lama
-    emit(state.copyWith(isLoading: true, errorMessage: null));
+    emit(state.copyWith(
+      isLoading: true,
+      errorMessage: null,
+    ));
 
-    final response = await getEmployeesUsecase();
+    final response = await getEmployeesUsecase(
+      params: event.params,
+      forceRefresh: event.forceRefresh,
+    );
 
     response.fold(
       (failure) {
