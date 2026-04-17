@@ -18,14 +18,20 @@ T safeParse<T>(
       }
     }
 
-    if (current == null && requiredField) {
-      throw ParsingException("Field '$path' is required but null");
-    }
-
     if (current == null) {
-      return current as T;
-    }
+      if (requiredField) {
+        throw ParsingException("Field '$path' is required but null");
+      }
 
+      // Pastikan T memang nullable
+      if (null is! T) {
+        throw ParsingException(
+          "Type mismatch at '$path'. Expected non-nullable $T but got null",
+        );
+      }
+
+      return null as T;
+    }
     // 🔥 Transform dulu kalau ada parser
     final parsedValue = parser != null ? parser(current) : current;
 
@@ -73,6 +79,18 @@ class JsonField {
 
   T reqModel<T>(T Function(Map<String, dynamic>) fromJson) {
     final map = safeParse<Map<String, dynamic>>(json, path);
+    return fromJson(map);
+  }
+
+  T? optModel<T>(T Function(Map<String, dynamic>) fromJson) {
+    final map = safeParse<Map<String, dynamic>?>(
+      json,
+      path,
+      requiredField: false,
+    );
+
+    if (map == null) return null;
+
     return fromJson(map);
   }
 

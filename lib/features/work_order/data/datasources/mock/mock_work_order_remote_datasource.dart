@@ -7,6 +7,7 @@ import 'package:workorder_company_app/features/auth/data/model/user_model.dart';
 import 'package:workorder_company_app/features/forms/data/model/filled_form_with_history_model.dart';
 import 'package:workorder_company_app/features/forms/data/model/form_model.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/field_entity.dart';
+import 'package:workorder_company_app/features/positions/data/models/position_model.dart';
 import 'package:workorder_company_app/features/services/data/model/service_summary_model.dart';
 import 'package:workorder_company_app/features/submissions/data/model/submissions_model.dart';
 import 'package:workorder_company_app/features/work_order/data/datasources/work_order_remote_datasource.dart';
@@ -21,12 +22,15 @@ class MockWorkOrderRemoteDatasource implements WorkOrderRemoteDatasource {
     role: UserRole.staffCompany,
   );
 
+  static const mockPosition = PositionModel(id: "69d647a05f36ce81bf002eb2", name: "IT");
+
   final List<WorkOrderModel> _storage = [
     WorkOrderModel(
       id: "wo-1",
       code: "WO-001",
       configId: "cfg-1",
       serviceRequestId: "req-1",
+      positionOnDuty: mockPosition,
       service: const ServiceSummaryModel(
         id: "srv-1",
         title: "Cleaning Service",
@@ -39,7 +43,7 @@ class MockWorkOrderRemoteDatasource implements WorkOrderRemoteDatasource {
       approvalAccess: WorkOrderAprrovalAccess.staffPic,
       minStaff: 1,
       maxStaff: 5,
-      status: WorkOrderStatus.sent,
+      status: WorkOrderStatus.drafted,
       assignedStaffs: const [mockUser, mockUser, mockUser],
       staffPic: mockUser,
       workOrderForm: const FilledFormWithHistoryModel(
@@ -87,6 +91,7 @@ class MockWorkOrderRemoteDatasource implements WorkOrderRemoteDatasource {
       code: "WO-002",
       configId: "cfg-2",
       serviceRequestId: "req-2",
+      positionOnDuty: mockPosition,
       service: const ServiceSummaryModel(
         id: "srv-2",
         title: "Repair HVAC",
@@ -130,6 +135,7 @@ class MockWorkOrderRemoteDatasource implements WorkOrderRemoteDatasource {
       code: "WO-003",
       configId: "cfg-3",
       serviceRequestId: "req-3",
+      positionOnDuty: mockPosition,
       service: const ServiceSummaryModel(
         id: "srv-3",
         title: "Electrical Inspection",
@@ -225,6 +231,7 @@ class MockWorkOrderRemoteDatasource implements WorkOrderRemoteDatasource {
       id: existing.id,
       code: existing.code,
       configId: existing.configId,
+      positionOnDuty: existing.positionOnDuty,
       serviceRequestId: existing.serviceRequestId,
       service: existing.service,
       createdBy: existing.createdBy,

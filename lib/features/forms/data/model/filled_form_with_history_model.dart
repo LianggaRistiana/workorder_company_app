@@ -1,4 +1,5 @@
-import 'package:workorder_company_app/core/utils/safe_parse.dart';
+import 'package:workorder_company_app/core/error/error.dart';
+// import 'package:workorder_company_app/core/utils/safe_parse.dart';
 import 'package:workorder_company_app/features/forms/data/model/form_model.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/filled_form_with_history_entity.dart';
 import 'package:workorder_company_app/features/submissions/data/model/submissions_model.dart';
@@ -9,36 +10,43 @@ class FilledFormWithHistoryModel extends FilledFormWithHistoryEntity {
     super.submissionHistory,
   });
 
+  // FIXME : Fixme Later
   factory FilledFormWithHistoryModel.fromJson(
-      Map<String, dynamic> formJson, Map<String, dynamic> submissionsJson) {
-    final submissions = safeParse<List<dynamic>?>(
-            submissionsJson, "submissions",
-            requiredField: false)
-        ?.map((sub) => SubmissionsModel.fromJson(sub))
-        .toList()
-      ?..sort((a, b) {
-        final aDate = a.createdAt;
-        final bDate = b.createdAt;
+    Map<String, dynamic> formJson,
+    dynamic submissionsJson,
+  ) {
+    List<SubmissionsModel>? submissions;
 
-        // null dianggap paling lama → taruh di bawah
-        if (aDate == null && bDate == null) return 0;
-        if (aDate == null) return 1;
-        if (bDate == null) return -1;
+    if (submissionsJson != null) {
+      if (submissionsJson is! List) {
+        throw ParsingException(
+          "Field 'submissions' expected List but got ${submissionsJson.runtimeType}",
+        );
+      }
 
-        // DESC: paling baru dulu
-        return bDate.compareTo(aDate);
-      });
+      submissions = submissionsJson.map((e) {
+        if (e is! Map<String, dynamic>) {
+          throw ParsingException(
+            "Each submission must be Map<String, dynamic> but got ${e.runtimeType}",
+          );
+        }
+        return SubmissionsModel.fromJson(e);
+      }).toList()
+        ..sort((a, b) {
+          final aDate = a.createdAt;
+          final bDate = b.createdAt;
+
+          if (aDate == null && bDate == null) return 0;
+          if (aDate == null) return 1;
+          if (bDate == null) return -1;
+
+          return bDate.compareTo(aDate); // DESC
+        });
+    }
 
     return FilledFormWithHistoryModel(
       form: FormModel.fromJson(formJson),
       submissionHistory: submissions,
-    );
-  }
-
-  FilledFormWithHistoryEntity toEntity() {
-    return FilledFormWithHistoryEntity(
-      form: form,
-      submissionHistory: submissionHistory,
     );
   }
 }

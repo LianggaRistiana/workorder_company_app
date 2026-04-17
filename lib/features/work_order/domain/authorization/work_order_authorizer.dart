@@ -91,7 +91,11 @@ class _Ownership extends AuthorizationRule {
       return const AuthorizationResult.allowed();
     }
 
-    if (user.email == workOrder.createdBy.email) {
+    if (workOrder.createdBy == null) {
+      return const AuthorizationResult.allowed();
+    }
+
+    if (user.email == workOrder.createdBy!.email) {
       return const AuthorizationResult.allowed();
     }
 

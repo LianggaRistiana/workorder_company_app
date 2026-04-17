@@ -2,6 +2,7 @@ import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/utils/safe_parse.dart';
 import 'package:workorder_company_app/features/auth/data/model/user_model.dart';
 import 'package:workorder_company_app/features/forms/data/model/filled_form_with_history_model.dart';
+import 'package:workorder_company_app/features/positions/data/models/position_model.dart';
 import 'package:workorder_company_app/features/services/data/model/service_summary_model.dart';
 import 'package:workorder_company_app/features/work_order/data/model/work_order_status_date_model.dart';
 import 'package:workorder_company_app/features/work_order/domain/entities/work_order_entity.dart';
@@ -11,9 +12,10 @@ class WorkOrderModel extends WorkOrderEntity {
     required super.id,
     required super.code,
     required super.configId,
+    required super.positionOnDuty,
     required super.service,
-    required super.createdBy,
-    required super.approvedBy,
+    super.createdBy,
+    super.approvedBy,
     required super.approvalAccess,
     required super.minStaff,
     required super.maxStaff,
@@ -27,28 +29,34 @@ class WorkOrderModel extends WorkOrderEntity {
     super.issueNote,
   });
 
+  // FIXME : Fixme Later
   factory WorkOrderModel.fromJson(Map<String, dynamic> json) {
     return WorkOrderModel(
-      id: json.field('id').reqString(),
+      id: json.field('_id').reqString(),
       code: json.field('code').reqString(),
       configId: json.field('configId').reqString(),
-      serviceRequestId: json.field('serviceRequestId').optString(),
       service: json.field('service').reqModel(ServiceSummaryModel.fromJson),
-      createdBy: json.field('createdBy').reqModel(UserModel.fromJson),
-      approvedBy: json.field('approvedBy').reqModel(UserModel.fromJson),
+      positionOnDuty:
+          json.field('positionsOnDuty').reqModel(PositionModel.fromJson),
+      serviceRequestId: json.field('serviceRequestId').optString(),
+      createdBy: json.field('createdBy').optModel(UserModel.fromJson),
+      approvedBy: json.field('approvedBy').optModel(UserModel.fromJson),
       approvalAccess: json
-          .field('approvalAccess')
+          .field('workOrderApprovalAccessType')
           .reqEnum(WorkOrderAprrovalAccess.fromString),
-      minStaff: json.field('minstaff').reqInt(),
-      maxStaff: json.field('maxstaff').reqInt(),
+      minStaff: json.field('minStaff').reqInt(),
+      maxStaff: json.field('maxStaff').reqInt(),
       status: json.field('status').reqEnum(WorkOrderStatus.fromString),
+      staffPic: json.field('staffPIC').optModel(UserModel.fromJson),
       assignedStaffs:
-          json.field('assignedStaffs').reqListModel(UserModel.fromJson),
+          json.field('assignedStaff').reqListModel(UserModel.fromJson),
       workOrderForm: FilledFormWithHistoryModel.fromJson(
-          json['reviewForm'], json['reviewSubmission']),
-      hasIssue: json.field('hasIssue').reqBool(),
+          json['workOrderForm'], json['submissions']),
+      hasIssue: json.field('has_issue').reqBool(),
       statusDate:
-          json.field('statusDate').reqModel(WorkOrderStatusDateModel.fromJson),
+          WorkOrderStatusDateModel.fromJson(json), // FIXME : Unreadable on UI
+      // statusDate:
+      //     json.field('statusDate').reqModel(WorkOrderStatusDateModel.fromJson),
       issueNote: json.field('issueNote').optString(),
     );
   }

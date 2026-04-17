@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/filled_form_with_history_entity.dart';
+import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_summary_entity.dart';
 import 'package:workorder_company_app/features/work_order/domain/entities/work_order_status_date_entity.dart';
 
@@ -10,9 +11,10 @@ class WorkOrderEntity extends Equatable {
   final String code;
   final String configId;
   final String? serviceRequestId;
+  final PositionEntity positionOnDuty;
   final ServiceSummaryEntity service;
-  final UserEntity createdBy;
-  final UserEntity approvedBy;
+  final UserEntity? createdBy;
+  final UserEntity? approvedBy;
   final WorkOrderAprrovalAccess approvalAccess;
   final int minStaff;
   final int maxStaff;
@@ -28,10 +30,11 @@ class WorkOrderEntity extends Equatable {
     required this.id,
     required this.code,
     this.serviceRequestId,
+    required this.positionOnDuty,
     required this.configId,
     required this.service,
-    required this.createdBy,
-    required this.approvedBy,
+    this.createdBy,
+    this.approvedBy,
     required this.approvalAccess,
     required this.minStaff,
     required this.maxStaff,
@@ -49,6 +52,10 @@ class WorkOrderEntity extends Equatable {
         id,
         code,
         service,
+        positionOnDuty,
+        minStaff,
+        maxStaff,
+        staffPic,
         createdBy,
         approvedBy,
         approvalAccess,

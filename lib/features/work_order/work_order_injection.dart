@@ -34,7 +34,8 @@ Future<void> initWorkOrderFeature() async {
 
 Future<void> _initDataSource() async {
   sl.registerLazySingleton<WorkOrderRemoteDatasource>(
-      () => MockWorkOrderRemoteDatasource());
+      () => WorkOrderRemoteDatasourceImpl(sl()));
+  // () => MockWorkOrderRemoteDatasource());
 }
 
 Future<void> _initRepositories() async {

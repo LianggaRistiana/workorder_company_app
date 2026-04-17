@@ -6,7 +6,6 @@ import 'package:workorder_company_app/features/employees/presentation/widget/emp
 
 class EmployeesSelectorContainer extends StatelessWidget {
   final List<UserEntity> selectedEmployees;
-  final List<UserEntity> availableEmployees;
   final void Function(UserEntity) onAdd;
   final Widget Function(
     BuildContext context,
@@ -17,7 +16,6 @@ class EmployeesSelectorContainer extends StatelessWidget {
   const EmployeesSelectorContainer({
     super.key,
     required this.selectedEmployees,
-    required this.availableEmployees,
     required this.onAdd,
     required this.buttonBuilder,
   });

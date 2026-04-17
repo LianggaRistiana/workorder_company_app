@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/authorization/util/access_gate_on_widget.dart';
 import 'package:workorder_company_app/core/constants/app_enums/work_order_enum.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
@@ -12,6 +13,7 @@ import 'package:workorder_company_app/features/work_order/presentation/bloc/canc
 import 'package:workorder_company_app/features/work_order/presentation/bloc/cancel/cancel_work_order_state.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/detail/work_order_detail_cubit.dart';
 import 'package:workorder_company_app/features/work_order/presentation/widgets/work_order_status_step_card.dart';
+import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/widgets/adaptive_split_column.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
@@ -59,7 +61,7 @@ class WorkOrderDetailBody extends StatelessWidget {
           PropertyItem.text(
               icon: AppIcon.user,
               label: "Dibuat oleh",
-              value: workOrder.createdBy.name),
+              value: workOrder.createdBy?.name ?? 'Sistem'),
           PropertyItem.widget(
             icon: AppIcon.step,
             label: "Status",
@@ -123,7 +125,10 @@ class WorkOrderDetailBody extends StatelessWidget {
           TextButton.icon(
               iconAlignment: IconAlignment.end,
               icon: Icon(AppIcon.next),
-              onPressed: () {},
+              onPressed: () {
+                // context.push(AppRoutes.forbidden);
+                context.push(AppRoutes.workOrdersAssignStaff, extra: workOrder);
+              },
               label: Text("Edit Pegawai Bertugas"))
         ],
       ).require(WorkOrderAuthorizer(workOrder: workOrder).fillWorkOrder),
@@ -137,7 +142,7 @@ class WorkOrderDetailBody extends StatelessWidget {
         "Intruksi Perintah Kerja",
       ),
       FilledFormView(
-        filledForm: FilledFormEntity(form: workOrder.workOrderForm.form),
+        filledForm: FilledFormEntity(form: workOrder.workOrderForm.form, submission: workOrder.workOrderForm.submissionHistory?.firstOrNull),
       ),
       Row(
         children: [

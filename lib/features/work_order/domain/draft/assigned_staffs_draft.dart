@@ -1,4 +1,4 @@
-import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
+  import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 
 class AssignedStaffsDraft {
   UserEntity? staffPic;

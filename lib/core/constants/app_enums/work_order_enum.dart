@@ -17,6 +17,7 @@ enum WorkOrderStatus {
       'approved' => WorkOrderStatus.approved,
       'rejected' => WorkOrderStatus.rejected,
       'on_progress' => WorkOrderStatus.onProgress,
+      'onprogress' => WorkOrderStatus.onProgress,//FIXME : Remove this later
       'completed' => WorkOrderStatus.completed,
       'cancelled' => WorkOrderStatus.cancelled,
       'failed' => WorkOrderStatus.failed,
