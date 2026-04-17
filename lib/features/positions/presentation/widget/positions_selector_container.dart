@@ -26,8 +26,7 @@ class PositionsSelectorContainer extends StatelessWidget {
     return BlocBuilder<PositionsListBloc, PositionsListState>(
       builder: (context, state) {
         final isLoading = state.status == PositionsListStatus.loading;
-        final availablePositions =
-            state.positions;
+        final availablePositions = state.positions;
 
         return PositionsSelector(
           selectedPositions: selectedPositions,
