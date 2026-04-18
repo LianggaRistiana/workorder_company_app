@@ -1,18 +1,18 @@
-  import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
+import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 
 class AssignedStaffsDraft {
   UserEntity? staffPic;
-  List<UserEntity> assignedStaff;
+  List<UserEntity> assignedStaffs;
 
   AssignedStaffsDraft({
     this.staffPic,
-    required this.assignedStaff,
+    required this.assignedStaffs,
   });
 
   Map<String, dynamic> toJson() {
     return {
       'staff_pic': staffPic?.email,
-      'assigned_staff': assignedStaff.map((staff) => staff.email).toList(),
+      'assign_staffs': assignedStaffs.map((staff) => staff.email).toList(),
     };
   }
 }

@@ -48,7 +48,7 @@ class Endpoints {
   static const String workorderRecreate = "/workorders/:id/recreate";
   static const String workorderSetSubmissions = "/workorders/:id/submissions";
   static const String workorderSetAssignedStaff =
-      "/workorders/:id/assign-staff";
+      "/workorders/:id/assign-staffs";
   static const String workorderSent = "/workorders/:id/sent";
   static const String workorderStart = "/workorders/:id/start";
   static const String workorderApprove = "/workorders/:id/approve";

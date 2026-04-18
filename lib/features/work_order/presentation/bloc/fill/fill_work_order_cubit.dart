@@ -27,17 +27,19 @@ class FillWorkOrderCubit extends Cubit<FillWorkOrderState> {
     );
   }
 
-    Future<void> submitSubmission(
+  Future<void> loadingTest() async {
+    emit(state.copyWith(status: FillWorkOrderStatus.loading));
+  }
+
+  Future<void> submitSubmission(
       WorkOrderEntity workOrder, SubmissionDraft submission) async {
     emit(state.copyWith(status: FillWorkOrderStatus.loading));
     final result = await submitUsecase(workOrder, submission);
     result.fold(
       (failure) => emit(state.copyWith(
-          status: FillWorkOrderStatus.error,
-          errorMessage: failure.message)),
+          status: FillWorkOrderStatus.error, errorMessage: failure.message)),
       (metaResult) => emit(state.copyWith(
-          status: FillWorkOrderStatus.success,
-          result: metaResult)),
+          status: FillWorkOrderStatus.success, result: metaResult)),
     );
   }
 }
