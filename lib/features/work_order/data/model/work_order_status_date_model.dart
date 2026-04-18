@@ -18,29 +18,15 @@ class WorkOrderStatusDateModel extends WorkOrderStatusDateEntity {
     Map<String, dynamic> json,
   ) {
     return WorkOrderStatusDateModel(
-      createdAt: json.field('created_at').optDate(),
-      updatedAt: json.field('updated_at').optDate(),
-      sentAt: json.field('sent_at').optDate(),
-      approvedAt: json.field('approved_at').optDate(),
-      rejectedAt: json.field('rejected_at').optDate(),
-      startedAt: json.field('started_at').optDate(),
-      completedAt: json.field('completed_at').optDate(),
-      cancelledAt: json.field('cancelled_at').optDate(),
-      failedAt: json.field('failed_at').optDate(),
+      createdAt: json.field('createdAt').optDate(),
+      updatedAt: json.field('updatedAt').optDate(),
+      sentAt: json.field('sentAt').optDate(),
+      approvedAt: json.field('approvedAt').optDate(),
+      rejectedAt: json.field('rejectedAt').optDate(),
+      startedAt: json.field('startedAt').optDate(),
+      completedAt: json.field('completedAt').optDate(),
+      cancelledAt: json.field('cancelledAt').optDate(),
+      failedAt: json.field('failedAt').optDate(),
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'created_at': createdAt?.toIso8601String(),
-      'updated_at': updatedAt?.toIso8601String(),
-      'sent_at': sentAt?.toIso8601String(),
-      'approved_at': approvedAt?.toIso8601String(),
-      'rejected_at': rejectedAt?.toIso8601String(),
-      'started_at': startedAt?.toIso8601String(),
-      'completed_at': completedAt?.toIso8601String(),
-      'cancelled_at': cancelledAt?.toIso8601String(),
-      'failed_at': failedAt?.toIso8601String(),
-    };
   }
 }
