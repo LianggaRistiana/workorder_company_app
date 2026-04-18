@@ -205,6 +205,7 @@ class FilledFormView extends StatelessWidget {
         const SizedBox(height: 8),
         if (filledForm.form.fields?.isNotEmpty ?? false)
           CustomCard(
+            margin: const EdgeInsets.all(0),
             child: Column(
               children: List.generate(
                 filledForm.form.fields!.length,

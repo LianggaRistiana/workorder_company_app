@@ -181,9 +181,10 @@ class WorkOrderRemoteDatasourceImpl implements WorkOrderRemoteDatasource {
   @override
   ApiFutureWithMeta<WorkOrderModel> submitWorkOrderSubmission(
       String workOrderId, SubmissionsModel submissions) async {
-    final response = await _apiClient.post(
+    final response = await _apiClient.put(
         Endpoints.workorderSetSubmissions.fillId(workOrderId),
-        data: {"submission": submissions.toJson()});
+        // data: {"submission": submissions.toJson()});
+        data: submissions.toJson());
     return ApiResponseWithMeta.fromJson(
       response,
       (json) => WorkOrderModel.fromJson(json),

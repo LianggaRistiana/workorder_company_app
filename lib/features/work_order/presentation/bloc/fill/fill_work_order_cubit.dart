@@ -27,10 +27,6 @@ class FillWorkOrderCubit extends Cubit<FillWorkOrderState> {
     );
   }
 
-  Future<void> loadingTest() async {
-    emit(state.copyWith(status: FillWorkOrderStatus.loading));
-  }
-
   Future<void> submitSubmission(
       WorkOrderEntity workOrder, SubmissionDraft submission) async {
     emit(state.copyWith(status: FillWorkOrderStatus.loading));

@@ -7,7 +7,7 @@ import 'package:workorder_company_app/core/result/result.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_radius.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
-import 'package:workorder_company_app/features/forms/domain/entities/filled_form_entity.dart';
+import 'package:workorder_company_app/features/forms/domain/entities/filled_form_with_history_entity.dart';
 import 'package:workorder_company_app/features/work_order/domain/authorization/work_order_authorizer.dart';
 import 'package:workorder_company_app/features/work_order/domain/entities/work_order_entity.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/cancel/cancel_work_order_cubit.dart';
@@ -123,9 +123,7 @@ class WorkOrderDetailBody extends StatelessWidget {
         "Intruksi Perintah Kerja",
       ),
       FilledFormView(
-        filledForm: FilledFormEntity(
-            form: workOrder.workOrderForm.form,
-            submission: workOrder.workOrderForm.submissionHistory?.firstOrNull),
+        filledForm: workOrder.workOrderForm.currentFilledForm,
       ),
       Row(
         children: [
@@ -133,7 +131,15 @@ class WorkOrderDetailBody extends StatelessWidget {
           TextButton.icon(
               iconAlignment: IconAlignment.end,
               icon: Icon(AppIcon.next),
-              onPressed: () {},
+              onPressed: () async {
+                final result = await context.push<Result<WorkOrderEntity>?>(
+                    AppRoutes.workOrdersSubmission,
+                    extra: workOrder);
+
+                if (result == null) return;
+                if (!context.mounted) return;
+                context.read<WorkOrderDetailCubit>().updateResult(result);
+              },
               label: Text("Edit Instruksi Kerja"))
         ],
       ).require(WorkOrderAuthorizer(workOrder: workOrder).fillWorkOrder),

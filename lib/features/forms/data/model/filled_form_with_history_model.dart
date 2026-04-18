@@ -40,7 +40,7 @@ class FilledFormWithHistoryModel extends FilledFormWithHistoryEntity {
           if (aDate == null) return 1;
           if (bDate == null) return -1;
 
-          return bDate.compareTo(aDate); // DESC
+          return bDate.compareTo(aDate); 
         });
     }
 
