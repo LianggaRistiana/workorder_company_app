@@ -22,23 +22,46 @@ class _WorkOrderStepCardState extends State<WorkOrderStatusStepCard> {
   bool isExpanded = false;
 
   List<WorkOrderStatus> _stepOrder() {
-    if (widget.currentStatus == WorkOrderStatus.cancelled ||
-        widget.currentStatus == WorkOrderStatus.rejected ||
-        widget.currentStatus == WorkOrderStatus.failed) {
-      return [
-        WorkOrderStatus.drafted,
-        WorkOrderStatus.sent,
-        widget.currentStatus,
-      ];
-    }
-
-    return [
+    const defaultFlow = [
       WorkOrderStatus.drafted,
       WorkOrderStatus.sent,
       WorkOrderStatus.approved,
       WorkOrderStatus.onProgress,
       WorkOrderStatus.completed,
     ];
+
+    const terminalStates = [
+      WorkOrderStatus.rejected,
+      WorkOrderStatus.cancelled,
+      WorkOrderStatus.failed,
+    ];
+
+    if (terminalStates.contains(widget.currentStatus)) {
+      final statusMap = {
+        WorkOrderStatus.drafted: widget.statusDate.createdAt,
+        WorkOrderStatus.sent: widget.statusDate.sentAt,
+        WorkOrderStatus.approved: widget.statusDate.approvedAt,
+        WorkOrderStatus.rejected: widget.statusDate.rejectedAt,
+        WorkOrderStatus.onProgress: widget.statusDate.startedAt,
+        WorkOrderStatus.completed: widget.statusDate.completedAt,
+        WorkOrderStatus.cancelled: widget.statusDate.cancelledAt,
+        WorkOrderStatus.failed: widget.statusDate.failedAt,
+      };
+
+      final entries = statusMap.entries.where((e) => e.value != null).toList()
+        ..sort((a, b) => a.value!.compareTo(b.value!));
+
+      return entries.map((e) => e.key).toList();
+    }
+
+    // final currentIndex = defaultFlow.indexOf(widget.currentStatus);
+
+    // if (currentIndex == -1) {
+    //   return defaultFlow;
+    // }
+
+    // return defaultFlow.sublist(0, currentIndex + 1);
+    return defaultFlow;
   }
 
   @override
@@ -89,12 +112,15 @@ class _WorkOrderStepCardState extends State<WorkOrderStatusStepCard> {
                           Column(
                             children: [
                               Container(
+                                margin: EdgeInsets.only(
+                                  top: 4,
+                                ),
                                 width: 12,
                                 height: 12,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: isActive
-                                      ? _statusColor(status)
+                                      ? Theme.of(context).primaryColor
                                       : theme.disabledColor,
                                 ),
                               ),
@@ -105,7 +131,7 @@ class _WorkOrderStepCardState extends State<WorkOrderStatusStepCard> {
                                   margin:
                                       const EdgeInsets.symmetric(vertical: 4),
                                   color: isActive
-                                      ? _statusColor(status)
+                                      ? Theme.of(context).primaryColor
                                       : theme.disabledColor,
                                 ),
                             ],
@@ -123,17 +149,14 @@ class _WorkOrderStepCardState extends State<WorkOrderStatusStepCard> {
                                         ? FontWeight.bold
                                         : FontWeight.normal,
                                     color: isActive
-                                        ? _statusColor(status)
+                                        ? Theme.of(context).primaryColor
                                         : theme.disabledColor,
                                   ),
                                 ),
                                 const SizedBox(height: 2),
                                 Text(
                                   date,
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: theme.disabledColor,
-                                  ),
+                                  style: Theme.of(context).textTheme.labelSmall,
                                 ),
                               ],
                             ),
@@ -155,9 +178,9 @@ class _WorkOrderStepCardState extends State<WorkOrderStatusStepCard> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.15),
+        color: color.withAlpha(15),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: color.withOpacity(0.3)),
+        border: Border.all(color: color.withAlpha(3)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
