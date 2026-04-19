@@ -29,6 +29,7 @@ class WorkOrderAuthorizer {
         _StatusValidation(workOrder.status, WorkOrderStatus.drafted)
       ]);
 
+// ADD CAPSBILITY CHECKER
   AuthorizationRule get recreateWorkOrder => rules([
         roleCan(WorkOrderPermissions.create),
         _Ownership(workOrder),
@@ -57,6 +58,7 @@ class WorkOrderAuthorizer {
             capabilities: capabilities, checker: (c) => c.canStart)
       ]);
 
+// ADD CAPSBILITY CHECKER
   AuthorizationRule get cancelWorkOrder => rules([
         roleCan(WorkOrderPermissions.cancel),
         _Ownership(workOrder),

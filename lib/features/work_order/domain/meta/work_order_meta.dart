@@ -45,11 +45,15 @@ class WorkOrderCapabilities extends ResultMeta {
   final bool canStart;
   final bool canComplete;
   final bool canFail;
+  final bool canRecreate;
+  final bool canCancel;
 
   const WorkOrderCapabilities({
     required this.canStart,
     required this.canComplete,
     required this.canFail,
+    required this.canRecreate,
+    required this.canCancel,
   });
 
   factory WorkOrderCapabilities.fromJson(Map<String, dynamic> json) {
@@ -57,6 +61,8 @@ class WorkOrderCapabilities extends ResultMeta {
       canStart: json['can_start'] ?? false,
       canComplete: json['can_complete'] ?? false,
       canFail: json['can_fail'] ?? false,
+      canRecreate: json['can_recreate'] ?? false,
+      canCancel: json['can_cancel'] ?? false,
     );
   }
 }

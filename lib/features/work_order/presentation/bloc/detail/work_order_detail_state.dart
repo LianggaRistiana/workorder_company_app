@@ -16,8 +16,10 @@ class WorkOrderDetailState extends Equatable {
   final String? errorMessage;
 
   WorkOrderEntity? get workOrder => result?.data;
-  WorkOrderSiblings? get workOrderSiblings => result?.getMeta<WorkOrderSiblings>();
-
+  WorkOrderSiblings? get workOrderSiblings =>
+      result?.getMeta<WorkOrderSiblings>();
+  WorkOrderCapabilities? get workOrderCapabilities =>
+      result?.getMeta<WorkOrderCapabilities>();
 
   const WorkOrderDetailState({
     required this.status,

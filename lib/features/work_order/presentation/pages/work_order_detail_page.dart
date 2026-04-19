@@ -53,7 +53,8 @@ class WorkOrderDetailPage extends StatelessWidget {
     final workOrder = state.workOrder;
     if (workOrder == null) return null;
 
-    final mainFab = workOrder.status.buildFab(workOrder);
+    final mainFab =
+        workOrder.status.buildFab(workOrder, state.workOrderCapabilities);
     final sibling = state.workOrderSiblings;
 
     if (mainFab == null && sibling == null) {
@@ -66,8 +67,7 @@ class WorkOrderDetailPage extends StatelessWidget {
       children: [
         if (sibling != null) ...[
           FabWorkOrderSibling(
-            currentWorkOrderId: workOrder.id,
-            siblings: sibling),
+              currentWorkOrderId: workOrder.id, siblings: sibling),
           const SizedBox(height: 10),
         ],
         if (mainFab != null) mainFab,
