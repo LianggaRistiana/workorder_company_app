@@ -154,7 +154,11 @@ class WorkOrderDetailBody extends StatelessWidget {
       BlocBuilder<CancelWorkOrderCubit, CancelWorkOrderState>(
           builder: (context, state) {
         return HorizontalButton(
-                onTap: () {},
+                onTap: () {
+                  context
+                      .read<CancelWorkOrderCubit>()
+                      .cancelWorkOrder(workOrder);
+                },
                 isDanger: true,
                 title: "Batalkan Perintah Kerja",
                 description:
