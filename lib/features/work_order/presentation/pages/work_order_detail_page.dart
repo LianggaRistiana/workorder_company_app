@@ -10,7 +10,7 @@ import 'package:workorder_company_app/features/work_order/presentation/bloc/send
 import 'package:workorder_company_app/features/work_order/presentation/bloc/start/start_work_order_cubit.dart';
 import 'package:workorder_company_app/features/work_order/presentation/pages/work_order_detail_body.dart';
 import 'package:workorder_company_app/features/work_order/presentation/pages/work_order_detail_listener.dart';
-import 'package:workorder_company_app/features/work_order/presentation/widgets/fab_mapper.dart';
+import 'package:workorder_company_app/features/work_order/presentation/ui_mappers/fab_mapper.dart';
 import 'package:workorder_company_app/features/work_order/presentation/widgets/fab_work_order_sibling.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 import 'package:workorder_company_app/shared/widgets/error_body.dart';

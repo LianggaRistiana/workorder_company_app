@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:workorder_company_app/core/constants/app_enums/work_order_enum.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/work_order/domain/entities/work_order_status_date_entity.dart';
+import 'package:workorder_company_app/features/work_order/presentation/ui_mappers/work_order_status_color_mapper.dart';
+import 'package:workorder_company_app/features/work_order/presentation/ui_mappers/work_order_status_icon_mapper.dart';
 import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
 
 class WorkOrderStatusStepCard extends StatefulWidget {
@@ -103,38 +105,65 @@ class _WorkOrderStepCardState extends State<WorkOrderStatusStepCard> {
                     children: List.generate(steps.length, (index) {
                       final status = steps[index];
                       final isActive = index <= currentIndex;
+                      final isLineActive = index < currentIndex;
 
                       final date = widget.statusDate.getDateString(status);
 
                       return Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Column(
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(
-                                  top: 4,
-                                ),
-                                width: 12,
-                                height: 12,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: isActive
-                                      ? Theme.of(context).colorScheme.primary
-                                      : theme.disabledColor,
-                                ),
-                              ),
-                              if (index != steps.length - 1)
-                                Container(
-                                  width: 2,
-                                  height: 40,
-                                  margin:
-                                      const EdgeInsets.symmetric(vertical: 4),
-                                  color: isActive
-                                      ? Theme.of(context).colorScheme.primary
-                                      : theme.disabledColor,
-                                ),
-                            ],
+                          SizedBox(
+                            width: 24, // area tetap
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                if (index == currentIndex) ...[
+                                  Container(
+                                    width: 20,
+                                    height: 20,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: isActive
+                                          ? status.color.withAlpha(15)
+                                          : theme.disabledColor.withAlpha(1),
+                                    ),
+                                    child: Center(
+                                      child: Icon(
+                                        status.icon,
+                                        size: 12,
+                                        color: isActive
+                                            ? status.color
+                                            : theme.disabledColor,
+                                      ),
+                                    ),
+                                  ),
+                                ] else ...[
+                                  Container(
+                                    width: 8,
+                                    height: 8,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: isActive
+                                          ? Theme.of(context)
+                                              .colorScheme
+                                              .primary
+                                          : theme.disabledColor,
+                                    ),
+                                  ),
+                                ],
+                                if (index != steps.length - 1)
+                                  Container(
+                                    width: 2,
+                                    height: 40,
+                                    margin:
+                                        const EdgeInsets.symmetric(vertical: 4),
+                                    color: isLineActive
+                                        ? Theme.of(context).colorScheme.primary
+                                        : theme.disabledColor,
+                                  ),
+                              ],
+                            ),
                           ),
                           const SizedBox(width: 12),
                           Expanded(
@@ -149,7 +178,11 @@ class _WorkOrderStepCardState extends State<WorkOrderStatusStepCard> {
                                         ? FontWeight.bold
                                         : FontWeight.normal,
                                     color: isActive
-                                        ? Theme.of(context).colorScheme.primary
+                                        ? index == currentIndex
+                                            ? status.color
+                                            : Theme.of(context)
+                                                .colorScheme
+                                                .primary
                                         : theme.disabledColor,
                                   ),
                                 ),
@@ -173,24 +206,22 @@ class _WorkOrderStepCardState extends State<WorkOrderStatusStepCard> {
   }
 
   Widget _statusChip(WorkOrderStatus status) {
-    final color = _statusColor(status);
-
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: color.withAlpha(15),
+        color: status.color.withAlpha(15),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: color.withAlpha(3)),
+        border: Border.all(color: status.color.withAlpha(3)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(_statusIcon(status), color: color, size: 16),
+          Icon(status.icon, color: status.color, size: 16),
           const SizedBox(width: 6),
           Text(
             status.displayName,
             style: TextStyle(
-              color: color,
+              color: status.color,
               fontWeight: FontWeight.w600,
               fontSize: 12,
             ),
@@ -198,47 +229,5 @@ class _WorkOrderStepCardState extends State<WorkOrderStatusStepCard> {
         ],
       ),
     );
-  }
-
-  Color _statusColor(WorkOrderStatus status) {
-    switch (status) {
-      case WorkOrderStatus.drafted:
-        return Colors.grey;
-      case WorkOrderStatus.sent:
-        return Colors.blue;
-      case WorkOrderStatus.approved:
-        return Colors.indigo;
-      case WorkOrderStatus.onProgress:
-        return Colors.orange;
-      case WorkOrderStatus.completed:
-        return Colors.green;
-      case WorkOrderStatus.rejected:
-        return Colors.red;
-      case WorkOrderStatus.cancelled:
-        return Colors.redAccent;
-      case WorkOrderStatus.failed:
-        return Colors.deepOrange;
-    }
-  }
-
-  IconData _statusIcon(WorkOrderStatus status) {
-    switch (status) {
-      case WorkOrderStatus.drafted:
-        return Icons.edit_note;
-      case WorkOrderStatus.sent:
-        return Icons.send;
-      case WorkOrderStatus.approved:
-        return Icons.verified;
-      case WorkOrderStatus.onProgress:
-        return Icons.engineering;
-      case WorkOrderStatus.completed:
-        return Icons.task_alt;
-      case WorkOrderStatus.rejected:
-        return Icons.block;
-      case WorkOrderStatus.cancelled:
-        return Icons.cancel;
-      case WorkOrderStatus.failed:
-        return Icons.error;
-    }
   }
 }
