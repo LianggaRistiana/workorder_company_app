@@ -10,7 +10,7 @@ abstract class WorkReportRemoteDatasource {
   ApiFuture<WorkReportModel> getWorkReport(String workOrderId);
   ApiFuture<WorkReportModel> submitWorkReportSubmission(
     String workReportId,
-    SubmissionsModel submissions,
+    SubmissionsModel submission,
   );
   ApiFuture<WorkReportModel> sendWorkReport(String workReportId);
   ApiFuture<WorkReportModel> approveWorkReport(String workReportId);
@@ -65,7 +65,7 @@ class WorkReportRemoteDatasourceImpl implements WorkReportRemoteDatasource {
   @override
   ApiFuture<WorkReportModel> submitWorkReportSubmission(
     String workReportId,
-    SubmissionsModel submissions,
+    SubmissionsModel submission,
   ) async {
     final response = await _apiClient
         .post(Endpoints.workReportSetSubmissions.fillId(workReportId));
