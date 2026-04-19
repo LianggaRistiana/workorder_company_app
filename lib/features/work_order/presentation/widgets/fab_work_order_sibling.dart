@@ -12,7 +12,9 @@ import 'package:workorder_company_app/shared/widgets/property_display.dart';
 
 class FabWorkOrderSibling extends StatelessWidget {
   final WorkOrderSiblings siblings;
-  const FabWorkOrderSibling({super.key, required this.siblings});
+  final String currentWorkOrderId;
+  const FabWorkOrderSibling(
+      {super.key, required this.siblings, required this.currentWorkOrderId});
 
   void _openBottomSheet(BuildContext context) {
     showAppBottomSheet(
@@ -56,6 +58,11 @@ class FabWorkOrderSibling extends StatelessWidget {
                         maxLines: 1,
                         style: Theme.of(context).textTheme.titleSmall,
                       )),
+                      if (item.id == currentWorkOrderId)
+                        Icon(
+                          color: Theme.of(context).colorScheme.primary,
+                          AppIcon.selected,
+                        )
                     ],
                   ),
                 )),

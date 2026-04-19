@@ -17,7 +17,6 @@ enum WorkOrderStatus {
       'approved' => WorkOrderStatus.approved,
       'rejected' => WorkOrderStatus.rejected,
       'on_progress' => WorkOrderStatus.onProgress,
-      'onprogress' => WorkOrderStatus.onProgress,//FIXME : Remove this later
       'completed' => WorkOrderStatus.completed,
       'cancelled' => WorkOrderStatus.cancelled,
       'failed' => WorkOrderStatus.failed,
@@ -77,11 +76,11 @@ extension WorkOrderStatusX on WorkOrderStatus {
 
   String get displayName {
     return switch (this) {
-      WorkOrderStatus.drafted => 'Draft',
+      WorkOrderStatus.drafted => 'Disusun',
       WorkOrderStatus.sent => 'Dikirim',
       WorkOrderStatus.approved => 'Disetujui',
       WorkOrderStatus.rejected => 'Ditolak',
-      WorkOrderStatus.onProgress => 'Diproses',
+      WorkOrderStatus.onProgress => 'Dalam Proses',
       WorkOrderStatus.completed => 'Selesai',
       WorkOrderStatus.cancelled => 'Dibatalkan',
       WorkOrderStatus.failed => 'Gagal',

@@ -120,7 +120,7 @@ class _WorkOrderStepCardState extends State<WorkOrderStatusStepCard> {
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: isActive
-                                      ? Theme.of(context).primaryColor
+                                      ? Theme.of(context).colorScheme.primary
                                       : theme.disabledColor,
                                 ),
                               ),
@@ -131,7 +131,7 @@ class _WorkOrderStepCardState extends State<WorkOrderStatusStepCard> {
                                   margin:
                                       const EdgeInsets.symmetric(vertical: 4),
                                   color: isActive
-                                      ? Theme.of(context).primaryColor
+                                      ? Theme.of(context).colorScheme.primary
                                       : theme.disabledColor,
                                 ),
                             ],
@@ -149,7 +149,7 @@ class _WorkOrderStepCardState extends State<WorkOrderStatusStepCard> {
                                         ? FontWeight.bold
                                         : FontWeight.normal,
                                     color: isActive
-                                        ? Theme.of(context).primaryColor
+                                        ? Theme.of(context).colorScheme.primary
                                         : theme.disabledColor,
                                   ),
                                 ),

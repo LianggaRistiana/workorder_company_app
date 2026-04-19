@@ -56,6 +56,7 @@ class AppIcon {
 
   // Icon For StateData
   static const IconData activeState = LucideIcons.checkCircle2;
+  static const IconData selected = Icons.check_circle_rounded;
   static const IconData inactiveState = Icons.block_outlined;
   static const IconData notFound = LucideIcons.fileX2;
   static const IconData forbidden = LucideIcons.ban;

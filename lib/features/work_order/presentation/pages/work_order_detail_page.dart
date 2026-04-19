@@ -65,7 +65,9 @@ class WorkOrderDetailPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         if (sibling != null) ...[
-          FabWorkOrderSibling(siblings: sibling),
+          FabWorkOrderSibling(
+            currentWorkOrderId: workOrder.id,
+            siblings: sibling),
           const SizedBox(height: 10),
         ],
         if (mainFab != null) mainFab,
