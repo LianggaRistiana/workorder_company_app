@@ -5,7 +5,18 @@ enum WorkReportStatus {
   sent,
   approved,
   rejected,
-  cancelled,
+  cancelled;
+
+  static WorkReportStatus fromString(String value) {
+    return switch (value) {
+      'on_progress' => WorkReportStatus.onProgress,
+      'sent' => WorkReportStatus.sent,
+      'approved' => WorkReportStatus.approved,
+      'rejected' => WorkReportStatus.rejected,
+      'cancelled' => WorkReportStatus.cancelled,
+      _ => throw Exception('Unknown WorkReportStatus: $value'),
+    };
+  }
 }
 
 extension WorkReportStatusX on WorkReportStatus {
