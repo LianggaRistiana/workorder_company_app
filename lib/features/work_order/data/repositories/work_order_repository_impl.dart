@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:workorder_company_app/core/cache/list_cache_helper.dart';
 import 'package:workorder_company_app/core/network/api_response.dart';
 import 'package:workorder_company_app/core/result/result.dart';
@@ -15,9 +17,18 @@ import 'package:workorder_company_app/features/work_order/domain/repositories/wo
 class WorkOrderRepositoryImpl implements WorkOrderRepository {
   final WorkOrderRemoteDatasource _remoteDatasource;
 
-  WorkOrderRepositoryImpl(this._remoteDatasource);
+  final _refreshController = StreamController<void>.broadcast();
+
+  @override
+  Stream<void> get workOrderChanged => _refreshController.stream;
 
   final ListCacheHelper<WorkOrderEntity> _cache = ListCacheHelper();
+
+  WorkOrderRepositoryImpl(this._remoteDatasource);
+
+  void _notifyChanged() {
+    _refreshController.add(null);
+  }
 
   late final Map<String, ResultMeta Function(dynamic)> _metaFactories = {
     "workOrderCapabilities": (json) => WorkOrderCapabilities.fromJson(json),
@@ -37,6 +48,7 @@ class WorkOrderRepositoryImpl implements WorkOrderRepository {
         updated.data,
         (a, b) => a.id == b.id,
       );
+      _notifyChanged();
     });
   }
 
