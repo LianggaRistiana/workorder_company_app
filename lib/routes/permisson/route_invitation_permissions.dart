@@ -6,6 +6,6 @@ class RouteInvitationPermissions {
   static final Map<String, AppPermission> route = {
     AppRoutes.employeeInvite: InvitationPermission.create,
     AppRoutes.invitationsPending: InvitationPermission.receiverView,
-    AppRoutes.invitationsHistory: InvitationPermission.adminView
+    AppRoutes.invitationsHistory: InvitationPermission.senderView,
   };
 }

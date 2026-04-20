@@ -62,8 +62,8 @@ import 'package:workorder_company_app/core/constants/app_enums.dart';
 /// ---------------------------------------------------------------------------
 ///
 /// - This mapping represents static RBAC configuration.
-/// - Any dynamic or database-driven permission overrides must be handled
-///   separately at the authorization layer in back end.
+/// - Any dynamic or data-driven permission overrides must be handled
+///   separately at the authorization.
 /// - UI visibility should not be the only enforcement mechanism. Always
 ///   validate permissions in the domain/application layer.
 ///
