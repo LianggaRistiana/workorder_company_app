@@ -12,6 +12,7 @@ import 'package:workorder_company_app/features/notification/notification_injecti
 import 'package:workorder_company_app/features/positions/positions_injections.dart';
 import 'package:workorder_company_app/features/services/services_injection.dart';
 import 'package:workorder_company_app/features/work_order/work_order_injection.dart';
+import 'package:workorder_company_app/features/work_report/work_report_injection.dart';
 
 /// Service Locator
 final sl = GetIt.instance;
@@ -23,16 +24,25 @@ Future<void> init() async {
 
   // FIXME[High] : register chace registry here for clear all chace when logout
 
-  /// Features
+  /// General Feature
   await initAuthFeature();
-  await initEmployeesFeature();
+  await initNotificationFeature();
+
+  /// Company Feature
+  await initCompanyFeature();
+  await initMembershipsFeature();
+
+  /// Human Resource Feature
   await initPositionsFeature();
+  await initEmployeesFeature();
+  await initInvitationsFeature();
+
+  /// Service Feature
   await initFormsFeature();
   await initServicesFeature();
-  await initCompanyFeature();
-  await initWorkOrderFeature();
-  await initNotificationFeature();
-  await initInvitationsFeature();
-  await initMembershipsFeature();
+
+  /// Work Order Trilogy Feature
   await initServiceRequestFeature();
+  await initWorkOrderFeature();
+  await initWorkReportFeature();
 }
