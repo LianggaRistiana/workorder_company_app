@@ -6,11 +6,11 @@ import 'package:workorder_company_app/features/work_report/domain/usecases/appro
 import 'package:workorder_company_app/features/work_report/domain/usecases/get_work_report_usecase.dart';
 import 'package:workorder_company_app/features/work_report/domain/usecases/reject_work_report_usecase.dart';
 import 'package:workorder_company_app/features/work_report/domain/usecases/send_work_report_usecase.dart';
+import 'package:workorder_company_app/features/work_report/domain/usecases/submit_work_report_submission_usecase.dart';
 import 'package:workorder_company_app/features/work_report/presentation/state/approval/approval_work_report_cubit.dart';
+import 'package:workorder_company_app/features/work_report/presentation/state/get/get_work_report_cubit.dart';
 import 'package:workorder_company_app/features/work_report/presentation/state/send/send_work_report_cubit.dart';
 import 'package:workorder_company_app/features/work_report/presentation/state/submit/submit_work_report_submission_cubit.dart';
-import 'package:workorder_company_app/features_legacy/workreport_legacy/domain/usecases/submit_work_report_usecase.dart';
-import 'package:workorder_company_app/features_legacy/workreport_legacy/presentation/bloc/get_work_report_cubit.dart';
 
 Future<void> initWorkReportFeature() async {
   _initDataSource();
@@ -33,8 +33,8 @@ Future<void> _initUseCases() async {
   sl.registerLazySingleton<GetWorkReportUsecase>(
       () => GetWorkReportUsecase(sl()));
 
-  sl.registerLazySingleton<SubmitWorkReportUsecase>(
-      () => SubmitWorkReportUsecase(sl()));
+  sl.registerLazySingleton<SubmitWorkReportSubmissionUsecase>(
+      () => SubmitWorkReportSubmissionUsecase(sl()));
 
   sl.registerLazySingleton<ApproveWorkReportUsecase>(
       () => ApproveWorkReportUsecase(sl()));
@@ -52,7 +52,9 @@ Future<void> _initUiStates() async {
         rejectUseCase: sl(),
       ));
 
-  sl.registerFactory<GetWorkReportCubit>(() => GetWorkReportCubit(sl()));
+  sl.registerFactory<GetWorkReportCubit>(() => GetWorkReportCubit(
+        getWorkReportUseCase: sl(),
+      ));
 
   sl.registerFactory<SendWorkReportCubit>(() => SendWorkReportCubit(
         useCase: sl(),

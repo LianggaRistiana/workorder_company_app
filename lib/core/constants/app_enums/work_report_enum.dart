@@ -5,7 +5,7 @@ enum WorkReportStatus {
   sent,
   approved,
   rejected,
-  cancelled;
+  cancelled; // TODO : concider to remove this status
 
   static WorkReportStatus fromString(String value) {
     return switch (value) {
@@ -21,4 +21,14 @@ enum WorkReportStatus {
 
 extension WorkReportStatusX on WorkReportStatus {
   String get toJsonString => name.toSnakeCase();
+
+  String get displayName {
+    return switch (this) {
+      WorkReportStatus.onProgress => 'Dalam Pengerjaan',
+      WorkReportStatus.sent => 'Dikirim',
+      WorkReportStatus.approved => 'Disetujui',
+      WorkReportStatus.rejected => 'Ditolak',
+      WorkReportStatus.cancelled => 'Dibatalkan',
+    };
+  }
 }

@@ -149,7 +149,12 @@ class WorkOrderDetailBody extends StatelessWidget {
           title: "Laporan Kerja",
           leadingIcon: AppIcon.workReport,
           description: "Lihat hasil pekerjaan oleh pegawai bertugas",
-          onTap: () {},
+          onTap: () {
+            context.push(
+              AppRoutes.workReport,
+              extra: workOrder,
+            );
+          },
         ),
       BlocBuilder<CancelWorkOrderCubit, CancelWorkOrderState>(
           builder: (context, state) {

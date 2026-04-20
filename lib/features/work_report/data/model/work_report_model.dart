@@ -19,7 +19,7 @@ class WorkReportModel extends WorkReportEntity {
       id: json.field('_id').reqString(),
       workOrderId: json.field('workOrderId').reqString(),
       workReportForm: FilledFormWithHistoryModel.fromJson(
-          json['workReportForm'], json['submissions']),
+          json['reportFormDetail'], json['submissions']),
       approvalAccess: json
           .field('workReportApprovalAccessType')
           .reqEnum(WorkReportApprovalAccess.fromString),
