@@ -43,6 +43,8 @@ class FabWorkOrderSibling extends StatelessWidget {
             itemBuilder: (item, _) => InkWell(
                   onTap: () {
                     context.pop();
+                    context
+                        .pop(); // FIXME : Observe this, if any bug occur during switch work order, remove this
                     context.push(AppRoutes.workOrdersDetail.fillId(item.id));
                   },
                   child: Row(

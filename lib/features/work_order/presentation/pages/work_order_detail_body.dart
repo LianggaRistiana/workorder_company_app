@@ -138,6 +138,7 @@ class WorkOrderDetailBody extends StatelessWidget {
 
                 if (result == null) return;
                 if (!context.mounted) return;
+
                 context.read<WorkOrderDetailCubit>().updateResult(result);
               },
               label: Text("Edit Instruksi Kerja"))
