@@ -7,58 +7,157 @@ import 'package:workorder_company_app/core/authorization/feature/positions_permi
 import 'package:workorder_company_app/core/authorization/feature/public_companies_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/service_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/service_request_permission.dart';
-import 'package:workorder_company_app/core/authorization/feature/workreport_permission.dart';
+import 'package:workorder_company_app/core/authorization/feature/work_report_permission.dart';
 import 'package:workorder_company_app/core/authorization/model/app_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/work_order_permission.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 
+/// Maps each [UserRole] to its corresponding set of [AppPermission].
+///
+/// ---------------------------------------------------------------------------
+/// ROLE-BASED ACCESS CONTROL (RBAC)
+/// ---------------------------------------------------------------------------
+///
+/// This extension defines the static permission mapping for every supported
+/// user role in the system. Each role is granted a specific set of
+/// [AppPermission] that determines what actions the user is authorized to
+/// perform.
+///
+/// The permission structure follows a domain-driven grouping:
+///
+/// - Company Domain
+///   Handles company configuration and membership management.
+///
+/// - Human Resource Domain
+///   Manages employees, positions, and internal invitations.
+///
+/// - Service Domain
+///   Handles service configuration and form management.
+///
+/// - Work Order Domain
+///   Manages service requests, work order lifecycle, and reporting.
+///
+/// ---------------------------------------------------------------------------
+/// DESIGN PRINCIPLES
+/// ---------------------------------------------------------------------------
+///
+/// • Centralized Permission Mapping
+///   All role-to-permission definitions are declared in one place to ensure:
+///   - Easier auditing
+///   - Maintainability
+///   - Consistent authorization behavior
+///
+/// • Set-Based Permission Model
+///   Permissions are returned as a `Set<AppPermission>` to:
+///   - Prevent duplication
+///   - Ensure deterministic access control
+///
+/// • Resource-Oriented + Actor-Oriented Mix
+///   Some permissions are grouped by resource scope (`.all`)
+///   while others are grouped by actor responsibility (e.g. `.worker`,
+///   `.reviewer`, `.receiver`). This reflects real business workflow roles.
+///
+/// ---------------------------------------------------------------------------
+/// IMPORTANT NOTES
+/// ---------------------------------------------------------------------------
+///
+/// - This mapping represents static RBAC configuration.
+/// - Any dynamic or database-driven permission overrides must be handled
+///   separately at the authorization layer in back end.
+/// - UI visibility should not be the only enforcement mechanism. Always
+///   validate permissions in the domain/application layer.
+///
+/// ---------------------------------------------------------------------------
+/// SECURITY CONSIDERATION
+/// ---------------------------------------------------------------------------
+///
+/// This extension defines capability exposure, not enforcement.
+/// Proper permission checks must still be executed before performing
+/// sensitive operations.
+///
+/// ---------------------------------------------------------------------------
+/// Example:
+///
+/// ```dart
+/// if (userRole.permissions.contains(WorkOrderPermissions.create)) {
+///   // Allow creation
+/// }
+/// ```
+///
 extension UserRolePermissions on UserRole {
   Set<AppPermission> get permissions {
     switch (this) {
       case UserRole.ownerCompany:
         return {
+          // Company Domain
           ...CompanyPermission.all,
+          ...MembershipsPermission.provider,
+
+          // Human Resource Domain
           ...PositionsPermission.all,
           ...EmployeePermission.all,
+          ...InvitationPermission.sender,
+
+          // Service Domain
           ...FormPermission.all,
           ...ServicePermission.all,
+
+          // Work Order Domain
+          ...ServiceRequestPermission.receiver,
           ...WorkOrderPermissions.all,
-          ...WorkReportPermissions.all,
-          ...InvitationPermission.sender,
-          ...MembershipsPermission.provider,
-          ...ServiceRequestPermission.receiver
+          ...WorkReportPermissions.reviewer,
         };
       case UserRole.managerCompany:
         return {
+          // Company Domain
           CompanyPermission.view,
+          MembershipsPermission.view,
+
+          // Human Resouce Domain
           PositionsPermission.view,
           EmployeePermission.view,
+
+          // Service Domain
           FormPermission.view,
           ServicePermission.view,
-          ...WorkOrderPermissions.creator,
-          ...WorkReportPermissions.all,
+
+          // Work Order Domain
           ...ServiceRequestPermission.receiver,
-          MembershipsPermission.view
+          ...WorkOrderPermissions.creator,
+          ...WorkReportPermissions.reviewer,
         };
       case UserRole.staffCompany:
         return {
+          // Company Domain
           CompanyPermission.view,
+
+          // Human Resouce
           PositionsPermission.view,
           EmployeePermission.view,
+
+          // Service Domain
           FormPermission.view,
           ServicePermission.view,
-          ...WorkOrderPermissions.worker,
+
+          // Work Order Domain
           ...ServiceRequestPermission.requester,
-          ...WorkReportPermissions.all
+          ...WorkOrderPermissions.worker,
+          ...WorkReportPermissions.worker
         };
       case UserRole.client:
         return {
+          // Company Domain
           PublicCompaniesPermission.view,
           MembershipsPermission.claim,
+
+          // Work Order Domain
           ...ServiceRequestPermission.requester,
         };
       case UserRole.staffUnassigned:
-        return {...InvitationPermission.receiver};
+        return {
+          // Human Resource Domain
+          ...InvitationPermission.receiver,
+        };
     }
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:workorder_company_app/core/authorization/feature/workreport_permission.dart';
+import 'package:workorder_company_app/core/authorization/feature/work_report_permission.dart';
 import 'package:workorder_company_app/core/authorization/rule/role_permission_rule/role_permission_helper.dart';
 import 'package:workorder_company_app/core/authorization/util/access_gate_on_widget.dart';
 import 'package:workorder_company_app/features_legacy/workreport_legacy/presentation/bloc/get_work_report_cubit.dart';
@@ -53,20 +53,17 @@ class _WorkreportPageState extends State<WorkreportPage> {
                     workReport: state.workReport,
                   ),
             bottomNavigationBar: FilledButton.icon(
-                    label: Text("Isi Formulir Laporan"),
-                    onPressed: () async {
-                      // final result = await context.push(AppRoutes
-                      //     .workreportsSubmit
-                      //     .fillId(widget.workorderId));
-                      // if (!context.mounted) return;
-                      // if (result == true) {
-                      //   _refresh();
-                      // }
-                    },
-                    icon: Icon(Icons.edit_document))
-                .require(
-              roleCan(WorkReportPermissions.update),
-            ),
+                label: Text("Isi Formulir Laporan"),
+                onPressed: () async {
+                  // final result = await context.push(AppRoutes
+                  //     .workreportsSubmit
+                  //     .fillId(widget.workorderId));
+                  // if (!context.mounted) return;
+                  // if (result == true) {
+                  //   _refresh();
+                  // }
+                },
+                icon: Icon(Icons.edit_document)),
           );
         });
   }
