@@ -1,0 +1,96 @@
+import 'package:workorder_company_app/core/authorization/feature/work_report_permission.dart';
+import 'package:workorder_company_app/core/authorization/model/authorization_result.dart';
+import 'package:workorder_company_app/core/authorization/rule/authorization_rule.dart';
+import 'package:workorder_company_app/core/authorization/rule/composite_rule/composite_rule_helper.dart';
+import 'package:workorder_company_app/core/authorization/rule/role_permission_rule/role_permission_helper.dart';
+import 'package:workorder_company_app/core/constants/app_enums/service_enum.dart';
+import 'package:workorder_company_app/core/constants/app_enums/work_report_enum.dart';
+import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
+import 'package:workorder_company_app/features/work_order/domain/entities/work_order_entity.dart';
+import 'package:workorder_company_app/features/work_report/domain/entities/work_report_entity.dart';
+
+class WorkReportAuthorizer {
+  final WorkReportEntity workReport;
+  final WorkOrderEntity workOrder;
+
+  const WorkReportAuthorizer(
+      {required this.workReport, required this.workOrder});
+
+  AuthorizationRule get approveWorkReport => rules([
+        roleCan(WorkReportPermissions.approve),
+        _StatusValidation(workReport.status, WorkReportStatus.sent),
+        _ApprovalRequiresManual(workReport.approvalAccess)
+      ]);
+
+  AuthorizationRule get rejectWorkReport => rules([
+        roleCan(WorkReportPermissions.reject),
+        _StatusValidation(workReport.status, WorkReportStatus.sent),
+        _ApprovalRequiresManual(workReport.approvalAccess)
+      ]);
+
+  AuthorizationRule get sendWorkReport => rules([
+        roleCan(WorkReportPermissions.send),
+        _StatusValidation(workReport.status, WorkReportStatus.onProgress),
+        _CheckPic(workOrder)
+      ]);
+
+  AuthorizationRule get fillWorkReport => rules([
+        roleCan(WorkReportPermissions.fill),
+        _StatusValidation(workReport.status, WorkReportStatus.onProgress),
+        _CheckPic(workOrder)
+      ]);
+}
+
+class _StatusValidation extends AuthorizationRule {
+  final WorkReportStatus currentStatus;
+  final WorkReportStatus expectedStatus;
+
+  _StatusValidation(this.currentStatus, this.expectedStatus);
+
+  @override
+  AuthorizationResult evaluate(UserEntity user) {
+    if (currentStatus == expectedStatus) {
+      return const AuthorizationResult.allowed();
+    }
+
+    return AuthorizationResult.denied(
+      'Status ${currentStatus.displayName} tidak memenuhi syarat untuk melakukan aksi ini',
+    );
+  }
+}
+
+class _CheckPic extends AuthorizationRule {
+  final WorkOrderEntity workOrder;
+
+  _CheckPic(this.workOrder);
+
+  @override
+  AuthorizationResult evaluate(UserEntity user) {
+    if (workOrder.staffPic == null) {
+      return const AuthorizationResult.allowed();
+    }
+    if (workOrder.staffPic!.email == user.email) {
+      return const AuthorizationResult.allowed();
+    }
+    return const AuthorizationResult.denied(
+      "Hanya Penanggung Jawab yang dapat melakukan aksi ini",
+    );
+  }
+}
+
+class _ApprovalRequiresManual extends AuthorizationRule {
+  final WorkReportApprovalAccess type;
+
+  _ApprovalRequiresManual(this.type);
+
+  @override
+  AuthorizationResult evaluate(UserEntity user) {
+    if (type != WorkReportApprovalAccess.auto) {
+      return const AuthorizationResult.allowed();
+    }
+
+    return AuthorizationResult.denied(
+      'Work report menggunakan approval otomatis',
+    );
+  }
+}
