@@ -18,41 +18,64 @@ class WorkReportAuthorizer {
 
   AuthorizationRule get approveWorkReport => rules([
         roleCan(WorkReportPermissions.approve),
-        _StatusValidation(workReport.status, WorkReportStatus.sent),
+        _StatusValidation(
+          currentStatus: workReport.status,
+          expectedStatus: {
+            WorkReportStatus.sent,
+          },
+        ),
         _ApprovalRequiresManual(workReport.approvalAccess)
       ]);
 
   AuthorizationRule get rejectWorkReport => rules([
         roleCan(WorkReportPermissions.reject),
-        _StatusValidation(workReport.status, WorkReportStatus.sent),
+        _StatusValidation(
+          currentStatus: workReport.status,
+          expectedStatus: {
+            WorkReportStatus.sent,
+          },
+        ),
         _ApprovalRequiresManual(workReport.approvalAccess)
       ]);
 
   AuthorizationRule get sendWorkReport => rules([
         roleCan(WorkReportPermissions.send),
-        _StatusValidation(workReport.status, WorkReportStatus.onProgress),
+        _StatusValidation(
+          currentStatus: workReport.status,
+          expectedStatus: {
+            WorkReportStatus.onProgress,
+          },
+        ),
         _CheckPic(workOrder)
       ]);
 
   AuthorizationRule get fillWorkReport => rules([
         roleCan(WorkReportPermissions.fill),
-        _StatusValidation(workReport.status, WorkReportStatus.onProgress),
+        _StatusValidation(
+          currentStatus: workReport.status,
+          expectedStatus: {
+            WorkReportStatus.onProgress,
+            WorkReportStatus.rejected,
+          },
+        ),
         _CheckPic(workOrder)
       ]);
 }
 
 class _StatusValidation extends AuthorizationRule {
   final WorkReportStatus currentStatus;
-  final WorkReportStatus expectedStatus;
+  final Set<WorkReportStatus> expectedStatus;
 
-  _StatusValidation(this.currentStatus, this.expectedStatus);
+  _StatusValidation({
+    required this.currentStatus,
+    required this.expectedStatus,
+  });
 
   @override
   AuthorizationResult evaluate(UserEntity user) {
-    if (currentStatus == expectedStatus) {
+    if (expectedStatus.contains(currentStatus)) {
       return const AuthorizationResult.allowed();
     }
-
     return AuthorizationResult.denied(
       'Status ${currentStatus.displayName} tidak memenuhi syarat untuk melakukan aksi ini',
     );
