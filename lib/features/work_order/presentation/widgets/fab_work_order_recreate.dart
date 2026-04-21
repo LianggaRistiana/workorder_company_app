@@ -27,7 +27,7 @@ class FabWorkOrderRecreate extends StatelessWidget {
       return FloatingActionButton.extended(
               icon: Icon(AppIcon.recreate),
               onPressed: () {
-                _showIssueDialog(context, () {
+                _showDialog(context, () {
                   context
                       .read<RecreateWorkOrderCubit>()
                       .recreateWorkOrder(workOrder);
@@ -40,7 +40,7 @@ class FabWorkOrderRecreate extends StatelessWidget {
             .recreateWorkOrder);
   }
 
-  void _showIssueDialog(BuildContext context, VoidCallback onSubmit) {
+  void _showDialog(BuildContext context, VoidCallback onSubmit) {
     showAppDialog(
       context,
       header: Row(
@@ -61,6 +61,9 @@ class FabWorkOrderRecreate extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           TextButton(
+            style: TextButton.styleFrom(
+              foregroundColor: Theme.of(context).colorScheme.onSurface,
+            ),
             onPressed: () => context.pop(),
             child: const Text("Batal"),
           ),

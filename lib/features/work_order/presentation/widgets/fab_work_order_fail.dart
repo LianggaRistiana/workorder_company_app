@@ -21,13 +21,13 @@ class FabWorkOrderFail extends StatelessWidget {
       backgroundColor: Theme.of(context).colorScheme.errorContainer,
       foregroundColor: Theme.of(context).colorScheme.error,
       onPressed: () {
-        _showIssueDialog(context);
+        _showDialog(context);
       },
       child: Icon(AppIcon.fail),
     );
   }
 
-  void _showIssueDialog(BuildContext context) {
+  void _showDialog(BuildContext context) {
     final controller = TextEditingController();
     final formKey = GlobalKey<FormState>();
 
@@ -71,10 +71,17 @@ class FabWorkOrderFail extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           TextButton(
+            style: TextButton.styleFrom(
+              foregroundColor: Theme.of(context).colorScheme.onSurface,
+            ),
             onPressed: () => context.pop(),
             child: const Text("Batal"),
           ),
           FilledButton(
+            style: FilledButton.styleFrom(
+              backgroundColor: Theme.of(context).colorScheme.errorContainer,
+              foregroundColor: Theme.of(context).colorScheme.error,
+            ),
             onPressed: () {
               final isValid = formKey.currentState?.validate() ?? false;
 
@@ -85,7 +92,7 @@ class FabWorkOrderFail extends StatelessWidget {
               context.pop();
               onSubmit(text);
             },
-            child: const Text("Kirim"),
+            child: const Text("Gagalkan"),
           ),
         ],
       ),

@@ -53,7 +53,7 @@ class WorkOrderStatusSelector extends StatelessWidget {
             ),
             decoration: BoxDecoration(
               color: isSelected
-                  ? status.color.withAlpha(15)
+                  ? status.color.withAlpha(20)
                   : theme.colorScheme.surface,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(

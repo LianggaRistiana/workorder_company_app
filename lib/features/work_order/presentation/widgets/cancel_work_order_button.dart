@@ -31,7 +31,7 @@ class CancelWorkOrderButton extends StatelessWidget {
         builder: (context, state) {
       return HorizontalButton(
               onTap: () {
-                _showIssueDialog(context);
+                _showDialog(context);
               },
               isDanger: true,
               title: "Batalkan Perintah Kerja",
@@ -44,7 +44,7 @@ class CancelWorkOrderButton extends StatelessWidget {
             .cancelWorkOrder);
   }
 
-  void _showIssueDialog(BuildContext context) {
+  void _showDialog(BuildContext context) {
     final siblingList =
         siblings?.siblings.where((e) => e.id != workOrder.id).toList() ?? [];
 
@@ -53,7 +53,7 @@ class CancelWorkOrderButton extends StatelessWidget {
       header: Row(
         children: [
           IconBox.small(
-            icon: AppIcon.fail,
+            icon: AppIcon.cancel,
             iconColor: Theme.of(context).colorScheme.error,
             backgroundColor: Theme.of(context).colorScheme.errorContainer,
           ),
@@ -106,10 +106,17 @@ class CancelWorkOrderButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           TextButton(
+            style: TextButton.styleFrom(
+              foregroundColor: Theme.of(context).colorScheme.onSurface,
+            ),
             onPressed: () => context.pop(),
             child: const Text("Batal"),
           ),
           FilledButton(
+            style: FilledButton.styleFrom(
+              backgroundColor: Theme.of(context).colorScheme.errorContainer,
+              foregroundColor: Theme.of(context).colorScheme.error,
+            ),
             onPressed: () {
               context.pop();
               context.read<CancelWorkOrderCubit>().cancelWorkOrder(workOrder);

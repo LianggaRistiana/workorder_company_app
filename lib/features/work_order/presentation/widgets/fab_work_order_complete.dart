@@ -15,12 +15,12 @@ class FabWorkOrderComplete extends StatelessWidget {
     return FloatingActionButton.extended(
         icon: Icon(AppIcon.complete),
         onPressed: () {
-          _showIssueDialog(context);
+          _showDialog(context);
         },
         label: Text('Selesaikan'));
   }
 
-  void _showIssueDialog(BuildContext context) {
+  void _showDialog(BuildContext context) {
     final controller = TextEditingController();
 
     showAppDialog(
@@ -50,6 +50,9 @@ class FabWorkOrderComplete extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           TextButton(
+            style: TextButton.styleFrom(
+              foregroundColor: Theme.of(context).colorScheme.onSurface,
+            ),
             onPressed: () => context.pop(),
             child: const Text("Batal"),
           ),
@@ -60,7 +63,7 @@ class FabWorkOrderComplete extends StatelessWidget {
               context.pop();
               onSubmit(text);
             },
-            child: const Text("Kirim"),
+            child: const Text("Selesaikan"),
           ),
         ],
       ),

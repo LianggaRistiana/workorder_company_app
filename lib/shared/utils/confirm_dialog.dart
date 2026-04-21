@@ -107,8 +107,7 @@ Future<bool?> showConfirmDialog({
                   children: [
                     TextButton(
                       style: TextButton.styleFrom(
-                        foregroundColor:
-                            theme.colorScheme.onSurface.withAlpha(70),
+                        foregroundColor: theme.colorScheme.onSurface,
                       ),
                       onPressed: () => Navigator.of(context).pop(false),
                       child: Text(cancelText),
