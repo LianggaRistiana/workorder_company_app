@@ -35,7 +35,11 @@ class FabWorkOrderFail extends StatelessWidget {
       context,
       header: Row(
         children: [
-          IconBox.small(icon: AppIcon.fail),
+          IconBox.small(
+            icon: AppIcon.fail,
+            iconColor: Theme.of(context).colorScheme.error,
+            backgroundColor: Theme.of(context).colorScheme.errorContainer,
+          ),
           const SizedBox(width: 8),
           const Text("Gagalkan perintah kerja"),
         ],

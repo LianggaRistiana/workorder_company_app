@@ -11,9 +11,8 @@ import 'package:workorder_company_app/features/forms/domain/entities/filled_form
 import 'package:workorder_company_app/features/work_order/domain/authorization/work_order_authorizer.dart';
 import 'package:workorder_company_app/features/work_order/domain/entities/work_order_entity.dart';
 import 'package:workorder_company_app/features/work_order/domain/meta/work_order_meta.dart';
-import 'package:workorder_company_app/features/work_order/presentation/bloc/cancel/cancel_work_order_cubit.dart';
-import 'package:workorder_company_app/features/work_order/presentation/bloc/cancel/cancel_work_order_state.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/detail/work_order_detail_cubit.dart';
+import 'package:workorder_company_app/features/work_order/presentation/widgets/cancel_work_order_button.dart';
 import 'package:workorder_company_app/features/work_order/presentation/widgets/work_order_property_view.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/widgets/adaptive_split_column.dart';
@@ -21,14 +20,16 @@ import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/filled_form_view.dart';
 import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
-import 'package:workorder_company_app/shared/widgets/loading_state_inline.dart';
 import 'package:workorder_company_app/shared/widgets/section_title.dart';
 import 'package:workorder_company_app/features/work_order/presentation/widgets/staff_quota_chip.dart';
 
 class WorkOrderDetailBody extends StatelessWidget {
   final WorkOrderEntity workOrder;
   final WorkOrderCapabilities? capabilities;
-  const WorkOrderDetailBody({super.key, required this.workOrder, this.capabilities});
+  final WorkOrderSiblings? siblings;
+
+  const WorkOrderDetailBody(
+      {super.key, required this.workOrder, this.capabilities, this.siblings});
 
   @override
   Widget build(BuildContext context) {
@@ -153,27 +154,18 @@ class WorkOrderDetailBody extends StatelessWidget {
           leadingIcon: AppIcon.workReport,
           description: "Lihat hasil pekerjaan oleh pegawai bertugas",
           onTap: () {
+            // TODO : refetch if there is any update on report
             context.push(
               AppRoutes.workReport,
               extra: workOrder,
             );
           },
         ),
-      BlocBuilder<CancelWorkOrderCubit, CancelWorkOrderState>(
-          builder: (context, state) {
-        return HorizontalButton(
-                onTap: () {
-                  context
-                      .read<CancelWorkOrderCubit>()
-                      .cancelWorkOrder(workOrder);
-                },
-                isDanger: true,
-                title: "Batalkan Perintah Kerja",
-                description:
-                    "Saat Perintah Kerja dibatalkan, semua perintah kerja terkait akan ikut dibatalkan",
-                leadingIcon: AppIcon.cancel)
-            .withInlineLoading(state.isLoading, isEndAlign: false);
-      }).require(WorkOrderAuthorizer(workOrder: workOrder, capabilities: capabilities).cancelWorkOrder),
+      CancelWorkOrderButton(
+        workOrder: workOrder,
+        capabilities: capabilities,
+        siblings: siblings,
+      ),
       const SizedBox(height: 100),
     ];
   }

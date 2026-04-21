@@ -38,7 +38,7 @@ class _FullView extends StatelessWidget {
       child: PropertyDisplay(properties: [
         PropertyItem.text(
           icon: AppIcon.code,
-          label: "Kode",
+          label: "Kode Perintah Kerja",
           value: workOrder.code,
         ),
         PropertyItem.text(
@@ -50,10 +50,17 @@ class _FullView extends StatelessWidget {
             icon: AppIcon.user,
             label: "Dibuat oleh",
             value: workOrder.createdBy?.name ?? 'Sistem'),
-        PropertyItem.text(
-            icon: AppIcon.pic,
-            label: "Penanggung Jawab",
-            value: workOrder.staffPic?.name ?? '-'),
+        if (workOrder.staffPic != null)
+          PropertyItem.widget(
+              icon: AppIcon.pic,
+              label: "Penanggung Jawab",
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(workOrder.staffPic!.name,
+                        style: Theme.of(context).textTheme.titleSmall),
+                    Text(workOrder.staffPic!.email)
+                  ])),
         PropertyItem.widget(
           icon: AppIcon.step,
           label: "Status",
@@ -100,7 +107,7 @@ class _SummaryView extends StatelessWidget {
       child: PropertyDisplay(properties: [
         PropertyItem.text(
           icon: AppIcon.code,
-          label: "Kode",
+          label: "Kode Perintah Kerja",
           value: workOrder.code,
         ),
         PropertyItem.text(

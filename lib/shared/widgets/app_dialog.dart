@@ -76,7 +76,7 @@ Future<T?> showAppDialog<T>(
   return showDialog<T>(
     context: context,
     useRootNavigator: false,
-    barrierDismissible: true,
+    barrierDismissible: false,
     builder: (context) {
       return AppDialog(
         header: header,

@@ -19,6 +19,8 @@ class WorkOrderSiblings extends ResultMeta {
           [],
     );
   }
+
+  bool get hasMultipleSiblings => siblings.length > 1;
 }
 
 class WorkOrderSibling extends ResultMeta {
