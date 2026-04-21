@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons/lucide_icons.dart';
+import 'package:workorder_company_app/core/theme/app_spacing.dart';
 
 class InformationBlock extends StatelessWidget {
   final String message;
@@ -43,9 +45,9 @@ class InformationBlock extends StatelessWidget {
     getIcon(InformationType type) {
       switch (type) {
         case InformationType.info:
-          return Icons.info_outline_rounded;
+          return LucideIcons.info;
         case InformationType.warning:
-          return Icons.warning_amber_rounded;
+          return LucideIcons.alertTriangle;
         case InformationType.error:
           return Icons.error_outline_rounded;
         case InformationType.success:
@@ -57,19 +59,24 @@ class InformationBlock extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
       decoration: BoxDecoration(
         color: getColorbackground(type),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppSpacing.sm),
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(getIcon(type), color: getColor(type), size: 18),
+          Icon(
+            getIcon(type),
+            color: getColor(type),
+            size: 18,
+          ),
           const SizedBox(width: 8),
           Expanded(
               child: Text(
             message,
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: getColor(type),
                 ),
           )),

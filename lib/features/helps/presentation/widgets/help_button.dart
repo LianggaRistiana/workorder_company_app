@@ -124,13 +124,10 @@ class HelpButton extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 8),
-          IconButton.filled(
+          IconButton(
             onPressed: () => context.pop(),
             tooltip: "Tutup",
-            style: IconButton.styleFrom(
-              backgroundColor: Theme.of(context).disabledColor,
-              foregroundColor: colors.textColor,
-            ),
+            style: IconButton.styleFrom(),
             icon: const Icon(Icons.close),
           )
         ],

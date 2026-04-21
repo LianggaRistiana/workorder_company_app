@@ -48,6 +48,8 @@ class WorkReportPage extends StatelessWidget {
           return SafeArea(
               child: Scaffold(
             appBar: AppBar(),
+            floatingActionButtonAnimator:
+                FloatingActionButtonAnimator.noAnimation,
             floatingActionButton: workReport?.status.buildFab(
               workOrder,
               workReport,
@@ -118,7 +120,7 @@ class _WorkReportBody extends StatelessWidget {
 
                   context.read<GetWorkReportCubit>().updateResult(result);
                 },
-                label: Text("Edit Instruksi Kerja"))
+                label: Text("Perbarui Laporan Kerja"))
           ],
         ).require(WorkReportAuthorizer(
           workReport: state.workReport!,

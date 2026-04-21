@@ -1,17 +1,90 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
+import 'package:workorder_company_app/core/utils/validators.dart';
+import 'package:workorder_company_app/shared/widgets/app_dialog.dart';
+import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
+import 'package:workorder_company_app/shared/widgets/icon_box.dart';
+import 'package:workorder_company_app/shared/widgets/information_block.dart';
 
 class FabWorkOrderFail extends StatelessWidget {
-  final VoidCallback onPressed;
-  const FabWorkOrderFail({super.key, required this.onPressed});
+  final void Function(String issue) onSubmit;
+
+  const FabWorkOrderFail({
+    super.key,
+    required this.onSubmit,
+  });
 
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
       backgroundColor: Theme.of(context).colorScheme.errorContainer,
       foregroundColor: Theme.of(context).colorScheme.error,
-      onPressed: onPressed,
+      onPressed: () {
+        _showIssueDialog(context);
+      },
       child: Icon(AppIcon.fail),
+    );
+  }
+
+  void _showIssueDialog(BuildContext context) {
+    final controller = TextEditingController();
+    final formKey = GlobalKey<FormState>();
+
+    showAppDialog(
+      context,
+      header: Row(
+        children: [
+          IconBox.small(icon: AppIcon.fail),
+          const SizedBox(width: 8),
+          const Text("Gagalkan perintah kerja"),
+        ],
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          InformationBlock.warning(
+              "Status gagal bersifat final dan akan menghentikan alur pekerjaan. Pastikan keputusan sudah benar sebelum melanjutkan."),
+          const SizedBox(height: 12),
+          Form(
+            key: formKey,
+            child: CustomInputField(
+              label: "Alasan",
+              controller: controller,
+              maxLines: 3,
+              validator: (value) {
+                return ValidatorUtils.single(
+                  value,
+                  fieldName: "Alasan",
+                  ValidatorType.required,
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+      footer: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          TextButton(
+            onPressed: () => context.pop(),
+            child: const Text("Batal"),
+          ),
+          FilledButton(
+            onPressed: () {
+              final isValid = formKey.currentState?.validate() ?? false;
+
+              if (!isValid) return;
+
+              final text = controller.text.trim();
+
+              context.pop();
+              onSubmit(text);
+            },
+            child: const Text("Kirim"),
+          ),
+        ],
+      ),
     );
   }
 }

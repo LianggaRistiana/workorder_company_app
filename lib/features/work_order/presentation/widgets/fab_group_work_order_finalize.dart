@@ -26,18 +26,20 @@ class FabGroupWorkOrderFinalize extends StatelessWidget {
       return Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          FabWorkOrderFail(onPressed: () {
-            context.read<FinalizeWorkOrderCubit>().failWorkOrder(workOrder, '');
+          FabWorkOrderFail(onSubmit: (issue) {
+            context
+                .read<FinalizeWorkOrderCubit>()
+                .failWorkOrder(workOrder, issue);
           }).require(
             WorkOrderAuthorizer(
                     workOrder: workOrder, capabilities: capabilities)
                 .failWorkOrder,
           ),
           SizedBox(width: 10),
-          FabWorkOrderComplete(onPressed: () {
+          FabWorkOrderComplete(onSubmit: (issue) {
             context
                 .read<FinalizeWorkOrderCubit>()
-                .completeWorkOrder(workOrder, null);
+                .completeWorkOrder(workOrder, issue);
           }).require(
             WorkOrderAuthorizer(
                     workOrder: workOrder, capabilities: capabilities)

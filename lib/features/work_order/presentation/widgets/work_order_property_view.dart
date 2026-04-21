@@ -58,9 +58,30 @@ class _FullView extends StatelessWidget {
           icon: AppIcon.step,
           label: "Status",
           child: WorkOrderStatusStepCard(
-              currentStatus: workOrder.status,
-              statusDate: workOrder.statusDate),
-        )
+            currentStatus: workOrder.status,
+            statusDate: workOrder.statusDate,
+            hasIssue: workOrder.hasIssue,
+          ),
+        ),
+        if (workOrder.issueNote != null)
+          PropertyItem.widget(
+              icon: AppIcon.warrning,
+              label: "Isu",
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.orange.withAlpha(20),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  workOrder.issueNote!,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(color: Colors.orange),
+                ),
+              )),
       ]),
     );
   }

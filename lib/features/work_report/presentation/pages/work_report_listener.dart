@@ -65,8 +65,8 @@ class WorkReportListener extends StatelessWidget {
 
           context.showSuccess(
             state.isApproved
-                ? "Berhasil menyetujui perintah kerja"
-                : "Berhasil menolak perintah kerja",
+                ? "Berhasil menyetujui laporan kerja"
+                : "Berhasil menolak laporan kerja",
           );
         }
       },

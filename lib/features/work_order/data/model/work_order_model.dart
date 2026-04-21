@@ -57,7 +57,7 @@ class WorkOrderModel extends WorkOrderEntity {
           WorkOrderStatusDateModel.fromJson(json), // FIXME : Unreadable on UI
       // statusDate:
       //     json.field('statusDate').reqModel(WorkOrderStatusDateModel.fromJson),
-      issueNote: json.field('issueNote').optString(),
+      issueNote: json.field('issue_note').optString(),
     );
   }
 }

@@ -17,6 +17,15 @@ class IconBox extends StatelessWidget {
       this.paddingSize = AppSpacing.md,
       this.borderRadius = AppRadius.medium});
 
+  const IconBox.small(
+    {super.key,
+      required this.icon,
+      this.iconSize = 18,
+      this.isDisabled = false,
+      this.paddingSize = AppSpacing.sm,
+      this.borderRadius = AppRadius.small}
+  );
+
   @override
   Widget build(BuildContext context) {
     return Container(

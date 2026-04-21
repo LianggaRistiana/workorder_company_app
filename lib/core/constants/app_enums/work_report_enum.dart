@@ -10,7 +10,7 @@ enum WorkReportStatus {
   static WorkReportStatus fromString(String value) {
     return switch (value) {
       'on_progress' => WorkReportStatus.onProgress,
-      'sent' => WorkReportStatus.sent,
+      'submitted' => WorkReportStatus.sent,
       'approved' => WorkReportStatus.approved,
       'rejected' => WorkReportStatus.rejected,
       'cancelled' => WorkReportStatus.cancelled,

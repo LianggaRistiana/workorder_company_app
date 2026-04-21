@@ -81,7 +81,7 @@ class WorkOrderRemoteDatasourceImpl implements WorkOrderRemoteDatasource {
       String workOrderId, String? issueNote) async {
     final response = await _apiClient.patch(
         Endpoints.workorderComplete.fillId(workOrderId),
-        data: {"issue_note": issueNote});
+        data: {"issue": issueNote});
     return ApiResponseWithMeta.fromJson(
       response,
       (json) => WorkOrderModel.fromJson(json),
@@ -103,7 +103,7 @@ class WorkOrderRemoteDatasourceImpl implements WorkOrderRemoteDatasource {
       String workOrderId, String issueNote) async {
     final response = await _apiClient.patch(
         Endpoints.workorderFail.fillId(workOrderId),
-        data: {"issue_note": issueNote});
+        data: {"issue": issueNote});
     return ApiResponseWithMeta.fromJson(
       response,
       (json) => WorkOrderModel.fromJson(json),
@@ -149,7 +149,7 @@ class WorkOrderRemoteDatasourceImpl implements WorkOrderRemoteDatasource {
   ) async {
     final response = await _apiClient.patch(
         Endpoints.workorderReject.fillId(workOrderId),
-        data: {"issue_note": issueNote});
+        data: {"issue": issueNote});
     return ApiResponseWithMeta.fromJson(
       response,
       (json) => WorkOrderModel.fromJson(json),

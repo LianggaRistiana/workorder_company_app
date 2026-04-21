@@ -37,6 +37,7 @@ class FabGroupWorkReportApproval extends StatelessWidget {
             workOrder: workOrder,
           ).rejectWorkReport,
         ),
+        SizedBox(width: 10),
         FabWorkOrderApprove(
           onPressed: () => context
               .read<ApprovalWorkReportCubit>()

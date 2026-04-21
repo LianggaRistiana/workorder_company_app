@@ -39,21 +39,21 @@ class WorkOrderAuthorizer {
   AuthorizationRule get approveWorkOrder => rules([
         roleCan(WorkOrderPermissions.approve),
         _StatusValidation(workOrder.status, WorkOrderStatus.sent),
-        _OnlyStaffPic(workOrder),
+        _OnlyStaffPicToReview(workOrder),
         _ApprovalRequiresManual(workOrder.approvalAccess)
       ]);
 
   AuthorizationRule get rejectWorkOrder => rules([
         roleCan(WorkOrderPermissions.reject),
         _StatusValidation(workOrder.status, WorkOrderStatus.sent),
-        _OnlyStaffPic(workOrder),
+        _OnlyStaffPicToReview(workOrder),
         _ApprovalRequiresManual(workOrder.approvalAccess)
       ]);
 
   AuthorizationRule get startWorkOrder => rules([
         roleCan(WorkOrderPermissions.start),
         _StatusValidation(workOrder.status, WorkOrderStatus.approved),
-        _OnlyStaffPic(workOrder),
+        _StaffPicOrEveryone(workOrder),
         _WorkOrderCapabilityRule(
             capabilities: capabilities, checker: (c) => c.canStart)
       ]);
@@ -107,10 +107,10 @@ class _Ownership extends AuthorizationRule {
   }
 }
 
-class _OnlyStaffPic extends AuthorizationRule {
+class _OnlyStaffPicToReview extends AuthorizationRule {
   final WorkOrderEntity workOrder;
 
-  _OnlyStaffPic(this.workOrder);
+  _OnlyStaffPicToReview(this.workOrder);
 
   @override
   AuthorizationResult evaluate(UserEntity user) {
@@ -124,6 +124,29 @@ class _OnlyStaffPic extends AuthorizationRule {
       return const AuthorizationResult.denied(
         "Staff PIC belum ditentukan",
       );
+    }
+
+    if (staffPic.email == user.email) {
+      return const AuthorizationResult.allowed();
+    }
+
+    return const AuthorizationResult.denied(
+      "Hanya Staff PIC yang dapat melakukan aksi ini",
+    );
+  }
+}
+
+class _StaffPicOrEveryone extends AuthorizationRule {
+  final WorkOrderEntity workOrder;
+
+  _StaffPicOrEveryone(this.workOrder);
+
+  @override
+  AuthorizationResult evaluate(UserEntity user) {
+    final staffPic = workOrder.staffPic;
+
+    if (staffPic == null) {
+      return const AuthorizationResult.allowed();
     }
 
     if (staffPic.email == user.email) {

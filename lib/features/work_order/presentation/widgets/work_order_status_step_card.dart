@@ -9,11 +9,13 @@ import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart'
 class WorkOrderStatusStepCard extends StatefulWidget {
   final WorkOrderStatus currentStatus;
   final WorkOrderStatusDateEntity statusDate;
+  final bool hasIssue;
 
   const WorkOrderStatusStepCard({
     super.key,
     required this.currentStatus,
     required this.statusDate,
+    this.hasIssue = false,
   });
 
   @override
@@ -171,7 +173,7 @@ class _WorkOrderStepCardState extends State<WorkOrderStatusStepCard> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  status.displayName,
+                                  '${status.displayName} ${widget.hasIssue && status == WorkOrderStatus.completed ? '(Dengan Isu)' : ''}',
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: isActive
