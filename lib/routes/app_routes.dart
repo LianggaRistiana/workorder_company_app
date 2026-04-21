@@ -64,6 +64,7 @@ class AppRoutes {
 
   // // Work Report
   static const workReport = '/workreport';
+  static const workReportSubmission = '/workreport/submissions';
 
   // client side companies
   static const publicCompanies = '/public-companies';

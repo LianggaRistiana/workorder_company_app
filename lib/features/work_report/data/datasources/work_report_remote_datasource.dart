@@ -67,8 +67,9 @@ class WorkReportRemoteDatasourceImpl implements WorkReportRemoteDatasource {
     String workReportId,
     SubmissionsModel submission,
   ) async {
-    final response = await _apiClient
-        .post(Endpoints.workReportSetSubmissions.fillId(workReportId));
+    final response = await _apiClient.post(
+        Endpoints.workReportSetSubmissions.fillId(workReportId),
+        data: submission.toJson());
     return ApiResponse.fromJson(
       response,
       (json) => WorkReportModel.fromJson(json),

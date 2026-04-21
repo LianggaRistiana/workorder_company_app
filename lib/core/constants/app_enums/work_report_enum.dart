@@ -32,3 +32,7 @@ extension WorkReportStatusX on WorkReportStatus {
     };
   }
 }
+
+extension WorkReportStatusFlowStateX on WorkReportStatus {
+  bool get isFinalReport => this == WorkReportStatus.approved;
+}

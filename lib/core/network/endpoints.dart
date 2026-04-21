@@ -59,7 +59,7 @@ class Endpoints {
 
   // Work Report
   static const String workReportDetail = "/workorders/:id/report";
-  static const String workReportSetSubmissions = "/workreports/:id/submissions";
+  static const String workReportSetSubmissions = "/workreports/:id/submit";
   static const String workReportSent = "/workreports/:id/sent";
   static const String workReportApprove = "/workreports/:id/approve";
   static const String workReportReject = "/workreports/:id/reject";
