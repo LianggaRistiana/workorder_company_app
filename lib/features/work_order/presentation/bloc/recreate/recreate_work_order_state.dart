@@ -1,30 +1,31 @@
 import 'package:equatable/equatable.dart';
+import 'package:workorder_company_app/core/result/result.dart';
 import 'package:workorder_company_app/features/work_order/domain/entities/work_order_entity.dart';
 
 enum RecreateWorkOrderStatus { initial, loading, success, error }
 
 class RecreateWorkOrderState extends Equatable {
   final RecreateWorkOrderStatus status;
-  final WorkOrderEntity? workOrder;
+  final Result<WorkOrderEntity>? result;
   final String? errorMessage;
 
   const RecreateWorkOrderState(
-      {required this.status, this.workOrder, this.errorMessage});
+      {required this.status, this.result, this.errorMessage});
 
   factory RecreateWorkOrderState.initial() =>
       const RecreateWorkOrderState(status: RecreateWorkOrderStatus.initial);
 
   RecreateWorkOrderState copyWith(
       {RecreateWorkOrderStatus? status,
-      WorkOrderEntity? workOrder,
+      Result<WorkOrderEntity>? result,
       String? errorMessage}) {
     return RecreateWorkOrderState(
       status: status ?? this.status,
-      workOrder: workOrder ?? this.workOrder,
+      result: result ?? this.result,
       errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 
   @override
-  List<Object?> get props => [status, workOrder, errorMessage];
+  List<Object?> get props => [status, result, errorMessage];
 }

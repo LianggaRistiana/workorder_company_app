@@ -6,6 +6,7 @@ import 'package:workorder_company_app/features/work_order/presentation/bloc/canc
 import 'package:workorder_company_app/features/work_order/presentation/bloc/detail/work_order_detail_cubit.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/detail/work_order_detail_state.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/finalize/finalize_work_order_cubit.dart';
+import 'package:workorder_company_app/features/work_order/presentation/bloc/recreate/recreate_work_order_cubit.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/send/send_work_order_cubit.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/start/start_work_order_cubit.dart';
 import 'package:workorder_company_app/features/work_order/presentation/pages/work_order_detail_body.dart';
@@ -28,6 +29,7 @@ class WorkOrderDetailPage extends StatelessWidget {
                   sl<WorkOrderDetailCubit>()..getWorkOrderDetail(workOrderId)),
           BlocProvider(create: (_) => sl<SendWorkOrderCubit>()),
           BlocProvider(create: (_) => sl<CancelWorkOrderCubit>()),
+          BlocProvider(create: (_) => sl<RecreateWorkOrderCubit>()),
           BlocProvider(create: (_) => sl<ApprovalWorkOrderCubit>()),
           BlocProvider(create: (_) => sl<StartWorkOrderCubit>()),
           BlocProvider(create: (_) => sl<FinalizeWorkOrderCubit>()),

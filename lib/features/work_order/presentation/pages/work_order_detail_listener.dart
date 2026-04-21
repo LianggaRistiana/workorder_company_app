@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/network/endpoints.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/approval/approval_work_order_cubit.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/approval/approval_work_order_state.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/cancel/cancel_work_order_cubit.dart';
@@ -8,11 +10,14 @@ import 'package:workorder_company_app/features/work_order/presentation/bloc/deta
 import 'package:workorder_company_app/features/work_order/presentation/bloc/detail/work_order_detail_state.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/finalize/finalize_work_order_cubit.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/finalize/finalize_work_order_state.dart';
+import 'package:workorder_company_app/features/work_order/presentation/bloc/recreate/recreate_work_order_cubit.dart';
+import 'package:workorder_company_app/features/work_order/presentation/bloc/recreate/recreate_work_order_state.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/send/send_work_order_cubit.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/send/send_work_order_state.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/start/start_work_order_cubit.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/start/start_work_order_state.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
+import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
 
 class WorkOrderDetailListener extends StatelessWidget {
   final Widget child;
@@ -29,6 +34,7 @@ class WorkOrderDetailListener extends StatelessWidget {
         _approvalListener(),
         _startListener(),
         _finalizeListener(),
+        _recreateListener(),
       ],
       child: child,
     );
@@ -56,6 +62,23 @@ class WorkOrderDetailListener extends StatelessWidget {
             state.result != null) {
           context.read<WorkOrderDetailCubit>().updateResult(state.result!);
           context.showSuccess("Berhasil membatalkan perintah kerja");
+        }
+      },
+    );
+  }
+
+  BlocListener _recreateListener() {
+    return BlocListener<RecreateWorkOrderCubit, RecreateWorkOrderState>(
+      listenWhen: (p, c) => p.status != c.status,
+      listener: (context, state) {
+        if (state.status == RecreateWorkOrderStatus.error) {
+          context.showError(state.errorMessage ?? "Terjadi kesalahan");
+        }
+        if (state.status == RecreateWorkOrderStatus.success &&
+            state.result != null) {
+          context.read<WorkOrderDetailCubit>().updateResult(state.result!);
+          context.showSuccess("Berhasil membuat ulang perintah kerja");
+          context.push(Endpoints.workorderDetail.fillId(state.result!.data.id));
         }
       },
     );

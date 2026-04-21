@@ -17,7 +17,7 @@ class RecreateWorkOrderCubit extends Cubit<RecreateWorkOrderState> {
           status: RecreateWorkOrderStatus.error,
           errorMessage: failure.message)),
       (metaResult) => emit(state.copyWith(
-          status: RecreateWorkOrderStatus.success, workOrder: metaResult.data)),
+          status: RecreateWorkOrderStatus.success, result: metaResult)),
     );
   }
 }
