@@ -79,7 +79,10 @@ class WorkOrderDetailPage extends StatelessWidget {
     final workOrder = state.workOrder;
 
     if (workOrder != null) {
-      return WorkOrderDetailBody(workOrder: workOrder);
+      return WorkOrderDetailBody(
+        workOrder: workOrder,
+        capabilities: state.workOrderCapabilities,
+      );
     }
 
     switch (state.status) {

@@ -10,6 +10,7 @@ import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/filled_form_with_history_entity.dart';
 import 'package:workorder_company_app/features/work_order/domain/authorization/work_order_authorizer.dart';
 import 'package:workorder_company_app/features/work_order/domain/entities/work_order_entity.dart';
+import 'package:workorder_company_app/features/work_order/domain/meta/work_order_meta.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/cancel/cancel_work_order_cubit.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/cancel/cancel_work_order_state.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/detail/work_order_detail_cubit.dart';
@@ -26,7 +27,8 @@ import 'package:workorder_company_app/features/work_order/presentation/widgets/s
 
 class WorkOrderDetailBody extends StatelessWidget {
   final WorkOrderEntity workOrder;
-  const WorkOrderDetailBody({super.key, required this.workOrder});
+  final WorkOrderCapabilities? capabilities;
+  const WorkOrderDetailBody({super.key, required this.workOrder, this.capabilities});
 
   @override
   Widget build(BuildContext context) {
@@ -171,7 +173,7 @@ class WorkOrderDetailBody extends StatelessWidget {
                     "Saat Perintah Kerja dibatalkan, semua perintah kerja terkait akan ikut dibatalkan",
                 leadingIcon: AppIcon.cancel)
             .withInlineLoading(state.isLoading, isEndAlign: false);
-      }).require(WorkOrderAuthorizer(workOrder: workOrder).cancelWorkOrder),
+      }).require(WorkOrderAuthorizer(workOrder: workOrder, capabilities: capabilities).cancelWorkOrder),
       const SizedBox(height: 100),
     ];
   }

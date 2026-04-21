@@ -19,7 +19,10 @@ extension WorkOrderFabMapper on WorkOrderStatus {
         FabWorkOrderStart(workOrder: workOrder, capabilities: capabilities),
       WorkOrderStatus.onProgress => FabGroupWorkOrderFinalize(
           workOrder: workOrder, capabilities: capabilities),
-      WorkOrderStatus.rejected => FabWorkOrderRecreate(workOrder: workOrder),
+      WorkOrderStatus.rejected => FabWorkOrderRecreate(
+          workOrder: workOrder,
+          capabilities: capabilities,
+        ),
       _ => null,
     };
   }

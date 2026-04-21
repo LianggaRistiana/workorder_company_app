@@ -49,7 +49,7 @@ class AppIcon {
   static const IconData recreate = LucideIcons.replace;
   static const IconData start = LucideIcons.navigation2;
   static const IconData next = LucideIcons.moveRight;
-  static const IconData filter = LucideIcons.filter;
+  static const IconData filter = Icons.filter_list;
 
   // Icon For Account Action
   static const IconData logout = LucideIcons.logOut;

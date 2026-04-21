@@ -14,7 +14,7 @@ class WorkOrderAuthorizer {
 
   const WorkOrderAuthorizer({
     required this.workOrder,
-    this.capabilities,
+    this.capabilities, // FIXME : required this even if null
   });
 
   AuthorizationRule get sendWorkOrder => rules([
@@ -29,11 +29,12 @@ class WorkOrderAuthorizer {
         _StatusValidation(workOrder.status, WorkOrderStatus.drafted)
       ]);
 
-// TODO : ADD CAPSBILITY CHECKER
   AuthorizationRule get recreateWorkOrder => rules([
         roleCan(WorkOrderPermissions.create),
         _Ownership(workOrder),
-        _StatusValidation(workOrder.status, WorkOrderStatus.rejected)
+        _StatusValidation(workOrder.status, WorkOrderStatus.rejected),
+        _WorkOrderCapabilityRule(
+            capabilities: capabilities, checker: (c) => c.canRecreate)
       ]);
 
   AuthorizationRule get approveWorkOrder => rules([
@@ -58,11 +59,12 @@ class WorkOrderAuthorizer {
             capabilities: capabilities, checker: (c) => c.canStart)
       ]);
 
-// TODO : ADD CAPSBILITY CHECKER
   AuthorizationRule get cancelWorkOrder => rules([
         roleCan(WorkOrderPermissions.cancel),
         _Ownership(workOrder),
-        _ValidCancelStatus(workOrder.status)
+        _ValidCancelStatus(workOrder.status),
+        _WorkOrderCapabilityRule(
+            capabilities: capabilities, checker: (c) => c.canCancel)
       ]);
 
   AuthorizationRule get completeWorkOrder => rules([
