@@ -2,6 +2,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
+import 'package:workorder_company_app/features/helps/presentation/widgets/fab_help.dart';
+import 'package:workorder_company_app/features/helps/presentation/widgets/work_order_tips.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/list/work_orders_list_bloc.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/list/work_orders_list_event.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/list/work_orders_list_state.dart';
@@ -29,6 +31,11 @@ class WorkOrdersListPage extends StatelessWidget {
           return ListPageScaffold(
             title: "Perintah Kerja",
             isLoading: state.status == WorkOrdersListStatus.loading,
+            floatingActionButton: FabHelp(
+              title: "Kenali Perintah Kerja",
+              heroTag: "work-order-list-fab-help",
+              child: WorkOrderTips(),
+            ),
             header: Row(
               children: [
                 Spacer(),

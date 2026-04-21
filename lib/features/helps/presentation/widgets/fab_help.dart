@@ -51,13 +51,9 @@ class FabHelp extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 8),
-          IconButton.filled(
+          IconButton(
             onPressed: () => context.pop(),
             tooltip: "Tutup",
-            style: IconButton.styleFrom(
-              backgroundColor: Theme.of(context).disabledColor,
-              foregroundColor: Theme.of(context).textTheme.bodyLarge?.color,
-            ),
             icon: const Icon(Icons.close),
           )
         ],

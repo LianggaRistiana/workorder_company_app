@@ -98,7 +98,8 @@ class CancelWorkOrderButton extends StatelessWidget {
                     ),
                   )
                   .toList(),
-            )
+            ),
+            const SizedBox(height: AppSpacing.md),
           ]
         ],
       ),
