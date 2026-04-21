@@ -15,46 +15,45 @@ class AppBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: EdgeInsets.only(
-          left: 16,
-          right: 16,
-          top: 8,
-          bottom: MediaQuery.of(context).viewInsets.bottom + 16,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Handle
-            Center(
-              child: Container(
-                width: 40,
-                height: 4,
-                margin: const EdgeInsets.only(bottom: 16),
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade400,
-                  borderRadius: BorderRadius.circular(2),
-                ),
+    // FIXME : Bring back SafeArea here if something goes wrong
+    return Padding(
+      padding: EdgeInsets.only(
+        left: 16,
+        right: 16,
+        top: 8,
+        bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Handle
+          Center(
+            child: Container(
+              width: 40,
+              height: 4,
+              margin: const EdgeInsets.only(bottom: 16),
+              decoration: BoxDecoration(
+                color: Colors.grey.shade400,
+                borderRadius: BorderRadius.circular(2),
               ),
             ),
+          ),
 
-            if (header != null) ...[
-              header!,
-              const SizedBox(height: 12),
-            ],
-
-            Flexible(
-              child: content,
-            ),
-
-            if (footer != null) ...[
-              const SizedBox(height: 12),
-              footer!,
-            ],
+          if (header != null) ...[
+            header!,
+            const SizedBox(height: 12),
           ],
-        ),
+
+          Flexible(
+            child: content,
+          ),
+
+          if (footer != null) ...[
+            const SizedBox(height: 12),
+            footer!,
+          ],
+        ],
       ),
     );
   }

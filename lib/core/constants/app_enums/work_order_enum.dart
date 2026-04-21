@@ -67,6 +67,20 @@ extension WorkOrderStatusFlowStateX on WorkOrderStatus {
   bool get isNotStarted => notStartedStates.contains(this);
 
   bool get isActive => this == WorkOrderStatus.onProgress;
+
+  static List<WorkOrderStatus> get finalStatesList => finalStates.toList();
+
+  static List<WorkOrderStatus> get cancellableStatesList =>
+      cancellableStates.toList();
+
+  static List<WorkOrderStatus> get reportableStatesList =>
+      reportableStates.toList();
+
+  static List<WorkOrderStatus> get notStartedStatesList =>
+      notStartedStates.toList();
+
+  static List<WorkOrderStatus> get reviewedStatesList =>
+      reviewedStates.toList();
 }
 
 extension WorkOrderStatusX on WorkOrderStatus {
