@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 
-// TODO[Low] : Move This component into employee feature
-class StaffChip extends StatelessWidget {
+// OPTIMIZE[Low] : Update this UI. Follow work order staff ui
+class EmployeeItem extends StatelessWidget {
   final UserEntity user;
   final bool showPosition;
   final VoidCallback? onTap;
 
-  const StaffChip({
+  const EmployeeItem({
     super.key,
     required this.user,
     this.onTap,

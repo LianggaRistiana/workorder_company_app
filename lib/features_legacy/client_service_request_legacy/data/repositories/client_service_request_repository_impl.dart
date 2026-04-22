@@ -55,11 +55,7 @@ class ClientServiceRequestRepositoryImpl
 
   @override
   Future<Either<Failure, String>> approveClientServiceRequest(String id) {
-    return safeCall(() async {
-      final payload = await _clientServiceRequestRemoteDatasource
-          .approveClientServiceRequest(id);
-      return payload.data!.id;
-    });
+    throw UnimplementedError();
   }
 
   @override
@@ -73,7 +69,7 @@ class ClientServiceRequestRepositoryImpl
     return safeCall(() async {
       await _clientServiceRequestRemoteDatasource
           .rejectClientServiceRequest(id);
-      return ;
+      return;
     });
   }
 }

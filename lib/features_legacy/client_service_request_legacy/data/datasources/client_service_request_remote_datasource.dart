@@ -1,7 +1,7 @@
 import 'package:workorder_company_app/core/network/api_client.dart';
 import 'package:workorder_company_app/core/network/api_response.dart';
 import 'package:workorder_company_app/features_legacy/client_service_request_legacy/data/model/client_service_request_model.dart';
-import 'package:workorder_company_app/features_legacy/workorder_legacy/data/model/workorder_model.dart';
+// import 'package:workorder_company_app/features_legacy/workorder_legacy/data/model/workorder_model.dart';
 
 abstract class ClientServiceRequestRemoteDatasource {
   Future<ApiResponse<List<ClientServiceRequestModel>>>
@@ -12,7 +12,7 @@ abstract class ClientServiceRequestRemoteDatasource {
       getClientServiceRequests();
   Future<ApiResponse<ClientServiceRequestModel>> getClientServiceRequestById(
       String id);
-  Future<ApiResponse<WorkorderModel>> approveClientServiceRequest(String id);
+  // Future<ApiResponse<WorkorderModel>> approveClientServiceRequest(String id);
   Future<ApiResponse<ClientServiceRequestModel>> rejectClientServiceRequest(
       String id);
   Future<ApiResponse<ClientServiceRequestModel>> cancelClientServiceRequest(
@@ -26,11 +26,11 @@ class ClientServiceRequestRemoteDatasourceImpl
 
   ClientServiceRequestRemoteDatasourceImpl(this._apiClient);
 
-  @override
-  Future<ApiResponse<WorkorderModel>> approveClientServiceRequest(String id) {
-    // TODO: implement approveClientServiceRequest
-    throw UnimplementedError();
-  }
+  // @override
+  // Future<ApiResponse<WorkorderModel>> approveClientServiceRequest(String id) {
+  //   // TODO: implement approveClientServiceRequest
+  //   throw UnimplementedError();
+  // }
 
   @override
   Future<ApiResponse<ClientServiceRequestModel>> cancelClientServiceRequest(
