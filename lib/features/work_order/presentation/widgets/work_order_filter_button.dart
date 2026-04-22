@@ -6,7 +6,7 @@ import 'package:workorder_company_app/features/work_order/presentation/bloc/list
 import 'package:workorder_company_app/features/work_order/presentation/bloc/list/work_orders_list_event.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/list/work_orders_list_state.dart';
 import 'package:workorder_company_app/features/work_order/presentation/widgets/work_order_status_selector.dart';
-import 'package:workorder_company_app/shared/widgets/info_bottom_sheet.dart';
+import 'package:workorder_company_app/shared/widgets/app_bottom_sheet.dart';
 import 'package:workorder_company_app/shared/widgets/section_title.dart';
 
 class WorkOrderFilterButton extends StatelessWidget {

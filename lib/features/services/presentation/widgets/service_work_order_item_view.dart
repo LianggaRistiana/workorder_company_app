@@ -6,7 +6,7 @@ import 'package:workorder_company_app/features/services/domain/entities/work_ord
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
 import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
-import 'package:workorder_company_app/shared/widgets/info_bottom_sheet.dart';
+import 'package:workorder_company_app/shared/widgets/app_bottom_sheet.dart';
 import 'package:workorder_company_app/shared/widgets/property_display.dart';
 
 class ServiceWorkOrderItemView extends StatelessWidget {

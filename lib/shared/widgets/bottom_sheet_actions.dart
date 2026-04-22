@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// TODO : Consider to remove this code if not used.
 class BottomSheetAction {
   final String title;
   final IconData icon;
@@ -40,7 +41,6 @@ class ActionBottomSheetContent extends StatelessWidget {
 
         final iconColor = isDanger ? colorScheme.error : colorScheme.onSurface;
 
-
         return Padding(
           padding: const EdgeInsets.only(bottom: 8),
           child: SizedBox(
@@ -69,7 +69,10 @@ class ActionBottomSheetContent extends StatelessWidget {
                       textAlign: TextAlign.start,
                     ),
                   ),
-                  Icon(action.icon, color: iconColor,),
+                  Icon(
+                    action.icon,
+                    color: iconColor,
+                  ),
                 ],
               ),
             ),

@@ -14,7 +14,7 @@ import 'package:workorder_company_app/features/invitations/presentation/widgets/
 import 'package:workorder_company_app/features/invitations/presentation/widgets/sender_invitation_detail.dart';
 import 'package:workorder_company_app/features/invitations/presentation/widgets/user_summary_view.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
-import 'package:workorder_company_app/shared/widgets/info_bottom_sheet.dart';
+import 'package:workorder_company_app/shared/widgets/app_bottom_sheet.dart';
 import 'package:workorder_company_app/shared/widgets/list_page_scafold.dart';
 
 class InvitationsHistoryPage extends StatelessWidget {

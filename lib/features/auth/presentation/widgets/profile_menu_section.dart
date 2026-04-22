@@ -3,7 +3,7 @@ import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/notification/presentation/widgets/notification_toggle.dart';
 import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
 import 'package:workorder_company_app/shared/widgets/horizontal_switch.dart';
-import 'package:workorder_company_app/shared/widgets/info_bottom_sheet.dart';
+import 'package:workorder_company_app/shared/widgets/app_bottom_sheet.dart';
 
 class ProfileMenuSection extends StatelessWidget {
   const ProfileMenuSection({super.key});

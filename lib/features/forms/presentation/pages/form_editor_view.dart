@@ -11,7 +11,7 @@ import 'package:workorder_company_app/shared/utils/confirm_dialog.dart';
 import 'package:workorder_company_app/shared/utils/confirm_leave.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/custom_step_indicator.dart';
-import 'package:workorder_company_app/shared/widgets/info_bottom_sheet.dart';
+import 'package:workorder_company_app/shared/widgets/app_bottom_sheet.dart';
 import 'package:workorder_company_app/shared/widgets/step_navigation_bar.dart';
 
 class FormEditorView extends StatefulWidget {

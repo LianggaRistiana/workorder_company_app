@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/shared/layout/navigation/nav_config.dart';
-import 'package:workorder_company_app/shared/widgets/custom_navigation_bar.dart';
+import 'package:workorder_company_app/shared/layout/widget/custom_navigation_bar.dart';
 
 class AppNavigationBar extends StatefulWidget {
   final UserRole role;

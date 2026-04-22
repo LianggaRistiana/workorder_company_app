@@ -6,7 +6,7 @@ import 'package:workorder_company_app/features/auth/presentation/widgets/current
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/layout/navigation/nav_config.dart';
 import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
-import 'package:workorder_company_app/shared/widgets/custom_navigation_bar.dart';
+import 'package:workorder_company_app/shared/layout/widget/custom_navigation_bar.dart';
 
 class AppNavigationDrawer extends StatefulWidget {
   final UserRole role;

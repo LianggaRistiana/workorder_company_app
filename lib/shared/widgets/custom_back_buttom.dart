@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/confirm_dialog.dart';
 
+// HACK : pop up will not appear when user press back button on android (by pass flutter pop).the reason why i made this is nested shell route in route system. currently there is no longer use that mechanisms
 class CustomBackButton extends StatelessWidget {
   final String fallbackRoute;
   final bool showConfirm;
@@ -38,7 +39,8 @@ class CustomBackButton extends StatelessWidget {
           shouldPop = await showConfirmDialog(
                 context: context,
                 title: confirmTitle ?? "Konfirmasi",
-                message: confirmMessage ?? "Apakah anda yakin tidak melanjutkan?",
+                message:
+                    confirmMessage ?? "Apakah anda yakin tidak melanjutkan?",
                 confirmText: confirmText,
                 cancelText: cancelText,
                 confirmColor: confirmColor,

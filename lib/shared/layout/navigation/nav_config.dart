@@ -1,5 +1,5 @@
 import 'package:workorder_company_app/core/constants/app_enums.dart';
-import 'package:workorder_company_app/shared/widgets/custom_navigation_bar.dart';
+import 'package:workorder_company_app/shared/layout/widget/custom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 

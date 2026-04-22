@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// Helper kecil untuk membuat shimmer rectangle
 class ShimmerPlaceholder extends StatelessWidget {
   final double height;
   final double width;

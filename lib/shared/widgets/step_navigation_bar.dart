@@ -6,7 +6,7 @@ class StepNavigationBar extends StatelessWidget {
   final VoidCallback onPrevious;
   final VoidCallback onNext;
   final bool isLoading;
-  final Widget finalAction; // tombol custom di step terakhir
+  final Widget finalAction; 
 
   const StepNavigationBar({
     super.key,
