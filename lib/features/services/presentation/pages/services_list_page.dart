@@ -4,12 +4,14 @@ import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/authorization/feature/service_permission.dart';
 import 'package:workorder_company_app/core/authorization/rule/role_permission_rule/role_permission_helper.dart';
 import 'package:workorder_company_app/core/authorization/util/access_gate_on_widget.dart';
+import 'package:workorder_company_app/core/constants/app_enums/service_enum.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features/helps/presentation/widgets/fab_help.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/list/services_list_bloc.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/list/services_list_event.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/list/services_list_state.dart';
 import 'package:workorder_company_app/features/services/presentation/widgets/service_summary_item.dart';
+import 'package:workorder_company_app/features/work_order/presentation/helper/work_order_create_pop_up.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
@@ -17,11 +19,10 @@ import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
 import 'package:workorder_company_app/shared/widgets/information_block.dart';
 import 'package:workorder_company_app/shared/widgets/list_page_scafold.dart';
 
-enum NextStepMode { detail, createServiceRequest }
-
 class ServicesListPage extends StatelessWidget {
-  final NextStepMode nextStepMode;
-  const ServicesListPage({super.key, this.nextStepMode = NextStepMode.detail});
+  final ServiceListNextAction nextStepMode;
+  const ServicesListPage(
+      {super.key, this.nextStepMode = ServiceListNextAction.serviceDetail});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +34,7 @@ class ServicesListPage extends StatelessWidget {
 }
 
 class _ServicesListView extends StatelessWidget {
-  final NextStepMode nextStepMode;
+  final ServiceListNextAction nextStepMode;
 
   const _ServicesListView(
     this.nextStepMode,
@@ -78,20 +79,23 @@ class _ServicesListView extends StatelessWidget {
                   heroTag: "service-list-tag",
                   child: InformationBlock.warning("Under Development"),
                 ),
-                const SizedBox(height: 8),
-                FloatingActionButton.extended(
-                  onPressed: () async {
-                    final result = await context.push(AppRoutes.servicesCreate);
-                    if (!context.mounted) return;
-                    if (result == true) {
-                      context
-                          .read<ServicesListBloc>()
-                          .add(GetServicesRequested());
-                    }
-                  },
-                  label: const Text("Tambah Layanan"),
-                  icon: const Icon(Icons.add),
-                ).require(roleCan(ServicePermission.create)),
+                if (nextStepMode == ServiceListNextAction.serviceDetail) ...[
+                  const SizedBox(height: 8),
+                  FloatingActionButton.extended(
+                    onPressed: () async {
+                      final result =
+                          await context.push(AppRoutes.servicesCreate);
+                      if (!context.mounted) return;
+                      if (result == true) {
+                        context
+                            .read<ServicesListBloc>()
+                            .add(GetServicesRequested());
+                      }
+                    },
+                    label: const Text("Tambah Layanan"),
+                    icon: const Icon(Icons.add),
+                  ).require(roleCan(ServicePermission.create)),
+                ]
               ],
             ),
             itemBuilder: (item) => ServiceSummaryItem(
@@ -100,7 +104,7 @@ class _ServicesListView extends StatelessWidget {
                   isPublic: false,
                   onTap: () async {
                     switch (nextStepMode) {
-                      case NextStepMode.detail:
+                      case ServiceListNextAction.serviceDetail:
                         final result = await context.push(
                           AppRoutes.servicesDetail.fillId(item.id),
                         );
@@ -111,18 +115,16 @@ class _ServicesListView extends StatelessWidget {
                               .add(GetServicesRequested());
                         }
                         break;
-                      case NextStepMode.createServiceRequest:
+                      case ServiceListNextAction.createServiceRequest:
                         await context.push(
                           AppRoutes.serviceRequestCreate.fillId(
                             item.id,
                           ),
                           extra: item,
                         );
-                        // if (!context.mounted) return;
-                        // if (result == true) {
-                        //   context
-                        //       .read<ServicesListBloc>()
-                        //       .add(GetServicesRequested());
+                        break;
+                      case ServiceListNextAction.createWorkOrder:
+                        showWorkOrderCreateConfirmDialog(context, item);
                         break;
                     }
                   },

@@ -127,4 +127,8 @@ enum ServiceAccessType {
   String toString() => displayName;
 }
 
-
+enum ServiceListNextAction {
+  serviceDetail,
+  createServiceRequest,
+  createWorkOrder;
+}

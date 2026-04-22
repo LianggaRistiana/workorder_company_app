@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/authorization/util/access_gate_on_widget.dart';
+import 'package:workorder_company_app/core/constants/app_enums/service_enum.dart';
 import 'package:workorder_company_app/core/constants/app_enums/service_request_enum.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
@@ -11,7 +12,6 @@ import 'package:workorder_company_app/features/service_request/presentation/stat
 import 'package:workorder_company_app/features/service_request/presentation/state/requester/service_requests_list/requester_service_requests_list_event.dart';
 import 'package:workorder_company_app/features/service_request/presentation/state/requester/service_requests_list/requester_service_requests_list_state.dart';
 import 'package:workorder_company_app/features/service_request/presentation/widgets/service_request_item.dart';
-import 'package:workorder_company_app/features/services/presentation/pages/services_list_page.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
@@ -41,7 +41,7 @@ class RequesterServiceRequestListPage extends StatelessWidget {
           floatingActionButton: FloatingActionButton.extended(
                   icon: Icon(AppIcon.send),
                   onPressed: () => context.push(AppRoutes.services,
-                      extra: NextStepMode.createServiceRequest),
+                      extra: ServiceListNextAction.createServiceRequest),
                   label: Text("Buat Permintaan Layanan"))
               .require(InternalServiceRequestCreateRule()),
           items: items,

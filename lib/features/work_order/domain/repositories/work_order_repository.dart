@@ -37,5 +37,6 @@ abstract class WorkOrderRepository {
     String issueNote,
   );
 
-  Stream<void> get workOrderChanged; // FIXME : Temp Solution, it dont cover to cancel feature that change more than one work order
+  Stream<void>
+      get workOrderChanged; // FIXME : Temp Solution, it dont cover to cancel feature that change more than one work order
 }

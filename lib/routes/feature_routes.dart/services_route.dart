@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/constants/app_enums/service_enum.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
 import 'package:workorder_company_app/features/services/presentation/pages/service_create_page.dart';
 import 'package:workorder_company_app/features/services/presentation/pages/service_detail_page.dart';
@@ -11,7 +12,7 @@ final serviceRoute = [
     path: AppRoutes.services,
     builder: (_, state) {
       final extra = state.extra;
-      if (extra is NextStepMode) {
+      if (extra is ServiceListNextAction) {
         return ServicesListPage(
           nextStepMode: extra,
         );

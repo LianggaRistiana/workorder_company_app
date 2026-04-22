@@ -6,6 +6,7 @@ import 'package:workorder_company_app/features/work_order/domain/usecases/approv
 import 'package:workorder_company_app/features/work_order/domain/usecases/assign_staffs_usecase.dart';
 import 'package:workorder_company_app/features/work_order/domain/usecases/cancel_work_order_usecase.dart';
 import 'package:workorder_company_app/features/work_order/domain/usecases/complete_work_order_usecase.dart';
+import 'package:workorder_company_app/features/work_order/domain/usecases/create_work_order_usecase.dart';
 import 'package:workorder_company_app/features/work_order/domain/usecases/fail_work_order_usecase.dart';
 import 'package:workorder_company_app/features/work_order/domain/usecases/get_detail_work_order_usecase.dart';
 import 'package:workorder_company_app/features/work_order/domain/usecases/get_work_orders_usecase.dart';
@@ -16,6 +17,7 @@ import 'package:workorder_company_app/features/work_order/domain/usecases/start_
 import 'package:workorder_company_app/features/work_order/domain/usecases/submit_work_order_submission_usecase.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/approval/approval_work_order_cubit.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/cancel/cancel_work_order_cubit.dart';
+import 'package:workorder_company_app/features/work_order/presentation/bloc/create/work_order_create_cubit.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/detail/work_order_detail_cubit.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/fill/fill_work_order_cubit.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/finalize/finalize_work_order_cubit.dart';
@@ -89,6 +91,10 @@ Future<void> _initUseCases() async {
   sl.registerLazySingleton<SubmitWorkOrderSubmissionUseCase>(
     () => SubmitWorkOrderSubmissionUseCase(sl()),
   );
+
+  sl.registerLazySingleton<CreateWorkOrderUsecase>(
+    () => CreateWorkOrderUsecase(sl()),
+  );
 }
 
 Future<void> _initUiStates() async {
@@ -130,5 +136,9 @@ Future<void> _initUiStates() async {
   sl.registerFactory<ApprovalWorkOrderCubit>(() => ApprovalWorkOrderCubit(
         approveUseCase: sl(),
         rejectUseCase: sl(),
+      ));
+
+  sl.registerFactory<WorkOrderCreateCubit>(() => WorkOrderCreateCubit(
+        createWorkOrderUsecase: sl(),
       ));
 }
