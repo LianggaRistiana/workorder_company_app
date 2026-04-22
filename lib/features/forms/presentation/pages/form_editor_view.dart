@@ -213,7 +213,6 @@ class _FormEditorViewState extends State<FormEditorView>
               Form(
                 key: _fieldsKey,
                 child: FieldsEditorTabView(
-                    // formKey: _fieldsKey,
                     coordinator: _coordinator,
                     onAddField: _openFieldTypePicker),
               )

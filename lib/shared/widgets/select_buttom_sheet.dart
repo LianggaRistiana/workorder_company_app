@@ -5,8 +5,10 @@ import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 enum WidgetTipe {
   general,
   user,
-}
+} // OPTIMIZE : provide item builder rather than this method
 
+// HACK : Move filter mechanism into params for repository responsibility prepare
+// If the feature parameters are provided, repository fill pass the params into datasource instead of local filtering
 class SelectBottomSheet<T> extends StatefulWidget {
   final String title;
   final List<T> items;
@@ -15,7 +17,6 @@ class SelectBottomSheet<T> extends StatefulWidget {
   final bool isLoading;
   final String? emptyMessage;
 
-  // === Tambahan untuk membedakan UI ===
   final WidgetTipe tipe;
 
   const SelectBottomSheet({
@@ -26,7 +27,7 @@ class SelectBottomSheet<T> extends StatefulWidget {
     required this.onSelect,
     this.isLoading = false,
     this.emptyMessage,
-    this.tipe = WidgetTipe.general, // default: UI lama
+    this.tipe = WidgetTipe.general,
   });
 
   // === Factory untuk UI berbeda ===

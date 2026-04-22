@@ -3,6 +3,7 @@ import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
 
+// OPTIMIZE : build UI mapper for icon by field status enum on form feature for better code readability.
 class FieldTypeIcon extends StatelessWidget {
   final FieldType type;
 
@@ -33,6 +34,7 @@ class FieldTypeIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
+        // OPTIMIZE : use IconBox.small constructor for consistent icon size and padding
         IconBox(
           icon: _getIcon(type),
           paddingSize: 8,

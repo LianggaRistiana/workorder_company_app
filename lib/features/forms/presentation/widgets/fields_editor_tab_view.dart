@@ -14,14 +14,11 @@ import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 class FieldsEditorTabView extends StatelessWidget {
   final FormEditorCoordinator coordinator;
   final VoidCallback onAddField;
-  // final GlobalKey<FormState>? formKey;
 
   const FieldsEditorTabView({
     super.key,
     required this.coordinator,
-    required this.onAddField,
-    // this.formKey,
-  });
+    required this.onAddField,  });
 
   @override
   Widget build(BuildContext context) {

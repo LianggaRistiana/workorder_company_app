@@ -30,7 +30,6 @@ extension FilledFormWithHistoryEntityTools on FilledFormWithHistoryEntity {
 
   bool get hasSubmission => history.isNotEmpty;
 
-  // SubmissionEntity? get firstSubmission => hasSubmission ? history.last : null;
   SubmissionEntity? get latestSubmission =>
       hasSubmission ? history.first : null;
 

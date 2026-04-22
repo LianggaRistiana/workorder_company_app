@@ -6,7 +6,7 @@ import 'package:workorder_company_app/features/forms/domain/draft/option_draft.d
 class FormEditorCoordinator extends ChangeNotifier {
   final FormDraft _draft;
 
-  // FIXME[High] : Bug potentially, isDirty will be true at first changed, user can by pass with change to the same value
+  // HACK : Bug potentially, isDirty will be true at first changed, user can by pass with change to the same value
   bool _isDirty = false;
 
   FormEditorCoordinator(FormDraft draft) : _draft = draft;

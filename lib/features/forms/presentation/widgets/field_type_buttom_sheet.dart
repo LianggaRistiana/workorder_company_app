@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/features/forms/presentation/widgets/field_type_icon.dart';
 
+// OPTIMIZE : add 'Content' suffix for this file an class name for better clarity
 class FieldTypeBottomSheet extends StatelessWidget {
   final FieldType? selectedType;
   final ValueChanged<FieldType> onSelected;
@@ -26,7 +27,7 @@ class FieldTypeBottomSheet extends StatelessWidget {
             const SizedBox(height: 16),
             ...FieldType.values.map((type) {
               final isSelected = type == selectedType;
-        
+
               return ListTile(
                 title: FieldTypeIcon(type: type),
                 trailing: isSelected

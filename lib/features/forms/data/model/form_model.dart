@@ -12,10 +12,8 @@ class FormModel extends FormEntity {
     super.fields = const [],
   });
 
-  factory FormModel.fromJson(Map<String, dynamic> json) { 
+  factory FormModel.fromJson(Map<String, dynamic> json) {
     return FormModel(
-      // id: json["_id"].toString(),
-      // title: json["title"].toString(),
       id: safeParse<String>(json, "_id"),
       title: safeParse<String>(json, "title"),
       formType: FormType.fromString(json["formType"].toString()),
