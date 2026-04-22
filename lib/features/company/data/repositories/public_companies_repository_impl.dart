@@ -23,5 +23,5 @@ class PublicCompaniesRepositoryImpl implements PublicCompaniesRepository {
       final payload = await _companyRemoteDatasource.getCompanyById(id);
       return payload.data;
     });
-  }
+  } // TODO[API REQUIRED] : add meta to this endpoint. isSubcribbed needed
 }

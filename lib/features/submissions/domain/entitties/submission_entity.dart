@@ -6,16 +6,15 @@ class SubmissionEntity {
   final String id;
   final String formId;
   final FormType submissionType;
-  // final SubmissionStatus? status; // TODO[Low] : remove this later
-  final UserEntity? submittedBy;
+  final UserEntity?
+      submittedBy; // TODO : Remove this later. id doesnt needed anymore
   final List<FieldDataEntity>? fieldsData;
-  final DateTime? createdAt;
+  final DateTime? createdAt; // TODO : not null createdAt. ask BE before to validate
 
   const SubmissionEntity({
     required this.id,
     required this.formId,
     required this.submissionType,
-    // this.status,
     this.submittedBy,
     this.fieldsData,
     this.createdAt,
@@ -25,7 +24,6 @@ class SubmissionEntity {
     String? id,
     String? formId,
     FormType? submissionType,
-    // SubmissionStatus? status,
     UserEntity? submittedBy,
     List<FieldDataEntity>? fieldsData,
     DateTime? createdAt,
@@ -34,7 +32,6 @@ class SubmissionEntity {
       id: id ?? this.id,
       formId: formId ?? this.formId,
       submissionType: submissionType ?? this.submissionType,
-      // status: status ?? this.status,
       submittedBy: submittedBy ?? this.submittedBy,
       fieldsData: fieldsData ?? this.fieldsData,
       createdAt: createdAt ?? this.createdAt,
@@ -72,6 +69,4 @@ extension SubmissionEntityTools on SubmissionEntity {
   }
 
   bool get isCreated => createdAt != null;
-
-  // bool get hasStatus => status != null;
 }

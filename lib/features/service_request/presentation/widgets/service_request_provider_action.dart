@@ -10,6 +10,7 @@ import 'package:workorder_company_app/features/service_request/presentation/stat
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/loading_state_inline.dart';
 
+// OPTIMIZE : convert this into FAB. follow work order for pattern
 class ServiceRequestProviderAction extends StatelessWidget {
   final ProviderServiceRequestEntity request;
   const ServiceRequestProviderAction({super.key, required this.request});

@@ -108,7 +108,7 @@ class ListPageScaffold<T> extends StatelessWidget {
         bottom: bottomAppBar,
       ),
       floatingActionButton: floatingActionButton,
-      // FIXME[High] : Use Listview builder to lazy load and header should shown either loaded or not
+      // OPTIMIZE[High] : Use Listview builder to lazy load and header should shown either loaded or not
       body: SafeArea(child: content),
       bottomNavigationBar: AnimatedSlide(
         duration: const Duration(milliseconds: 200),

@@ -60,8 +60,7 @@ class _InternalCompanyProfilePageState
                   Hero(
                     tag: "company-card",
                     child:
-                        InternalCompanyCard(), // FIXME[HIGH] : fix this later
-                    // child: _CompanyHeader(company: company)
+                        InternalCompanyCard(), 
                   ),
                   const SizedBox(height: AppSpacing.md),
                   CustomCard(

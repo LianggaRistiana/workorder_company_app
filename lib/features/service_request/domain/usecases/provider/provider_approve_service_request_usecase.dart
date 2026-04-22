@@ -8,7 +8,7 @@ class ProviderApproveServiceRequestUsecase {
   ProviderApproveServiceRequestUsecase(this.repository);
 
   FutureEither<ProviderServiceRequestEntity> call(ProviderServiceRequestEntity entity) async {
-    // TODO[Medium] : add authorization rule here
+    // OPTIMZE[Medium] : add authorization rule here
     return repository.approveServiceRequest(entity.id);
   }
 }

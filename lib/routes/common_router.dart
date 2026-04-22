@@ -9,7 +9,7 @@ import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/page/forbidden_page.dart';
 import 'package:workorder_company_app/shared/page/not_found_page.dart';
 
-// TODO : separated this into publicRoutes and Common route
+// OPTIMIZE : separated this into publicRoutes and Common route
 final commonRouter = [
   GoRoute(
     path: AppRoutes.login,

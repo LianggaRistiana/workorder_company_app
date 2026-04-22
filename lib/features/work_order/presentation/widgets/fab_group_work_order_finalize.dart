@@ -17,8 +17,6 @@ class FabGroupWorkOrderFinalize extends StatelessWidget {
   const FabGroupWorkOrderFinalize(
       {super.key, required this.workOrder, required this.capabilities});
 
-  // FIXME : ADD CONFIRMATION AND ISSUE WHEN FAIL OR COMPLETE
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<FinalizeWorkOrderCubit, FinalizeWorkOrderState>(

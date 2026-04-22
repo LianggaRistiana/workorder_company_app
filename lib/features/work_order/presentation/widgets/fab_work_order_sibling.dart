@@ -44,7 +44,7 @@ class FabWorkOrderSibling extends StatelessWidget {
                   onTap: () {
                     context.pop();
                     context
-                        .pop(); // FIXME : Observe this, if any bug occur during switch work order, remove this
+                        .pop(); // HACK : Observe this, if any bug occur during switch work order, remove this double pop
                     context.push(AppRoutes.workOrdersDetail.fillId(item.id));
                   },
                   child: Row(

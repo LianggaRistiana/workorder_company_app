@@ -6,6 +6,7 @@ import 'package:workorder_company_app/features/company/presentation/bloc/interna
 import 'package:workorder_company_app/shared/widgets/shimmer_placeholder.dart';
 import 'package:workorder_company_app/shared/widgets/smart_shimmer.dart';
 
+// FIXME[API REQUIRED] : currently, staff forbidden to access this. allowed expected
 class InternalCompanyCard extends StatelessWidget {
   const InternalCompanyCard({
     super.key,

@@ -38,6 +38,7 @@ class _ServiceRequestStepCardAnimatedState
     final theme = Theme.of(context);
     final stepOrder = getStepOrder();
 
+    // OPTIMIZE : follow work order step card for better UI
     return ClickableCustomCard(
       onTap: () => setState(() => isExpanded = !isExpanded),
       padding: const EdgeInsets.all(AppSpacing.md),
@@ -153,8 +154,8 @@ class _ServiceRequestStepCardAnimatedState
     );
   }
 
+  // TODO : use color and icon from ui mapper by enum
   Color _statusColor(ServiceRequestStatus status) {
-    // TODO[Low] : fix color of this color
     switch (status) {
       case ServiceRequestStatus.received:
         return Colors.orange;

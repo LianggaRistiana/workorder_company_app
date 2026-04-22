@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:workorder_company_app/core/constants/app_enums/service_request_enum.dart';
 
+// TODO : add ui mapper by enum for UI icon and colors. follow work order for pattern
 class ServiceRequestStatusIcon extends StatelessWidget {
   final ServiceRequestStatus status;
 
@@ -24,7 +25,6 @@ class ServiceRequestStatusIcon extends StatelessWidget {
   }
 
   Color _statusColor(ServiceRequestStatus status) {
-    // TODO[Low] : fix color of this color
     switch (status) {
       case ServiceRequestStatus.received:
         return Colors.orange;

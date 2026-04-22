@@ -29,7 +29,6 @@ class WorkOrderModel extends WorkOrderEntity {
     super.issueNote,
   });
 
-  // FIXME : Fixme Later
   factory WorkOrderModel.fromJson(Map<String, dynamic> json) {
     return WorkOrderModel(
       id: json.field('_id').reqString(),
@@ -54,7 +53,7 @@ class WorkOrderModel extends WorkOrderEntity {
           json['workOrderForm'], json['submissions']),
       hasIssue: json.field('has_issue').reqBool(),
       statusDate:
-          WorkOrderStatusDateModel.fromJson(json), // FIXME : Unreadable on UI
+          WorkOrderStatusDateModel.fromJson(json), // FIXME : Unreadable on UI or there is bug in BE
       // statusDate:
       //     json.field('statusDate').reqModel(WorkOrderStatusDateModel.fromJson),
       issueNote: json.field('issue_note').optString(),

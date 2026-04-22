@@ -9,6 +9,8 @@ import 'package:workorder_company_app/features/work_report/presentation/state/se
 import 'package:workorder_company_app/features/work_report/presentation/state/send/send_work_report_state.dart';
 import 'package:workorder_company_app/shared/widgets/loading_state_inline.dart';
 
+// TODO : add pop up confirmation
+
 class FabWorkReportSend extends StatelessWidget {
   final WorkOrderEntity workOrder;
   final WorkReportEntity workReport;

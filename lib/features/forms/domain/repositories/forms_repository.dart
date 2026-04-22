@@ -6,5 +6,5 @@ abstract class FormsRepository {
   FutureEither<FormEntity> getForm(String id);
   FutureEither<void> createForm(FormEntity form);
   FutureEither<FormEntity> updateForm(FormEntity form);
-  // TODO[High] : add delete form
+  // TODO[High] : consider add delete form or not
 }

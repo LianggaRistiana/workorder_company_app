@@ -15,7 +15,7 @@ class AppBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // FIXME : Bring back SafeArea here if something goes wrong
+    // HACK : Bring back SafeArea here if something goes wrong
     return Padding(
       padding: EdgeInsets.only(
         left: 16,

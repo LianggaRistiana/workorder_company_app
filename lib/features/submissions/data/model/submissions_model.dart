@@ -9,7 +9,7 @@ class SubmissionsModel extends SubmissionEntity {
     required super.id,
     required super.formId,
     required super.submissionType,
-    super.submittedBy, // TODO : mapp from json
+    super.submittedBy, 
     super.fieldsData,
     super.createdAt,
     // super.updatedAt,

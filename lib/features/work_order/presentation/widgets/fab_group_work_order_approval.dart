@@ -13,8 +13,6 @@ class FabGroupWorkOrderApproval extends StatelessWidget {
   final WorkOrderEntity workOrder;
   const FabGroupWorkOrderApproval({super.key, required this.workOrder});
 
-  // FIXME : ADD CONFIRMATION AND ISSUE WHEN REJECT
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ApprovalWorkOrderCubit, ApprovalWorkOrderState>(

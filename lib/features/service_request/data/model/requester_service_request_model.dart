@@ -19,7 +19,7 @@ class RequesterServiceRequestModel extends RequesterServiceRequestEntity {
     required super.createdAt,
   });
 
-  // TODO : use safe parser for safety
+  // OPTIMIZE : use safe parser for safety
   factory RequesterServiceRequestModel.fromJson(Map<String, dynamic> json) {
     return RequesterServiceRequestModel(
       id: json['_id'],

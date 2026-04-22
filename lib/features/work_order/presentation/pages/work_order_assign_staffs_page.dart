@@ -68,7 +68,7 @@ class _WorkOrderAssignStaffsPageState extends State<WorkOrderAssignStaffsPage> {
   }
 
   void onSubmit(BuildContext context) {
-    // FIXME : Add Local Validation Here
+    // HACK : Currently, there is no local validation, give it responsibility to BE. if something goes wrong, add some local validation here
     if (staffs.isEmpty) {
       context.showError("Tidak ada pegawai yang dipilih");
       return;

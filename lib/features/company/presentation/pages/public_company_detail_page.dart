@@ -120,7 +120,7 @@ class _View extends StatelessWidget {
                           : company.description,
                     ),
 
-                    // FIXME[API REQUIRED] : fix this later
+                    // FIXME[API REQUIRED] : meta data when hit detail company is needed. dont forget to hide this UI when there is meta retrived
                     PropertyItem.widget(
                         icon: AppIcon.membership,
                         label: "Status Keanggotaan",

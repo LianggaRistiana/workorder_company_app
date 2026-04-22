@@ -26,6 +26,7 @@ extension ContextSnackbar on BuildContext {
     );
   }
 
+  // OPTIMIZE : UI color for this snackbar
   void showWarning(String message) {
     ScaffoldMessenger.of(this).showSnackBar(
       SnackBar(
@@ -41,8 +42,7 @@ extension ContextSnackbar on BuildContext {
             Icon(AppIcon.warrning, color: Colors.orange),
             const SizedBox(width: 8),
             Expanded(
-                child: Text(message,
-                    style: TextStyle(color: Colors.orange))),
+                child: Text(message, style: TextStyle(color: Colors.orange))),
           ],
         ),
       ),

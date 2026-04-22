@@ -9,6 +9,7 @@ enum ServiceRequestStatus {
   onProgress,
   completed,
   closed;
+  // FIXME : update status to fit with contract
 
   static ServiceRequestStatus fromString(String value) {
     return switch (value) {

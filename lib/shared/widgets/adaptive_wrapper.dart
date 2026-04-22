@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-// TODO[DISCARD POTTENTIAL]: Implement this later
 class AdaptiveWrapper extends StatelessWidget {
   final Widget compact; // HP portrait
   final Widget medium; // HP landscape / tablet portrait

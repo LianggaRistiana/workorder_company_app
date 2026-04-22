@@ -84,11 +84,6 @@ enum FieldType {
     return name.toSnakeCase();
   }
 
-  String toKebabCase() {
-    // TODO[Low] : Remove this later
-    return name.toKebabCase();
-  }
-
   String get displayName {
     switch (this) {
       case FieldType.text:
@@ -113,5 +108,3 @@ enum FieldType {
   @override
   String toString() => displayName;
 }
-
-

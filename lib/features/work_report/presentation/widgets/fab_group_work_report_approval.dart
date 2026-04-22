@@ -20,8 +20,6 @@ class FabGroupWorkReportApproval extends StatelessWidget {
     required this.workReport,
   });
 
-  // FIXME : ADD CONFIRMATION AND ISSUE WHEN REJECT
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ApprovalWorkReportCubit, ApprovalWorkReportState>(

@@ -25,7 +25,7 @@ class PublicServicesRemoteDatasourceImpl
     return ApiResponse.fromJson(
       response,
       (data) => SafeMapper.mapList(
-        data['services'] as List?, // FIXME[API REQUIRED] : BE SHOULD Fix THIS Response
+        data['services'] as List?, // FIXME[API REQUIRED] : BE SHOULD Fix THIS Response. destruct servcie direct to data, remove isSubcribbed info from this endpoint
         (json) => ServiceSummaryModel.fromJson(json),
       ),
     );

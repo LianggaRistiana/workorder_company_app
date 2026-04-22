@@ -181,7 +181,7 @@ class _FieldCardWidgetState extends State<FieldCardWidget> {
                   ),
                 ),
                 const SizedBox(width: 8),
-                // TODO[Medium] : validator mis max
+                // FIXME[Medium] : validator min max
                 Expanded(
                   child: CustomInputField(
                     label: "Maksimal",
