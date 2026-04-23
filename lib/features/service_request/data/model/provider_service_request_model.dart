@@ -25,7 +25,7 @@ class ProviderServiceRequestModel extends ProviderServiceRequestEntity {
     return ProviderServiceRequestModel(
         id: json.field('_id').reqString(),
         code: json.field('code').reqString(),
-        status: json.field('status').reqEnum(ServiceRequestStatus.fromString),
+        status: json.field('serviceRequestStatus').reqEnum(ServiceRequestStatus.fromString),
         service: json.field('service').reqModel(ServiceSummaryModel.fromJson),
         requestedBy: json.field('requestedBy').reqModel(UserModel.fromJson),
         approvedBy: json.field('approvedBy').optModel(UserModel.fromJson),
