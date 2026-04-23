@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/features/company/domain/entities/company_entity.dart';
+import 'package:workorder_company_app/features/company/presentation/pages/internal_company_config_flow.dart';
 import 'package:workorder_company_app/features/company/presentation/pages/internal_company_edit_page.dart';
 import 'package:workorder_company_app/features/company/presentation/pages/internal_company_profile_page.dart';
 import 'package:workorder_company_app/features/company/presentation/pages/Internal_company_manage_menu_page.dart.dart';
@@ -16,6 +17,10 @@ final companyRouter = [
   GoRoute(
     path: AppRoutes.company,
     builder: (_, __) => InternalCompanyProfilePage(),
+  ),
+  GoRoute(
+    path: AppRoutes.companyFLowConfig,
+    builder: (_, __) => InternalCompanyConfigFlow(),
   ),
   GoRoute(
     path: AppRoutes.companyUpdate,

@@ -116,6 +116,12 @@ class _InternalCompanyManageMenuPageState
                 context.push(AppRoutes.companyFaqConfig);
               }),
           MenuItem(
+              icon: AppIcon.flowBusiness,
+              label: "Konfigurasi Flow bisnis",
+              onTap: () {
+                context.push(AppRoutes.companyFLowConfig);
+              }),
+          MenuItem(
               icon: AppIcon.help,
               label: "Bantuan",
               onTap: () {

@@ -23,6 +23,7 @@ class AppIcon {
   static const IconData membership = Icons.workspace_premium_rounded;
   static const IconData company = Icons.home_work_outlined;
   static const IconData template = LucideIcons.layoutTemplate;
+  static const IconData flowBusiness = LucideIcons.workflow;
 
   // Icon For Field Type
   static const IconData textField = Icons.text_format;
@@ -72,4 +73,5 @@ class AppIcon {
   static const IconData step = LucideIcons.circle;
   static const IconData branch = LucideIcons.fileStack;
   static const IconData pic = LucideIcons.userCog2;
+  static const IconData lock = LucideIcons.lock;
 }
