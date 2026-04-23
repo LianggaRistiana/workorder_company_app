@@ -273,6 +273,7 @@ class _RegisterCommonPageState extends State<RegisterCommonPage> {
     );
   }
 
+  // OPTIMIZE : Use Button with loading state
   Widget _buildRegisterButton() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),

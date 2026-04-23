@@ -7,6 +7,7 @@ import 'package:workorder_company_app/features/company/presentation/bloc/interna
 import 'package:workorder_company_app/features/company/presentation/bloc/internal_company_management/internal_company_get_state.dart';
 import 'package:workorder_company_app/features/company/presentation/widgets/internal_company_card.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/widgets/active_status_chip.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/property_display.dart';
@@ -59,8 +60,7 @@ class _InternalCompanyProfilePageState
                 children: [
                   Hero(
                     tag: "company-card",
-                    child:
-                        InternalCompanyCard(), 
+                    child: InternalCompanyCard(),
                   ),
                   const SizedBox(height: AppSpacing.md),
                   CustomCard(
@@ -69,6 +69,12 @@ class _InternalCompanyProfilePageState
                         label: "Nama Perusahaan",
                         icon: AppIcon.company,
                         value: company.name),
+                    PropertyItem.widget(
+                        label: "Status Aktif",
+                        icon: AppIcon.activeState,
+                        child: ActiveStatusChip(
+                          isActive: company.isActive,
+                        )),
                     PropertyItem.text(
                       label: "Alamat",
                       icon: Icons.location_on_outlined,
@@ -87,6 +93,7 @@ class _InternalCompanyProfilePageState
                   TextButton.icon(
                     onPressed: () {
                       debugPrint("Edit Profil Perusahaan");
+                      // FIXME : Doesnt update UI after update company data
                       context.push(AppRoutes.companyUpdate, extra: company);
                     },
                     label: Text("Edit Profil Perusahaan"),

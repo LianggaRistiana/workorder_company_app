@@ -64,6 +64,7 @@ class _PositionsListView extends StatelessWidget {
           ),
           floatingActionButton: FloatingActionButton.extended(
             onPressed: () async {
+              // OPTIMIZE : Remove this later if bloc already watch repo cache state
               final result =
                   await context.push<PositionEntity>(AppRoutes.positionsCreate);
 

@@ -10,8 +10,9 @@ class PositionsListBloc extends Bloc<PositionsListEvent, PositionsListState> {
   PositionsListBloc({required this.getPositionsUseCase})
       : super(const PositionsListState()) {
     on<GetPositionsListRequested>(_onGetPositionsRequested);
-    // on<NewPositionAdded>(_onNewPositionAdded);
   }
+
+  // OPTIMIZE : watch for position repo for cache update. follow work order for pattern
 
   Future<void> _onGetPositionsRequested(
       GetPositionsListRequested event, Emitter<PositionsListState> emit) async {
@@ -34,11 +35,4 @@ class PositionsListBloc extends Bloc<PositionsListEvent, PositionsListState> {
       )),
     );
   }
-
-  // Future<void> _onNewPositionAdded(
-  //     NewPositionAdded event, Emitter<PositionsListState> emit) async {
-  //   emit(state.copyWith(
-  //     positions: [event.position, ...state.positions],
-  //   ));
-  // }
 }

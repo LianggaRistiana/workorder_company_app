@@ -305,6 +305,7 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
     );
   }
 
+  // OPTIMIZE : Use Button with loading state
   Widget _buildRegisterButton(bool isLoading) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
