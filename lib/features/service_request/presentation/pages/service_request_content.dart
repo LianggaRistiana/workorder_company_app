@@ -82,9 +82,15 @@ class ServiceRequestContent extends StatelessWidget {
             PropertyItem.text(
                 label: "Diajukan pada",
                 value: serviceRequest.statusDate.getCreatedAtString(),
-                icon: AppIcon.dateField)
+                icon: AppIcon.dateField),
+            PropertyItem.widget(
+              label: "Status",
+              icon: AppIcon.step,
+              child: ServiceRequestStepCard(
+                  currentStatus: serviceRequest.status,
+                  statusDate: serviceRequest.statusDate),
+            )
           ])),
-      ServiceRequestStepCard(currentStatus: serviceRequest.status),
       const SizedBox(
         height: AppSpacing.md,
       ),
