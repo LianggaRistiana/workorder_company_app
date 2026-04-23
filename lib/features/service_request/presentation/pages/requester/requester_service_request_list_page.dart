@@ -37,7 +37,7 @@ class RequesterServiceRequestListPage extends StatelessWidget {
         return ListPageScaffold<RequesterServiceRequestEntity>(
           title: 'Daftar Permintaan Layanan',
           isLoading: state.status == RequesterServiceRequestsListStatus.loading,
-          onRefresh: () async {},
+          onRefresh: () async {}, // TODO : add refresh here
           floatingActionButton: FloatingActionButton.extended(
                   icon: Icon(AppIcon.send),
                   onPressed: () => context.push(AppRoutes.services,

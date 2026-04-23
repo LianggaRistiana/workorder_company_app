@@ -31,7 +31,7 @@ class ProviderServiceRequestModel extends ProviderServiceRequestEntity {
         approvedBy: json.field('approvedBy').optModel(UserModel.fromJson),
         reviewNeed: json.field('reviewNeed').reqBool(),
         approvalAccess: json
-            .field('workOrderApprovalAccessType')
+            .field('serviceRequestApprovalAccessType')
             .reqEnum(ServiceRequestApprovalAccess.fromString),
         intakeForm: json['intakeForm'] == null
             ? null

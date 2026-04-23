@@ -26,8 +26,7 @@ class ProviderServiceRequestRemoteDatasourceImpl
         await _apiClient.patch(Endpoints.serviceRequestApprove.fillId(id));
     return ApiResponse.fromJson(
       response,
-      (json) => ProviderServiceRequestModel.fromJson(json[
-          'serviceRequest']), // FIXME[WO DONE FIRST] : combine this model with SR and WO object
+      (json) => ProviderServiceRequestModel.fromJson(json),
     );
   }
 
