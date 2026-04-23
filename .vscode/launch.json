@@ -13,7 +13,7 @@
             "name": "workorder_company_app (profile mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "profile"
+            "flutterMode": "profile",
         },
         {
             "name": "workorder_company_app (release mode)",

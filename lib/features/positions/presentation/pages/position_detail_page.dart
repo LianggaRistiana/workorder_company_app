@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
+import 'package:workorder_company_app/features/employees/presentation/widget/positioned_employee_list.dart';
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/detail/position_detail_cubit.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/detail/position_detail_state.dart';
@@ -156,7 +157,7 @@ class _DetailContent extends StatelessWidget {
             icon: AppIcon.employee,
           ),
           const SizedBox(height: AppSpacing.md),
-          const Text("Belum ada pegawai."),
+          PositionedEmployeeList(position: position)
         ]),
       ),
     );

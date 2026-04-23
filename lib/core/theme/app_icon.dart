@@ -39,7 +39,7 @@ class AppIcon {
   // Icon For Action
   static const IconData submit = LucideIcons.uploadCloud;
   static const IconData send = LucideIcons.send;
-  static const IconData edit = LucideIcons.edit3;
+  static const IconData edit = Icons.edit;
   static const IconData delete = LucideIcons.trash;
   static const IconData cancel = LucideIcons.trash;
   static const IconData reject = LucideIcons.x;
