@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/service_request/domain/entities/service_request_entity.dart';
@@ -82,8 +81,7 @@ class ServiceRequestContent extends StatelessWidget {
                   icon: AppIcon.approve),
             PropertyItem.text(
                 label: "Diajukan pada",
-                value: DateFormat('d MMMM yyyy', 'id_ID')
-                    .format(serviceRequest.createdAt),
+                value: serviceRequest.statusDate.getCreatedAtString(),
                 icon: AppIcon.dateField)
           ])),
       ServiceRequestStepCard(currentStatus: serviceRequest.status),

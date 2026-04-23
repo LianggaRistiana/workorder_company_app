@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/company/domain/entities/company_entity.dart';
 import 'package:workorder_company_app/features/service_request/domain/entities/service_request_entity.dart';
@@ -75,8 +74,7 @@ class ServiceRequestItem extends StatelessWidget {
                       ],
                       const Spacer(),
                       Text(
-                        DateFormat('d MMM yyyy', 'id_ID')
-                            .format(serviceRequest.createdAt),
+                        serviceRequest.statusDate.getCreatedAtString(),
                         textAlign: TextAlign.end,
                         style: Theme.of(context).textTheme.bodySmall,
                       ),

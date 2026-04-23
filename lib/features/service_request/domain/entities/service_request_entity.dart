@@ -2,6 +2,7 @@ import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 import 'package:workorder_company_app/features/company/domain/entities/company_entity.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/filled_form_entity.dart';
+import 'package:workorder_company_app/features/service_request/domain/entities/service_request_status_date_entity.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_summary_entity.dart';
 
 sealed class ServiceRequestEntity {
@@ -13,7 +14,7 @@ sealed class ServiceRequestEntity {
   final UserEntity? approvedBy;
   final FilledFormEntity? intakeForm;
   final FilledFormEntity? reviewForm;
-  final DateTime createdAt;
+  final ServiceRequestStatusDateEntity statusDate;
 
   const ServiceRequestEntity({
     required this.id,
@@ -24,7 +25,7 @@ sealed class ServiceRequestEntity {
     required this.requestedBy,
     this.intakeForm,
     this.reviewForm,
-    required this.createdAt,
+    required this.statusDate,
   });
 }
 
@@ -46,7 +47,7 @@ class ProviderServiceRequestEntity implements ServiceRequestEntity {
   @override
   final FilledFormEntity? reviewForm;
   @override
-  final DateTime createdAt;
+  final ServiceRequestStatusDateEntity statusDate;
 
   final bool reviewNeed;
   final ServiceRequestApprovalAccess approvalAccess;
@@ -62,7 +63,7 @@ class ProviderServiceRequestEntity implements ServiceRequestEntity {
     this.reviewForm,
     required this.reviewNeed,
     required this.approvalAccess,
-    required this.createdAt,
+    required this.statusDate,
   });
 }
 
@@ -84,7 +85,7 @@ class RequesterServiceRequestEntity implements ServiceRequestEntity {
   @override
   final FilledFormEntity? reviewForm;
   @override
-  final DateTime createdAt;
+  final ServiceRequestStatusDateEntity statusDate;
 
   final CompanyEntity company;
 
@@ -98,6 +99,6 @@ class RequesterServiceRequestEntity implements ServiceRequestEntity {
     this.intakeForm,
     this.reviewForm,
     required this.company,
-    required this.createdAt,
+    required this.statusDate,
   });
 }

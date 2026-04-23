@@ -13,6 +13,7 @@ import 'package:workorder_company_app/features/forms/data/model/form_model.dart'
 import 'package:workorder_company_app/features/forms/data/model/option_model.dart';
 import 'package:workorder_company_app/features/service_request/data/datasources/requester_service_request_remote_datasource.dart';
 import 'package:workorder_company_app/features/service_request/data/model/requester_service_request_model.dart';
+import 'package:workorder_company_app/features/service_request/data/model/service_request_status_date_model.dart';
 import 'package:workorder_company_app/features/services/data/model/service_summary_model.dart';
 import 'package:workorder_company_app/features/submissions/data/model/field_data_model.dart';
 import 'package:workorder_company_app/features/submissions/data/model/submissions_model.dart';
@@ -21,6 +22,7 @@ class MockRequesterServiceRequestDatasource
     implements RequesterServiceRequestRemoteDatasource {
   final List<RequesterServiceRequestModel> _storage = [
     RequesterServiceRequestModel(
+      statusDate: ServiceRequestStatusDateModel(),
       id: "req-1",
       code: "SR-001",
       status: ServiceRequestStatus.received,
@@ -163,7 +165,6 @@ class MockRequesterServiceRequestDatasource
           ],
         ),
       ),
-      createdAt: DateTime.now().subtract(const Duration(days: 1)),
     ),
   ];
 
@@ -324,6 +325,7 @@ class MockRequesterServiceRequestDatasource
     final existing = _storage[index];
 
     final updated = RequesterServiceRequestModel(
+      statusDate: ServiceRequestStatusDateModel(),
       id: existing.id,
       code: existing.code,
       status: ServiceRequestStatus.received,
@@ -337,7 +339,6 @@ class MockRequesterServiceRequestDatasource
             )
           : null,
       reviewForm: existing.reviewForm,
-      createdAt: existing.createdAt,
     );
 
     _storage[index] = updated;
@@ -390,7 +391,7 @@ class MockRequesterServiceRequestDatasource
       company: existing.company,
       intakeForm: existing.intakeForm,
       reviewForm: existing.reviewForm,
-      createdAt: existing.createdAt,
+      statusDate: ServiceRequestStatusDateModel(),
     );
 
     _storage[index] = updated;

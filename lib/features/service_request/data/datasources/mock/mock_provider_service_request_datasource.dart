@@ -10,6 +10,7 @@ import 'package:workorder_company_app/features/forms/data/model/form_model.dart'
 import 'package:workorder_company_app/features/forms/data/model/option_model.dart';
 import 'package:workorder_company_app/features/service_request/data/datasources/provider_service_request_remote_datasource.dart';
 import 'package:workorder_company_app/features/service_request/data/model/provider_service_request_model.dart';
+import 'package:workorder_company_app/features/service_request/data/model/service_request_status_date_model.dart';
 import 'package:workorder_company_app/features/services/data/model/service_summary_model.dart';
 import 'package:workorder_company_app/features/submissions/data/model/field_data_model.dart';
 import 'package:workorder_company_app/features/submissions/data/model/submissions_model.dart';
@@ -18,6 +19,7 @@ class MockProviderServiceRequestDatasource
     implements ProviderServiceRequestRemoteDatasource {
   final List<ProviderServiceRequestModel> _storage = [
     ProviderServiceRequestModel(
+      statusDate: ServiceRequestStatusDateModel(),
       id: "req-1",
       code: "SR-001",
       status: ServiceRequestStatus.received,
@@ -95,7 +97,6 @@ class MockProviderServiceRequestDatasource
         ),
       ),
       reviewForm: null,
-      createdAt: DateTime.now().subtract(const Duration(days: 1)),
     ),
   ];
 
@@ -145,7 +146,7 @@ class MockProviderServiceRequestDatasource
       approvalAccess: existing.approvalAccess,
       intakeForm: existing.intakeForm,
       reviewForm: existing.reviewForm,
-      createdAt: existing.createdAt,
+      statusDate: ServiceRequestStatusDateModel(),
     );
 
     _storage[index] = updated;
@@ -169,6 +170,7 @@ class MockProviderServiceRequestDatasource
     final existing = _storage[index];
 
     final updated = ProviderServiceRequestModel(
+      statusDate: ServiceRequestStatusDateModel(),
       id: existing.id,
       code: existing.code,
       status: ServiceRequestStatus.rejected,
@@ -178,7 +180,6 @@ class MockProviderServiceRequestDatasource
       approvalAccess: existing.approvalAccess,
       intakeForm: existing.intakeForm,
       reviewForm: existing.reviewForm,
-      createdAt: existing.createdAt,
     );
 
     _storage[index] = updated;
