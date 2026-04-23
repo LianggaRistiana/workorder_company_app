@@ -13,6 +13,7 @@ class FormsSelectorContainer extends StatelessWidget {
   });
 
   final List<FormEntity> selectedForms;
+  // TODO : add form params type here
   final void Function(FormEntity) onAdd;
 
   final Widget Function(
@@ -26,7 +27,8 @@ class FormsSelectorContainer extends StatelessWidget {
     return BlocBuilder<FormsListBloc, FormsListState>(
       builder: (context, state) {
         final isLoading = state.status == FormsListStatus.loading;
-        final availableForms = state.forms;
+        final availableForms =
+            state.forms; // TODO : temp solution filtering here
 
         return FormsSelector(
           selectedForms: selectedForms,

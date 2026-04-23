@@ -71,5 +71,5 @@ class AppIcon {
   static const IconData add = LucideIcons.plus;
   static const IconData step = LucideIcons.circle;
   static const IconData branch = LucideIcons.fileStack;
-  static const IconData pic = Icons.verified;
+  static const IconData pic = LucideIcons.userCog2;
 }

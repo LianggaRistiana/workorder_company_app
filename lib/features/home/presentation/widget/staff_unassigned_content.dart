@@ -12,6 +12,7 @@ class StaffUnassignedContent extends StatelessWidget {
         children: [
           InformationBlock.info(
               "Saat ini anda belum tergabung ke perusahaan manapun"),
+          // TODO : add svg illustrator here
         ]);
   }
 }

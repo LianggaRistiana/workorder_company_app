@@ -71,6 +71,7 @@ import 'package:workorder_company_app/core/authorization/enums/permission_action
 ///   - cancel
 ///   - complete
 ///   - fail
+///   - fill
 ///
 /// • [worker]
 ///   Intended for employees assigned to execute work orders:
@@ -87,7 +88,7 @@ import 'package:workorder_company_app/core/authorization/enums/permission_action
 /// - Permission grouping is responsibility-based, not hierarchical.
 /// - Enforcement must be handled in the authorization layer.
 /// - UI visibility alone is not sufficient for access control.
-/// 
+///
 class WorkOrderPermissions {
   static const view =
       AppPermission(AppFeature.workOrder, PermissionAction.view);
@@ -128,6 +129,7 @@ class WorkOrderPermissions {
     create,
     cancel,
     complete,
+    fill,
     fail,
     send
   };
