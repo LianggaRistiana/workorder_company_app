@@ -72,7 +72,7 @@ class _ServiceRequestStepCardAnimatedState
       borderColor: Colors.transparent,
       elevation: 0,
       onTap: () => setState(() => isExpanded = !isExpanded),
-      padding: const EdgeInsets.all(AppSpacing.md),
+      padding: const EdgeInsets.all(AppSpacing.xs),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -87,11 +87,7 @@ class _ServiceRequestStepCardAnimatedState
                 child: !isExpanded
                     ? Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: widget.currentStatus.color.withAlpha(50),
-                          borderRadius: BorderRadius.circular(20), // chip style
-                        ),
+                            horizontal: 12, vertical: 6),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
