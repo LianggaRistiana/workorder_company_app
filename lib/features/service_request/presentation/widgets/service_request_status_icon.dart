@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:workorder_company_app/core/constants/app_enums/service_request_enum.dart';
+import 'package:workorder_company_app/features/service_request/presentation/ui_mappers.dart/service_request_status_color_mapper.dart';
+import 'package:workorder_company_app/features/service_request/presentation/ui_mappers.dart/service_request_status_icon_mapper.dart';
 
 // TODO : add ui mapper by enum for UI icon and colors. follow work order for pattern
 class ServiceRequestStatusIcon extends StatelessWidget {
@@ -9,60 +11,15 @@ class ServiceRequestStatusIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = _statusColor(status);
-    final icon = _statusIcon(status);
-
     return Container(
       width: 60,
       height: 70,
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       decoration: BoxDecoration(
-        color: color.withAlpha(50),
+        color: status.color.withAlpha(50),
         borderRadius: BorderRadius.circular(12),
       ),
-      child: Icon(icon, color: color, size: 28),
+      child: Icon(status.icon, color: status.color, size: 28),
     );
-  }
-
-  Color _statusColor(ServiceRequestStatus status) {
-    switch (status) {
-      case ServiceRequestStatus.received:
-        return Colors.orange;
-      case ServiceRequestStatus.approved:
-        return Colors.blue;
-      case ServiceRequestStatus.onProgress:
-        return Colors.amber;
-      case ServiceRequestStatus.closed:
-        return Colors.blue;
-      case ServiceRequestStatus.completed:
-        return Colors.green;
-      case ServiceRequestStatus.cancelled:
-        return Colors.red;
-      case ServiceRequestStatus.rejected:
-        return Colors.red;
-    }
-  }
-
-  IconData _statusIcon(ServiceRequestStatus status) {
-    switch (status) {
-      case ServiceRequestStatus.received:
-        return Icons.inbox;
-
-      case ServiceRequestStatus.approved:
-        return Icons.check_circle;
-      case ServiceRequestStatus.closed:
-        return Icons.check_circle;
-      case ServiceRequestStatus.onProgress:
-        return Icons.scale;
-
-      case ServiceRequestStatus.completed:
-        return Icons.done_all;
-
-      case ServiceRequestStatus.cancelled:
-        return Icons.cancel;
-
-      case ServiceRequestStatus.rejected:
-        return Icons.block;
-    }
   }
 }

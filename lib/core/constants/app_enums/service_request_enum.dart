@@ -7,9 +7,10 @@ enum ServiceRequestStatus {
   rejected,
   approved,
   onProgress,
+  unProcessable,
   completed,
+  partiallyCompleted,
   closed;
-  // FIXME : update status to fit with contract
 
   static ServiceRequestStatus fromString(String value) {
     return switch (value) {
@@ -19,6 +20,8 @@ enum ServiceRequestStatus {
       'approved' => ServiceRequestStatus.approved,
       'on_progress' => ServiceRequestStatus.onProgress,
       'completed' => ServiceRequestStatus.completed,
+      'unprocessable' => ServiceRequestStatus.unProcessable,
+      'partial_completed' => ServiceRequestStatus.partiallyCompleted,
       'closed' => ServiceRequestStatus.closed,
       _ => throw ParsingException('Unknown ServiceRequestStatus: $value'),
     };
@@ -34,6 +37,8 @@ extension ServiceRequestStatusX on ServiceRequestStatus {
       ServiceRequestStatus.approved => 'Disetujui',
       ServiceRequestStatus.onProgress => 'Diproses',
       ServiceRequestStatus.completed => 'Selesai',
+      ServiceRequestStatus.unProcessable => 'Tidak bisa diproses',
+      ServiceRequestStatus.partiallyCompleted => 'Selesai Sebagian',
       ServiceRequestStatus.closed => 'Ditutup',
     };
   }
@@ -46,4 +51,7 @@ extension ServiceRequestStatusX on ServiceRequestStatus {
 /// Used to identify the Service Request detail page in routing.
 /// The same route is reused, but the displayed page depends on
 /// the extra value provided through this enum.
-enum ServiceRequestSide { provider, requester }
+enum ServiceRequestSide {
+  provider,
+  requester,
+}

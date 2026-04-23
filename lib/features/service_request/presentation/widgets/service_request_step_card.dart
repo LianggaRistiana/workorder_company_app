@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:workorder_company_app/core/constants/app_enums/service_request_enum.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
+import 'package:workorder_company_app/features/service_request/presentation/ui_mappers.dart/service_request_status_color_mapper.dart';
+import 'package:workorder_company_app/features/service_request/presentation/ui_mappers.dart/service_request_status_icon_mapper.dart';
 import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
 
 class ServiceRequestStepCard extends StatefulWidget {
@@ -45,7 +47,6 @@ class _ServiceRequestStepCardAnimatedState
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header dengan AnimatedSwitcher
           Row(
             children: [
               AnimatedSwitcher(
@@ -59,23 +60,22 @@ class _ServiceRequestStepCardAnimatedState
                         padding: const EdgeInsets.symmetric(
                             horizontal: 12, vertical: 4),
                         decoration: BoxDecoration(
-                          color:
-                              _statusColor(widget.currentStatus).withAlpha(50),
+                          color: widget.currentStatus.color.withAlpha(50),
                           borderRadius: BorderRadius.circular(20), // chip style
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Icon(
-                              _statusIcon(widget.currentStatus),
-                              color: _statusColor(widget.currentStatus),
+                              widget.currentStatus.icon,
+                              color: widget.currentStatus.color,
                               size: 18,
                             ),
                             const SizedBox(width: 6),
                             Text(
                               widget.currentStatus.displayName,
                               style: TextStyle(
-                                color: _statusColor(widget.currentStatus),
+                                color: widget.currentStatus.color,
                                 fontWeight: FontWeight.w600,
                                 fontSize: 13,
                               ),
@@ -89,8 +89,6 @@ class _ServiceRequestStepCardAnimatedState
               Icon(isExpanded ? Icons.expand_less : Icons.expand_more),
             ],
           ),
-
-          // Step indicator dengan AnimatedContainer
           AnimatedSize(
             duration: const Duration(milliseconds: 200),
             curve: Curves.easeInOut,
@@ -101,7 +99,6 @@ class _ServiceRequestStepCardAnimatedState
                           stepOrder.indexOf(widget.currentStatus);
                       return Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        // mainAxisAlignment: MainAxisAlignment.ende,
                         children: [
                           Column(
                             children: [
@@ -114,7 +111,6 @@ class _ServiceRequestStepCardAnimatedState
                                       : theme.disabledColor,
                                   shape: BoxShape.circle,
                                 ),
-                                // child: Icon,
                               ),
                               if (status != stepOrder.last)
                                 Container(
@@ -152,48 +148,5 @@ class _ServiceRequestStepCardAnimatedState
         ],
       ),
     );
-  }
-
-  // TODO : use color and icon from ui mapper by enum
-  Color _statusColor(ServiceRequestStatus status) {
-    switch (status) {
-      case ServiceRequestStatus.received:
-        return Colors.orange;
-      case ServiceRequestStatus.approved:
-        return Colors.blue;
-      case ServiceRequestStatus.onProgress:
-        return Colors.amber;
-      case ServiceRequestStatus.closed:
-        return Colors.blue;
-      case ServiceRequestStatus.completed:
-        return Colors.green;
-      case ServiceRequestStatus.cancelled:
-        return Colors.red;
-      case ServiceRequestStatus.rejected:
-        return Colors.red;
-    }
-  }
-
-  IconData _statusIcon(ServiceRequestStatus status) {
-    switch (status) {
-      case ServiceRequestStatus.received:
-        return Icons.inbox;
-
-      case ServiceRequestStatus.approved:
-        return Icons.check_circle;
-      case ServiceRequestStatus.closed:
-        return Icons.check_circle;
-      case ServiceRequestStatus.onProgress:
-        return Icons.scale;
-
-      case ServiceRequestStatus.completed:
-        return Icons.done_all;
-
-      case ServiceRequestStatus.cancelled:
-        return Icons.cancel;
-
-      case ServiceRequestStatus.rejected:
-        return Icons.block;
-    }
   }
 }

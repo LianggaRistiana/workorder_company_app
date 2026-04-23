@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:workorder_company_app/core/constants/app_enums/service_request_enum.dart';
+import 'package:workorder_company_app/features/service_request/presentation/ui_mappers.dart/service_request_status_color_mapper.dart';
+import 'package:workorder_company_app/features/service_request/presentation/ui_mappers.dart/service_request_status_icon_mapper.dart';
 
 class ServiceRequestStatusChip extends StatelessWidget {
   final ServiceRequestStatus status;
@@ -10,13 +12,11 @@ class ServiceRequestStatusChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = _statusColor(status);
-    final icon = _statusIcon(status);
     final label = status.displayName;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withAlpha(50),
+        color: status.color.withAlpha(50),
         borderRadius: BorderRadius.circular(20), // chip style
       ),
       child: Row(
@@ -24,8 +24,8 @@ class ServiceRequestStatusChip extends StatelessWidget {
         children: [
           if (showIcon) ...[
             Icon(
-              icon,
-              color: color,
+              status.icon,
+              color: status.color,
               size: 18,
             ),
             const SizedBox(width: 6),
@@ -33,7 +33,7 @@ class ServiceRequestStatusChip extends StatelessWidget {
           Text(
             label,
             style: TextStyle(
-              color: color,
+              color: status.color,
               fontWeight: FontWeight.w600,
               fontSize: 13,
             ),
@@ -41,48 +41,5 @@ class ServiceRequestStatusChip extends StatelessWidget {
         ],
       ),
     );
-  }
-}
-
-Color _statusColor(ServiceRequestStatus status) {
-  // TODO[Low] : fix color of this color
-  switch (status) {
-    case ServiceRequestStatus.received:
-      return Colors.orange;
-    case ServiceRequestStatus.approved:
-      return Colors.blue;
-    case ServiceRequestStatus.onProgress:
-      return Colors.amber;
-    case ServiceRequestStatus.closed:
-      return Colors.blue;
-    case ServiceRequestStatus.completed:
-      return Colors.green;
-    case ServiceRequestStatus.cancelled:
-      return Colors.red;
-    case ServiceRequestStatus.rejected:
-      return Colors.red;
-  }
-}
-
-IconData _statusIcon(ServiceRequestStatus status) {
-  switch (status) {
-    case ServiceRequestStatus.received:
-      return Icons.inbox;
-
-    case ServiceRequestStatus.approved:
-      return Icons.check_circle;
-    case ServiceRequestStatus.closed:
-      return Icons.check_circle;
-    case ServiceRequestStatus.onProgress:
-      return Icons.scale;
-
-    case ServiceRequestStatus.completed:
-      return Icons.done_all;
-
-    case ServiceRequestStatus.cancelled:
-      return Icons.cancel;
-
-    case ServiceRequestStatus.rejected:
-      return Icons.block;
   }
 }
