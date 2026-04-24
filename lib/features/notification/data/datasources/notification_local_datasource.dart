@@ -12,7 +12,7 @@ abstract class NotificationLocalDataSource {
   /// Subscribe ke topic / channel OS agar notifikasi aktif
   Future<void> subscribe();
 
-  /// Unsubscribe / disable channel
+  /// Unsubscribe / disable channelF
   Future<void> unsubscribe();
 
   /// Cek apakah subscription aktif
@@ -28,7 +28,8 @@ class NotificationLocalDataSourceImpl implements NotificationLocalDataSource {
 
     if (status.isGranted) return NotificationPermissionStatus.granted;
     if (status.isDenied) return NotificationPermissionStatus.denied;
-    if (status.isPermanentlyDenied) return NotificationPermissionStatus.permanentlyDenied;
+    if (status.isPermanentlyDenied)
+      return NotificationPermissionStatus.permanentlyDenied;
 
     // fallback
     return NotificationPermissionStatus.denied;
@@ -42,7 +43,8 @@ class NotificationLocalDataSourceImpl implements NotificationLocalDataSource {
 
     if (status.isGranted) return NotificationPermissionStatus.granted;
     if (status.isDenied) return NotificationPermissionStatus.denied;
-    if (status.isPermanentlyDenied) return NotificationPermissionStatus.permanentlyDenied;
+    if (status.isPermanentlyDenied)
+      return NotificationPermissionStatus.permanentlyDenied;
 
     return NotificationPermissionStatus.denied;
   }

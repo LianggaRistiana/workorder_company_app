@@ -2,7 +2,7 @@ enum NotificationPermissionStatus {
   granted,
   denied,
   permanentlyDenied,
-}
+} // OPTIMIZE : move this enum to core
 
 class NotificationOSStatus {
   final NotificationPermissionStatus permission;
