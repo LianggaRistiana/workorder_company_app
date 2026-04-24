@@ -20,6 +20,7 @@ final sl = GetIt.instance;
 Future<void> init() async {
   /// Core
   sl.registerLazySingleton<TokenStorage>(() => TokenStorage());
+  // sl.registerLazySingleton<FirebaseMessaging>(() => FirebaseMessaging.instance);
   sl.registerLazySingleton<ApiClient>(() => DioApiClient(tokenStorage: sl()));
 
   // FIXME[High] : register chace registry here for clear all chace when logout

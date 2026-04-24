@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/services/navigation/app_navigator_key.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/routes/common_router.dart';
 import 'package:workorder_company_app/routes/feature_routes.dart/company_route.dart';
@@ -18,6 +19,7 @@ import 'package:workorder_company_app/shared/page/not_found_page.dart';
 
 final GoRouter appRouter = GoRouter(
     initialLocation: AppRoutes.home,
+    navigatorKey: navigatorKey,
     redirect: (context, state) => AuthGuard.redirect(state.matchedLocation),
     routes: [
       ShellRoute(

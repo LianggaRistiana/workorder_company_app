@@ -42,7 +42,8 @@ class NotificationRepositoryImpl implements NotificationRepository {
 
   @override
   Future<NotificationActionResult> enable() async {
-    final permission = await _local.requestPermission();
+    final permission = await _fcm.requestPermission();
+    // final permission = await _local.requestPermission();
 
     if (permission.isDenied) {
       return NotificationActionResult.permissionDenied;
@@ -90,7 +91,8 @@ class NotificationRepositoryImpl implements NotificationRepository {
   @override
   Future<bool> isEnabled() async {
     final local = await _local.isNotificationEnabled();
-    final permission = await _local.checkPermission();
+    // final permission = await _local.checkPermission();
+    final permission = await _fcm.checkPermission();
 
     return local && permission.isGranted;
   }

@@ -1,8 +1,11 @@
 import 'dart:async';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/core/constants/app_config.dart';
+import 'package:workorder_company_app/core/services/fcm/fcm_listener.dart';
 import 'package:workorder_company_app/core/theme/app_theme.dart';
 import 'package:workorder_company_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:workorder_company_app/features/auth/presentation/bloc/auth_bloc.dart';
@@ -21,6 +24,10 @@ void main() {
       debugPrint('FlutterError caught: ${details.exception}');
     };
 
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+
     await di.init();
     await initializeDateFormatting('id_ID', null);
 
@@ -34,8 +41,21 @@ void main() {
   });
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final FcmListener _listener = di.sl<FcmListener>();
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() => _listener.init());
+  }
 
   @override
   Widget build(BuildContext context) {
