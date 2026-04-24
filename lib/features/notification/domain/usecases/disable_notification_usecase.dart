@@ -1,13 +1,17 @@
-import 'package:workorder_company_app/features/notification/domain/entitties/notification_os_status.dart';
+import 'package:workorder_company_app/core/constants/app_enums/notification_enum.dart';
 import 'package:workorder_company_app/features/notification/domain/repositories/notification_repository.dart';
 
-class DisableNotificationUsecase {
-  final NotificationRepository repository;
+/// Disables notification system for the user.
+///
+/// Flow:
+/// - Remove FCM token from backend
+/// - Update local preference to disabled
+class DisableNotificationUseCase {
+  final NotificationRepository _repository;
 
-  DisableNotificationUsecase(this.repository);
+  DisableNotificationUseCase(this._repository);
 
-  Future<NotificationOSStatus> call() async {
-    await repository.disable();
-    return await repository.getOSStatus();
+  Future<NotificationActionResult> call() {
+    return _repository.disable();
   }
 }

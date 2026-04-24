@@ -31,6 +31,9 @@ dependencies:
   permission_handler: ^11.0.0
   flutter_svg: ^2.1.1
   flutter_expandable_fab: ^2.5.1
+  firebase_core: ^4.7.0
+  firebase_messaging: ^16.2.0
+
 
 dev_dependencies:
   flutter_test:

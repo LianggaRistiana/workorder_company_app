@@ -1,6 +1,6 @@
 import 'package:workorder_company_app/core/constants/app_enums/notification_enum.dart';
 import 'package:workorder_company_app/core/utils/safe_parse.dart';
-import 'package:workorder_company_app/features/notification/domain/entitties/notification_log_entity.dart';
+import 'package:workorder_company_app/features/notification/domain/entities/notification_log_entity.dart';
 
 class NotificationLogModel extends NotificationLogEntity {
   NotificationLogModel(
@@ -21,6 +21,18 @@ class NotificationLogModel extends NotificationLogEntity {
       resource: ResourceType.fromString(json.field('resource').reqString()),
       resourceId: json.field('resource_id').reqString(),
       isRead: json.field('is_read').reqBool(),
+    );
+  }
+
+  NotificationLogEntity toEntity() {
+    return NotificationLogEntity(
+      id: id,
+      title: title,
+      body: body,
+      createdAt: createdAt,
+      resource: resource,
+      resourceId: resourceId,
+      isRead: isRead,
     );
   }
 }

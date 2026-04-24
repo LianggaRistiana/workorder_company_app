@@ -1,70 +1,77 @@
-import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:workorder_company_app/features/notification/domain/entitties/notification_os_status.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:workorder_company_app/core/constants/app_enums/notification_enum.dart';
 
+/// Handles OS-level notification permission and local subscription state.
+///
+/// Responsibilities:
+/// - Checking and requesting notification permission
+/// - Persisting user preference for enabling/disabling notifications
+///
+/// Note:
+/// This class does NOT interact with Firebase or backend services.
 abstract class NotificationLocalDataSource {
-  /// Cek permission OS sekarang
+  /// Returns the current OS notification permission status.
   Future<NotificationPermissionStatus> checkPermission();
 
-  /// Request permission OS (hanya dipanggil saat user menyalakan notif)
+  /// Requests notification permission from the OS.
   Future<NotificationPermissionStatus> requestPermission();
 
-  /// Subscribe ke topic / channel OS agar notifikasi aktif
-  Future<void> subscribe();
+  /// Marks notifications as enabled locally.
+  Future<void> enableNotifications();
 
-  /// Unsubscribe / disable channelF
-  Future<void> unsubscribe();
+  /// Marks notifications as disabled locally.
+  Future<void> disableNotifications();
 
-  /// Cek apakah subscription aktif
-  Future<bool> isSubscribed();
+  /// Returns whether notifications are enabled locally.
+  Future<bool> isNotificationEnabled();
 }
 
 class NotificationLocalDataSourceImpl implements NotificationLocalDataSource {
+  static const _keyNotificationEnabled = 'notification_enabled';
+
   @override
   Future<NotificationPermissionStatus> checkPermission() async {
-    Logger().i("Check notification Permission");
-    // Cek status permission OS
     final status = await Permission.notification.status;
 
     if (status.isGranted) return NotificationPermissionStatus.granted;
     if (status.isDenied) return NotificationPermissionStatus.denied;
-    if (status.isPermanentlyDenied)
+    if (status.isPermanentlyDenied) {
       return NotificationPermissionStatus.permanentlyDenied;
+    }
 
-    // fallback
     return NotificationPermissionStatus.denied;
   }
 
   @override
   Future<NotificationPermissionStatus> requestPermission() async {
-    Logger().i("Request notification Permission");
-    // Request permission OS
     final status = await Permission.notification.request();
 
     if (status.isGranted) return NotificationPermissionStatus.granted;
     if (status.isDenied) return NotificationPermissionStatus.denied;
-    if (status.isPermanentlyDenied)
+    if (status.isPermanentlyDenied) {
       return NotificationPermissionStatus.permanentlyDenied;
+    }
 
     return NotificationPermissionStatus.denied;
   }
 
   @override
-  Future<void> subscribe() async {
-    // misal: subscribe ke FCM topic atau enable channel
-    // contoh: FirebaseMessaging.instance.subscribeToTopic("all");
+  Future<void> enableNotifications() async {
+    final prefs =
+        await SharedPreferences.getInstance(); // OPTIMIZE : singleton in di
+    await prefs.setBool(_keyNotificationEnabled, true);
   }
 
   @override
-  Future<void> unsubscribe() async {
-    // misal: unsubscribe topic
-    // FirebaseMessaging.instance.unsubscribeFromTopic("all");
+  Future<void> disableNotifications() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_keyNotificationEnabled, false);
   }
 
   @override
-  Future<bool> isSubscribed() async {
-    // cek status subscription
-    // bisa simpan di memory/local storage
-    return true;
+  Future<bool> isNotificationEnabled() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_keyNotificationEnabled) ?? false;
   }
 }
