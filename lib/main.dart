@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:workorder_company_app/features/notification/presentation/bloc/notification_active_cubit.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -65,7 +66,8 @@ class _MyAppState extends State<MyApp> {
           create: (_) =>
               di.sl<AuthBloc>()..add(AuthCheckStatus()), // Auth state for UI
         ),
-        // BlocProvider<NotificationCubit>(create: (_) => di.sl()),
+        BlocProvider<NotificationActiveCubit>(
+            create: (_) => di.sl()), // TODO : remove this later
         BlocProvider<InternalGetCompanyCubit>(
             create: (_) =>
                 di.sl()) // FIXME[Medium]: dont inject here, security issue

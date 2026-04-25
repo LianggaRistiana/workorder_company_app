@@ -90,15 +90,6 @@ class FcmDataSourceImpl implements FcmDataSource {
 
   @override
   Future<NotificationPermissionStatus> checkPermission() async {
-    // final NotificationSettings settings = await _messaging.(
-    //   alert: true,
-    //   announcement: false,
-    //   badge: true,
-    //   carPlay: false,
-    //   criticalAlert: false,
-    //   provisional: false,
-    //   sound: true,
-    // );
     final status = await _messaging.getNotificationSettings();
 
     // HACK : thinks this later
@@ -108,7 +99,7 @@ class FcmDataSourceImpl implements FcmDataSource {
     } else if (status.authorizationStatus == AuthorizationStatus.denied) {
       return NotificationPermissionStatus.denied;
     } else if (status.authorizationStatus == AuthorizationStatus.provisional) {
-      return NotificationPermissionStatus.permanentlyDenied;
+      return NotificationPermissionStatus.denied;
     }
 
     return NotificationPermissionStatus.denied;

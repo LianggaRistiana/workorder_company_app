@@ -6,7 +6,6 @@ class NotificationHandler {
 
   NotificationHandler(this._dispatcher);
 
-  /// Entry point for all notification events
   void handle(NotificationPayloadEntity payload) {
     _dispatcher.dispatch(payload);
   }

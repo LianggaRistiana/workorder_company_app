@@ -17,8 +17,8 @@ class NotificationLogModel extends NotificationLogEntity {
       id: json.field("_id").reqString(),
       title: json.field("title").reqString(),
       body: json.field('body').reqString(),
-      createdAt: DateTime.parse(json.field('created_at').reqString()),
-      resource: ResourceType.fromString(json.field('resource').reqString()),
+      createdAt: json.field('created_at').reqDate(),
+      resource: json.field('resource').reqEnum(ResourceType.fromString),
       resourceId: json.field('resource_id').reqString(),
       isRead: json.field('is_read').reqBool(),
     );

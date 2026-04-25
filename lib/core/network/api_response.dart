@@ -86,7 +86,7 @@ extension ApiResponseMapper<T> on ApiResponseWithMeta<T> {
     );
   }
 
-   Result<T> toResultDynamic({
+  Result<T> toResultDynamic({
     Map<String, ResultMeta Function(dynamic)>? metaFactories,
   }) {
     if (data == null) {

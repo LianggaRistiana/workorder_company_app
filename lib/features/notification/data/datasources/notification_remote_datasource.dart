@@ -1,4 +1,8 @@
+import 'package:workorder_company_app/core/network/api_client.dart';
+import 'package:workorder_company_app/core/network/api_response.dart';
+import 'package:workorder_company_app/core/network/endpoints.dart';
 import 'package:workorder_company_app/core/types/future_api.dart';
+import 'package:workorder_company_app/core/utils/safe_mapper.dart';
 import 'package:workorder_company_app/features/notification/data/model/notification_log_model.dart';
 
 /// Remote data source for notification-related API calls.
@@ -16,8 +20,44 @@ abstract class NotificationRemoteDatasource {
   ApiFutureList<NotificationLogModel> getNotificationLogs();
 
   /// Register FCM token to backend.
-  ApiFuture<void> registerToken(String token);
+  ApiFuture<Empty> registerToken(String token);
 
   /// Unregister FCM token from backend.
-  ApiFuture<void> unregisterToken(String token);
+  ApiFuture<Empty> unregisterToken(String token);
+}
+
+class NotificationRemoteDatasourceImpl implements NotificationRemoteDatasource {
+  final ApiClient _apiClient;
+
+  NotificationRemoteDatasourceImpl(this._apiClient);
+
+  @override
+  ApiFutureList<NotificationLogModel> getNotificationLogs() async {
+    final response = await _apiClient.get(Endpoints.notificationLogs);
+    return ApiResponse.fromJson(
+      response,
+      (json) => SafeMapper.mapList(
+        json,
+        (data) => NotificationLogModel.fromJson(data),
+      ),
+    );
+  }
+
+  @override
+  ApiFuture<Empty> registerToken(String token) async {
+    final response = await _apiClient.post(
+      Endpoints.notificationFcmToken,
+      data: {"token": token},
+    );
+    return ApiResponse.fromJson(response, (_) => Empty());
+  }
+
+  @override
+  ApiFuture<Empty> unregisterToken(String token) async {
+    final response = await _apiClient.delete(
+      Endpoints.notificationFcmToken,
+      data: {"token": token},
+    );
+    return ApiResponse.fromJson(response, (_) => Empty());
+  }
 }

@@ -83,6 +83,10 @@ class Endpoints {
   static const String publicServices = '$clientPrefix/services';
   static publicCompanyServices(String id) =>
       '${publicCompanies.byId(id)}/services';
+
+  // Notifications
+  static const String notificationLogs = '/notifications';
+  static const String notificationFcmToken = '/notifications/fcm-token';
 }
 
 extension EndpointIdExtension on String {

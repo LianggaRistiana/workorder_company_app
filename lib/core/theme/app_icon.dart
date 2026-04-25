@@ -24,6 +24,7 @@ class AppIcon {
   static const IconData company = Icons.home_work_outlined;
   static const IconData template = LucideIcons.layoutTemplate;
   static const IconData flowBusiness = LucideIcons.workflow;
+  static const IconData notification = LucideIcons.bell;
 
   // Icon For Field Type
   static const IconData textField = Icons.text_format;

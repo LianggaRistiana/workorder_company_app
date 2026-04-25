@@ -38,7 +38,7 @@ class NotificationRepositoryImpl implements NotificationRepository {
     }
 
     _listenTokenRefresh();
-  }
+  } // OPTIMIZE : add retry system
 
   @override
   Future<NotificationActionResult> enable() async {
