@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/features/auth/presentation/pages/profile_page.dart';
+import 'package:workorder_company_app/features/notification/presentation/pages/notification_logs_page.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/routes/common_router.dart';
 import 'package:workorder_company_app/routes/feature_routes.dart/company_route.dart';
@@ -41,6 +42,11 @@ final GoRouter appRouter = GoRouter(
             GoRoute(
               path: AppRoutes.profile,
               builder: (_, __) => const ProfilePage(), // HACK FIX THIS LATER
+            ),
+            GoRoute(
+              path: AppRoutes.notifications,
+              builder: (_, __) =>
+                  const NotificationLogsPage(), // HACK FIX THIS LATER
             ),
           ]),
       ...commonRouter,

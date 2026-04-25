@@ -13,6 +13,10 @@ class NotificationLogState extends Equatable {
   final List<NotificationLogEntity> logs;
   final String? errorMessage;
 
+  List<NotificationLogEntity> get unReadLogs =>
+      logs.where((log) => !log.isRead).toList();
+  int get unReadCount => logs.where((log) => !log.isRead).length;
+
   const NotificationLogState({
     this.status = NotificationLogStatus.intiial,
     this.logs = const [],

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/features/notification/domain/entities/notification_payload_entity.dart';
+import 'package:workorder_company_app/features/notification/presentation/ui_mapper.dart/resource_type_icon_mapper.dart';
 import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
 
@@ -42,7 +42,7 @@ class SnackBarContent extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          IconBox.small(icon: AppIcon.notification),
+          IconBox.small(icon: payload.resource.icon),
           const SizedBox(width: 8),
           Expanded(
             child: Column(

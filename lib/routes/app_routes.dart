@@ -71,4 +71,7 @@ class AppRoutes {
   static const publicCompanies = '/public-companies';
   static const publicCompaniesDetail = '/public-companies/:id';
   static const publicServiceDetail = '/public-companies/service/:id';
+
+  // Notification
+  static const notifications = '/notifications';
 }

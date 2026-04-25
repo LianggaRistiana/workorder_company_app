@@ -79,7 +79,9 @@ class _AppNavigationDrawerState extends State<AppNavigationDrawer> {
                     Text("Notifikasi")
                   ],
                 ),
-                onTap: () {}),
+                onTap: () {
+                  context.push(AppRoutes.notifications);
+                }), // TODO : put this on notifications feature
             Expanded(
               child: ListView.builder(
                 itemCount: _items.length,

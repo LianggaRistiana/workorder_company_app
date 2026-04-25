@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:workorder_company_app/core/services/messenger/app_messenger.dart';
 import 'package:workorder_company_app/features/notification/presentation/bloc/notification_active_cubit.dart';
+import 'package:workorder_company_app/features/notification/presentation/bloc/notification_log_cubit.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,7 +13,6 @@ import 'package:workorder_company_app/core/theme/app_theme.dart';
 import 'package:workorder_company_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:workorder_company_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:workorder_company_app/features/company/presentation/bloc/internal_company_management/internal_company_get_cubit.dart';
-// import 'package:workorder_company_app/features/notification/presentation/bloc/notification_cubit.dart';
 import 'package:workorder_company_app/routes/app_router.dart';
 import 'package:workorder_company_app/core/di/injection.dart' as di;
 import 'package:intl/date_symbol_data_local.dart';
@@ -67,6 +67,9 @@ class _MyAppState extends State<MyApp> {
         BlocProvider<AuthBloc>(
           create: (_) =>
               di.sl<AuthBloc>()..add(AuthCheckStatus()), // Auth state for UI
+        ),
+        BlocProvider<NotificationLogCubit>(
+          create: (_) => di.sl()..fetchLogs(),
         ),
         BlocProvider<NotificationActiveCubit>(
             create: (_) => di.sl()), // TODO : remove this later

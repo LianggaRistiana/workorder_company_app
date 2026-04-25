@@ -9,6 +9,7 @@ import 'package:workorder_company_app/features/home/presentation/widget/manager_
 import 'package:workorder_company_app/features/home/presentation/widget/owner_content.dart';
 import 'package:workorder_company_app/features/home/presentation/widget/staff_content.dart';
 import 'package:workorder_company_app/features/home/presentation/widget/staff_unassigned_content.dart';
+import 'package:workorder_company_app/features/notification/presentation/widgets/notification_button.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/orientation_helper.dart';
 import 'package:workorder_company_app/shared/widgets/adaptive_wrapper.dart';
@@ -31,7 +32,6 @@ class _Homepage extends State<Homepage> {
   @override
   void dispose() {
     debugPrint('dispose Home');
-    // OrientationHelper.all();
     super.dispose();
   }
 
@@ -74,9 +74,7 @@ class _Homepage extends State<Homepage> {
                   },
                 ),
                 actions: [
-                  IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.notifications_outlined))
+                  NotificationButton(),
                 ],
               ),
         body: AdaptiveWrapper(

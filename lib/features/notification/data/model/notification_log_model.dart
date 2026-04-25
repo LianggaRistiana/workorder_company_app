@@ -16,11 +16,11 @@ class NotificationLogModel extends NotificationLogEntity {
     return NotificationLogModel(
       id: json.field("_id").reqString(),
       title: json.field("title").reqString(),
-      body: json.field('body').reqString(),
-      createdAt: json.field('created_at').reqDate(),
-      resource: json.field('resource').reqEnum(ResourceType.fromString),
-      resourceId: json.field('resource_id').reqString(),
-      isRead: json.field('is_read').reqBool(),
+      body: json.field("body").reqString(),
+      createdAt: json.field("createdAt").reqDate(),
+      resource: json.field("data.resource").reqEnum(ResourceType.fromString),
+      resourceId: json.field("data.resourceId").reqString(),
+      isRead: json.field("isRead").reqBool(),
     );
   }
 
