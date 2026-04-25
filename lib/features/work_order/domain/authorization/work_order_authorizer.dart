@@ -14,7 +14,7 @@ class WorkOrderAuthorizer {
 
   const WorkOrderAuthorizer({
     required this.workOrder,
-    this.capabilities, // FIXME : required this even if null to avoid denied on meta check even if capabilities doesnt needed
+    required this.capabilities,
   });
 
   AuthorizationRule get sendWorkOrder => rules([

@@ -74,11 +74,6 @@ class MockProviderServiceRequestDatasource
           id: "sub-1",
           formId: "intake-service-1",
           submissionType: FormType.intake,
-          submittedBy: const UserModel(
-            name: "John Doe",
-            email: "hmti@client.com",
-            role: UserRole.client,
-          ),
           createdAt: DateTime.now().subtract(const Duration(days: 1)),
           fieldsData: [
             FieldDataModel(

@@ -55,7 +55,7 @@ import 'package:workorder_company_app/core/authorization/model/app_permission.da
 ///   - update
 ///   - cancel
 ///
-/// • [receiver]
+/// • [provider]
 ///   Intended for users responsible for reviewing incoming requests:
 ///   - view
 ///   - approve
@@ -86,11 +86,11 @@ class ServiceRequestPermission {
   static const cancel =
       AppPermission(AppFeature.serviceRequest, PermissionAction.cancel);
 
-  static final Set<AppPermission> receiver = {
+  static final Set<AppPermission> provider = {
     view,
     approve,
     reject,
-  }; // OPTIMIZE NAMING TO PROVIDER
+  };
 
   static final Set<AppPermission> requester = {
     view,

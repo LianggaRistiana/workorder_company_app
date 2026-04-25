@@ -11,14 +11,26 @@ import 'package:workorder_company_app/features/work_order/presentation/widgets/f
 
 extension WorkOrderFabMapper on WorkOrderStatus {
   Widget? buildFab(
-      WorkOrderEntity workOrder, WorkOrderCapabilities? capabilities) {
+    WorkOrderEntity workOrder,
+    WorkOrderCapabilities? capabilities,
+  ) {
     return switch (this) {
-      WorkOrderStatus.drafted => FabWorkOrderSend(workOrder: workOrder),
-      WorkOrderStatus.sent => FabGroupWorkOrderApproval(workOrder: workOrder),
-      WorkOrderStatus.approved =>
-        FabWorkOrderStart(workOrder: workOrder, capabilities: capabilities),
+      WorkOrderStatus.drafted => FabWorkOrderSend(
+          workOrder: workOrder,
+          capabilities: capabilities,
+        ),
+      WorkOrderStatus.sent => FabGroupWorkOrderApproval(
+          workOrder: workOrder,
+          capabilities: capabilities,
+        ),
+      WorkOrderStatus.approved => FabWorkOrderStart(
+          workOrder: workOrder,
+          capabilities: capabilities,
+        ),
       WorkOrderStatus.onProgress => FabGroupWorkOrderFinalize(
-          workOrder: workOrder, capabilities: capabilities),
+          workOrder: workOrder,
+          capabilities: capabilities,
+        ),
       WorkOrderStatus.rejected => FabWorkOrderRecreate(
           workOrder: workOrder,
           capabilities: capabilities,

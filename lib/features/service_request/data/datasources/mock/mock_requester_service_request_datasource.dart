@@ -82,11 +82,6 @@ class MockRequesterServiceRequestDatasource
           id: "sub-1",
           formId: "intake-service-1",
           submissionType: FormType.intake,
-          submittedBy: const UserModel(
-            name: "John Doe",
-            email: "hmti@client.com",
-            role: UserRole.client,
-          ),
           createdAt: DateTime.now().subtract(const Duration(days: 1)),
           fieldsData: [
             FieldDataModel(
@@ -143,11 +138,6 @@ class MockRequesterServiceRequestDatasource
           id: "sub-2",
           formId: "review-req-1",
           submissionType: FormType.report,
-          submittedBy: const UserModel(
-            name: "John Doe",
-            email: "john@example.com",
-            role: UserRole.client,
-          ),
           createdAt: DateTime.now(),
           fieldsData: [
             FieldDataModel(

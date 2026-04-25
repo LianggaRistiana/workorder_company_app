@@ -6,7 +6,7 @@ import 'package:workorder_company_app/features/auth/presentation/bloc/auth_bloc.
 import 'package:workorder_company_app/shared/layout/navigation/app_navigation_drawer.dart';
 import 'package:workorder_company_app/shared/page/loading_page.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
-import 'package:workorder_company_app/shared/layout/navigation/app_navigantion_bar.dart';
+import 'package:workorder_company_app/shared/layout/navigation/app_navigation_bar.dart';
 
 class AppLayout extends StatelessWidget {
   final Widget child;
@@ -29,9 +29,7 @@ class AppLayout extends StatelessWidget {
         MediaQuery.of(context).orientation == Orientation.landscape;
 
     return Scaffold(
-      appBar: isMainPage && isLandscape
-          ? AppBar()
-          : null, // TODO[OBSERVE] : observe this
+      appBar: isMainPage && isLandscape ? AppBar() : null,
       drawer:
           isMainPage && isLandscape ? AppNavigationDrawer(role: role) : null,
       bottomNavigationBar:

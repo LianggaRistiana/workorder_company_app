@@ -115,7 +115,9 @@ class WorkOrderDetailBody extends StatelessWidget {
               },
               label: Text("Edit Pegawai Bertugas"))
         ],
-      ).require(WorkOrderAuthorizer(workOrder: workOrder).fillWorkOrder),
+      ).require(
+          WorkOrderAuthorizer(workOrder: workOrder, capabilities: capabilities)
+              .fillWorkOrder),
       const SizedBox(height: AppSpacing.md),
     ];
   }
@@ -146,7 +148,9 @@ class WorkOrderDetailBody extends StatelessWidget {
               },
               label: Text("Edit Instruksi Kerja"))
         ],
-      ).require(WorkOrderAuthorizer(workOrder: workOrder).fillWorkOrder),
+      ).require(
+          WorkOrderAuthorizer(workOrder: workOrder, capabilities: capabilities)
+              .fillWorkOrder),
       const SizedBox(height: AppSpacing.lg),
       if (workOrder.status.isReportable)
         HorizontalButton(

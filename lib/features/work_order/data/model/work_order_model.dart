@@ -52,10 +52,7 @@ class WorkOrderModel extends WorkOrderEntity {
       workOrderForm: FilledFormWithHistoryModel.fromJson(
           json['workOrderForm'], json['submissions']),
       hasIssue: json.field('has_issue').reqBool(),
-      statusDate:
-          WorkOrderStatusDateModel.fromJson(json), // FIXME : Unreadable on UI or there is bug in BE
-      // statusDate:
-      //     json.field('statusDate').reqModel(WorkOrderStatusDateModel.fromJson),
+      statusDate: WorkOrderStatusDateModel.fromJson(json),
       issueNote: json.field('issue_note').optString(),
     );
   }

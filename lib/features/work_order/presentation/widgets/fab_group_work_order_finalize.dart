@@ -30,8 +30,9 @@ class FabGroupWorkOrderFinalize extends StatelessWidget {
                 .failWorkOrder(workOrder, issue);
           }).require(
             WorkOrderAuthorizer(
-                    workOrder: workOrder, capabilities: capabilities)
-                .failWorkOrder,
+              workOrder: workOrder,
+              capabilities: capabilities,
+            ).failWorkOrder,
           ),
           SizedBox(width: 10),
           FabWorkOrderComplete(onSubmit: (issue) {
@@ -40,8 +41,9 @@ class FabGroupWorkOrderFinalize extends StatelessWidget {
                 .completeWorkOrder(workOrder, issue);
           }).require(
             WorkOrderAuthorizer(
-                    workOrder: workOrder, capabilities: capabilities)
-                .completeWorkOrder,
+              workOrder: workOrder,
+              capabilities: capabilities,
+            ).completeWorkOrder,
           ),
         ],
       ).withInlineLoading(state.status == FinalizeWorkOrderStatus.loading);

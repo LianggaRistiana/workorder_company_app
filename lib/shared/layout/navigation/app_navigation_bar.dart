@@ -4,7 +4,6 @@ import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/shared/layout/navigation/nav_config.dart';
 import 'package:workorder_company_app/shared/layout/widget/custom_navigation_bar.dart';
 
-// OPTIMIZE : fix type on file naming
 class AppNavigationBar extends StatefulWidget {
   final UserRole role;
 

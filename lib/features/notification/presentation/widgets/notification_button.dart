@@ -22,7 +22,6 @@ class NotificationButton extends StatelessWidget {
       return IconButton(
         onPressed: () {
           context.push(AppRoutes.notifications);
-          // TODO : clear repo after back notification page
         },
         icon: Badge(
             backgroundColor: Theme.of(context).colorScheme.primary,

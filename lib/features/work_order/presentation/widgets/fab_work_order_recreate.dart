@@ -35,9 +35,10 @@ class FabWorkOrderRecreate extends StatelessWidget {
               },
               label: Text('Buat Ulang'))
           .withInlineLoading(state.status == RecreateWorkOrderStatus.loading);
-    }).require(
-        WorkOrderAuthorizer(workOrder: workOrder, capabilities: capabilities)
-            .recreateWorkOrder);
+    }).require(WorkOrderAuthorizer(
+      workOrder: workOrder,
+      capabilities: capabilities,
+    ).recreateWorkOrder);
   }
 
   void _showDialog(BuildContext context, VoidCallback onSubmit) {

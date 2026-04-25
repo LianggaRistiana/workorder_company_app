@@ -6,18 +6,15 @@ class SubmissionEntity {
   final String id;
   final String formId;
   final FormType submissionType;
-  final UserEntity?
-      submittedBy; // TODO : Remove this later. id doesnt needed anymore
   final List<FieldDataEntity>? fieldsData;
-  final DateTime? createdAt; // TODO : not null createdAt. ask BE before to validate
+  final DateTime createdAt;
 
   const SubmissionEntity({
     required this.id,
     required this.formId,
     required this.submissionType,
-    this.submittedBy,
     this.fieldsData,
-    this.createdAt,
+    required this.createdAt,
   });
 
   SubmissionEntity copyWith({
@@ -32,7 +29,6 @@ class SubmissionEntity {
       id: id ?? this.id,
       formId: formId ?? this.formId,
       submissionType: submissionType ?? this.submissionType,
-      submittedBy: submittedBy ?? this.submittedBy,
       fieldsData: fieldsData ?? this.fieldsData,
       createdAt: createdAt ?? this.createdAt,
     );
@@ -67,6 +63,4 @@ extension SubmissionEntityTools on SubmissionEntity {
     list.sort((a, b) => a.order.compareTo(b.order));
     return list;
   }
-
-  bool get isCreated => createdAt != null;
 }

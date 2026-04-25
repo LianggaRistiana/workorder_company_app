@@ -1,6 +1,5 @@
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/utils/safe_parse.dart';
-import 'package:workorder_company_app/features/auth/data/model/user_model.dart';
 import 'package:workorder_company_app/features/submissions/data/model/field_data_model.dart';
 import 'package:workorder_company_app/features/submissions/domain/entitties/submission_entity.dart';
 
@@ -9,10 +8,8 @@ class SubmissionsModel extends SubmissionEntity {
     required super.id,
     required super.formId,
     required super.submissionType,
-    super.submittedBy, 
     super.fieldsData,
-    super.createdAt,
-    // super.updatedAt,
+    required super.createdAt,
   });
 
   factory SubmissionsModel.fromJson(Map<String, dynamic> json) {
@@ -23,8 +20,7 @@ class SubmissionsModel extends SubmissionEntity {
       fieldsData: (json['fieldsData'] as List<dynamic>?)
           ?.map((e) => FieldDataModel.fromJson(e))
           .toList(),
-      createdAt:
-          json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
+      createdAt: json.field('createdAt').reqDate(),
     );
   }
 
@@ -33,7 +29,6 @@ class SubmissionsModel extends SubmissionEntity {
       'id': id,
       'formId': formId,
       'submissionType': submissionType.toSnakeCase(),
-      'submittedBy': (submittedBy as UserModel?)?.toJson(),
       'fieldsData':
           fieldsData?.map((e) => (e as FieldDataModel).toJson()).toList(),
     };
@@ -47,6 +42,7 @@ class SubmissionsModel extends SubmissionEntity {
       fieldsData: entity.fieldsData
           ?.map((e) => FieldDataModel(order: e.order, value: e.value))
           .toList(),
+      createdAt: entity.createdAt,
     );
   }
 }

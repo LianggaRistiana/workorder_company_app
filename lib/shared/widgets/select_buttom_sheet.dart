@@ -7,7 +7,7 @@ enum WidgetTipe {
   user,
 } // OPTIMIZE : provide item builder rather than this method
 
-// HACK : Move filter mechanism into params for repository responsibility prepare
+// OPTIMIZE : Move filter mechanism into params for repository responsibility prepare
 // If the feature parameters are provided, repository fill pass the params into datasource instead of local filtering
 class SelectBottomSheet<T> extends StatefulWidget {
   final String title;

@@ -103,7 +103,7 @@ extension UserRolePermissions on UserRole {
           ...ServicePermission.all,
 
           // Work Order Domain
-          ...ServiceRequestPermission.receiver,
+          ...ServiceRequestPermission.provider,
           ...WorkOrderPermissions.all,
           ...WorkReportPermissions.reviewer,
         };
@@ -122,7 +122,7 @@ extension UserRolePermissions on UserRole {
           ServicePermission.view,
 
           // Work Order Domain
-          ...ServiceRequestPermission.receiver,
+          ...ServiceRequestPermission.provider,
           ...WorkOrderPermissions.creator,
           ...WorkReportPermissions.reviewer,
         };

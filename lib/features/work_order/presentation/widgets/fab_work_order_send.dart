@@ -6,6 +6,7 @@ import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/features/work_order/domain/authorization/work_order_authorizer.dart';
 import 'package:workorder_company_app/features/work_order/domain/entities/work_order_entity.dart';
+import 'package:workorder_company_app/features/work_order/domain/meta/work_order_meta.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/send/send_work_order_cubit.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/send/send_work_order_state.dart';
 import 'package:workorder_company_app/shared/widgets/app_dialog.dart';
@@ -15,8 +16,10 @@ import 'package:workorder_company_app/shared/widgets/loading_state_inline.dart';
 
 class FabWorkOrderSend extends StatelessWidget {
   final WorkOrderEntity workOrder;
+  final WorkOrderCapabilities? capabilities;
 
-  const FabWorkOrderSend({super.key, required this.workOrder});
+  const FabWorkOrderSend(
+      {super.key, required this.workOrder, this.capabilities});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +37,10 @@ class FabWorkOrderSend extends StatelessWidget {
         state.status == SendWorkOrderStatus.loading,
       );
     }).require(
-      WorkOrderAuthorizer(workOrder: workOrder).sendWorkOrder,
+      WorkOrderAuthorizer(
+        workOrder: workOrder,
+        capabilities: capabilities,
+      ).sendWorkOrder,
     );
   }
 

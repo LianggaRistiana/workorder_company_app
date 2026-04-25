@@ -65,17 +65,14 @@ class _MyAppState extends State<MyApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(
-          create: (_) =>
-              di.sl<AuthBloc>()..add(AuthCheckStatus()), // Auth state for UI
+          create: (_) => di.sl<AuthBloc>()..add(AuthCheckStatus()),
         ),
         BlocProvider<NotificationLogCubit>(
           create: (_) => di.sl()..fetchLogs(),
         ),
         BlocProvider<NotificationActiveCubit>(
             create: (_) => di.sl()), // TODO : remove this later
-        BlocProvider<InternalGetCompanyCubit>(
-            create: (_) =>
-                di.sl()) // FIXME[Medium]: dont inject here, security issue
+        BlocProvider<InternalGetCompanyCubit>(create: (_) => di.sl())
       ],
       child: MaterialApp.router(
         scaffoldMessengerKey: AppMessenger.messengerKey,

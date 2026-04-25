@@ -55,7 +55,7 @@ class NotificationNavigatorImpl implements NotificationNavigator {
 
     final route = AppRoutes.serviceRequestDetail.fillId(srId);
 
-    final extra = user.role.canAll(ServiceRequestPermission.receiver)
+    final extra = user.role.canAll(ServiceRequestPermission.provider)
         ? ServiceRequestSide.provider
         : ServiceRequestSide.requester;
 

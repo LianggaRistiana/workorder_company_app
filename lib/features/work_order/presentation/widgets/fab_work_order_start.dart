@@ -32,8 +32,10 @@ class FabWorkOrderStart extends StatelessWidget {
         label: Text('Mulai'),
       ).withInlineLoading(state.status == StartWorkOrderStatus.loading);
     }).require(
-      WorkOrderAuthorizer(workOrder: workOrder, capabilities: capabilities)
-          .startWorkOrder,
+      WorkOrderAuthorizer(
+        workOrder: workOrder,
+        capabilities: capabilities,
+      ).startWorkOrder,
     );
   }
 }
