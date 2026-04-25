@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:workorder_company_app/routes/app_routes.dart';
 
 abstract class NotificationNavigator {
-  void openWoUpdate(String woId);
+  void openWorkOrderDetailPage(String woId);
+  void openServiceRequestPage(String srId);
+  void openInvitationsPage();
   void openNotificationList();
 }
 
@@ -12,15 +15,30 @@ class NotificationNavigatorImpl implements NotificationNavigator {
   NotificationNavigatorImpl(this.navigatorKey);
 
   @override
-  void openWoUpdate(String woId) {
-    navigatorKey.currentState?.pushNamed(
-      '/work-order/detail',
-      arguments: woId,
-    ); // FIXME : it will dont work
+  void openNotificationList() {
+    navigatorKey.currentState?.pushNamed('/notification');
   }
 
   @override
-  void openNotificationList() {
-    navigatorKey.currentState?.pushNamed('/notification');
+  void openInvitationsPage() {
+    navigatorKey.currentState?.pushNamed(
+      AppRoutes.invitationsPending,
+    );
+  }
+
+  @override
+  void openServiceRequestPage(String srId) {
+    navigatorKey.currentState?.pushNamed(
+      AppRoutes.serviceRequestDetail,
+      arguments: srId,
+    );
+  }
+
+  @override
+  void openWorkOrderDetailPage(String woId) {
+    navigatorKey.currentState?.pushNamed(
+      AppRoutes.workOrdersDetail,
+      arguments: woId,
+    );
   }
 }

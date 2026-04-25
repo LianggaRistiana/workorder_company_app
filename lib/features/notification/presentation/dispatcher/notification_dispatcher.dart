@@ -8,19 +8,15 @@ class NotificationDispatcher {
   NotificationDispatcher(this._navigator);
 
   void dispatch(NotificationPayloadEntity payload) {
-    switch (payload.type) {
-      case NotificationType.woUpdated:
-        _handleWoUpdated(payload);
-        break;
-
-      default:
+    switch (payload.resource) {
+      case ResourceType.workOrder:
+      case ResourceType.serviceRequest:
+      case ResourceType.invitation:
+      case ResourceType.workReport:
+        // default:
         _handleUnknown(payload);
         break;
     }
-  }
-
-  void _handleWoUpdated(NotificationPayloadEntity payload) {
-    _navigator.openWoUpdate(payload.resourceId ?? '');
   }
 
   void _handleUnknown(NotificationPayloadEntity payload) {

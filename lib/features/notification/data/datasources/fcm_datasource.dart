@@ -13,6 +13,8 @@ import 'package:workorder_company_app/core/constants/app_enums/notification_enum
 /// - Permission (handled by LocalDataSource)
 /// - Business logic (handled in domain/usecase)
 /// - Navigation (handled in presentation layer)
+///
+/// // OPTIMIZE : MOVE THIS INTO CORE FCM AND CHANGE IT INTO FcmService. Wrap all  action from to local datasource
 abstract class FcmDataSource {
   /// Retrieves the current FCM token for this device.
   ///
@@ -49,9 +51,6 @@ abstract class FcmDataSource {
 
 class FcmDataSourceImpl implements FcmDataSource {
   final FirebaseMessaging _messaging;
-
-  // TODO : idk what is this for
-  // NotificationSettings
 
   FcmDataSourceImpl(this._messaging);
 

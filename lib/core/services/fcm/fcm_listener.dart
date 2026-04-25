@@ -2,11 +2,12 @@ import 'dart:async';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:workorder_company_app/core/constants/app_enums/notification_enum.dart';
+import 'package:workorder_company_app/core/services/logger/app_logger.dart';
 import 'package:workorder_company_app/features/notification/data/datasources/fcm_datasource.dart';
-import 'package:workorder_company_app/features/notification/domain/entities/notification_payload_entity.dart';
 import 'package:workorder_company_app/features/notification/presentation/handler/notification_handler.dart';
 
 // TODO : consider to move direct on notification feature
+// CURRENTLY THIS APP SKIP REPOSITORY
 class FcmListener {
   final FcmDataSource _dataSource;
   final NotificationHandler _handler;
@@ -31,10 +32,11 @@ class FcmListener {
   void _listenForeground() {
     _onMessageSub = _dataSource.onMessage().listen(
       (message) {
-        _handler.handle(_map(message));
+        appLogger.i(message.data);
+        _handler.handle(message, NotificationSource.foreground);
       },
       onError: (error) {
-        // optional logging
+        // TODO : add  logging
       },
     );
   }
@@ -42,10 +44,10 @@ class FcmListener {
   void _listenBackground() {
     _onOpenedSub = _dataSource.onMessageOpenedApp().listen(
       (message) {
-        _handler.handle(_map(message));
+        _handler.handle(message, NotificationSource.background);
       },
       onError: (error) {
-        // optional logging
+        // todo : optional logging
       },
     );
   }
@@ -54,26 +56,7 @@ class FcmListener {
     final message = await _dataSource.getInitialMessage();
 
     if (message != null) {
-      _handler.handle(_map(message));
-    }
-  }
-
-  NotificationPayloadEntity _map(RemoteMessage message) {
-    final data = message.data;
-
-    return NotificationPayloadEntity(
-      type: _parseType(data['type']),
-      resourceId: data['resource_id'] ?? '',
-    );
-  }
-
-  // OPTIMIZE : i dont like it
-  NotificationType _parseType(String? raw) {
-    switch (raw) {
-      case 'wo_updated':
-        return NotificationType.woUpdated;
-      default:
-        return NotificationType.unknown;
+      _handler.handle(message, NotificationSource.initial);
     }
   }
 

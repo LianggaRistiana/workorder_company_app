@@ -1,7 +1,7 @@
 import 'package:workorder_company_app/core/constants/app_enums/notification_enum.dart';
 import 'package:workorder_company_app/core/types/future_either.dart';
 import 'package:workorder_company_app/features/notification/domain/entities/notification_log_entity.dart';
-import 'package:workorder_company_app/features/notification/domain/entities/notification_payload_entity.dart';
+// import 'package:workorder_company_app/features/notification/domain/entities/notification_payload_entity.dart';
 
 /// Repository that orchestrates notification-related operations.
 ///
@@ -22,14 +22,16 @@ abstract class NotificationRepository {
   /// Returns whether notifications are enabled (user preference).
   Future<bool> isEnabled();
 
-  /// Stream of notifications when app is in foreground.
-  Stream<NotificationPayloadEntity> onForegroundNotification();
+  Future<void> dispose();
 
-  /// Stream when user opens notification.
-  Stream<NotificationPayloadEntity> onNotificationOpenedApp();
+  // /// Stream of notifications when app is in foreground.
+  // Stream<NotificationPayloadEntity> onForegroundNotification();
 
-  /// Get notification that opened the app from terminated state.
-  Future<NotificationPayloadEntity?> getInitialNotification();
+  // /// Stream when user opens notification.
+  // Stream<NotificationPayloadEntity> onNotificationOpenedApp();
+
+  // /// Get notification that opened the app from terminated state.
+  // Future<NotificationPayloadEntity?> getInitialNotification();
 
   /// Fetch notification logs from backend.
   FutureEitherList<NotificationLogEntity> getNotificationLogs();

@@ -8,6 +8,7 @@ import 'package:workorder_company_app/features/auth/domain/usecases/get_current_
 import 'package:workorder_company_app/features/auth/domain/usecases/login_usecase.dart';
 import 'package:workorder_company_app/features/auth/domain/usecases/logout_usecase.dart';
 import 'package:workorder_company_app/features/auth/domain/usecases/user_registration_usecase.dart';
+import 'package:workorder_company_app/features/notification/domain/usecases/init_notification_usecase.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -18,21 +19,24 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final LogoutUsecase logoutUsecase;
   final UserRegistrationUsecase userRegistrationUsecase;
   final CompanyRegistrationUsecase companyRegistrationUsecase;
+  final InitNotificationUseCase initNotificationUseCase;
 
-  AuthBloc(
-      {required this.loginUseCase,
-      required this.getCurrentUserUsecase,
-      required this.logoutUsecase,
-      required this.userRegistrationUsecase,
-      required this.companyRegistrationUsecase})
-      : super(AuthInitial()) {
+  bool _initialized = false;
+
+  AuthBloc({
+    required this.loginUseCase,
+    required this.getCurrentUserUsecase,
+    required this.logoutUsecase,
+    required this.userRegistrationUsecase,
+    required this.companyRegistrationUsecase,
+    required this.initNotificationUseCase,
+  }) : super(AuthInitial()) {
     on<LoginRequested>(_onLoginRequested);
     on<AuthCheckStatus>(_onAuthCheckStatus);
     on<LogoutRequested>(_onLogoutRequested);
     on<UserRegistrationRequested>(_onUserRegistrationRequested);
     on<CompanyRegistrationRequested>(_onCompanyRegistrationRequested);
     on<GetCurrentUserRequested>(_onGetCurrentUserRequested);
-    // nanti bisa tambahkan register & logout handler
   }
 
   Future<void> _onGetCurrentUserRequested(
@@ -72,6 +76,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       (failure) => emit(AuthError(failure.message)),
       (user) {
         if (user != null) {
+          _initNotification();
           emit(Authenticated(user));
         } else {
           emit(Unauthenticated());
@@ -93,7 +98,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     result.fold(
       (failure) => emit(AuthError(failure.message)),
-      (user) => emit(Authenticated(user)),
+      (user) {
+        _initNotification();
+        emit(Authenticated(user));
+      },
     );
   }
 
@@ -122,5 +130,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       (failure) => emit(AuthError(failure.message, failure: failure)),
       (_) => emit(CompanyRegistrationSuccess()),
     );
+  }
+
+  Future<void> _initNotification() async {
+    if (_initialized) return;
+    _initialized = true;
+
+    await initNotificationUseCase();
   }
 }

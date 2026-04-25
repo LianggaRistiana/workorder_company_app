@@ -1,14 +1,12 @@
 import 'dart:async';
-
 import 'package:workorder_company_app/core/constants/app_enums/notification_enum.dart';
+import 'package:workorder_company_app/core/services/logger/app_logger.dart';
 import 'package:workorder_company_app/core/types/future_either.dart';
 import 'package:workorder_company_app/core/utils/safe_call.dart';
 import 'package:workorder_company_app/features/notification/data/datasources/fcm_datasource.dart';
 import 'package:workorder_company_app/features/notification/data/datasources/notification_local_datasource.dart';
 import 'package:workorder_company_app/features/notification/data/datasources/notification_remote_datasource.dart';
-import 'package:workorder_company_app/features/notification/data/model/notification_payload_model.dart';
 import 'package:workorder_company_app/features/notification/domain/entities/notification_log_entity.dart';
-import 'package:workorder_company_app/features/notification/domain/entities/notification_payload_entity.dart';
 import 'package:workorder_company_app/features/notification/domain/repositories/notification_repository.dart';
 
 class NotificationRepositoryImpl implements NotificationRepository {
@@ -26,6 +24,8 @@ class NotificationRepositoryImpl implements NotificationRepository {
 
   @override
   Future<void> init() async {
+    appLogger.i("notification init");
+
     final isEnabled = await _local.isNotificationEnabled();
     if (!isEnabled) return;
 
@@ -35,6 +35,7 @@ class NotificationRepositoryImpl implements NotificationRepository {
     final token = await _fcm.getToken();
     if (token != null) {
       await _remote.registerToken(token);
+      appLogger.i("fcm token registered");
     }
 
     _listenTokenRefresh();
@@ -101,30 +102,30 @@ class NotificationRepositoryImpl implements NotificationRepository {
   // STREAM HANDLING
   // =========================
 
-  @override
-  Stream<NotificationPayloadEntity> onForegroundNotification() {
-    return _fcm.onMessage().map(
-          (message) =>
-              NotificationPayloadModel.fromRemoteMessage(message).toEntity(),
-        );
-  }
+  // @override
+  // Stream<NotificationPayloadEntity> onForegroundNotification() {
+  //   return _fcm.onMessage().map(
+  //         (message) =>
+  //             NotificationPayloadModel.fromRemoteMessage(message).toEntity(),
+  //       );
+  // }
 
-  @override
-  Stream<NotificationPayloadEntity> onNotificationOpenedApp() {
-    return _fcm.onMessageOpenedApp().map(
-          (message) =>
-              NotificationPayloadModel.fromRemoteMessage(message).toEntity(),
-        );
-  }
+  // @override
+  // Stream<NotificationPayloadEntity> onNotificationOpenedApp() {
+  //   return _fcm.onMessageOpenedApp().map(
+  //         (message) =>
+  //             NotificationPayloadModel.fromRemoteMessage(message).toEntity(),
+  //       );
+  // }
 
-  @override
-  Future<NotificationPayloadEntity?> getInitialNotification() async {
-    final message = await _fcm.getInitialMessage();
+  // @override
+  // Future<NotificationPayloadEntity?> getInitialNotification() async {
+  //   final message = await _fcm.getInitialMessage();
 
-    if (message == null) return null;
+  //   if (message == null) return null;
 
-    return NotificationPayloadModel.fromRemoteMessage(message).toEntity();
-  }
+  //   return NotificationPayloadModel.fromRemoteMessage(message).toEntity();
+  // }
 
   // ========================
   // Logs
@@ -147,5 +148,19 @@ class NotificationRepositoryImpl implements NotificationRepository {
     _tokenSubscription = _fcm.onTokenRefresh().listen((newToken) {
       _remote.registerToken(newToken);
     });
+  }
+
+  @override
+  Future<void> dispose() async {
+    try {
+      final token = await _fcm.getToken();
+
+      if (token != null) {
+        await _remote.unregisterToken(token);
+        appLogger.i("fcm token unregistered");
+      }
+    } catch (_) {
+      appLogger.e("Error on unregistering fcm token");
+    }
   }
 }

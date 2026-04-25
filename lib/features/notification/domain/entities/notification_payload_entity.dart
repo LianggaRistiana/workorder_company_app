@@ -8,13 +8,15 @@ import 'package:workorder_company_app/core/constants/app_enums/notification_enum
 /// Note:
 /// This is different from NotificationLogEntity (which comes from backend).
 class NotificationPayloadEntity {
-  final NotificationType type;
-  final String? resource;
-  final String? resourceId;
+  final String title;
+  final String body;
+  final ResourceType resource;
+  final String resourceId;
 
   const NotificationPayloadEntity({
-    required this.type,
-    this.resource,
-    this.resourceId,
+    required this.title,
+    required this.body,
+    required this.resource,
+    required this.resourceId,
   });
 }

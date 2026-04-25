@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:workorder_company_app/core/services/messenger/app_messenger.dart';
 import 'package:workorder_company_app/features/notification/presentation/bloc/notification_active_cubit.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
@@ -73,6 +74,7 @@ class _MyAppState extends State<MyApp> {
                 di.sl()) // FIXME[Medium]: dont inject here, security issue
       ],
       child: MaterialApp.router(
+        scaffoldMessengerKey: AppMessenger.messengerKey,
         title: AppConfig.appName,
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,

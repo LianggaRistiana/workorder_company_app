@@ -11,19 +11,22 @@ import 'package:workorder_company_app/features/auth/presentation/bloc/auth_bloc.
 import 'package:workorder_company_app/core/di/injection.dart';
 
 Future<void> initAuthFeature() async {
-  /// Bloc
-  sl.registerFactory<AuthBloc>(() => AuthBloc(
+  sl.registerFactory<AuthBloc>(
+    () => AuthBloc(
       loginUseCase: sl(),
       getCurrentUserUsecase: sl(),
       logoutUsecase: sl(),
       userRegistrationUsecase: sl(),
-      companyRegistrationUsecase: sl()));
+      companyRegistrationUsecase: sl(),
+      initNotificationUseCase: sl(),
+    ),
+  );
 
   /// Usecases
   sl.registerLazySingleton<LoginUseCase>(() => LoginUseCase(sl(), sl()));
   sl.registerLazySingleton<GetCurrentUserUsecase>(
       () => GetCurrentUserUsecase(sl()));
-  sl.registerLazySingleton<LogoutUsecase>(() => LogoutUsecase(sl()));
+  sl.registerLazySingleton<LogoutUsecase>(() => LogoutUsecase(sl(), sl()));
   sl.registerLazySingleton<CompanyRegistrationUsecase>(
       () => CompanyRegistrationUsecase(sl()));
   sl.registerLazySingleton<UserRegistrationUsecase>(

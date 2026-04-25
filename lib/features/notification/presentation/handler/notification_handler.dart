@@ -1,4 +1,7 @@
-import 'package:workorder_company_app/features/notification/domain/entities/notification_payload_entity.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:workorder_company_app/core/constants/app_enums/notification_enum.dart';
+import 'package:workorder_company_app/core/services/messenger/app_messenger.dart';
+import 'package:workorder_company_app/features/notification/data/model/notification_payload_model.dart';
 import 'package:workorder_company_app/features/notification/presentation/dispatcher/notification_dispatcher.dart';
 
 class NotificationHandler {
@@ -6,7 +9,15 @@ class NotificationHandler {
 
   NotificationHandler(this._dispatcher);
 
-  void handle(NotificationPayloadEntity payload) {
-    _dispatcher.dispatch(payload);
+  void handle(RemoteMessage message, NotificationSource source) {
+    final payload = NotificationPayloadModel.fromRemoteMessage(message);
+    switch (source) {
+      case NotificationSource.foreground:
+        AppMessenger.showSnackbar(payload.title);
+      case NotificationSource.background:
+      case NotificationSource.initial:
+        _dispatcher.dispatch(payload);
+        break;
+    }
   }
 }
