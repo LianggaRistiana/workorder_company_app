@@ -52,6 +52,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final FcmListener _listener = di.sl<FcmListener>();
+  ThemeMode themeMode = ThemeMode.light;
 
   @override
   void initState() {

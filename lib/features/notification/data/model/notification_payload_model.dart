@@ -16,10 +16,8 @@ class NotificationPayloadModel extends NotificationPayloadEntity {
     final data = message.data;
 
     return NotificationPayloadModel(
-      // title: data.field('title').reqString(),
-      title: "New NOTIF",
-      // body: data.field('body').reqString(),
-      body: "New NOTIF",
+      title: data.field('title').reqString(),
+      body: data.field('body').reqString(),
       resource: data.field('resource').reqEnum(ResourceType.fromString),
       resourceId: data.field('resourceId').reqString(),
     );

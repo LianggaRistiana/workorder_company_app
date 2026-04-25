@@ -3,7 +3,6 @@ import 'app_colors.dart';
 import 'app_text_styles.dart';
 
 class AppTheme {
-  // pakai seed color dari AppColors
   static final Color _seedLight = AppColors.seedColorLight;
   static final Color _seedDark = AppColors.seedColorDark;
 
@@ -15,26 +14,13 @@ class AppTheme {
     ).copyWith(
         primary: AppColors.lightPrimary,
         primaryContainer: AppColors.lightPrimaryContainer,
-        // primaryContainer: AppColors.lightPrimary.withAlpha(20),
-        // onPrimaryContainer: AppColors.lightPrimary,
-        surfaceContainerLow:
-            const Color.fromARGB(255, 255, 255, 255), // dipakai card
+        surfaceContainerLow: const Color.fromARGB(255, 255, 255, 255),
         surface: AppColors.lightBackground),
     disabledColor: Colors.grey.shade300,
     chipTheme: ChipThemeData(
       backgroundColor: AppColors.lightBackground,
       selectedColor: AppColors.lightPrimaryContainer,
     ),
-
-    // colorScheme: const ColorScheme.light(
-    //   primary: Color(0xFF3F51B5), // warna utama
-    //   onPrimary: Colors.white,
-    //   surface: Color(0xFFF8F9FB), // 🎯 warna permukaan (card, sheet, dialog)
-    //   onSurface: Color(0xFF1A1C1E),
-    //   secondary: Color(0xFF7986CB),
-    //   onSecondary: Colors.white,
-    // ),
-
     scaffoldBackgroundColor: AppColors.lightBackground,
     appBarTheme: AppBarTheme(
       backgroundColor: AppColors.lightBackground,
@@ -44,12 +30,9 @@ class AppTheme {
     ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
-      // backgroundColor: const Color.fromARGB(255, 0, 81, 255),
       backgroundColor: AppColors.lightPrimary,
       foregroundColor: Colors.white,
     ),
-
-
     textTheme: TextTheme(
         titleLarge: AppTextStyles.titleLarge.copyWith(
           color: AppColors.lightTextPrimary,
@@ -69,15 +52,6 @@ class AppTheme {
         labelSmall: AppTextStyles.labelSmall.copyWith(
           color: AppColors.lightTextSecondary,
         )),
-
-    // TextTheme(
-    //   titleLarge:
-    //       AppTextStyles.titleLarge.copyWith(color: AppColors.lightTextPrimary),
-    //   titleMedium: AppTextStyles.titleMedium
-    //       .copyWith(color: AppColors.lightTextSecondary),
-    //   bodyMedium:
-    //       AppTextStyles.bodyMedium.copyWith(color: AppColors.lightTextPrimary),
-    // ),
     inputDecorationTheme: const InputDecorationTheme(
       border: OutlineInputBorder(),
     ),
@@ -95,12 +69,9 @@ class AppTheme {
       seedColor: _seedDark,
       brightness: Brightness.dark,
     ).copyWith(
-      // primary: AppColors.darkPrimary
       primaryContainer: AppColors.darkPrimary.withAlpha(20),
-      // onPrimaryContainer: AppColors.lightPrimary,
     ),
     chipTheme: ChipThemeData(
-      // backgroundColor: AppColors.lightBackground,
       selectedColor: AppColors.darkPrimary.withAlpha(20),
     ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
@@ -134,14 +105,6 @@ class AppTheme {
         color: AppColors.darkTextSecondary,
       ),
     ),
-
-    // TextTheme(
-    //   titleLarge:
-    //       AppTextStyles.titleLarge.copyWith(color: AppColors.darkTextPrimary),
-    //   titleMedium: AppTextStyles.titleMedium
-    //       .copyWith(color: AppColors.darkTextSecondary),
-    //   bodyMedium: AppTextStyles.body.copyWith(color: AppColors.darkTextPrimary),
-    // ),
     inputDecorationTheme: const InputDecorationTheme(
       border: OutlineInputBorder(),
     ),

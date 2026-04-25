@@ -25,6 +25,7 @@ class AppIcon {
   static const IconData template = LucideIcons.layoutTemplate;
   static const IconData flowBusiness = LucideIcons.workflow;
   static const IconData notification = LucideIcons.bell;
+  static const IconData invitation = LucideIcons.mail;
 
   // Icon For Field Type
   static const IconData textField = Icons.text_format;

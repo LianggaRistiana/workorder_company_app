@@ -13,7 +13,7 @@ class NotificationHandler {
     final payload = NotificationPayloadModel.fromRemoteMessage(message);
     switch (source) {
       case NotificationSource.foreground:
-        AppMessenger.showSnackbar(payload.title);
+        AppMessenger.showSnackbar(payload, () => _dispatcher.dispatch(payload));
       case NotificationSource.background:
       case NotificationSource.initial:
         _dispatcher.dispatch(payload);

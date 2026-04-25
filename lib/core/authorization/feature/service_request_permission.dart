@@ -90,7 +90,7 @@ class ServiceRequestPermission {
     view,
     approve,
     reject,
-  };
+  }; // OPTIMIZE NAMING TO PROVIDER
 
   static final Set<AppPermission> requester = {
     view,

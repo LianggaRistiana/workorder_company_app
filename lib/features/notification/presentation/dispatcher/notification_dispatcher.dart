@@ -10,10 +10,15 @@ class NotificationDispatcher {
   void dispatch(NotificationPayloadEntity payload) {
     switch (payload.resource) {
       case ResourceType.workOrder:
+        _navigator.openWorkOrderDetailPage(payload.resourceId);
+        break;
       case ResourceType.serviceRequest:
+        _navigator.openServiceRequestPage(payload.resourceId);
+        break;
       case ResourceType.invitation:
+        _navigator.openInvitationsPage();
+        break;
       case ResourceType.workReport:
-        // default:
         _handleUnknown(payload);
         break;
     }

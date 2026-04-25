@@ -1,7 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/services/fcm/fcm_listener.dart';
-import 'package:workorder_company_app/core/services/navigation/app_navigator_key.dart';
 import 'package:workorder_company_app/core/services/fcm/fcm_datasource.dart';
 import 'package:workorder_company_app/features/notification/data/datasources/notification_local_datasource.dart';
 import 'package:workorder_company_app/features/notification/data/datasources/notification_remote_datasource.dart';
@@ -15,6 +14,7 @@ import 'package:workorder_company_app/features/notification/presentation/bloc/no
 import 'package:workorder_company_app/features/notification/presentation/dispatcher/notification_dispatcher.dart';
 import 'package:workorder_company_app/features/notification/presentation/handler/notification_handler.dart';
 import 'package:workorder_company_app/features/notification/presentation/navigation/notification_navigator.dart';
+import 'package:workorder_company_app/routes/app_router.dart';
 
 Future<void> initNotificationFeature() async {
   sl.registerLazySingleton<FcmDataSource>(
@@ -36,7 +36,7 @@ Future<void> initNotificationFeature() async {
   );
 
   sl.registerLazySingleton<NotificationNavigator>(
-    () => NotificationNavigatorImpl(navigatorKey),
+    () => NotificationNavigatorImpl(appRouter),
   );
 
   sl.registerLazySingleton<FcmListener>(

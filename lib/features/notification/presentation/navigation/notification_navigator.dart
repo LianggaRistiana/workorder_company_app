@@ -1,5 +1,12 @@
-import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/authorization/feature/invitation_permission.dart';
+import 'package:workorder_company_app/core/authorization/feature/service_request_permission.dart';
+import 'package:workorder_company_app/core/authorization/util/check_permission.dart';
+import 'package:workorder_company_app/core/constants/app_enums.dart';
+import 'package:workorder_company_app/core/di/injection.dart';
+import 'package:workorder_company_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
 
 abstract class NotificationNavigator {
   void openWorkOrderDetailPage(String woId);
@@ -9,36 +16,56 @@ abstract class NotificationNavigator {
 }
 
 class NotificationNavigatorImpl implements NotificationNavigator {
-  final GlobalKey<NavigatorState>
-      navigatorKey; // OPTIMIZE can inject app route here
+  final GoRouter router;
 
-  NotificationNavigatorImpl(this.navigatorKey);
+  NotificationNavigatorImpl(this.router);
+
+  void _safePush(String location, {Object? extra}) {
+    final currentLocation =
+        router.routerDelegate.currentConfiguration.uri.toString();
+
+    if (currentLocation == location) return;
+
+    router.push(location, extra: extra);
+  }
 
   @override
   void openNotificationList() {
-    navigatorKey.currentState?.pushNamed('/notification');
+    _safePush(AppRoutes.notFound);
   }
 
   @override
   void openInvitationsPage() {
-    navigatorKey.currentState?.pushNamed(
-      AppRoutes.invitationsPending,
-    );
+    final authRepo = sl<AuthRepository>();
+    final user = authRepo.currentUser;
+    if (user == null) return;
+
+    if (user.role.canAll(InvitationPermission.receiver)) {
+      _safePush(AppRoutes.invitationsHistory);
+    } else {
+      _safePush(AppRoutes.invitationsPending);
+    }
   }
 
   @override
   void openServiceRequestPage(String srId) {
-    navigatorKey.currentState?.pushNamed(
-      AppRoutes.serviceRequestDetail,
-      arguments: srId,
-    );
+    final authRepo = sl<AuthRepository>();
+    final user = authRepo.currentUser;
+    if (user == null) return;
+
+    final route = AppRoutes.serviceRequestDetail.fillId(srId);
+
+    final extra = user.role.canAll(ServiceRequestPermission.receiver)
+        ? ServiceRequestSide.provider
+        : ServiceRequestSide.requester;
+
+    _safePush(route, extra: extra);
   }
 
   @override
   void openWorkOrderDetailPage(String woId) {
-    navigatorKey.currentState?.pushNamed(
-      AppRoutes.workOrdersDetail,
-      arguments: woId,
-    );
+    final route = AppRoutes.workOrdersDetail.fillId(woId);
+
+    _safePush(route);
   }
 }
