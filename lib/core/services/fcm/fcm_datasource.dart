@@ -7,45 +7,13 @@ import 'package:workorder_company_app/core/constants/app_enums/notification_enum
 /// - Retrieving FCM device tokens
 /// - Listening to token refresh events
 /// - Providing raw notification streams from Firebase
-///
-/// Note:
-/// This class does NOT handle:
-/// - Permission (handled by LocalDataSource)
-/// - Business logic (handled in domain/usecase)
-/// - Navigation (handled in presentation layer)
-///
-/// // OPTIMIZE : MOVE THIS INTO CORE FCM AND CHANGE IT INTO FcmService. Wrap all  action from to local datasource
 abstract class FcmDataSource {
-  /// Retrieves the current FCM token for this device.
-  ///
-  /// Returns:
-  /// - A [String] token if available
-  /// - null if token is not yet generated
   Future<String?> getToken();
-
-  /// Emits a new token whenever Firebase refreshes it.
-  ///
-  /// This should be listened to and synced with backend.
   Stream<String> onTokenRefresh();
-
-  /// Emits messages when the app is in the foreground.
-  ///
-  /// Use this to display in-app notifications or UI updates.
   Stream<RemoteMessage> onMessage();
-
-  /// Emits when a user taps a notification and opens the app.
-  ///
-  /// Typically used to trigger navigation.
   Stream<RemoteMessage> onMessageOpenedApp();
-
-  /// Retrieves the initial message if the app was launched
-  /// from a terminated state via a notification.
   Future<RemoteMessage?> getInitialMessage();
-
-  /// Returns the current OS notification permission status.
   Future<NotificationPermissionStatus> checkPermission();
-
-  /// Requests notification permission from the OS.
   Future<NotificationPermissionStatus> requestPermission();
 }
 

@@ -3,11 +3,9 @@ import 'dart:async';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:workorder_company_app/core/constants/app_enums/notification_enum.dart';
 import 'package:workorder_company_app/core/services/logger/app_logger.dart';
-import 'package:workorder_company_app/features/notification/data/datasources/fcm_datasource.dart';
+import 'package:workorder_company_app/core/services/fcm/fcm_datasource.dart';
 import 'package:workorder_company_app/features/notification/presentation/handler/notification_handler.dart';
 
-// TODO : consider to move direct on notification feature
-// CURRENTLY THIS APP SKIP REPOSITORY
 class FcmListener {
   final FcmDataSource _dataSource;
   final NotificationHandler _handler;
@@ -47,7 +45,7 @@ class FcmListener {
         _handler.handle(message, NotificationSource.background);
       },
       onError: (error) {
-        // todo : optional logging
+        // TODO : optional logging
       },
     );
   }

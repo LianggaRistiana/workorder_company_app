@@ -2,7 +2,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/services/fcm/fcm_listener.dart';
 import 'package:workorder_company_app/core/services/navigation/app_navigator_key.dart';
-import 'package:workorder_company_app/features/notification/data/datasources/fcm_datasource.dart';
+import 'package:workorder_company_app/core/services/fcm/fcm_datasource.dart';
 import 'package:workorder_company_app/features/notification/data/datasources/notification_local_datasource.dart';
 import 'package:workorder_company_app/features/notification/data/datasources/notification_remote_datasource.dart';
 import 'package:workorder_company_app/features/notification/data/repositories/notification_repository_impl.dart';
@@ -28,7 +28,7 @@ Future<void> initNotificationFeature() async {
       () => NotificationRemoteDatasourceImpl(sl()));
 
   sl.registerLazySingleton<NotificationHandler>(
-    () => NotificationHandler(sl()), // OPTIMIZE THIS MUST BE IN DOMAIN LAYER
+    () => NotificationHandler(sl()),
   );
 
   sl.registerLazySingleton<NotificationDispatcher>(

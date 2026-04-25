@@ -20,7 +20,6 @@ class NotificationToggle extends StatefulWidget {
 class _NotificationToggleState extends State<NotificationToggle> {
   @override
   Widget build(BuildContext context) {
-    // return SizedBox.shrink();
     return BlocConsumer<NotificationActiveCubit, NotificationActiveState>(
       listenWhen: (previous, current) =>
           previous.actionResult != current.actionResult,
@@ -52,16 +51,6 @@ class _NotificationToggleState extends State<NotificationToggle> {
           value: isEnabled,
           onChanged: (value) {
             context.read<NotificationActiveCubit>().toggleActive();
-            // if (!context.mounted) return;
-            // final newState = context.read<NotificationActiveCubit>().state;
-            // if (newState.osStatus.permission ==
-            //     NotificationPermissionStatus.permanentlyDenied) {
-            //   showConfirmDialog(
-            //       context: context,
-            //       title: "Perizinan Diperlukan",
-            //       message:
-            //           "Perizinan Notifikasi diperlukan untuk melakukan fitur ini");
-            // }
           },
         );
       },

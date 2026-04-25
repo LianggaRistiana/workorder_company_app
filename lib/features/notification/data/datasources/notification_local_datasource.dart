@@ -11,19 +11,11 @@ import 'package:workorder_company_app/core/constants/app_enums/notification_enum
 /// Note:
 /// This class does NOT interact with Firebase or backend services.
 abstract class NotificationLocalDataSource {
-  /// Returns the current OS notification permission status.
+  // HACK : currently check and request permission handled by fcm datasource
   Future<NotificationPermissionStatus> checkPermission();
-
-  /// Requests notification permission from the OS.
   Future<NotificationPermissionStatus> requestPermission();
-
-  /// Marks notifications as enabled locally.
   Future<void> enableNotifications();
-
-  /// Marks notifications as disabled locally.
   Future<void> disableNotifications();
-
-  /// Returns whether notifications are enabled locally.
   Future<bool> isNotificationEnabled();
 }
 
@@ -58,8 +50,7 @@ class NotificationLocalDataSourceImpl implements NotificationLocalDataSource {
 
   @override
   Future<void> enableNotifications() async {
-    final prefs =
-        await SharedPreferences.getInstance(); // OPTIMIZE : singleton in di
+    final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_keyNotificationEnabled, true);
   }
 

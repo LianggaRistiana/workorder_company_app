@@ -3,7 +3,7 @@ import 'package:workorder_company_app/core/constants/app_enums/notification_enum
 import 'package:workorder_company_app/core/services/logger/app_logger.dart';
 import 'package:workorder_company_app/core/types/future_either.dart';
 import 'package:workorder_company_app/core/utils/safe_call.dart';
-import 'package:workorder_company_app/features/notification/data/datasources/fcm_datasource.dart';
+import 'package:workorder_company_app/core/services/fcm/fcm_datasource.dart';
 import 'package:workorder_company_app/features/notification/data/datasources/notification_local_datasource.dart';
 import 'package:workorder_company_app/features/notification/data/datasources/notification_remote_datasource.dart';
 import 'package:workorder_company_app/features/notification/domain/entities/notification_log_entity.dart';
@@ -22,63 +22,50 @@ class NotificationRepositoryImpl implements NotificationRepository {
     this._fcm,
   );
 
+  bool get _isListening => _tokenSubscription != null;
+  bool _isStarting = false;
+
   @override
   Future<void> init() async {
-    appLogger.i("notification init");
-
+    appLogger.i("Notification init");
     final isEnabled = await _local.isNotificationEnabled();
-    if (!isEnabled) return;
-
-    final permission = await _local.checkPermission();
-    if (!permission.isGranted) return;
-
-    final token = await _fcm.getToken();
-    if (token != null) {
-      await _remote.registerToken(token);
-      appLogger.i("fcm token registered");
+    if (!isEnabled) {
+      appLogger.i("Notification skipped: disabled locally");
+      return;
     }
 
-    _listenTokenRefresh();
-  } // OPTIMIZE : add retry system
+    final permission = await _fcm.checkPermission();
+
+    if (!permission.isGranted) {
+      appLogger.i("Notification skipped: permission not granted");
+      return;
+    }
+    await _startTokenSync();
+  }
 
   @override
   Future<NotificationActionResult> enable() async {
     final permission = await _fcm.requestPermission();
-    // final permission = await _local.requestPermission();
-
     if (permission.isDenied) {
       return NotificationActionResult.permissionDenied;
     }
-
     if (permission.isPermanentlyDenied) {
       return NotificationActionResult.permanentlyDenied;
     }
 
     if (permission.isGranted) {
       await _local.enableNotifications();
-
-      final token = await _fcm.getToken();
-      if (token != null) {
-        await _remote.registerToken(token);
-      }
-
+      await _startTokenSync();
       return NotificationActionResult.success;
     }
-
     return NotificationActionResult.failed;
   }
 
   @override
   Future<NotificationActionResult> disable() async {
     try {
-      final token = await _fcm.getToken();
-
-      if (token != null) {
-        await _remote.unregisterToken(token);
-      }
-
+      await dispose();
       await _local.disableNotifications();
-
       return NotificationActionResult.success;
     } catch (_) {
       return NotificationActionResult.failed;
@@ -92,40 +79,10 @@ class NotificationRepositoryImpl implements NotificationRepository {
   @override
   Future<bool> isEnabled() async {
     final local = await _local.isNotificationEnabled();
-    // final permission = await _local.checkPermission();
     final permission = await _fcm.checkPermission();
 
     return local && permission.isGranted;
   }
-
-  // =========================
-  // STREAM HANDLING
-  // =========================
-
-  // @override
-  // Stream<NotificationPayloadEntity> onForegroundNotification() {
-  //   return _fcm.onMessage().map(
-  //         (message) =>
-  //             NotificationPayloadModel.fromRemoteMessage(message).toEntity(),
-  //       );
-  // }
-
-  // @override
-  // Stream<NotificationPayloadEntity> onNotificationOpenedApp() {
-  //   return _fcm.onMessageOpenedApp().map(
-  //         (message) =>
-  //             NotificationPayloadModel.fromRemoteMessage(message).toEntity(),
-  //       );
-  // }
-
-  // @override
-  // Future<NotificationPayloadEntity?> getInitialNotification() async {
-  //   final message = await _fcm.getInitialMessage();
-
-  //   if (message == null) return null;
-
-  //   return NotificationPayloadModel.fromRemoteMessage(message).toEntity();
-  // }
 
   // ========================
   // Logs
@@ -140,18 +97,13 @@ class NotificationRepositoryImpl implements NotificationRepository {
   }
 
   // ========================
-  // Private helpers
+  // Dispose to backend
   // ========================
-
-  void _listenTokenRefresh() {
-    _tokenSubscription?.cancel();
-    _tokenSubscription = _fcm.onTokenRefresh().listen((newToken) {
-      _remote.registerToken(newToken);
-    });
-  }
 
   @override
   Future<void> dispose() async {
+    await _tokenSubscription?.cancel();
+    _tokenSubscription = null;
     try {
       final token = await _fcm.getToken();
 
@@ -162,5 +114,42 @@ class NotificationRepositoryImpl implements NotificationRepository {
     } catch (_) {
       appLogger.e("Error on unregistering fcm token");
     }
+  }
+
+  // ========================
+  // Private helpers
+  // ========================
+
+  Future<void> _startTokenSync() async {
+    if (_isListening || _isStarting) return;
+
+    _isStarting = true;
+
+    try {
+      _listenTokenRefresh();
+
+      final token = await _fcm.getToken();
+      if (token != null) {
+        // OPTIMIZE : add retry system
+        await _remote.registerToken(token);
+        appLogger.i("fcm token registered");
+      }
+    } catch (e) {
+      appLogger.e("Failed to start token sync: $e");
+    } finally {
+      _isStarting = false;
+    }
+  }
+
+  void _listenTokenRefresh() {
+    _tokenSubscription?.cancel();
+    _tokenSubscription = _fcm.onTokenRefresh().listen((newToken) async {
+      try {
+        await _remote.registerToken(newToken);
+        appLogger.i("fcm token refreshed & registered");
+      } catch (e) {
+        appLogger.e("Failed to register refreshed token: $e");
+      }
+    });
   }
 }
