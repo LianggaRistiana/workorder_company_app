@@ -60,7 +60,7 @@ class _RequesterIntakePageState extends State<RequesterIntakePage> {
                       padding: const EdgeInsets.all(AppSpacing.md),
                       child: _buildSubmitButton(
                           context, coordinator.draft, widget.baseService.id),
-                    ),
+                    ).hideOnLargeScreen(),
                   )
                 : null,
             body: SafeArea(
@@ -79,7 +79,10 @@ class _RequesterIntakePageState extends State<RequesterIntakePage> {
                     FormRenderer(
                       coordinator: coordinator,
                     ),
-                    const SizedBox(height: 16)
+                    const SizedBox(height: 16),
+                    _buildSubmitButton(
+                            context, coordinator.draft, widget.baseService.id)
+                        .hideOnSmallScreen(),
                   ]
                 ],
               ),

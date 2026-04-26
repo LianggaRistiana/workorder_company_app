@@ -10,8 +10,10 @@ import 'package:workorder_company_app/features/service_request/presentation/stat
 import 'package:workorder_company_app/features/submissions/presentation/coordinator/form_renderer_coordinator.dart';
 import 'package:workorder_company_app/features/submissions/presentation/widgets/form_renderer.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
+import 'package:workorder_company_app/shared/widgets/adaptive_split_column.dart';
 import 'package:workorder_company_app/shared/widgets/button_with_loading_state.dart';
 
+// OPTIMIZE : Implement adaptive split column here
 class RequesterReviewPage extends StatefulWidget {
   final RequesterServiceRequestEntity request;
   const RequesterReviewPage({super.key, required this.request});
@@ -67,20 +69,31 @@ class _RequesterReviewPageState extends State<RequesterReviewPage> {
                 isLoading:
                     state.status == RequesterSubmitReviewFormStatus.loading,
                 label: "Kirim"),
-          ),
+          ).hideOnLargeScreen(),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
             child: SingleChildScrollView(
                 child: Column(children: [
-              widget.request.reviewForm?.form != null
-                  ? FormRenderer(
-                      coordinator: coordinator,
-                      // filledForm: widget.request.reviewForm!,
-                      // onChanged: (formId, order, value) {
-                      //   draft.updateValue(order, value);
-                      // }
-                    )
-                  : const SizedBox(),
+              if (widget.request.reviewForm?.form != null) ...[
+                FormRenderer(
+                  coordinator: coordinator,
+                ),
+                const SizedBox(height: 16),
+                ButtonWithLoadingState(
+                        icon: AppIcon.send,
+                        onPressed: () {
+                          context
+                              .read<RequesterSubmitReviewFormCubit>()
+                              .submitReviewForm(
+                                  widget.request.id, coordinator.draft);
+                        },
+                        isLoading: state.status ==
+                            RequesterSubmitReviewFormStatus.loading,
+                        label: "Kirim")
+                    .hideOnSmallScreen()
+              ] else ...[
+                const SizedBox.shrink(),
+              ],
               const SizedBox(height: 16),
             ])),
           ),

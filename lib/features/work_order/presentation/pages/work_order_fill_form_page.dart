@@ -67,9 +67,10 @@ class _WorkOrderFillFormPageState extends State<WorkOrderFillFormPage> {
                       icon: AppIcon.submit,
                       label: "Simpan",
                     ),
-                  ),
+                  ).hideOnLargeScreen(),
                   body: AdaptiveSplitColumn(
-                    leftChildren: _workOrderProps(),
+                    leftChildren: _workOrderProps(
+                        state.status == FillWorkOrderStatus.loading),
                     rightChildren: _formFill(),
                   ),
                 ),
@@ -77,15 +78,27 @@ class _WorkOrderFillFormPageState extends State<WorkOrderFillFormPage> {
     );
   }
 
-  List<Widget> _workOrderProps() {
+  List<Widget> _workOrderProps(bool isLoading) {
     return [
       WorkOrderPropertyView.shortView(workOrder: widget.workOrder),
+      ButtonWithLoadingState(
+        onPressed: () {
+          context.read<FillWorkOrderCubit>().submitSubmission(
+                widget.workOrder,
+                coordinator.draft,
+              );
+        },
+        isLoading: isLoading,
+        icon: AppIcon.submit,
+        label: "Simpan",
+      ).hideOnSmallScreen(),
     ];
   }
 
   List<Widget> _formFill() {
     return [
       FormRenderer(coordinator: coordinator),
+      const SizedBox(height: AppSpacing.md),
     ];
   }
 }

@@ -10,6 +10,7 @@ import 'package:workorder_company_app/features/submissions/presentation/widgets/
 import 'package:workorder_company_app/features/work_report/domain/entities/work_report_entity.dart';
 import 'package:workorder_company_app/features/work_report/presentation/state/submit/submit_work_report_submission_cubit.dart';
 import 'package:workorder_company_app/features/work_report/presentation/state/submit/submit_work_report_submission_state.dart';
+import 'package:workorder_company_app/features/work_report/presentation/widgets/work_report_property_view.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/adaptive_split_column.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
@@ -72,13 +73,28 @@ class _WorkReportFillFormPageState extends State<WorkReportFillFormPage> {
               icon: AppIcon.submit,
               label: "Simpan",
             ),
-          ),
+          ).hideOnLargeScreen(),
           body: AdaptiveSplitColumn(
             leftChildren: [
               if (!widget.workReport.status.isFinalReport) ...[
                 InformationBlock.info(
                     "Selama belum difinalisasi, laporan merepresentasikan progres pengerjaan. Setelah difinalisasi, laporan bersifat final dan tidak dapat diubah."),
                 const SizedBox(height: AppSpacing.md),
+                WorkReportPropertyView(report: widget.workReport),
+                ButtonWithLoadingState(
+                  onPressed: () {
+                    context
+                        .read<SubmitWorkReportSubmissionCubit>()
+                        .submitWorkReportSubmission(
+                          widget.workReport,
+                          coordinator.draft,
+                        );
+                  },
+                  isLoading:
+                      state.status == SubmitWorkReportSubmissionStatus.loading,
+                  icon: AppIcon.submit,
+                  label: "Simpan",
+                ).hideOnSmallScreen()
               ]
             ],
             rightChildren: [
