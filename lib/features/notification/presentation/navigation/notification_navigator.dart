@@ -41,9 +41,9 @@ class NotificationNavigatorImpl implements NotificationNavigator {
     if (user == null) return;
 
     if (user.role.canAll(InvitationPermission.receiver)) {
-      _safePush(AppRoutes.invitationsHistory);
-    } else {
       _safePush(AppRoutes.invitationsPending);
+    } else {
+      _safePush(AppRoutes.invitationsHistory);
     }
   }
 

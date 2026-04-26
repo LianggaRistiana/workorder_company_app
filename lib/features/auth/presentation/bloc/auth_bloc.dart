@@ -68,6 +68,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     appLogger.i("Logout Process");
 
     final result = await logoutUsecase();
+    _initialized = false;
     result.fold(
       (failure) => emit(Unauthenticated()),
       (_) {

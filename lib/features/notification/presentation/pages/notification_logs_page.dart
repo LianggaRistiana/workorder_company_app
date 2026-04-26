@@ -7,6 +7,7 @@ import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/notification/domain/entities/notification_log_entity.dart';
 import 'package:workorder_company_app/features/notification/presentation/bloc/notification_active_cubit.dart';
+import 'package:workorder_company_app/features/notification/presentation/bloc/notification_active_state.dart';
 import 'package:workorder_company_app/features/notification/presentation/bloc/notification_log_cubit.dart';
 import 'package:workorder_company_app/features/notification/presentation/bloc/notification_log_state.dart';
 import 'package:workorder_company_app/features/notification/presentation/navigation/notification_navigator.dart';
@@ -30,27 +31,36 @@ class NotificationLogsPage extends StatelessWidget {
             "Terjadi kesalahan saat mengambil data notifikasi");
       }
     }, builder: (context, state) {
-      final showNotificationEnabledStatus =
-          context.read<NotificationActiveCubit>().state.isEnabled;
       return ListPageScaffold(
           title: "Notifikasi",
-          header: showNotificationEnabledStatus
-              ? null
-              : Padding(
-                  padding: const EdgeInsets.only(
-                    left: AppSpacing.md,
-                    right: AppSpacing.md,
-                    bottom: AppSpacing.md,
-                  ),
-                  child: InformationBlock.info(
-                      "Aktifkan notifikasi untuk menerima pop up notifikasi dari aplikasi ini."),
-                ),
+          header: _NotificationStatusWidget(),
           isLoading: state.status == NotificationLogStatus.loading,
           items: state.logs,
           emptyWidget: EmptyStateWidget(text: "Tidak ada notifikasi"),
           onRefresh: () async =>
               unawaited(context.read<NotificationLogCubit>().fetchLogs()),
           itemBuilder: (item) => _NotificationLogItem(item: item));
+    });
+  }
+}
+
+class _NotificationStatusWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<NotificationActiveCubit, NotificationActiveState>(
+        builder: (context, state) {
+      final showNotificationEnabledStatus = state.isEnabled;
+      return showNotificationEnabledStatus
+          ? const SizedBox.shrink()
+          : Padding(
+              padding: const EdgeInsets.only(
+                left: AppSpacing.md,
+                right: AppSpacing.md,
+                bottom: AppSpacing.md,
+              ),
+              child: InformationBlock.info(
+                  "Aktifkan notifikasi untuk menerima pop up notifikasi dari aplikasi ini."),
+            );
     });
   }
 }
