@@ -82,7 +82,7 @@ class ServiceRequestContent extends StatelessWidget {
             PropertyItem.text(
                 label: "Diajukan pada",
                 value: serviceRequest.statusDate.getCreatedAtString(),
-                icon: AppIcon.dateField),
+                icon: AppIcon.date),
             PropertyItem.widget(
               label: "Status",
               icon: AppIcon.step,

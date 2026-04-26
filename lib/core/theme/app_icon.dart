@@ -27,16 +27,6 @@ class AppIcon {
   static const IconData notification = LucideIcons.bell;
   static const IconData invitation = LucideIcons.mail;
 
-  // Icon For Field Type
-  static const IconData textField = Icons.text_format;
-  static const IconData emailField = Icons.alternate_email;
-  static const IconData textareaField = Icons.notes;
-  static const IconData numberField = Icons.numbers_outlined;
-  static const IconData dateField = Icons.calendar_today;
-  static const IconData timeField = Icons.access_time;
-  static const IconData multiSelect = Icons.checklist;
-  static const IconData singleSelect = Icons.radio_button_checked;
-  static const IconData file = LucideIcons.file;
 
   // Icon For Action
   static const IconData submit = LucideIcons.uploadCloud;
@@ -76,4 +66,5 @@ class AppIcon {
   static const IconData branch = LucideIcons.fileStack;
   static const IconData pic = LucideIcons.userCog2;
   static const IconData lock = LucideIcons.lock;
+  static const IconData date = LucideIcons.calendar;
 }
