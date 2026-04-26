@@ -62,7 +62,7 @@ class WorkOrderStatusDateEntity {
     }
 
     if (date == null) return '-';
-
-    return DateFormat('d MMM yyyy', 'id_ID').format(date);
+    date = date.toLocal();
+    return DateFormat('d MMM yyyy, HH:mm', 'id_ID').format(date);
   }
 }

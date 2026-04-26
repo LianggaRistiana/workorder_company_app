@@ -21,10 +21,10 @@ class ServiceRequestStatusDateModel extends ServiceRequestStatusDateEntity {
       rejectedAt: json.field('rejectedAt').optDate(),
       onProgressAt: json.field('onProgressAt').optDate(),
       completedAt: json.field('completedAt').optDate(),
-      unProcessableAt: json.field('unProcessableAt').optDate(),
+      unProcessableAt: json.field('unprocessableAt').optDate(),
       closedAt: json.field('closedAt').optDate(),
       cancelledAt: json.field('cancelledAt').optDate(),
-      partiallyCompletedAt: json.field('partiallyCompletedAt').optDate(),
+      partiallyCompletedAt: json.field('partialCompletedAt').optDate(),
     );
   }
 }

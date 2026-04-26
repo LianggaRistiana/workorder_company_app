@@ -53,8 +53,8 @@ class WorkOrderItemCard extends StatelessWidget {
                       const Spacer(),
                       if (workOrder.statusDate.createdAt != null) ...[
                         Text(
-                          DateFormat('d MMM yyyy', 'id_ID')
-                              .format(workOrder.statusDate.createdAt!),
+                          DateFormat('d MMM yyyy', 'id_ID').format(
+                              workOrder.statusDate.createdAt!.toLocal()),
                           textAlign: TextAlign.end,
                           style: Theme.of(context).textTheme.bodySmall,
                         )

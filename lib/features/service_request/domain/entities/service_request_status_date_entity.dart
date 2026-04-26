@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:workorder_company_app/core/constants/app_enums/service_request_enum.dart';
 
-class ServiceRequestStatusDateEntity{
+class ServiceRequestStatusDateEntity {
   final DateTime? createdAt;
   final DateTime? approvedAt;
   final DateTime? rejectedAt;
@@ -27,7 +27,8 @@ class ServiceRequestStatusDateEntity{
   String getCreatedAtString() {
     DateTime? date = createdAt;
     if (date == null) return '-';
-    return DateFormat('d MMM yyyy', 'id_ID').format(date);
+    date = date.toLocal();
+    return DateFormat(' d MMM yyyy', 'id_ID').format(date);
   }
 
   String getDateString(ServiceRequestStatus status) {
@@ -71,6 +72,7 @@ class ServiceRequestStatusDateEntity{
         break;
     }
     if (date == null) return '-';
-    return DateFormat('d MMM yyyy', 'id_ID').format(date);
+    date = date.toLocal();
+    return DateFormat('d MMM yyyy, HH:mm', 'id_ID').format(date);
   }
 }

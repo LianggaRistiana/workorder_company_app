@@ -17,7 +17,13 @@ class UserRequesterChip extends StatelessWidget {
             size: AppRadius.medium, color: colorScheme.primary),
       ),
       const SizedBox(width: 8),
-      Text(name),
+      Expanded(
+        child: Text(
+          name,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 1,
+        ),
+      ),
     ]);
   }
 }

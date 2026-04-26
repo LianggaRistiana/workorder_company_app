@@ -50,15 +50,22 @@ class ServiceRequestItem extends StatelessWidget {
                   ),
                   const SizedBox(height: AppSpacing.xs),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        serviceRequest.service.title,
-                        style: Theme.of(context).textTheme.bodySmall,
+                      Flexible(
+                        flex: 2,
+                        child: Text(
+                          serviceRequest.service.title,
+                          style: Theme.of(context).textTheme.bodySmall,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                       if (isProvider) ...[
-                        const Spacer(),
-                        UserRequesterChip(
-                          name: serviceRequest.requestedBy.name,
+                        Flexible(
+                          flex: 1,
+                          child: UserRequesterChip(
+                              name: serviceRequest.requestedBy.name),
                         ),
                       ],
                     ],
@@ -67,9 +74,13 @@ class ServiceRequestItem extends StatelessWidget {
                   Row(
                     children: [
                       if (isRequester) ...[
-                        Text(
-                          toCompany!.name,
-                          style: Theme.of(context).textTheme.labelSmall,
+                        Expanded(
+                          child: Text(
+                            toCompany!.name,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.labelSmall,
+                          ),
                         ),
                       ],
                       const Spacer(),
