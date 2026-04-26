@@ -18,7 +18,8 @@ class FieldsEditorTabView extends StatelessWidget {
   const FieldsEditorTabView({
     super.key,
     required this.coordinator,
-    required this.onAddField,  });
+    required this.onAddField,
+  });
 
   @override
   Widget build(BuildContext context) {

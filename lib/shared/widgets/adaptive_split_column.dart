@@ -77,3 +77,75 @@ class AdaptiveSplitColumn extends StatelessWidget {
       ..removeLast();
   }
 }
+
+enum AdaptiveVisibilityMode {
+  hideBelow,
+  hideAbove,
+}
+
+class AdaptiveVisibility extends StatelessWidget {
+  final Widget child;
+  final double breakpoint;
+  final AdaptiveVisibilityMode mode;
+
+  const AdaptiveVisibility({
+    super.key,
+    required this.child,
+    this.breakpoint = 768,
+    this.mode = AdaptiveVisibilityMode.hideAbove,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final width = MediaQuery.sizeOf(context).width;
+
+    final shouldHide = switch (mode) {
+      AdaptiveVisibilityMode.hideAbove => width >= breakpoint,
+      AdaptiveVisibilityMode.hideBelow => width < breakpoint,
+    };
+
+    return shouldHide ? const SizedBox.shrink() : child;
+  }
+}
+
+extension AdaptiveVisibilityX on Widget {
+  Widget visibleOnSmallScreen({
+    double breakpoint = 768,
+  }) {
+    return AdaptiveVisibility(
+      breakpoint: breakpoint,
+      mode: AdaptiveVisibilityMode.hideAbove,
+      child: this,
+    );
+  }
+
+  Widget visibleOnLargeScreen({
+    double breakpoint = 768,
+  }) {
+    return AdaptiveVisibility(
+      breakpoint: breakpoint,
+      mode: AdaptiveVisibilityMode.hideBelow,
+      child: this,
+    );
+  }
+
+  Widget hideOnSmallScreen({
+    double breakpoint = 768,
+  }) {
+    return AdaptiveVisibility(
+      breakpoint: breakpoint,
+      mode: AdaptiveVisibilityMode.hideBelow,
+      child: this,
+    );
+  }
+
+  Widget hideOnLargeScreen({
+    double breakpoint = 768,
+  }) {
+    return AdaptiveVisibility(
+      breakpoint: breakpoint,
+      mode: AdaptiveVisibilityMode.hideAbove,
+      child: this,
+    );
+  }
+}

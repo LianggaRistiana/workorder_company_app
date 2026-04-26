@@ -3,11 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
+import 'package:workorder_company_app/features/company/domain/entities/company_entity.dart';
 import 'package:workorder_company_app/features/company/presentation/bloc/internal_company_management/internal_company_get_cubit.dart';
 import 'package:workorder_company_app/features/company/presentation/bloc/internal_company_management/internal_company_get_state.dart';
 import 'package:workorder_company_app/features/company/presentation/widgets/internal_company_card.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/widgets/active_status_chip.dart';
+import 'package:workorder_company_app/shared/widgets/adaptive_split_column.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/property_display.dart';
@@ -55,56 +57,72 @@ class _InternalCompanyProfilePageState
                     .read<InternalGetCompanyCubit>()
                     .loadCompany(forceRefresh: true);
               },
-              child: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-                children: [
-                  Hero(
-                    tag: "company-card",
-                    child: InternalCompanyCard(),
-                  ),
-                  const SizedBox(height: AppSpacing.md),
-                  CustomCard(
-                      child: PropertyDisplay(properties: [
-                    PropertyItem.text(
-                        label: "Nama Perusahaan",
-                        icon: AppIcon.company,
-                        value: company.name),
-                    PropertyItem.widget(
-                        label: "Status Aktif",
-                        icon: AppIcon.activeState,
-                        child: ActiveStatusChip(
-                          isActive: company.isActive,
-                        )),
-                    PropertyItem.text(
-                      label: "Alamat",
-                      icon: Icons.location_on_outlined,
-                      value: company.address.isEmpty
-                          ? "Alamat belum diisi"
-                          : company.address,
-                    ),
-                    PropertyItem.text(
-                      label: "Deskripsi",
-                      icon: AppIcon.desc,
-                      value: company.description.isEmpty
-                          ? "Deskripsi belum diisi"
-                          : company.description,
-                    ),
-                  ])),
-                  TextButton.icon(
-                    onPressed: () {
-                      debugPrint("Edit Profil Perusahaan");
-                      // FIXME : Doesnt update UI after update company data
-                      context.push(AppRoutes.companyUpdate, extra: company);
-                    },
-                    label: Text("Edit Profil Perusahaan"),
-                    icon: Icon(AppIcon.edit),
-                  ),
-                ],
+              child: AdaptiveSplitColumn(
+                heightSpacing: 0,
+                leftChildren: _leftChildren(company),
+                rightChildren: _rightChildren(company),
               ),
             ),
           );
         },
       ),
     );
+  }
+
+  List<Widget> _leftChildren(CompanyEntity company) {
+    return [
+      Hero(
+        tag: "company-card",
+        child: InternalCompanyCard(),
+      ),
+      const SizedBox(height: AppSpacing.md),
+      TextButton.icon(
+        onPressed: () {
+          debugPrint("Edit Profil Perusahaan");
+          context.push(AppRoutes.companyUpdate, extra: company);
+        },
+        label: Text("Edit Profil Perusahaan"),
+        icon: Icon(AppIcon.edit),
+      ).hideOnSmallScreen(),
+    ];
+  }
+
+  List<Widget> _rightChildren(CompanyEntity company) {
+    return [
+      CustomCard(
+          child: PropertyDisplay(properties: [
+        PropertyItem.text(
+            label: "Nama Perusahaan",
+            icon: AppIcon.company,
+            value: company.name),
+        PropertyItem.widget(
+            label: "Status Aktif",
+            icon: AppIcon.activeState,
+            child: ActiveStatusChip(
+              isActive: company.isActive,
+            )),
+        PropertyItem.text(
+          label: "Alamat",
+          icon: Icons.location_on_outlined,
+          value:
+              company.address.isEmpty ? "Alamat belum diisi" : company.address,
+        ),
+        PropertyItem.text(
+          label: "Deskripsi",
+          icon: AppIcon.desc,
+          value: company.description.isEmpty
+              ? "Deskripsi belum diisi"
+              : company.description,
+        ),
+      ])),
+      TextButton.icon(
+        onPressed: () {
+          debugPrint("Edit Profil Perusahaan");
+          context.push(AppRoutes.companyUpdate, extra: company);
+        },
+        label: Text("Edit Profil Perusahaan"),
+        icon: Icon(AppIcon.edit),
+      ).hideOnLargeScreen(),
+    ];
   }
 }

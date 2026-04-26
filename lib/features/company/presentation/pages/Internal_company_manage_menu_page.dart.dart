@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
+import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/company/presentation/bloc/internal_company_management/internal_company_get_cubit.dart';
 import 'package:workorder_company_app/features/company/presentation/widgets/internal_company_card.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
@@ -38,29 +39,24 @@ class _InternalCompanyManageMenuPageState
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-          child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Hero(
-              tag: "company-card",
-              child: InternalCompanyCard(),
-            ),
-          ),
-          Expanded(
-            child: AdaptiveSplitColumn(
-              heightSpacing: 0,
-              leftChildren: _configMenu(),
-              rightChildren: _operationalMenu(),
-            ),
-          ),
-        ],
-      )),
+        child: AdaptiveSplitColumn(
+          heightSpacing: 0,
+          leftChildren: _configMenu(),
+          rightChildren: _operationalMenu(),
+        ),
+      ),
     );
   }
 
   List<Widget> _configMenu() {
     return [
+      Padding(
+        padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+        child: Hero(
+          tag: "company-card",
+          child: InternalCompanyCard(),
+        ),
+      ),
       SectionTitle(
         "Menu Konfigurasi Perusahaan",
         style: Theme.of(context).textTheme.titleLarge,

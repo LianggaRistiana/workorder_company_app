@@ -134,16 +134,18 @@ Future<CompanyFlowTypeAfterProfile?> _showFlowSelector(
           "Pilih Alur Bisnis",
           style: Theme.of(context).textTheme.titleMedium,
         ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: CompanyFlowTypeAfterProfile.values.map((flow) {
-            return _FlowOptionTile(
-              flow: flow,
-              onTap: () {
-                Navigator.pop(context, flow);
-              },
-            );
-          }).toList(),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: CompanyFlowTypeAfterProfile.values.map((flow) {
+              return _FlowOptionTile(
+                flow: flow,
+                onTap: () {
+                  Navigator.pop(context, flow);
+                },
+              );
+            }).toList(),
+          ),
         ),
       );
     },
