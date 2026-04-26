@@ -4,7 +4,7 @@ import 'package:workorder_company_app/features/forms/domain/draft/form_draft.dar
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
 import 'package:workorder_company_app/features/forms/presentation/controller/form_config_controller.dart';
 import 'package:workorder_company_app/features/forms/presentation/coordinator/form_editor_coordinator.dart';
-import 'package:workorder_company_app/features/forms/presentation/widgets/field_type_buttom_sheet.dart';
+import 'package:workorder_company_app/features/forms/presentation/widgets/field_type_buttom_sheet_content.dart';
 import 'package:workorder_company_app/features/forms/presentation/widgets/fields_editor_tab_view.dart';
 import 'package:workorder_company_app/features/forms/presentation/widgets/form_config_editor_tab_view.dart';
 import 'package:workorder_company_app/shared/utils/confirm_dialog.dart';
@@ -86,7 +86,7 @@ class _FormEditorViewState extends State<FormEditorView>
   void _openFieldTypePicker() {
     showAppBottomSheet(
       context,
-      content: FieldTypeBottomSheet(
+      content: FieldTypeBottomSheetContent(
         onSelected: (type) {
           _coordinator.addField(type);
         },

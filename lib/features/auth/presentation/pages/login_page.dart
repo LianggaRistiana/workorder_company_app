@@ -137,7 +137,6 @@ class _LoginPageState extends State<LoginPage> {
                           label: "Masuk"),
                       TextButton(
                         onPressed: () {
-                          // Logger().d(GoRouterState.of(context).uri.toString());
                           GoRouter.of(context).go(AppRoutes.register);
                         },
                         child: Text("Buat akun baru"),

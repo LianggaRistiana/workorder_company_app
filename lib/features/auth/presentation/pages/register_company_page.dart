@@ -7,6 +7,7 @@ import 'package:workorder_company_app/features/auth/domain/entities/company_regi
 import 'package:workorder_company_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
+import 'package:workorder_company_app/shared/widgets/button_with_loading_state.dart';
 import 'package:workorder_company_app/shared/widgets/custom_back_buttom.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
@@ -305,27 +306,14 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
     );
   }
 
-  // OPTIMIZE : Use Button with loading state
   Widget _buildRegisterButton(bool isLoading) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
       width: double.infinity,
-      child: ElevatedButton(
-        onPressed: isLoading ? null : _onRegisterPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          padding: const EdgeInsets.symmetric(vertical: 16),
-        ),
-        child: isLoading
-            ? const SizedBox(
-                height: 20,
-                width: 20,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                ),
-              )
-            : const Text("Daftarkan Perusahaan"),
+      child: ButtonWithLoadingState(
+        onPressed: _onRegisterPressed,
+        isLoading: isLoading,
+        label: "Daftarkan Perusahaan",
       ),
     );
   }

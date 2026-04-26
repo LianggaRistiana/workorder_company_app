@@ -8,6 +8,7 @@ import 'package:workorder_company_app/features/auth/domain/entities/user_registr
 import 'package:workorder_company_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
+import 'package:workorder_company_app/shared/widgets/button_with_loading_state.dart';
 import 'package:workorder_company_app/shared/widgets/custom_back_buttom.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
@@ -273,31 +274,18 @@ class _RegisterCommonPageState extends State<RegisterCommonPage> {
     );
   }
 
-  // OPTIMIZE : Use Button with loading state
   Widget _buildRegisterButton() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
       width: double.infinity,
       child: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
           final isLoading = state is AuthLoading;
 
-          return ElevatedButton(
-            onPressed: isLoading ? null : _onRegisterPressed,
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              backgroundColor: Theme.of(context).colorScheme.primary,
-            ),
-            child: isLoading
-                ? const SizedBox(
-                    height: 20,
-                    width: 20,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                    ),
-                  )
-                : const Text("Daftarkan akun"),
+          return ButtonWithLoadingState(
+            onPressed: _onRegisterPressed,
+            isLoading: isLoading,
+            label: "Daftarkan akun",
           );
         },
       ),
