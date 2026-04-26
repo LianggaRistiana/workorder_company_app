@@ -17,6 +17,7 @@ class AppMessenger {
           elevation: 0,
           behavior: SnackBarBehavior.floating,
           backgroundColor: Colors.transparent,
+          padding: EdgeInsets.all(0),
           content: SnackBarContent(
             payload: payload,
             onAction: () {
@@ -38,6 +39,7 @@ class SnackBarContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return ClickableCustomCard(
+      margin: const EdgeInsets.all(0),
       onTap: onAction,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,

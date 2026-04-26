@@ -109,6 +109,7 @@ class NotificationRepositoryImpl implements NotificationRepository {
 
       if (token != null) {
         await _remote.unregisterToken(token);
+        await _fcm.deleteToken();
         appLogger.i("fcm token unregistered");
       }
     } catch (_) {

@@ -15,6 +15,7 @@ abstract class FcmDataSource {
   Future<RemoteMessage?> getInitialMessage();
   Future<NotificationPermissionStatus> checkPermission();
   Future<NotificationPermissionStatus> requestPermission();
+  Future<void> deleteToken();
 }
 
 class FcmDataSourceImpl implements FcmDataSource {
@@ -87,5 +88,10 @@ class FcmDataSourceImpl implements FcmDataSource {
     return settings.authorizationStatus == AuthorizationStatus.authorized
         ? NotificationPermissionStatus.granted
         : NotificationPermissionStatus.denied;
+  }
+
+  @override
+  Future<void> deleteToken() {
+    return _messaging.deleteToken();
   }
 }
