@@ -11,6 +11,7 @@ import 'package:workorder_company_app/features/memberships/presentation/bloc/gen
 import 'package:workorder_company_app/features/memberships/presentation/widgets/generate_code_widget.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
+import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
 import 'package:workorder_company_app/shared/widgets/list_page_scafold.dart';
 
 class MembershipCodesListPage extends StatelessWidget {
@@ -46,34 +47,32 @@ class _MembershipCodesListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<MembershipCodeListBloc, MembershipCodeListState>(
         listener: (context, state) {
-          if (state.status == MemberShipCodeListStatus.error) {
-            context.showError(state.errorMessage ?? "Terjadi Kesalahan");
-          }
-        },
-        builder: (context, state) {
-          final isLoading = state.status == MemberShipCodeListStatus.loading;
-          final items = state.codes;
-          final grouped = groupByPrefix(items);
-          final groupedList = grouped.entries.toList();
+      if (state.status == MemberShipCodeListStatus.error) {
+        context.showError(state.errorMessage ?? "Terjadi Kesalahan");
+      }
+    }, builder: (context, state) {
+      final isLoading = state.status == MemberShipCodeListStatus.loading;
+      final items = state.codes;
+      final grouped = groupByPrefix(items);
+      final groupedList = grouped.entries.toList();
 
-          return ListPageScaffold(
-            title: "Kode Langganan",
-            isLoading: isLoading,
-            items: groupedList,
-            header: GenerateCodeWidget(),
-            errorMessage: state.errorMessage,
-            onRefresh: () => _onRefresh(context),
-            loadingMessage: "Memuat Kode Langganan...",
-            emptyWidget: const Text(
-              "Belum ada kode langganan.",
-              style: TextStyle(color: Colors.grey),
-            ),
-            itemBuilder: (entry) => MembershipCodeGroupView(
-              prefix: entry.key,
-              codes: entry.value,
-            ),
-          );
-        });
+      return ListPageScaffold(
+        title: "Kode Langganan",
+        isLoading: isLoading,
+        items: groupedList,
+        header: GenerateCodeWidget(),
+        errorMessage: state.errorMessage,
+        onRefresh: () => _onRefresh(context),
+        loadingMessage: "Memuat Kode Langganan...",
+        emptyWidget: EmptyStateWidget(
+          text: "Tidak ada kode langganan",
+        ),
+        itemBuilder: (entry) => MembershipCodeGroupView(
+          prefix: entry.key,
+          codes: entry.value,
+        ),
+      );
+    });
   }
 }
 

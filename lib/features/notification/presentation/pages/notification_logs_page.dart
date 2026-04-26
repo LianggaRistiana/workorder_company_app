@@ -1,16 +1,21 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/core/constants/app_enums/notification_enum.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/notification/domain/entities/notification_log_entity.dart';
+import 'package:workorder_company_app/features/notification/presentation/bloc/notification_active_cubit.dart';
 import 'package:workorder_company_app/features/notification/presentation/bloc/notification_log_cubit.dart';
 import 'package:workorder_company_app/features/notification/presentation/bloc/notification_log_state.dart';
 import 'package:workorder_company_app/features/notification/presentation/navigation/notification_navigator.dart';
 import 'package:workorder_company_app/features/notification/presentation/ui_mapper.dart/resource_type_icon_mapper.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
+import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
+import 'package:workorder_company_app/shared/widgets/information_block.dart';
 import 'package:workorder_company_app/shared/widgets/list_page_scafold.dart';
 
 class NotificationLogsPage extends StatelessWidget {
@@ -25,11 +30,26 @@ class NotificationLogsPage extends StatelessWidget {
             "Terjadi kesalahan saat mengambil data notifikasi");
       }
     }, builder: (context, state) {
+      final showNotificationEnabledStatus =
+          context.read<NotificationActiveCubit>().state.isEnabled;
       return ListPageScaffold(
           title: "Notifikasi",
+          header: showNotificationEnabledStatus
+              ? null
+              : Padding(
+                  padding: const EdgeInsets.only(
+                    left: AppSpacing.md,
+                    right: AppSpacing.md,
+                    bottom: AppSpacing.md,
+                  ),
+                  child: InformationBlock.info(
+                      "Aktifkan notifikasi untuk menerima pop up notifikasi dari aplikasi ini."),
+                ),
           isLoading: state.status == NotificationLogStatus.loading,
           items: state.logs,
-          onRefresh: () => context.read<NotificationLogCubit>().fetchLogs(),
+          emptyWidget: EmptyStateWidget(text: "Tidak ada notifikasi"),
+          onRefresh: () async =>
+              unawaited(context.read<NotificationLogCubit>().fetchLogs()),
           itemBuilder: (item) => _NotificationLogItem(item: item));
     });
   }

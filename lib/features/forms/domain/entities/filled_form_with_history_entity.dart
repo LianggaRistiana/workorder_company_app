@@ -43,7 +43,7 @@ extension FilledFormWithHistoryEntityTools on FilledFormWithHistoryEntity {
 
   List<SubmissionEntity> get historyDescending {
     final list = [...history];
-    list.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
+    list.sort((a, b) => b.createdAt.compareTo(a.createdAt));
     return list;
   }
 

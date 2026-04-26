@@ -24,4 +24,6 @@ class NotificationLogCubit extends Cubit<NotificationLogState> {
       )),
     );
   }
+
+  // TODO : ADD LOCAL MARK AS READ
 }

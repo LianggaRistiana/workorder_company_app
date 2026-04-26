@@ -14,7 +14,6 @@ import 'package:workorder_company_app/features/auth/presentation/widgets/profile
 import 'package:workorder_company_app/features/auth/presentation/widgets/user_property_display.dart';
 import 'package:workorder_company_app/features/company/presentation/bloc/internal_company_management/internal_company_get_cubit.dart';
 import 'package:workorder_company_app/features/company/presentation/widgets/internal_company_card.dart';
-import 'package:workorder_company_app/features/notification/presentation/bloc/notification_active_cubit.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/widgets/adaptive_split_column.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
@@ -30,9 +29,6 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-
-    context.read<NotificationActiveCubit>().checkStatus();
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final authBloc = context.read<AuthBloc>();
 

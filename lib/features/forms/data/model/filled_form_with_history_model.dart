@@ -33,11 +33,6 @@ class FilledFormWithHistoryModel extends FilledFormWithHistoryEntity {
         ..sort((a, b) {
           final aDate = a.createdAt;
           final bDate = b.createdAt;
-
-          if (aDate == null && bDate == null) return 0;
-          if (aDate == null) return 1;
-          if (bDate == null) return -1;
-
           return bDate.compareTo(aDate);
         });
     }

@@ -33,7 +33,11 @@ class ProviderServiceRequestListPage extends StatelessWidget {
         return ListPageScaffold<ProviderServiceRequestEntity>(
           title: 'Daftar Permintaan Layanan',
           isLoading: state.status == ProviderServiceRequestsListStatus.loading,
-          onRefresh: () async {}, // TODO : add refresh here
+          onRefresh: () async {
+            context.read<ProviderServiceRequestsListBloc>().add(
+                  GetProviderServiceRequestsRequested(),
+                );
+          },
           items: items,
           itemBuilder: (item) {
             return ServiceRequestItem(

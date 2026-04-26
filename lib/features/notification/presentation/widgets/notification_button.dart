@@ -16,7 +16,7 @@ class NotificationButton extends StatelessWidget {
         listener: (context, state) {
       if (state.status == NotificationLogStatus.error) {
         context.showError(state.errorMessage ??
-            "Terjadi kesalahan saat mengambil data notifikasi");
+            "Terjadi kesalahan saat mengambil data notifikasi"); // OPTIMIZE : Move listener to app layout to avoid duplication
       }
     }, builder: (context, state) {
       return IconButton(

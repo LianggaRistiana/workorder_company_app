@@ -70,8 +70,9 @@ class _MyAppState extends State<MyApp> {
         BlocProvider<NotificationLogCubit>(
           create: (_) => di.sl()..fetchLogs(),
         ),
+        // OPTIMIZE : Move this into App Layout for init after login
         BlocProvider<NotificationActiveCubit>(
-            create: (_) => di.sl()), // TODO : remove this later
+            create: (_) => di.sl()..checkStatus()),
         BlocProvider<InternalGetCompanyCubit>(create: (_) => di.sl())
       ],
       child: MaterialApp.router(

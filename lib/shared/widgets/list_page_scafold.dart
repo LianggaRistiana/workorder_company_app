@@ -4,6 +4,7 @@ import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 import 'package:workorder_company_app/shared/widgets/custom_back_buttom.dart';
 import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
 import 'package:workorder_company_app/shared/widgets/error_body.dart';
+import 'package:workorder_company_app/shared/widgets/loading_state_inline.dart';
 
 class ListPageScaffold<T> extends StatelessWidget {
   final String title;
@@ -40,66 +41,11 @@ class ListPageScaffold<T> extends StatelessWidget {
     this.loadingMessage = "Memuat...",
   });
 
+  bool get isFirstLoad => isLoading && items.isEmpty;
+  bool get isAppending => isLoading && items.isNotEmpty;
+
   @override
   Widget build(BuildContext context) {
-    final bottomSpacing = floatingActionButton != null ? 96.0 : 24.0;
-    Widget content;
-
-    // FIRST LOAD
-    if (isLoading && items.isEmpty) {
-      content = Center(
-        child: AppLoading(
-          message: loadingMessage,
-        ),
-      );
-    }
-
-    // ERROR
-    else if (errorMessage != null && items.isEmpty) {
-      content = ErrorBody(
-        errorMessage: errorMessage!,
-        onRetry: onRefresh,
-      );
-    }
-
-    // EMPTY
-    else if (items.isEmpty) {
-      content = RefreshIndicator(
-        onRefresh: () async => await onRefresh(),
-        child: ListView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          children: [
-            if (header != null) header!,
-            SizedBox(
-              height: MediaQuery.of(context).size.height *
-                  (header != null ? 0.5 : 0.8),
-              child: Center(
-                child: emptyWidget ??
-                    const EmptyStateWidget(
-                      text: "Tidak ada data",
-                    ),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
-    // LOADED
-    else {
-      content = RefreshIndicator(
-        onRefresh: () async => await onRefresh(),
-        child: ListView(
-          padding: EdgeInsets.only(bottom: bottomSpacing),
-          physics: const AlwaysScrollableScrollPhysics(),
-          children: [
-            if (header != null) header!,
-            ...items.map(itemBuilder),
-          ],
-        ),
-      );
-    }
-
     return Scaffold(
       appBar: AppBar(
         leading: context.canPop() ? CustomBackButton() : null,
@@ -107,54 +53,78 @@ class ListPageScaffold<T> extends StatelessWidget {
         actions: actions,
         bottom: bottomAppBar,
       ),
+      floatingActionButtonAnimator: FloatingActionButtonAnimator.noAnimation,
       floatingActionButton: floatingActionButton,
-      // OPTIMIZE[High] : Use Listview builder to lazy load and header should shown either loaded or not
-      body: SafeArea(child: content),
-      bottomNavigationBar: AnimatedSlide(
-        duration: const Duration(milliseconds: 200),
-        offset:
-            (isLoading && items.isNotEmpty) ? Offset.zero : const Offset(0, 1),
-        child: AnimatedOpacity(
-          duration: const Duration(milliseconds: 200),
-          opacity: (isLoading && items.isNotEmpty) ? 1 : 0,
-          child: (isLoading && items.isNotEmpty)
-              ? SafeArea(
-                  top: false,
+      body: SafeArea(
+        child: RefreshIndicator(
+          onRefresh: onRefresh,
+          child: CustomScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            slivers: [
+              /// 🔵 HEADER SELALU ADA
+              if (header != null)
+                SliverToBoxAdapter(
+                  child: header!,
+                ),
+
+              /// 🔵 loading more indicator (bottom)
+              if (isAppending)
+                const SliverToBoxAdapter(
                   child: Padding(
-                    padding: const EdgeInsets.only(
-                        top: 4, bottom: 16, left: 16, right: 16),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 14),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.onPrimary,
-                        borderRadius: BorderRadius.circular(16),
-                        boxShadow: const [
-                          BoxShadow(
-                            blurRadius: 10,
-                            color: Colors.black12,
-                          )
-                        ],
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const SizedBox(
-                            width: 14,
-                            height: 14,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Text(loadingMessage),
-                        ],
-                      ),
-                    ),
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    child: LoadingStateInline(isEndAlign: false),
+                  ),
+                ),
+
+              /// 🔴 FIRST LOAD
+              if (isFirstLoad)
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Center(
+                    child: AppLoading(message: loadingMessage),
                   ),
                 )
-              : const SizedBox.shrink(),
+
+              /// 🔴 ERROR STATE
+              else if (errorMessage != null && items.isEmpty)
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: ErrorBody(
+                    errorMessage: errorMessage!,
+                    onRetry: onRefresh,
+                  ),
+                )
+
+              /// 🔵 EMPTY STATE
+              else if (items.isEmpty)
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Center(
+                    child: emptyWidget ??
+                        const EmptyStateWidget(text: "Tidak ada data"),
+                  ),
+                )
+
+              /// 🟢 LOADED STATE
+              else ...[
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      return itemBuilder(items[index]);
+                    },
+                    childCount: items.length,
+                  ),
+                ),
+              ],
+
+              /// bottom spacing (for FAB)
+              SliverToBoxAdapter(
+                child: SizedBox(
+                  height: floatingActionButton != null ? 96 : 24,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
