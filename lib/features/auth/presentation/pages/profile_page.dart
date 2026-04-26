@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/authorization/feature/company_permission.dart';
 import 'package:workorder_company_app/core/authorization/rule/role_permission_rule/role_permission_helper.dart';
 import 'package:workorder_company_app/core/authorization/util/access_gate_on_widget.dart';
@@ -14,7 +13,6 @@ import 'package:workorder_company_app/features/auth/presentation/widgets/profile
 import 'package:workorder_company_app/features/auth/presentation/widgets/user_property_display.dart';
 import 'package:workorder_company_app/features/company/presentation/bloc/internal_company_management/internal_company_get_cubit.dart';
 import 'package:workorder_company_app/features/company/presentation/widgets/internal_company_card.dart';
-import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/widgets/adaptive_split_column.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 
@@ -45,33 +43,26 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthBloc, AuthState>(
-      listenWhen: (previous, current) =>
-          previous is! Unauthenticated && current is Unauthenticated,
-      listener: (context, state) {
-        context.go(AppRoutes.login);
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, state) {
+        if (state is AuthLoading) {
+          return const Scaffold(
+            body: Center(child: AppLoading()),
+          );
+        }
+
+        if (state is Authenticated) {
+          return Scaffold(
+            appBar: AppBar(),
+            body: SafeArea(
+                child: AdaptiveSplitColumn(
+                    leftChildren: _profileData(state.user),
+                    rightChildren: _menuSettings())),
+          );
+        }
+
+        return const SizedBox.shrink();
       },
-      child: BlocBuilder<AuthBloc, AuthState>(
-        builder: (context, state) {
-          if (state is AuthLoading) {
-            return const Scaffold(
-              body: Center(child: AppLoading()),
-            );
-          }
-
-          if (state is Authenticated) {
-            return Scaffold(
-              appBar: AppBar(),
-              body: SafeArea(
-                  child: AdaptiveSplitColumn(
-                      leftChildren: _profileData(state.user),
-                      rightChildren: _menuSettings())),
-            );
-          }
-
-          return const SizedBox.shrink();
-        },
-      ),
     );
   }
 
