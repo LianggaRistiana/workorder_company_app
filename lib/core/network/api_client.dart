@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:workorder_company_app/core/error/error.dart';
 import 'package:workorder_company_app/core/constants/app_config.dart';
+import 'package:workorder_company_app/core/services/logger/app_logger.dart';
 import 'package:workorder_company_app/core/storage/token_storage.dart';
 import 'dart:convert';
 
@@ -70,7 +70,7 @@ class DioApiClient implements ApiClient {
         },
       ),
     );
-    _dio.interceptors.add(LoggingInterceptor(Logger()));
+    _dio.interceptors.add(LoggingInterceptor());
   }
 
   /// GET request
@@ -168,9 +168,7 @@ class DioApiClient implements ApiClient {
 }
 
 class LoggingInterceptor extends Interceptor {
-  final Logger logger;
-
-  LoggingInterceptor(this.logger);
+  LoggingInterceptor();
 
   void prettyPrintJson(dynamic json) {
     const encoder = JsonEncoder.withIndent('  ');
@@ -179,7 +177,7 @@ class LoggingInterceptor extends Interceptor {
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    logger.i(
+    appLogger.i(
         "➡️ ${options.method} ${options.uri}\nHeaders: ${options.headers}\nBody: ${options.data}");
     // prettyPrintJson(options.data);
     super.onRequest(options, handler);
@@ -187,7 +185,7 @@ class LoggingInterceptor extends Interceptor {
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    logger.i(
+    appLogger.i(
         "✅ ${response.statusCode} ${response.requestOptions.uri} ${response.data}");
     // prettyPrintJson(response.data);
     super.onResponse(response, handler);
@@ -197,9 +195,9 @@ class LoggingInterceptor extends Interceptor {
   void onError(DioException err, ErrorInterceptorHandler handler) {
     final errorData = err.response?.data;
     if (errorData != null) {
-      logger.e("⛔ $errorData");
+      appLogger.e("⛔ $errorData");
     } else {
-      logger.e("⛔ ${err.message}");
+      appLogger.e("⛔ ${err.message}");
     }
     super.onError(err, handler);
   }

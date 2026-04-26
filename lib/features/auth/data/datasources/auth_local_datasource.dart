@@ -1,5 +1,5 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:logger/logger.dart';
+import 'package:workorder_company_app/core/services/logger/app_logger.dart';
 import 'package:workorder_company_app/features/auth/data/model/user_model.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 import 'dart:convert';
@@ -35,7 +35,7 @@ class AuthLocalDatasourceImpl implements AuthLocalDatasource {
 
   @override
   Future<void> clearUser() async {
-    Logger().i("Delete user");
+    appLogger.i("Delete user");
     await _secureStorage.delete(key: _userKey);
   }
 }

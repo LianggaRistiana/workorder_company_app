@@ -38,7 +38,7 @@ class FcmListener {
         _handler.handle(message, NotificationSource.foreground);
       },
       onError: (error) {
-        // TODO : add  logging
+        appLogger.e(error);
       },
     );
   }
@@ -50,7 +50,7 @@ class FcmListener {
         _handler.handle(message, NotificationSource.background);
       },
       onError: (error) {
-        // TODO : optional logging
+        appLogger.e(error);
       },
     );
   }

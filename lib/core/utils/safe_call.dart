@@ -1,13 +1,13 @@
 import 'package:dartz/dartz.dart';
-import 'package:logger/logger.dart';
 import 'package:workorder_company_app/core/error/error.dart';
+import 'package:workorder_company_app/core/services/logger/app_logger.dart';
 
 Future<Either<Failure, T>> safeCall<T>(Future<T> Function() action) async {
   try {
     final result = await action();
     return Right(result);
   } catch (error, stack) {
-    Logger().e(
+    appLogger.e(
       '❌ ERROR in safeCall',
       error: error,
       stackTrace: stack,

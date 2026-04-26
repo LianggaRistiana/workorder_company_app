@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:logger/logger.dart';
 import 'package:workorder_company_app/core/error/error.dart';
+import 'package:workorder_company_app/core/services/logger/app_logger.dart';
 import 'package:workorder_company_app/core/storage/token_storage.dart';
 import 'package:workorder_company_app/core/utils/safe_call.dart';
 import 'package:workorder_company_app/features/auth/data/datasources/auth_local_datasource.dart';
@@ -102,7 +102,7 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       await _localDatasource.saveUser(user);
       _cache = user;
-      Logger().i(user);
+      appLogger.i(user);
       return Right(null);
     } catch (e) {
       return Left(CacheFailure(message: e.toString()));
@@ -121,7 +121,7 @@ class AuthRepositoryImpl implements AuthRepository {
     } on ApiException catch (e) {
       return Left(ServerFailure(message: e.message));
     } catch (e, st) {
-      Logger().e("$e\n $st");
+      appLogger.e("$e\n $st");
       return Left(CacheFailure(message: "Gagal Menghapus Data Local"));
     }
   }

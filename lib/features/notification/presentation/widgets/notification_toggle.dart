@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:workorder_company_app/core/constants/app_enums/notification_enum.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
@@ -26,7 +25,6 @@ class _NotificationToggleState extends State<NotificationToggle> {
       listener: (context, state) async {
         if (state.actionResult != null &&
             state.actionResult != NotificationActionResult.success) {
-          Logger().d(state.actionResult);
           final isConfirm = await showConfirmDialog(
             context: context,
             icon: AppIcon.notification,

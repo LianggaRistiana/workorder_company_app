@@ -1,4 +1,3 @@
-
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features/employees/data/datasource/employees_remote_datasource.dart';
 import 'package:workorder_company_app/features/employees/data/repositories/employees_repository_impl.dart';
@@ -15,7 +14,6 @@ Future<void> initEmployeesFeature() async {
   // repository
   sl.registerLazySingleton<EmployeesRepository>(
       () => EmployeesRepositoryImpl(sl()));
-  // Logger().i(sl.isRegistered<EmployeesRepository>());
 
   // usecase
   sl.registerLazySingleton<GetEmployeesUsecase>(

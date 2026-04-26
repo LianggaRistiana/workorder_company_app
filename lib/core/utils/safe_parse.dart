@@ -1,5 +1,5 @@
-import 'package:logger/logger.dart';
 import 'package:workorder_company_app/core/error/error.dart';
+import 'package:workorder_company_app/core/services/logger/app_logger.dart';
 
 T safeParse<T>(
   Map<String, dynamic> json,
@@ -43,7 +43,7 @@ T safeParse<T>(
 
     return parsedValue;
   } catch (e) {
-    Logger().e(
+    appLogger.e(
       "Field Path : $path\n"
       "Expected   : $T\n"
       "Error      : $e",
