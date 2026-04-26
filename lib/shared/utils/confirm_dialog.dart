@@ -47,7 +47,7 @@ Future<bool?> showConfirmDialog({
   final finalColor = confirmColor ?? iconColor;
 
   return showDialog<bool>(
-    useRootNavigator: false, // THIS MF
+    useRootNavigator: false,
     context: context,
     barrierDismissible: false,
     builder: (context) {

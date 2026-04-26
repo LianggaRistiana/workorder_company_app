@@ -9,12 +9,8 @@ class BackNavigationHandler {
     required bool isDirty,
     required ConfirmLeaveCallback onConfirmLeave,
   }) async {
-    // Tutup keyboard dulu kalau ada
-    // final focus = FocusManager.instance.primaryFocus;
-    // if (focus != null && focus.hasFocus) {
-    //   focus.unfocus();
-    //   return;
-    // }
+    FocusManager.instance.primaryFocus?.unfocus();
+    await Future.delayed(const Duration(milliseconds: 50));
 
     if (!isDirty) {
       if (context.mounted && GoRouter.of(context).canPop()) {
@@ -22,6 +18,8 @@ class BackNavigationHandler {
       }
       return;
     }
+
+    if (!context.mounted) return;
 
     _confirmAndPop(
       context: context,

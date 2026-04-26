@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:workorder_company_app/core/error/failures.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
+import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/core/utils/validators.dart';
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
 import 'package:workorder_company_app/features/positions/domain/properties/position_property.dart';
 import 'package:workorder_company_app/shared/utils/confirm_dialog.dart';
 import 'package:workorder_company_app/shared/utils/confirm_leave.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
+import 'package:workorder_company_app/shared/widgets/adaptive_split_column.dart';
 import 'package:workorder_company_app/shared/widgets/button_with_loading_state.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 import 'package:workorder_company_app/shared/widgets/custom_switch_tile.dart';
@@ -88,6 +90,7 @@ class _PositionFormViewState extends State<PositionFormView> {
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {
         if (didPop) return;
+
         BackNavigationHandler.handle(
           context: context,
           isDirty: _isDirty,
@@ -102,83 +105,99 @@ class _PositionFormViewState extends State<PositionFormView> {
           },
         );
       },
-      child: Scaffold(
-        resizeToAvoidBottomInset: true,
-        appBar: AppBar(
-          title: Text(
-            widget.initialData == null
-                ? "Tambah Departemen"
-                : "Edit Departemen",
-          ),
-        ),
-
-        body: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
-            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                CustomInputField(
-                  label: 'Nama Departemen',
-                  controller: _nameController,
-                  enabled: !widget.isLoading,
-                  prefixIcon: const Icon(AppIcon.department),
-                  errorText: widget.validation?.errorOf(PositionProperty.name),
-                  validator: (value) {
-                    return ValidatorUtils.single(
-                      value,
-                      fieldName: "Nama Departemen",
-                      ValidatorType.required,
-                    );
-                  },
-                ),
-                const SizedBox(height: 16),
-                CustomInputField(
-                  label: 'Deskripsi',
-                  enabled: !widget.isLoading,
-                  controller: _descriptionController,
-                  errorText:
-                      widget.validation?.errorOf(PositionProperty.description),
-                  maxLines: 3,
-                  prefixIcon: const Icon(AppIcon.desc),
-                ),
-                const SizedBox(height: 20),
-                CustomSwitchTile(
-                  title: 'Status Aktif',
-                  description:
-                      'Jika nonaktif, Departemen tidak dapat digunakan',
-                  leadingIcon: AppIcon.activeState,
-                  value: _isActive,
-                  onChanged: (val) {
-                    setState(() {
-                      _isActive = val;
-                    });
-                  },
-                ),
-              ],
+      child: SafeArea(
+        child: Scaffold(
+          resizeToAvoidBottomInset: true,
+          appBar: AppBar(
+            title: Text(
+              widget.initialData == null
+                  ? "Tambah Departemen"
+                  : "Edit Departemen",
             ),
           ),
-        ),
-
-        /// 🔹 Bottom Button (Auto-handle keyboard)
-        bottomNavigationBar: SafeArea(
-          minimum: const EdgeInsets.all(16),
-          child: ButtonWithLoadingState(
-            onPressed: () {
-              if (!_isDirty) {
-                context.showWarning("Anda belum melakukan perubahan");
-                return;
-              }
-              _handleSubmit();
-            },
-            isLoading: widget.isLoading,
-            icon: AppIcon.submit,
-            label: widget.submitLabel,
+          body: Form(
+            key: _formKey,
+            child: AdaptiveSplitColumn(
+              leftChildren: _leftChildren(),
+              rightChildren: _rightChildren(),
+            ),
           ),
+          bottomNavigationBar: SafeArea(
+            minimum: const EdgeInsets.all(16),
+            child: ButtonWithLoadingState(
+              onPressed: () {
+                if (!_isDirty) {
+                  context.showWarning("Anda belum melakukan perubahan");
+                  return;
+                }
+                _handleSubmit();
+              },
+              isLoading: widget.isLoading,
+              icon: AppIcon.submit,
+              label: widget.submitLabel,
+            ),
+          ).hideOnLargeScreen(),
         ),
       ),
     );
+  }
+
+  List<Widget> _leftChildren() {
+    return [
+      const SizedBox(height: AppSpacing.sm),
+      CustomInputField(
+        label: 'Nama Departemen',
+        controller: _nameController,
+        enabled: !widget.isLoading,
+        prefixIcon: const Icon(AppIcon.department),
+        errorText: widget.validation?.errorOf(PositionProperty.name),
+        validator: (value) {
+          return ValidatorUtils.single(
+            value,
+            fieldName: "Nama Departemen",
+            ValidatorType.required,
+          );
+        },
+      ),
+      const SizedBox(height: 16),
+      CustomInputField(
+        label: 'Deskripsi',
+        enabled: !widget.isLoading,
+        controller: _descriptionController,
+        errorText: widget.validation?.errorOf(PositionProperty.description),
+        maxLines: 3,
+        prefixIcon: const Icon(AppIcon.desc),
+      ),
+      const SizedBox(height: 20),
+      CustomSwitchTile(
+        title: 'Status Aktif',
+        description: 'Jika nonaktif, Departemen tidak dapat digunakan',
+        leadingIcon: AppIcon.activeState,
+        value: _isActive,
+        onChanged: (val) {
+          setState(() {
+            _isActive = val;
+          });
+        },
+      ),
+      const SizedBox(height: AppSpacing.md),
+    ];
+  }
+
+  List<Widget> _rightChildren() {
+    return [
+      ButtonWithLoadingState(
+        onPressed: () {
+          if (!_isDirty) {
+            context.showWarning("Anda belum melakukan perubahan");
+            return;
+          }
+          _handleSubmit();
+        },
+        isLoading: widget.isLoading,
+        icon: AppIcon.submit,
+        label: widget.submitLabel,
+      ).hideOnSmallScreen(),
+    ];
   }
 }
