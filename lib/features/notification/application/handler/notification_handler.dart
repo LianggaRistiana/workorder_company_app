@@ -4,7 +4,7 @@ import 'package:workorder_company_app/core/services/fcm/fcm_dedup_store.dart';
 import 'package:workorder_company_app/core/services/logger/app_logger.dart';
 import 'package:workorder_company_app/core/services/messenger/app_messenger.dart';
 import 'package:workorder_company_app/features/notification/data/model/notification_payload_model.dart';
-import 'package:workorder_company_app/features/notification/presentation/dispatcher/notification_dispatcher.dart';
+import 'package:workorder_company_app/features/notification/application/dispatcher/notification_dispatcher.dart';
 
 class NotificationHandler {
   final NotificationDispatcher _dispatcher;
@@ -16,7 +16,7 @@ class NotificationHandler {
       appLogger.e("Duplicate FCM ignored: ${message.messageId}");
       return;
     }
-    
+
     final payload = NotificationPayloadModel.fromRemoteMessage(message);
     switch (source) {
       case NotificationSource.foreground:

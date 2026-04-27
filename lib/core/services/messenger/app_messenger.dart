@@ -4,6 +4,7 @@ import 'package:workorder_company_app/features/notification/presentation/ui_mapp
 import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
 
+/// Clasify as Presentation layer
 class AppMessenger {
   static final messengerKey = GlobalKey<ScaffoldMessengerState>();
 
@@ -18,7 +19,7 @@ class AppMessenger {
           behavior: SnackBarBehavior.floating,
           backgroundColor: Colors.transparent,
           padding: EdgeInsets.all(0),
-          content: SnackBarContent(
+          content: _SnackBarContent(
             payload: payload,
             onAction: () {
               messenger.hideCurrentSnackBar();
@@ -29,11 +30,11 @@ class AppMessenger {
   }
 }
 
-class SnackBarContent extends StatelessWidget {
+class _SnackBarContent extends StatelessWidget {
   final NotificationPayloadEntity payload;
   final VoidCallback? onAction;
 
-  const SnackBarContent({super.key, required this.payload, this.onAction});
+  const _SnackBarContent({required this.payload, this.onAction});
 
   @override
   Widget build(BuildContext context) {

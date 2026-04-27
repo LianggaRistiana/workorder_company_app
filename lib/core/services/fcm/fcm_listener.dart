@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:workorder_company_app/core/constants/app_enums/notification_enum.dart';
 import 'package:workorder_company_app/core/services/logger/app_logger.dart';
 import 'package:workorder_company_app/core/services/fcm/fcm_datasource.dart';
-import 'package:workorder_company_app/features/notification/presentation/handler/notification_handler.dart';
+import 'package:workorder_company_app/features/notification/application/handler/notification_handler.dart';
 
 // HACK : Handle terminated message properly. currently it duplicate page push. remove widget binding and microtask to bring it previous behavior (/home)
 class FcmListener {

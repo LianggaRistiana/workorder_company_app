@@ -13,8 +13,8 @@ import 'package:workorder_company_app/features/notification/domain/usecases/get_
 import 'package:workorder_company_app/features/notification/domain/usecases/init_notification_usecase.dart';
 import 'package:workorder_company_app/features/notification/presentation/bloc/notification_active_cubit.dart';
 import 'package:workorder_company_app/features/notification/presentation/bloc/notification_log_cubit.dart';
-import 'package:workorder_company_app/features/notification/presentation/dispatcher/notification_dispatcher.dart';
-import 'package:workorder_company_app/features/notification/presentation/handler/notification_handler.dart';
+import 'package:workorder_company_app/features/notification/application/dispatcher/notification_dispatcher.dart';
+import 'package:workorder_company_app/features/notification/application/handler/notification_handler.dart';
 import 'package:workorder_company_app/features/notification/presentation/navigation/notification_navigator.dart';
 import 'package:workorder_company_app/routes/app_router.dart';
 
