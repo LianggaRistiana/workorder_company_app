@@ -38,7 +38,9 @@ class NotificationLogsPage extends StatelessWidget {
           items: state.logs,
           emptyWidget: EmptyStateWidget(text: "Tidak ada notifikasi"),
           onRefresh: () async =>
-              unawaited(context.read<NotificationLogCubit>().fetchLogs()),
+              unawaited(context.read<NotificationLogCubit>().fetchLogs(
+                    forceRefresh: true,
+                  )),
           itemBuilder: (item) => _NotificationLogItem(item: item));
     });
   }

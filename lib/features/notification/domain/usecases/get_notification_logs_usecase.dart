@@ -7,7 +7,11 @@ class GetNotificationLogsUseCase {
 
   GetNotificationLogsUseCase(this._repository);
 
-  FutureEitherList<NotificationLogEntity> call() {
-    return _repository.getNotificationLogs();
+  FutureEitherList<NotificationLogEntity> call({
+    bool forceRefresh = false,
+  }) {
+    return _repository.getNotificationLogs(
+      forceRefresh: forceRefresh,
+    );
   }
 }

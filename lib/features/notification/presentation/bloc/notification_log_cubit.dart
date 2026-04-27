@@ -24,10 +24,14 @@ class NotificationLogCubit extends Cubit<NotificationLogState> {
     return super.close();
   }
 
-  Future<void> fetchLogs() async {
+  Future<void> fetchLogs({
+    bool forceRefresh = false,
+  }) async {
     emit(state.copyWith(status: NotificationLogStatus.loading));
 
-    final result = await _getNotificationLogsUseCase();
+    final result = await _getNotificationLogsUseCase(
+      forceRefresh: forceRefresh,
+    );
 
     result.fold(
       (failure) => emit(state.copyWith(

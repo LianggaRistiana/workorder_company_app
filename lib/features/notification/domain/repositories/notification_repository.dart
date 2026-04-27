@@ -26,5 +26,7 @@ abstract class NotificationRepository implements Cacheable {
   Future<void> dispose();
 
   /// Fetch notification logs from backend.
-  FutureEitherList<NotificationLogEntity> getNotificationLogs();
+  FutureEitherList<NotificationLogEntity> getNotificationLogs({
+    bool forceRefresh = false,
+  });
 }
