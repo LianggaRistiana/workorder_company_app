@@ -10,7 +10,7 @@ import 'package:workorder_company_app/features/notification/application/handler/
 class FcmListener {
   final FcmDataSource _dataSource;
   final NotificationHandler _handler;
-  final NotificationEventBus bus;
+  final NotificationEventBus bus; // FIXME : move this into handler
 
   StreamSubscription<RemoteMessage>? _onMessageSub;
   StreamSubscription<RemoteMessage>? _onOpenedSub;

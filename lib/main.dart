@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:workorder_company_app/core/services/messenger/app_messenger.dart';
+import 'package:workorder_company_app/core/services/messenger/app_messanger.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,7 +30,7 @@ void main() {
     await initializeDateFormatting('id_ID', null);
 
     final authRepo = di.sl<AuthRepository>();
-    await authRepo.getCurrentUser(); // Populate the cache for the first time
+    await authRepo.getCurrentUser();
 
     runApp(const MyApp());
   }, (error, stackTrace) {
@@ -65,7 +65,7 @@ class _MyAppState extends State<MyApp> {
         ),
       ],
       child: MaterialApp.router(
-        scaffoldMessengerKey: AppMessenger.messengerKey,
+        scaffoldMessengerKey: AppMessanger.messengerKey,
         title: AppConfig.appName,
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,

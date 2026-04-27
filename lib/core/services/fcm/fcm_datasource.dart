@@ -13,8 +13,10 @@ abstract class FcmDataSource {
   Stream<RemoteMessage> onMessage();
   Stream<RemoteMessage> onMessageOpenedApp();
   Future<RemoteMessage?> getInitialMessage();
-  Future<NotificationPermissionStatus> checkPermission();
-  Future<NotificationPermissionStatus> requestPermission();
+  Future<NotificationPermissionStatus>
+      checkPermission(); // FIXME : should return raw data, there is no dto in here
+  Future<NotificationPermissionStatus>
+      requestPermission(); // FIXME : should return raw data, there is no dto in here
   Future<void> deleteToken();
 }
 
@@ -59,8 +61,6 @@ class FcmDataSourceImpl implements FcmDataSource {
   @override
   Future<NotificationPermissionStatus> checkPermission() async {
     final status = await _messaging.getNotificationSettings();
-
-    // HACK : thinks this later
 
     if (status.authorizationStatus == AuthorizationStatus.authorized) {
       return NotificationPermissionStatus.granted;

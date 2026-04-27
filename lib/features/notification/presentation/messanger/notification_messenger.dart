@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:workorder_company_app/core/services/messenger/app_messanger.dart';
 import 'package:workorder_company_app/features/notification/domain/entities/notification_payload_entity.dart';
 import 'package:workorder_company_app/features/notification/presentation/ui_mapper.dart/resource_type_icon_mapper.dart';
 import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
 
-/// Clasify as Presentation layer
-class AppMessenger {
-  static final messengerKey = GlobalKey<ScaffoldMessengerState>();
-
+class NotificationMessenger {
   static void showSnackbar(
       NotificationPayloadEntity payload, VoidCallback onAction) {
-    final messenger = messengerKey.currentState;
+    final messenger = AppMessanger.messengerKey.currentState;
     if (messenger == null) return;
 
     messenger.showSnackBar(
