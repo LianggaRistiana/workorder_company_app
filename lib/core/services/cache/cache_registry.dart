@@ -1,4 +1,5 @@
 import 'package:workorder_company_app/core/services/cache/cacheable.dart';
+import 'package:workorder_company_app/core/services/logger/app_logger.dart';
 
 /// A centralized orchestrator for clearing in-memory caches.
 ///
@@ -62,7 +63,9 @@ class CacheRegistry {
   /// - Trigger remote requests
   /// - Modify persistent storage
   void clearAll() {
+    appLogger.d("Clearing all caches provide by CacheRegistry");
     for (final cache in _caches) {
+      appLogger.d("Clearing cache ${cache.runtimeType}");
       cache.clearCache();
     }
   }

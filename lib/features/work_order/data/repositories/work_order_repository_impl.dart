@@ -190,4 +190,9 @@ class WorkOrderRepositoryImpl implements WorkOrderRepository {
       ),
     );
   }
+
+  @override
+  void clearCache() {
+    _cache.clear();
+  }
 }

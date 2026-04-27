@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:workorder_company_app/core/services/cache/cache_injection.dart';
 import 'package:workorder_company_app/core/services/network/api_client.dart';
 import 'package:workorder_company_app/core/services/storage/token_storage.dart';
 import 'package:workorder_company_app/features/auth/auth_injection.dart';
@@ -20,10 +21,7 @@ final sl = GetIt.instance;
 Future<void> init() async {
   /// Core
   sl.registerLazySingleton<TokenStorage>(() => TokenStorage());
-  // sl.registerLazySingleton<FirebaseMessaging>(() => FirebaseMessaging.instance);
   sl.registerLazySingleton<ApiClient>(() => DioApiClient(tokenStorage: sl()));
-
-  // FIXME[High] : register chace registry here for clear all chace when logout
 
   /// General Feature
   await initAuthFeature();
@@ -46,4 +44,7 @@ Future<void> init() async {
   await initServiceRequestFeature();
   await initWorkOrderFeature();
   await initWorkReportFeature();
+
+  // Cache
+  await initCacheService();
 }
