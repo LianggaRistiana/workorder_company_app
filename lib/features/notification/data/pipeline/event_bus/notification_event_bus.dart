@@ -1,18 +1,16 @@
 import 'dart:async';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
+import 'package:workorder_company_app/core/constants/app_enums/notification_enum.dart';
 
 class NotificationEventBus {
-  final _controller = StreamController<RemoteMessage>.broadcast();
+  final _controller = StreamController<ResourceType>.broadcast();
 
-  // TODO : Change type to resource type related repo can reset cache if they needed
-  // TODO : Move this into notification feature
-  Stream<RemoteMessage> get stream => _controller.stream;
+  Stream<ResourceType> get stream => _controller.stream;
 
   Timer? _debounce;
 
-  void emit(RemoteMessage event) {
+  void emit(ResourceType event) {
     _debounce?.cancel();
 
     _debounce = Timer(const Duration(milliseconds: 500), () {

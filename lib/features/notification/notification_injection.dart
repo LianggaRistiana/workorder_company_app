@@ -38,6 +38,7 @@ Future<void> initNotificationFeature() async {
   sl.registerLazySingleton<NotificationHandler>(
     () => NotificationHandler(
       sl<NotificationDispatcher>(),
+      sl<NotificationEventBus>(),
     ),
   );
 
@@ -55,7 +56,6 @@ Future<void> initNotificationFeature() async {
     () => FcmListener(
       sl<FcmDataSource>(),
       sl<NotificationHandler>(),
-      sl<NotificationEventBus>(),
     ),
   );
 

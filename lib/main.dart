@@ -26,6 +26,8 @@ void main() {
       options: DefaultFirebaseOptions.currentPlatform,
     );
 
+    // FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+
     await di.init();
     await initializeDateFormatting('id_ID', null);
 

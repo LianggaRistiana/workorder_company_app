@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:workorder_company_app/core/constants/app_enums/notification_enum.dart';
-import 'package:workorder_company_app/features/notification/data/pipeline/event_bus/notification_event_bus.dart';
 import 'package:workorder_company_app/core/services/logger/app_logger.dart';
 import 'package:workorder_company_app/features/notification/data/datasources/fcm_datasource.dart';
 import 'package:workorder_company_app/features/notification/data/pipeline/handler/notification_handler.dart';
@@ -10,14 +9,13 @@ import 'package:workorder_company_app/features/notification/data/pipeline/handle
 class FcmListener {
   final FcmDataSource _dataSource;
   final NotificationHandler _handler;
-  final NotificationEventBus bus; // FIXME : move this into handler
 
   StreamSubscription<RemoteMessage>? _onMessageSub;
   StreamSubscription<RemoteMessage>? _onOpenedSub;
 
   bool _initialized = false;
 
-  FcmListener(this._dataSource, this._handler, this.bus);
+  FcmListener(this._dataSource, this._handler);
 
   Future<void> init() async {
     if (_initialized) return;
@@ -35,7 +33,6 @@ class FcmListener {
     _onMessageSub = _dataSource.onMessage().listen(
       (message) {
         appLogger.i("Foreground Source : ${message.data}");
-        bus.emit(message);
         _handler.handle(message, NotificationSource.foreground);
       },
       onError: (error) {

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/core/constants/app_enums/notification_enum.dart';
 import 'package:workorder_company_app/features/notification/domain/usecases/get_notification_logs_usecase.dart';
@@ -9,8 +8,8 @@ import 'package:workorder_company_app/features/notification/presentation/bloc/no
 class NotificationLogCubit extends Cubit<NotificationLogState> {
   final GetNotificationLogsUseCase _getNotificationLogsUseCase;
   final MarkNotificationAsReadUsecase _markNotificationAsReadUsecase;
-  final Stream<RemoteMessage> _stream;
-  late final StreamSubscription<RemoteMessage> _subscription;
+  final Stream<ResourceType> _stream;
+  late final StreamSubscription<ResourceType> _subscription;
 
   NotificationLogCubit(
     this._getNotificationLogsUseCase,
