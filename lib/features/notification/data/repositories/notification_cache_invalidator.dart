@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:workorder_company_app/core/services/cache/cacheable.dart';
-import 'package:workorder_company_app/core/services/fcm/notification_event_bus.dart';
+import 'package:workorder_company_app/features/notification/data/pipeline/event_bus/notification_event_bus.dart';
 
 class NotificationCacheInvalidator {
   final NotificationEventBus bus;

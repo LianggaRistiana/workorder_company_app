@@ -1,8 +1,8 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
-import 'package:workorder_company_app/core/services/fcm/notification_event_bus.dart';
-import 'package:workorder_company_app/core/services/fcm/fcm_listener.dart';
-import 'package:workorder_company_app/core/services/fcm/fcm_datasource.dart';
+import 'package:workorder_company_app/features/notification/data/pipeline/event_bus/notification_event_bus.dart';
+import 'package:workorder_company_app/features/notification/data/pipeline/listener/fcm_listener.dart';
+import 'package:workorder_company_app/features/notification/data/datasources/fcm_datasource.dart';
 import 'package:workorder_company_app/core/services/network/api_client.dart';
 import 'package:workorder_company_app/features/notification/data/datasources/notification_local_datasource.dart';
 import 'package:workorder_company_app/features/notification/data/datasources/notification_remote_datasource.dart';
@@ -17,8 +17,8 @@ import 'package:workorder_company_app/features/notification/domain/usecases/init
 import 'package:workorder_company_app/features/notification/domain/usecases/mark_notification_as_read_usecase.dart';
 import 'package:workorder_company_app/features/notification/presentation/bloc/notification_active_cubit.dart';
 import 'package:workorder_company_app/features/notification/presentation/bloc/notification_log_cubit.dart';
-import 'package:workorder_company_app/features/notification/application/dispatcher/notification_dispatcher.dart';
-import 'package:workorder_company_app/features/notification/application/handler/notification_handler.dart';
+import 'package:workorder_company_app/features/notification/data/pipeline/dispatcher/notification_dispatcher.dart';
+import 'package:workorder_company_app/features/notification/data/pipeline/handler/notification_handler.dart';
 import 'package:workorder_company_app/features/notification/presentation/navigation/notification_navigator.dart';
 import 'package:workorder_company_app/routes/app_router.dart';
 
