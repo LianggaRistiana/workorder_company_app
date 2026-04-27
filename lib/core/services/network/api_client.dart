@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:workorder_company_app/core/error/error.dart';
 import 'package:workorder_company_app/core/constants/app_config.dart';
 import 'package:workorder_company_app/core/services/logger/app_logger.dart';
-import 'package:workorder_company_app/core/storage/token_storage.dart';
+import 'package:workorder_company_app/core/services/storage/token_storage.dart';
 import 'dart:convert';
 
 abstract class ApiClient {

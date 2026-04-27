@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/error/exceptions.dart';
-import 'package:workorder_company_app/core/network/api_response.dart';
+import 'package:workorder_company_app/core/services/network/api_response.dart';
 import 'package:workorder_company_app/core/types/future_api.dart';
 import 'package:workorder_company_app/features/auth/data/model/user_model.dart';
 import 'package:workorder_company_app/features/forms/data/model/filled_form_with_history_model.dart';

@@ -1,6 +1,6 @@
 import 'package:get_it/get_it.dart';
-import 'package:workorder_company_app/core/network/api_client.dart';
-import 'package:workorder_company_app/core/storage/token_storage.dart';
+import 'package:workorder_company_app/core/services/network/api_client.dart';
+import 'package:workorder_company_app/core/services/storage/token_storage.dart';
 import 'package:workorder_company_app/features/auth/auth_injection.dart';
 import 'package:workorder_company_app/features/service_request/service_request_injection.dart';
 import 'package:workorder_company_app/features/company/company_injection.dart';

@@ -1,6 +1,6 @@
-import 'package:workorder_company_app/core/network/api_client.dart';
-import 'package:workorder_company_app/core/network/api_response.dart';
-import 'package:workorder_company_app/core/network/endpoints.dart';
+import 'package:workorder_company_app/core/services/network/api_client.dart';
+import 'package:workorder_company_app/core/services/network/api_response.dart';
+import 'package:workorder_company_app/core/services/network/endpoints.dart';
 import 'package:workorder_company_app/core/utils/safe_mapper.dart';
 import 'package:workorder_company_app/features/invitations/data/model/invitation_draft_model.dart';
 import 'package:workorder_company_app/features/invitations/data/model/invitation_model.dart';

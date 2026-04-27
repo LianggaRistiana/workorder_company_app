@@ -3,7 +3,7 @@ import 'package:workorder_company_app/features/auth/domain/entities/user_entity.
 import 'package:workorder_company_app/features/employees/data/datasource/employees_remote_datasource.dart';
 import 'package:workorder_company_app/features/employees/domain/params/employees_params.dart';
 import 'package:workorder_company_app/features/employees/domain/repositories/employees_repository.dart';
-import 'package:workorder_company_app/core/cache/list_cache_helper.dart';
+import 'package:workorder_company_app/core/services/cache/list_cache_helper.dart';
 
 class EmployeesRepositoryImpl implements EmployeesRepository {
   final EmployeesRemoteDatasource _remoteDatasource;

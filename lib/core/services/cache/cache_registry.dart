@@ -1,4 +1,4 @@
-import 'package:workorder_company_app/core/cache/cacheable.dart';
+import 'package:workorder_company_app/core/services/cache/cacheable.dart';
 
 /// A centralized orchestrator for clearing in-memory caches.
 ///

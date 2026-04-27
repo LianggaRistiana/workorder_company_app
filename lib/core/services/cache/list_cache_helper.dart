@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
-import 'package:workorder_company_app/core/cache/cached_resource.dart';
+import 'package:workorder_company_app/core/services/cache/cached_resource.dart';
 import 'package:workorder_company_app/core/error/error.dart';
 import 'package:workorder_company_app/core/utils/safe_call.dart';
 

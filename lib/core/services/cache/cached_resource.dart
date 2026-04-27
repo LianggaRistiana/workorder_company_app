@@ -1,4 +1,4 @@
-import 'package:workorder_company_app/core/cache/cache_config.dart';
+import 'package:workorder_company_app/core/services/cache/cache_config.dart';
 
 /// A lightweight in-memory cache wrapper for a single resource.
 ///

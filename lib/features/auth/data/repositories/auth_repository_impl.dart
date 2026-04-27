@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:workorder_company_app/core/error/error.dart';
 import 'package:workorder_company_app/core/services/logger/app_logger.dart';
-import 'package:workorder_company_app/core/storage/token_storage.dart';
+import 'package:workorder_company_app/core/services/storage/token_storage.dart';
 import 'package:workorder_company_app/core/utils/safe_call.dart';
 import 'package:workorder_company_app/features/auth/data/datasources/auth_local_datasource.dart';
 import 'package:workorder_company_app/features/auth/data/datasources/auth_remote_datasource.dart';

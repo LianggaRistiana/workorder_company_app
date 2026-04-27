@@ -1,6 +1,6 @@
-import 'package:workorder_company_app/core/network/api_client.dart';
-import 'package:workorder_company_app/core/network/api_response.dart';
-import 'package:workorder_company_app/core/network/endpoints.dart';
+import 'package:workorder_company_app/core/services/network/api_client.dart';
+import 'package:workorder_company_app/core/services/network/api_response.dart';
+import 'package:workorder_company_app/core/services/network/endpoints.dart';
 import 'package:workorder_company_app/core/utils/safe_mapper.dart';
 import 'package:workorder_company_app/features/auth/data/model/user_model.dart';
 

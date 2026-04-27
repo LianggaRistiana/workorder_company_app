@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
-import 'package:workorder_company_app/core/network/endpoints.dart';
+import 'package:workorder_company_app/core/services/network/endpoints.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/service_request/domain/entities/service_request_entity.dart';

@@ -7,7 +7,7 @@ import 'package:workorder_company_app/features/company/data/datasources/company_
 import 'package:workorder_company_app/features/company/data/models/company_model.dart';
 import 'package:workorder_company_app/features/company/domain/entities/company_entity.dart';
 import 'package:workorder_company_app/features/company/domain/repositories/internal_company_repository.dart';
-import 'package:workorder_company_app/core/cache/cached_resource.dart';
+import 'package:workorder_company_app/core/services/cache/cached_resource.dart';
 
 class InternalCompanyRepositoryImpl implements InternalCompanyRepository {
   final CompanyManagementRemoteDatasource _companyManagementRemoteDatasource;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:workorder_company_app/core/network/endpoints.dart';
+import 'package:workorder_company_app/core/services/network/endpoints.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/approval/approval_work_order_cubit.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/approval/approval_work_order_state.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/cancel/cancel_work_order_cubit.dart';

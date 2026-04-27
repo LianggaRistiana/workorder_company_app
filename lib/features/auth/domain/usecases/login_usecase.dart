@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:workorder_company_app/core/error/failures.dart';
-import 'package:workorder_company_app/core/storage/token_storage.dart';
+import 'package:workorder_company_app/core/services/storage/token_storage.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 import 'package:workorder_company_app/features/auth/domain/repositories/auth_repository.dart';
 
@@ -30,7 +30,7 @@ class LoginUseCase {
           final saveUserResult = await repository.saveUser(data.user);
           saveUserResult;
           return saveUserResult.fold(
-            (failure) => Left(failure), 
+            (failure) => Left(failure),
             (_) => Right(data.user), // sukses
           );
         } catch (e) {
