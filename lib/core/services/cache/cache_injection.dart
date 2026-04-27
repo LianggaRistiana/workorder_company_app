@@ -12,15 +12,16 @@ import 'package:workorder_company_app/features/work_order/domain/repositories/wo
 Future<void> initCacheService() async {
   sl.registerLazySingleton<CacheRegistry>(
     () => CacheRegistry([
-      // Auth, Internal Company, and Notification is not streamable repository
+      // Auth, Internal Company, Employeess and Notification is not streamable repository
       sl<AuthRepository>(),
       sl<NotificationRepository>(),
       sl<InternalCompanyRepository>(),
+      sl<EmployeesRepository>(),
 
       sl<PositionsRepository>(),
       sl<FormsRepository>(),
       sl<ServicesRepository>(),
-      sl<EmployeesRepository>(),
+      // TODO : add service request repository to cache
       sl<WorkOrderRepository>(),
     ]),
   );
