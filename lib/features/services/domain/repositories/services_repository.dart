@@ -16,4 +16,6 @@ abstract class ServicesRepository implements Cacheable {
   FutureEither<ServiceEntity> updateService(ServiceEntity service);
   FutureEither<ServiceEntity> removeService(String serviceId);
   FutureEither<ServiceEntity> toggleActiveStatus(ServiceEntity service);
+
+  Stream<void> get serviceChanged;
 }

@@ -102,12 +102,6 @@ class _ServiceDetailView extends StatelessWidget {
                   ),
                 ],
               ),
-              // floatingActionButton: FloatingActionButton(
-              //   child: const Icon(AppIcon.service),
-              //   onPressed: () {
-                  
-              //   },
-              // ),
               bottomNavigationBar: Padding(
                 padding: const EdgeInsets.all(AppSpacing.lg),
                 child: BlocConsumer<ServiceActionCubit, ServiceActionState>(

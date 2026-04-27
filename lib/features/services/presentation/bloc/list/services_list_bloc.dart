@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/features/services/domain/usecases/internal_get_services_usecase.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/list/services_list_event.dart';
@@ -6,12 +8,20 @@ import 'package:workorder_company_app/features/services/presentation/bloc/list/s
 class ServicesListBloc extends Bloc<ServicesListEvent, ServicesListState> {
   final InternalGetServicesUsecase internalGetServicesUsecase;
 
-  ServicesListBloc({required this.internalGetServicesUsecase})
+  final Stream<void> serviceChangedStream;
+  late final StreamSubscription _subscription;
+
+  ServicesListBloc(
+      {required this.internalGetServicesUsecase,
+      required this.serviceChangedStream})
       : super(const ServicesListState(
           status: ServicesListStatus.initial,
           services: [],
         )) {
     on<GetServicesRequested>(_onGetServicesRequested);
+    _subscription = serviceChangedStream.listen((_) {
+      add(GetServicesRequested(forceRefresh: false));
+    });
   }
 
   Future<void> _onGetServicesRequested(
@@ -34,5 +44,11 @@ class ServicesListBloc extends Bloc<ServicesListEvent, ServicesListState> {
         services: services,
       )),
     );
+  }
+
+  @override
+  Future<void> close() {
+    _subscription.cancel();
+    return super.close();
   }
 }

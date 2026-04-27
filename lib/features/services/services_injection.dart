@@ -48,7 +48,9 @@ Future<void> initServicesFeature() async {
       () => PublicGetServicesUsecase(sl()));
 
   sl.registerFactory<ServicesListBloc>(
-    () => ServicesListBloc(internalGetServicesUsecase: sl()),
+    () => ServicesListBloc(
+        internalGetServicesUsecase: sl<InternalGetServicesUsecase>(),
+        serviceChangedStream: sl<ServicesRepository>().serviceChanged),
   );
 
   sl.registerFactory<ServiceCreateCubit>(

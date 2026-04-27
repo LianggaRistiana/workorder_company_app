@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:workorder_company_app/core/services/cache/list_cache_helper.dart';
 import 'package:workorder_company_app/core/types/future_either.dart';
 import 'package:workorder_company_app/core/utils/either_helper.dart';
@@ -16,6 +18,15 @@ class ServicesRepositoryImpl implements ServicesRepository {
 
   final ListCacheHelper<ServiceSummaryEntity> _cache = ListCacheHelper();
 
+  final _refreshController = StreamController<void>.broadcast();
+
+  @override
+  Stream<void> get serviceChanged => _refreshController.stream;
+
+  void _notifyChanged() {
+    _refreshController.add(null);
+  }
+
   ServicesRepositoryImpl(
       this._internalRemoteDatasource, this._publicRemoteDatasource);
 
@@ -32,6 +43,7 @@ class ServicesRepositoryImpl implements ServicesRepository {
         updated.toSummaryEntity(),
         (a, b) => a.id == b.id,
       );
+      _notifyChanged();
     });
   }
 
@@ -79,6 +91,8 @@ class ServicesRepositoryImpl implements ServicesRepository {
     });
 
     return result.onSuccess((updated) {
+      _notifyChanged();
+
       _cache.removeSingle(
         ServiceSummaryModel.fromServiceEntity(service),
         (a, b) => a.id == b.id,
@@ -98,6 +112,8 @@ class ServicesRepositoryImpl implements ServicesRepository {
     });
 
     return result.onSuccess((updated) {
+      _notifyChanged();
+
       _cache.removeSingle(
         ServiceSummaryModel.fromServiceEntity(updated),
         (a, b) => a.id == b.id,
@@ -106,11 +122,19 @@ class ServicesRepositoryImpl implements ServicesRepository {
   }
 
   @override
-  FutureEither<ServiceEntity> toggleActiveStatus(ServiceEntity service) {
-    return safeCall(() async {
+  FutureEither<ServiceEntity> toggleActiveStatus(ServiceEntity service) async {
+    final result = await safeCall(() async {
       final payload = await _internalRemoteDatasource
           .toggleActive(ServiceModel.fromEntity(service));
       return payload.data;
+    });
+
+    return result.onSuccess((updated) {
+      _notifyChanged();
+      _cache.mergeSingle(
+        updated.toSummaryEntity(),
+        (a, b) => a.id == b.id,
+      );
     });
   }
 

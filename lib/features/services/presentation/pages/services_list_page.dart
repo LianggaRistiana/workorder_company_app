@@ -82,15 +82,8 @@ class _ServicesListView extends StatelessWidget {
                 if (nextStepMode == ServiceListNextAction.serviceDetail) ...[
                   const SizedBox(height: 8),
                   FloatingActionButton.extended(
-                    onPressed: () async {
-                      final result =
-                          await context.push(AppRoutes.servicesCreate);
-                      if (!context.mounted) return;
-                      if (result == true) {
-                        context
-                            .read<ServicesListBloc>()
-                            .add(GetServicesRequested());
-                      }
+                    onPressed: () {
+                      context.push(AppRoutes.servicesCreate);
                     },
                     label: const Text("Tambah Layanan"),
                     icon: const Icon(Icons.add),
@@ -102,21 +95,15 @@ class _ServicesListView extends StatelessWidget {
                   key: ValueKey(item.id),
                   service: item,
                   isPublic: false,
-                  onTap: () async {
+                  onTap: () {
                     switch (nextStepMode) {
                       case ServiceListNextAction.serviceDetail:
-                        final result = await context.push(
+                        context.push(
                           AppRoutes.servicesDetail.fillId(item.id),
                         );
-                        if (!context.mounted) return;
-                        if (result == true) {
-                          context
-                              .read<ServicesListBloc>()
-                              .add(GetServicesRequested());
-                        }
                         break;
                       case ServiceListNextAction.createServiceRequest:
-                        await context.push(
+                        context.push(
                           AppRoutes.serviceRequestCreate.fillId(
                             item.id,
                           ),
