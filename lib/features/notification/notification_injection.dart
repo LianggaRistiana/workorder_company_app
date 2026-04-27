@@ -3,6 +3,7 @@ import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/services/fcm/notification_event_bus.dart';
 import 'package:workorder_company_app/core/services/fcm/fcm_listener.dart';
 import 'package:workorder_company_app/core/services/fcm/fcm_datasource.dart';
+import 'package:workorder_company_app/core/services/network/api_client.dart';
 import 'package:workorder_company_app/features/notification/data/datasources/notification_local_datasource.dart';
 import 'package:workorder_company_app/features/notification/data/datasources/notification_remote_datasource.dart';
 import 'package:workorder_company_app/features/notification/data/repositories/notification_cache_invalidator.dart';
@@ -13,6 +14,7 @@ import 'package:workorder_company_app/features/notification/domain/usecases/enab
 import 'package:workorder_company_app/features/notification/domain/usecases/get_notification_logs_usecase.dart';
 import 'package:workorder_company_app/features/notification/domain/usecases/get_notification_status_usecase.dart';
 import 'package:workorder_company_app/features/notification/domain/usecases/init_notification_usecase.dart';
+import 'package:workorder_company_app/features/notification/domain/usecases/mark_notification_as_read_usecase.dart';
 import 'package:workorder_company_app/features/notification/presentation/bloc/notification_active_cubit.dart';
 import 'package:workorder_company_app/features/notification/presentation/bloc/notification_log_cubit.dart';
 import 'package:workorder_company_app/features/notification/application/dispatcher/notification_dispatcher.dart';
@@ -29,14 +31,20 @@ Future<void> initNotificationFeature() async {
       () => NotificationLocalDataSourceImpl());
 
   sl.registerLazySingleton<NotificationRemoteDatasource>(
-      () => NotificationRemoteDatasourceImpl(sl()));
+      () => NotificationRemoteDatasourceImpl(
+            sl<ApiClient>(),
+          ));
 
   sl.registerLazySingleton<NotificationHandler>(
-    () => NotificationHandler(sl()),
+    () => NotificationHandler(
+      sl<NotificationDispatcher>(),
+    ),
   );
 
   sl.registerLazySingleton<NotificationDispatcher>(
-    () => NotificationDispatcher(sl()),
+    () => NotificationDispatcher(
+      sl<NotificationNavigator>(),
+    ),
   );
 
   sl.registerLazySingleton<NotificationNavigator>(
@@ -52,7 +60,11 @@ Future<void> initNotificationFeature() async {
   );
 
   sl.registerLazySingleton<NotificationRepository>(
-      () => NotificationRepositoryImpl(sl(), sl(), sl()));
+      () => NotificationRepositoryImpl(
+            sl<NotificationLocalDataSource>(),
+            sl<NotificationRemoteDatasource>(),
+            sl<FcmDataSource>(),
+          ));
 
   sl.registerSingleton<NotificationEventBus>(
     NotificationEventBus(),
@@ -66,25 +78,44 @@ Future<void> initNotificationFeature() async {
   );
 
   sl.registerLazySingleton<EnableNotificationUseCase>(
-      () => EnableNotificationUseCase(sl()));
+      () => EnableNotificationUseCase(
+            sl<NotificationRepository>(),
+          ));
 
   sl.registerLazySingleton<DisableNotificationUseCase>(
-      () => DisableNotificationUseCase(sl()));
+      () => DisableNotificationUseCase(
+            sl<NotificationRepository>(),
+          ));
 
   sl.registerLazySingleton<GetNotificationStatusUseCase>(
-      () => GetNotificationStatusUseCase(sl()));
+      () => GetNotificationStatusUseCase(
+            sl<NotificationRepository>(),
+          ));
 
   sl.registerLazySingleton<InitNotificationUseCase>(
-      () => InitNotificationUseCase(sl()));
+      () => InitNotificationUseCase(
+            sl<NotificationRepository>(),
+          ));
 
   sl.registerLazySingleton<GetNotificationLogsUseCase>(
-      () => GetNotificationLogsUseCase(sl()));
+      () => GetNotificationLogsUseCase(
+            sl<NotificationRepository>(),
+          ));
 
-  sl.registerFactory<NotificationActiveCubit>(
-      () => NotificationActiveCubit(sl(), sl(), sl()));
+  sl.registerLazySingleton<MarkNotificationAsReadUsecase>(
+      () => MarkNotificationAsReadUsecase(
+            sl<NotificationRepository>(),
+          ));
+
+  sl.registerFactory<NotificationActiveCubit>(() => NotificationActiveCubit(
+        sl<EnableNotificationUseCase>(),
+        sl<DisableNotificationUseCase>(),
+        sl<GetNotificationStatusUseCase>(),
+      ));
 
   sl.registerFactory<NotificationLogCubit>(() => NotificationLogCubit(
         sl<GetNotificationLogsUseCase>(),
+        sl<MarkNotificationAsReadUsecase>(),
         sl<NotificationEventBus>().stream,
       ));
 }

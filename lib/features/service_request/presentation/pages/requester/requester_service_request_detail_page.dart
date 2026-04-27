@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/authorization/util/access_gate_on_widget.dart';
+import 'package:workorder_company_app/core/constants/app_enums/notification_enum.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
+import 'package:workorder_company_app/features/notification/presentation/bloc/notification_log_cubit.dart';
 import 'package:workorder_company_app/features/service_request/domain/authorization/requester_service_request_authorizer.dart';
 import 'package:workorder_company_app/features/service_request/domain/entities/service_request_entity.dart';
 import 'package:workorder_company_app/features/service_request/presentation/pages/service_request_content.dart';
@@ -29,6 +31,13 @@ class RequesterServiceRequestDetailPage extends StatelessWidget {
           RequesterServiceRequestDetailState>(listener: (context, state) {
         if (state.status == RequesterServiceRequestDetailStatus.error) {
           context.showError(state.errorMessage ?? "Terjadi Kesalahan");
+        }
+        if (state.status == RequesterServiceRequestDetailStatus.loaded &&
+            state.request != null) {
+          context.read<NotificationLogCubit>().markAsRead(
+                state.request?.id,
+                ResourceType.serviceRequest,
+              );
         }
       }, builder: (context, state) {
         final isLoading =

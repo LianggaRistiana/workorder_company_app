@@ -18,4 +18,24 @@ class NotificationLogEntity {
     required this.resourceId,
     this.isRead = false,
   });
+
+  NotificationLogEntity copyWith({
+    String? id,
+    String? title,
+    String? body,
+    DateTime? createdAt,
+    ResourceType? resource,
+    String? resourceId,
+    bool? isRead,
+  }) {
+    return NotificationLogEntity(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      body: body ?? this.body,
+      createdAt: createdAt ?? this.createdAt,
+      resource: resource ?? this.resource,
+      resourceId: resourceId ?? this.resourceId,
+      isRead: isRead ?? this.isRead,
+    );
+  }
 }

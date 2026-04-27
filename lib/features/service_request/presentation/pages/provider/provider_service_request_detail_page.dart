@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/core/authorization/util/access_gate_on_widget.dart';
+import 'package:workorder_company_app/core/constants/app_enums/notification_enum.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
+import 'package:workorder_company_app/features/notification/presentation/bloc/notification_log_cubit.dart';
 import 'package:workorder_company_app/features/service_request/domain/authorization/provider_service_request_authorizer.dart';
 import 'package:workorder_company_app/features/service_request/presentation/pages/service_request_content.dart';
 import 'package:workorder_company_app/features/service_request/presentation/state/provider/service_request_detail/provider_service_request_detail_cubit.dart';
@@ -24,6 +26,13 @@ class ProviderServiceRequestDetailPage extends StatelessWidget {
           ProviderServiceRequestDetailState>(listener: (context, state) {
         if (state.status == ProviderServiceRequestDetailStatus.error) {
           context.showError(state.errorMessage ?? "Terjadi Kesalahan");
+        }
+        if (state.status == ProviderServiceRequestDetailStatus.loaded &&
+            state.request != null) {
+          context.read<NotificationLogCubit>().markAsRead(
+                state.request?.id,
+                ResourceType.serviceRequest,
+              );
         }
       }, builder: (context, state) {
         final isLoading =

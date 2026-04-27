@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/constants/app_enums/notification_enum.dart';
 import 'package:workorder_company_app/core/services/network/endpoints.dart';
+import 'package:workorder_company_app/features/notification/presentation/bloc/notification_log_cubit.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/approval/approval_work_order_cubit.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/approval/approval_work_order_state.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/cancel/cancel_work_order_cubit.dart';
@@ -46,6 +48,12 @@ class WorkOrderDetailListener extends StatelessWidget {
       listener: (context, state) {
         if (state.status == WorkOrderDetailStatus.error) {
           context.showError(state.errorMessage ?? "Terjadi kesalahan");
+        }
+        if (state.status == WorkOrderDetailStatus.loaded) {
+          context.read<NotificationLogCubit>().markAsRead(
+                state.workOrder?.id,
+                ResourceType.workOrder,
+              );
         }
       },
     );

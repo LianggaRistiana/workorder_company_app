@@ -113,4 +113,11 @@ class ListCacheHelper<T> {
 
   /// Returns the current cached list if valid.
   List<T>? get value => _cache.value;
+
+  void mapUpdate(T Function(T item) updater) {
+    if (!_cache.hasValidValue) return;
+
+    final updated = _cache.value!.map(updater).toList();
+    _cache.update(updated);
+  }
 }

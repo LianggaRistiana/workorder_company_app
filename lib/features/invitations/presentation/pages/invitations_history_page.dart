@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/authorization/feature/invitation_permission.dart';
 import 'package:workorder_company_app/core/authorization/rule/role_permission_rule/role_permission_helper.dart';
 import 'package:workorder_company_app/core/authorization/util/access_gate_on_widget.dart';
+import 'package:workorder_company_app/core/constants/app_enums/notification_enum.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features/invitations/presentation/bloc/history_invitations_list/history_invitations_list_bloc.dart';
 import 'package:workorder_company_app/features/invitations/presentation/bloc/history_invitations_list/history_invitations_list_event.dart';
@@ -13,6 +14,7 @@ import 'package:workorder_company_app/features/invitations/presentation/widgets/
 import 'package:workorder_company_app/features/invitations/presentation/widgets/sender_invitation_action.dart';
 import 'package:workorder_company_app/features/invitations/presentation/widgets/sender_invitation_detail.dart';
 import 'package:workorder_company_app/features/invitations/presentation/widgets/user_summary_view.dart';
+import 'package:workorder_company_app/features/notification/presentation/bloc/notification_log_cubit.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/app_bottom_sheet.dart';
 import 'package:workorder_company_app/shared/widgets/list_page_scafold.dart';
@@ -35,6 +37,12 @@ class InvitationsHistoryPage extends StatelessWidget {
           if (state.status == HistoryInvitationsListStatus.error &&
               state.invitations.isNotEmpty) {
             context.showError(state.errorMessage ?? 'Terjadi kesalahan');
+          }
+          if (state.status == HistoryInvitationsListStatus.loaded) {
+            context.read<NotificationLogCubit>().markAsRead(
+                  null,
+                  ResourceType.invitation,
+                );
           }
         },
         builder: (context, state) {

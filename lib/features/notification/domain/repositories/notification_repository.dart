@@ -29,4 +29,8 @@ abstract class NotificationRepository implements Cacheable {
   FutureEitherList<NotificationLogEntity> getNotificationLogs({
     bool forceRefresh = false,
   });
+
+  /// Mark a notification as read.
+  Future<List<NotificationLogEntity>> markAsRead(
+      String? resouceId, ResourceType? resourceType);
 }

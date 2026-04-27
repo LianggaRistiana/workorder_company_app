@@ -164,6 +164,38 @@ class NotificationRepositoryImpl implements NotificationRepository {
   }
 
   @override
+  Future<List<NotificationLogEntity>> markAsRead(
+    String? resourceId,
+    ResourceType? resourceType,
+  ) async {
+    _cache.mapUpdate((log) {
+      // Read all
+      if (resourceId == null && resourceType == null) {
+        return log.copyWith(isRead: true);
+      }
+
+      // Same type
+      if (resourceId == null && resourceType != null) {
+        if (log.resource == resourceType) {
+          return log.copyWith(isRead: true);
+        }
+        return log;
+      }
+
+      // Same spesific
+      if (resourceId != null && resourceType != null) {
+        if (log.resource == resourceType && log.resourceId == resourceId) {
+          return log.copyWith(isRead: true);
+        }
+        return log;
+      }
+
+      return log;
+    });
+    return _cache.value ?? [];
+  }
+
+  @override
   void clearCache() {
     _cache.clear();
   }
