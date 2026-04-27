@@ -45,8 +45,6 @@ class _FormDetailView extends StatefulWidget {
 }
 
 class _FormDetailViewState extends State<_FormDetailView> {
-  bool isUpdated = false;
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<FormDetailCubit, FormDetailState>(
@@ -64,8 +62,6 @@ class _FormDetailViewState extends State<_FormDetailView> {
                     if (!context.mounted) return;
                     if (result != null) {
                       context.read<FormDetailCubit>().replace(result);
-                      isUpdated = true;
-                      debugPrint(isUpdated.toString());
                     }
                   },
                   icon: const Icon(AppIcon.edit, size: 18),
@@ -73,14 +69,7 @@ class _FormDetailViewState extends State<_FormDetailView> {
             ],
           ),
           body: SafeArea(
-            child: PopScope(
-                canPop: false,
-                onPopInvokedWithResult: (didPop, result) {
-                  if (didPop) return;
-                  if (!context.mounted) return;
-                  context.pop(isUpdated);
-                },
-                child: _buildBody(context, state)),
+            child: _buildBody(context, state),
           ),
         );
       },

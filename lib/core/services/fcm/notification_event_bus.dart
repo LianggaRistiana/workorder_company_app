@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 class NotificationEventBus {
   final _controller = StreamController<RemoteMessage>.broadcast();
 
+  // TODO : Change type to resource type related repo can reset cache if they needed
   Stream<RemoteMessage> get stream => _controller.stream;
 
   Timer? _debounce;

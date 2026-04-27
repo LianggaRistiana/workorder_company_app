@@ -26,7 +26,7 @@ class FormCreatePage extends StatelessWidget {
         }
         if (state.status == FormCreateStatus.success) {
           context.showSuccess("Berhasil menambahkan form baru");
-          context.pop(true);
+          context.pop();
         }
       }),
     );

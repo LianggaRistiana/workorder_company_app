@@ -22,7 +22,11 @@ Future<void> initFormsFeature() async {
   sl.registerLazySingleton<CreateFormUsecase>(() => CreateFormUsecase(sl()));
   sl.registerLazySingleton<UpdateFormUsecase>(() => UpdateFormUsecase(sl()));
 
-  sl.registerFactory<FormsListBloc>(() => FormsListBloc(getFormsUsecase: sl()));
+  sl.registerFactory<FormsListBloc>(() => FormsListBloc(
+        getFormsUsecase: sl<GetFormsUsecase>(),
+        cacheChangedStream: sl<FormsRepository>().cacheChanged,
+      ));
+
   sl.registerFactory<FormDetailCubit>(
       () => FormDetailCubit(getFormByIdUsecase: sl()));
   sl.registerFactory<FormCreateCubit>(

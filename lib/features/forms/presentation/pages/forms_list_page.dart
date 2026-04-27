@@ -59,14 +59,8 @@ class FormsListPage extends StatelessWidget {
                   text: "Tidak ada formulir",
                 ),
                 floatingActionButton: FloatingActionButton.extended(
-                  onPressed: () async {
-                    final result = await context.push(AppRoutes.formsCreate);
-                    if (!context.mounted) return;
-                    if (result != null && result == true) {
-                      context
-                          .read<FormsListBloc>()
-                          .add(GetFormsListRequested(forceRefresh: false));
-                    }
+                  onPressed: () {
+                    context.push(AppRoutes.formsCreate);
                   },
                   label: const Text("Tambah Form"),
                   icon: const Icon(Icons.add),
@@ -76,15 +70,8 @@ class FormsListPage extends StatelessWidget {
                     horizontal: AppSpacing.md,
                     vertical: AppSpacing.xs,
                   ),
-                  onTap: () async {
-                    final result = await context
-                        .push(AppRoutes.formsDetail.fillId(form.id));
-                    if (!context.mounted) return;
-                    if (result != null && result == true) {
-                      context
-                          .read<FormsListBloc>()
-                          .add(GetFormsListRequested(forceRefresh: false));
-                    }
+                  onTap: () {
+                    context.push(AppRoutes.formsDetail.fillId(form.id));
                   },
                   child: Row(
                     children: [

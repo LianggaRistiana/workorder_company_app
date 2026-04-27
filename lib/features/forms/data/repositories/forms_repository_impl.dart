@@ -13,11 +13,15 @@ class FormsRepositoryImpl implements FormsRepository {
   final FormsRemoteDatasource _remoteDatasource;
 
   final ListCacheHelper<FormEntity> _cache = ListCacheHelper();
-  
+
   final _refreshController = StreamController<void>.broadcast();
 
   @override
   Stream<void> get cacheChanged => _refreshController.stream;
+
+  void _notifyChanged() {
+    _refreshController.add(null);
+  }
 
   FormsRepositoryImpl(this._remoteDatasource);
 
@@ -52,6 +56,7 @@ class FormsRepositoryImpl implements FormsRepository {
         updated,
         (a, b) => a.id == b.id,
       );
+      _notifyChanged();
     });
   }
 
@@ -72,6 +77,7 @@ class FormsRepositoryImpl implements FormsRepository {
         updated,
         (a, b) => a.id == b.id,
       );
+      _notifyChanged();
     });
   }
 
