@@ -7,6 +7,6 @@ final Logger appLogger = Logger(
     //     noBoxingByDefault: true,
     //   ),
     // ),
-    level: Level.all);
+    level: Level.off);
 // final Logger appLogger = Logger(
 //   level: Level.all);

@@ -1,9 +1,11 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
+import 'package:workorder_company_app/core/services/fcm/notification_event_bus.dart';
 import 'package:workorder_company_app/core/services/fcm/fcm_listener.dart';
 import 'package:workorder_company_app/core/services/fcm/fcm_datasource.dart';
 import 'package:workorder_company_app/features/notification/data/datasources/notification_local_datasource.dart';
 import 'package:workorder_company_app/features/notification/data/datasources/notification_remote_datasource.dart';
+import 'package:workorder_company_app/features/notification/data/repositories/notification_cache_invalidator.dart';
 import 'package:workorder_company_app/features/notification/data/repositories/notification_repository_impl.dart';
 import 'package:workorder_company_app/features/notification/domain/repositories/notification_repository.dart';
 import 'package:workorder_company_app/features/notification/domain/usecases/disable_notification_usecase.dart';
@@ -45,11 +47,23 @@ Future<void> initNotificationFeature() async {
     () => FcmListener(
       sl<FcmDataSource>(),
       sl<NotificationHandler>(),
+      sl<NotificationEventBus>(),
     ),
   );
 
   sl.registerLazySingleton<NotificationRepository>(
       () => NotificationRepositoryImpl(sl(), sl(), sl()));
+
+  sl.registerSingleton<NotificationEventBus>(
+    NotificationEventBus(),
+  );
+
+  sl.registerSingleton(
+    NotificationCacheInvalidator(
+      sl<NotificationEventBus>(),
+      sl<NotificationRepository>(),
+    ),
+  );
 
   sl.registerLazySingleton<EnableNotificationUseCase>(
       () => EnableNotificationUseCase(sl()));
@@ -69,5 +83,8 @@ Future<void> initNotificationFeature() async {
   sl.registerFactory<NotificationActiveCubit>(
       () => NotificationActiveCubit(sl(), sl(), sl()));
 
-  sl.registerFactory<NotificationLogCubit>(() => NotificationLogCubit(sl()));
+  sl.registerFactory<NotificationLogCubit>(() => NotificationLogCubit(
+        sl<GetNotificationLogsUseCase>(),
+        sl<NotificationEventBus>().stream,
+      ));
 }

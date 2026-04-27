@@ -11,27 +11,18 @@ class LoginUseCase {
   LoginUseCase(this.repository, this.tokenStorage);
 
   Future<Either<Failure, UserEntity>> call(LoginParams params) async {
-    if (params.email.isEmpty || params.password.isEmpty) {
-      return const Left(
-          ServerFailure(message: "Email dan password wajib diisi"));
-    }
-
     final result = await repository.login(params.email, params.password);
-
+// OPTIMIZE :Move this logic into repository
     return result.fold(
       (failure) => Left(failure),
       (data) async {
-        await tokenStorage
-            .saveToken(data.token); // Belum ada kondisi jika gagal
-        // await repository.saveUser(data.user);
-
-        // return Right(data.user);
+        await tokenStorage.saveToken(data.token);
         try {
           final saveUserResult = await repository.saveUser(data.user);
           saveUserResult;
           return saveUserResult.fold(
             (failure) => Left(failure),
-            (_) => Right(data.user), // sukses
+            (_) => Right(data.user),
           );
         } catch (e) {
           return Left(CacheFailure(message: 'Failed to save user: $e'));

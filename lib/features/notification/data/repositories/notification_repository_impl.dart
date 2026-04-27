@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:workorder_company_app/core/constants/app_enums/notification_enum.dart';
+import 'package:workorder_company_app/core/services/cache/list_cache_helper.dart';
 import 'package:workorder_company_app/core/services/logger/app_logger.dart';
 import 'package:workorder_company_app/core/types/future_either.dart';
-import 'package:workorder_company_app/core/utils/safe_call.dart';
 import 'package:workorder_company_app/core/services/fcm/fcm_datasource.dart';
 import 'package:workorder_company_app/features/notification/data/datasources/notification_local_datasource.dart';
 import 'package:workorder_company_app/features/notification/data/datasources/notification_remote_datasource.dart';
@@ -15,6 +15,10 @@ class NotificationRepositoryImpl implements NotificationRepository {
   final FcmDataSource _fcm;
 
   StreamSubscription<String>? _tokenSubscription;
+
+  final ListCacheHelper<NotificationLogEntity> _cache = ListCacheHelper(
+    expiration: const Duration(days: 1),
+  );
 
   NotificationRepositoryImpl(
     this._local,
@@ -89,11 +93,16 @@ class NotificationRepositoryImpl implements NotificationRepository {
   // ========================
 
   @override
-  FutureEitherList<NotificationLogEntity> getNotificationLogs() async {
-    return safeCall(() async {
-      final payload = await _remote.getNotificationLogs();
-      return payload.data;
-    });
+  FutureEitherList<NotificationLogEntity> getNotificationLogs({
+    bool forceRefresh = false,
+  }) async {
+    return _cache.fetchList(
+      remoteCall: () async {
+        final response = await _remote.getNotificationLogs();
+        return response.data;
+      },
+      forceRefresh: forceRefresh,
+    );
   }
 
   // ========================
@@ -152,5 +161,10 @@ class NotificationRepositoryImpl implements NotificationRepository {
         appLogger.e("Failed to register refreshed token: $e");
       }
     });
+  }
+
+  @override
+  void clearCache() {
+    _cache.clear();
   }
 }

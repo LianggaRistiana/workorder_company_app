@@ -1,4 +1,5 @@
 import 'package:workorder_company_app/core/constants/app_enums/notification_enum.dart';
+import 'package:workorder_company_app/core/services/cache/cacheable.dart';
 import 'package:workorder_company_app/core/types/future_either.dart';
 import 'package:workorder_company_app/features/notification/domain/entities/notification_log_entity.dart';
 
@@ -8,7 +9,7 @@ import 'package:workorder_company_app/features/notification/domain/entities/noti
 /// - Local (preference)
 /// - FCM (real-time events and permission)
 /// - Remote (backend logs)
-abstract class NotificationRepository {
+abstract class NotificationRepository implements Cacheable {
   /// Initialize notification system after user login or openend app.
   Future<void> init();
 
