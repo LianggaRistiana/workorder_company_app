@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:workorder_company_app/core/services/cache/list_cache_helper.dart';
 import 'package:workorder_company_app/core/types/future_either.dart';
 import 'package:workorder_company_app/core/utils/either_helper.dart';
@@ -11,6 +13,11 @@ class FormsRepositoryImpl implements FormsRepository {
   final FormsRemoteDatasource _remoteDatasource;
 
   final ListCacheHelper<FormEntity> _cache = ListCacheHelper();
+  
+  final _refreshController = StreamController<void>.broadcast();
+
+  @override
+  Stream<void> get cacheChanged => _refreshController.stream;
 
   FormsRepositoryImpl(this._remoteDatasource);
 
@@ -67,7 +74,7 @@ class FormsRepositoryImpl implements FormsRepository {
       );
     });
   }
-  
+
   @override
   void clearCache() {
     _cache.clear();

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dartz/dartz.dart';
 import 'package:workorder_company_app/core/services/cache/list_cache_helper.dart';
 import 'package:workorder_company_app/core/error/failures.dart';
@@ -12,6 +14,11 @@ class PositionsRepositoryImpl implements PositionsRepository {
   final PositionsRemoteDatasource _remoteDatasource;
 
   final ListCacheHelper<PositionEntity> _cache = ListCacheHelper();
+
+  final _refreshController = StreamController<void>.broadcast();
+
+  @override
+  Stream<void> get cacheChanged => _refreshController.stream;
 
   PositionsRepositoryImpl(this._remoteDatasource);
 
@@ -70,7 +77,7 @@ class PositionsRepositoryImpl implements PositionsRepository {
       return payload.data;
     });
   }
-  
+
   @override
   void clearCache() {
     _cache.clear();

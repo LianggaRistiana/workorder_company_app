@@ -100,7 +100,7 @@ Future<void> _initUseCases() async {
 Future<void> _initUiStates() async {
   sl.registerFactory<WorkOrdersListBloc>(() => WorkOrdersListBloc(
         getWorkOrdersUseCase: sl(),
-        workOrderChangedStream: sl<WorkOrderRepository>().workOrderChanged,
+        workOrderChangedStream: sl<WorkOrderRepository>().cacheChanged,
       ));
 
   sl.registerFactory<WorkOrderDetailCubit>(() => WorkOrderDetailCubit(

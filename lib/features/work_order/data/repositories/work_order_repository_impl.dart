@@ -20,7 +20,7 @@ class WorkOrderRepositoryImpl implements WorkOrderRepository {
   final _refreshController = StreamController<void>.broadcast();
 
   @override
-  Stream<void> get workOrderChanged => _refreshController.stream;
+  Stream<void> get cacheChanged => _refreshController.stream;
 
   final ListCacheHelper<WorkOrderEntity> _cache = ListCacheHelper();
 

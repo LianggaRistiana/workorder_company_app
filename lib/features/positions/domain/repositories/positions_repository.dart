@@ -1,9 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:workorder_company_app/core/error/error.dart';
 import 'package:workorder_company_app/core/services/cache/cacheable.dart';
+import 'package:workorder_company_app/core/services/cache/streamable_cache.dart';
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
 
-abstract class PositionsRepository implements Cacheable {
+abstract class PositionsRepository implements Cacheable, StreamableCache {
   Future<Either<Failure, List<PositionEntity>>> getPositions({bool refresh});
   Future<Either<Failure, PositionEntity>> getPositionById(String id);
   Future<Either<Failure, PositionEntity>> createPostion(

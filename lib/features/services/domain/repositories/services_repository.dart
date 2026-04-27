@@ -1,9 +1,10 @@
 import 'package:workorder_company_app/core/services/cache/cacheable.dart';
+import 'package:workorder_company_app/core/services/cache/streamable_cache.dart';
 import 'package:workorder_company_app/core/types/future_either.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_summary_entity.dart';
 
-abstract class ServicesRepository implements Cacheable {
+abstract class ServicesRepository implements Cacheable, StreamableCache {
   // Public Service
   FutureEitherList<ServiceSummaryEntity> getPublicServices(String companyId);
   FutureEither<ServiceEntity> getPublicServiceDetail(String id);
@@ -16,6 +17,4 @@ abstract class ServicesRepository implements Cacheable {
   FutureEither<ServiceEntity> updateService(ServiceEntity service);
   FutureEither<ServiceEntity> removeService(String serviceId);
   FutureEither<ServiceEntity> toggleActiveStatus(ServiceEntity service);
-
-  Stream<void> get serviceChanged;
 }

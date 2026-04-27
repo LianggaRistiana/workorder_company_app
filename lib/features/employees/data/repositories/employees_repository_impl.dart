@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:workorder_company_app/core/types/future_either.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 import 'package:workorder_company_app/features/employees/data/datasource/employees_remote_datasource.dart';
@@ -9,6 +11,11 @@ class EmployeesRepositoryImpl implements EmployeesRepository {
   final EmployeesRemoteDatasource _remoteDatasource;
 
   final ListCacheHelper<UserEntity> _cache = ListCacheHelper();
+
+  final _refreshController = StreamController<void>.broadcast();
+
+  @override
+  Stream<void> get cacheChanged => _refreshController.stream;
 
   EmployeesRepositoryImpl(this._remoteDatasource);
 
@@ -46,7 +53,7 @@ class EmployeesRepositoryImpl implements EmployeesRepository {
       return matchSearch && matchPosition;
     }).toList();
   }
-  
+
   @override
   void clearCache() {
     _cache.clear();

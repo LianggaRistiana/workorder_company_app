@@ -21,7 +21,7 @@ class ServicesRepositoryImpl implements ServicesRepository {
   final _refreshController = StreamController<void>.broadcast();
 
   @override
-  Stream<void> get serviceChanged => _refreshController.stream;
+  Stream<void> get cacheChanged => _refreshController.stream;
 
   void _notifyChanged() {
     _refreshController.add(null);
