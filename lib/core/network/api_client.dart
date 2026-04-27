@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:workorder_company_app/core/error/error.dart';
 import 'package:workorder_company_app/core/constants/app_config.dart';
 import 'package:workorder_company_app/core/services/logger/app_logger.dart';
@@ -170,23 +169,28 @@ class DioApiClient implements ApiClient {
 class LoggingInterceptor extends Interceptor {
   LoggingInterceptor();
 
-  void prettyPrintJson(dynamic json) {
+  String _prettyPrintJson(dynamic json) {
     const encoder = JsonEncoder.withIndent('  ');
-    debugPrint(encoder.convert(json));
+    return encoder.convert(json);
   }
+
+  // void prettyPrintJson(dynamic json) {
+  //   debugPrint(encoder.convert(json));
+  // }
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     appLogger.i(
-        "➡️ ${options.method} ${options.uri}\nHeaders: ${options.headers}\nBody: ${options.data}");
+        "➡️ ${options.method} ${options.uri}\nHeaders: ${options.headers}\nBody: ${_prettyPrintJson(options.data)}");
     // prettyPrintJson(options.data);
     super.onRequest(options, handler);
   }
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    appLogger.i("✅ ${response.statusCode} ${response.requestOptions.uri}");
-    prettyPrintJson(response.data);
+    appLogger.i(
+        "✅ ${response.statusCode} ${response.requestOptions.uri} \nPayload:\n${_prettyPrintJson(response.data)}");
+    // _prettyPrintJson(response.data);
     super.onResponse(response, handler);
   }
 

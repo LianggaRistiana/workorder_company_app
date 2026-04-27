@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/features/work_order/domain/entities/work_order_entity.dart';
+import 'package:workorder_company_app/features/work_order/domain/params/work_order_temp_local_params.dart';
 import 'package:workorder_company_app/features/work_order/presentation/pages/work_order_assign_staffs_page.dart';
 import 'package:workorder_company_app/features/work_order/presentation/pages/work_order_detail_page.dart';
 import 'package:workorder_company_app/features/work_order/presentation/pages/work_order_fill_form_page.dart';
@@ -9,7 +10,13 @@ import 'package:workorder_company_app/routes/app_routes.dart';
 final workOrderRouter = [
   GoRoute(
     path: AppRoutes.workOrders,
-    builder: (_, __) => const WorkOrdersListPage(),
+    builder: (_, state) {
+      final params = state.extra;
+      if (params != null && params is WorkOrderTempLocalParams) {
+        return WorkOrdersListPage(params: params);
+      }
+      return WorkOrdersListPage();
+    },
   ),
   GoRoute(
     path: AppRoutes.workOrdersAssignStaff,

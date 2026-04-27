@@ -26,4 +26,5 @@ class NotificationLogCubit extends Cubit<NotificationLogState> {
   }
 
   // TODO : ADD LOCAL MARK AS READ
+  // Mark as read can put in this cubit (not even need in repo), because this cubit will alive as long as user opened the app
 }

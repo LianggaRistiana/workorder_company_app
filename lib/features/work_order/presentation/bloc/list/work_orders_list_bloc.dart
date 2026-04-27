@@ -59,7 +59,6 @@ class WorkOrdersListBloc
     debugPrint(event.params.toString());
     emit(state.copyWith(filter: event.params));
     debugPrint(state.filter.toString());
-
   }
 
   @override

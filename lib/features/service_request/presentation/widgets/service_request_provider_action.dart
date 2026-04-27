@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
+import 'package:workorder_company_app/core/network/endpoints.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/service_request/domain/entities/service_request_entity.dart';
 import 'package:workorder_company_app/features/service_request/presentation/state/provider/action_service_request/provider_action_service_request_cubit.dart';
 import 'package:workorder_company_app/features/service_request/presentation/state/provider/action_service_request/provider_action_service_request_state.dart';
+import 'package:workorder_company_app/features/work_order/domain/params/work_order_temp_local_params.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/loading_state_inline.dart';
 
@@ -22,16 +24,20 @@ class ServiceRequestProviderAction extends StatelessWidget {
       child: BlocConsumer<ProviderActionServiceRequestCubit,
           ProviderActionServiceRequestState>(
         listener: (context, state) {
+          final requestResult = state.request;
+
           if (state.status == ProviderActionServiceRequestStatus.error) {
             context.showError(state.errorMessage ?? "Terjadi Kesalahan");
           } else if (state.status ==
-              ProviderActionServiceRequestStatus.approved) {
-            // TODO[High] : if success update sr detail here
+                  ProviderActionServiceRequestStatus.approved &&
+              requestResult != null) {
             context.showSuccess("Permintaan diterima");
             context.pop();
+            context.push(Endpoints.workorders,
+                extra: WorkOrderTempLocalParams.fromServiceRequest(
+                    byServiceRequestId: requestResult.id));
           } else if (state.status ==
               ProviderActionServiceRequestStatus.rejected) {
-            // TODO[High] : if success update sr detail here
             context.showSuccess("Permintaan ditolak");
             context.pop();
           }

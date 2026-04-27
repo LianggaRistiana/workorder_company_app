@@ -46,12 +46,13 @@ class ServiceRequestContent extends StatelessWidget {
             }
           },
           child: AdaptiveSplitColumn(
-              leftChildren: _serviceRequestMetaData(serviceRequest!),
+              leftChildren: _serviceRequestMetaData(context, serviceRequest!),
               rightChildren: _serviceRequestFilledForm(serviceRequest!))),
     );
   }
 
-  List<Widget> _serviceRequestMetaData(ServiceRequestEntity serviceRequest) {
+  List<Widget> _serviceRequestMetaData(
+      BuildContext context, ServiceRequestEntity serviceRequest) {
     return [
       CustomCard(
           margin: const EdgeInsets.only(bottom: AppSpacing.xs),
@@ -91,6 +92,15 @@ class ServiceRequestContent extends StatelessWidget {
                   statusDate: serviceRequest.statusDate),
             )
           ])),
+      // TODO : Add view work order button here with rules,
+      // dont use temp local params, use wo params instead
+      // IconButton(
+      //     onPressed: () {
+      //       context.push(Endpoints.workorders,
+      //           extra: WorkOrderTempLocalParams.fromServiceRequest(
+      //               byServiceRequestId: serviceRequest.id));
+      //     },
+      //     icon: Icon(AppIcon.workOrder)),
       const SizedBox(
         height: AppSpacing.md,
       ),
