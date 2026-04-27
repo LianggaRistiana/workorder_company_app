@@ -96,7 +96,7 @@ class _ServiceDetailView extends StatelessWidget {
                       if (!context.mounted) return;
                       if (result == true) {
                         context.pop(true);
-                      }
+                      } // OPTIMIZE : Replace data after edit
                     },
                     icon: const Icon(AppIcon.edit, size: 18),
                   ),

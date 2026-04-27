@@ -91,8 +91,6 @@ class ServicesRepositoryImpl implements ServicesRepository {
     });
 
     return result.onSuccess((updated) {
-      _notifyChanged();
-
       _cache.removeSingle(
         ServiceSummaryModel.fromServiceEntity(service),
         (a, b) => a.id == b.id,
@@ -101,6 +99,7 @@ class ServicesRepositoryImpl implements ServicesRepository {
         updated.toSummaryEntity(),
         (a, b) => a.id == b.id,
       );
+      _notifyChanged();
     });
   }
 
@@ -112,12 +111,11 @@ class ServicesRepositoryImpl implements ServicesRepository {
     });
 
     return result.onSuccess((updated) {
-      _notifyChanged();
-
       _cache.removeSingle(
         ServiceSummaryModel.fromServiceEntity(updated),
         (a, b) => a.id == b.id,
       );
+      _notifyChanged();
     });
   }
 
@@ -130,11 +128,11 @@ class ServicesRepositoryImpl implements ServicesRepository {
     });
 
     return result.onSuccess((updated) {
-      _notifyChanged();
       _cache.mergeSingle(
         updated.toSummaryEntity(),
         (a, b) => a.id == b.id,
       );
+      _notifyChanged();
     });
   }
 

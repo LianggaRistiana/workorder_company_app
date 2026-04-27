@@ -1,4 +1,6 @@
 // positions_list_bloc.dart
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/features/positions/domain/usecase/get_positions_usecase.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/list/positions_list_event.dart';
@@ -7,12 +9,17 @@ import 'package:workorder_company_app/features/positions/presentation/bloc/list/
 class PositionsListBloc extends Bloc<PositionsListEvent, PositionsListState> {
   final GetPositionsUsecase getPositionsUseCase;
 
-  PositionsListBloc({required this.getPositionsUseCase})
+  final Stream<void> cacheChangedStream;
+  late final StreamSubscription _subscription;
+
+  PositionsListBloc(
+      {required this.getPositionsUseCase, required this.cacheChangedStream})
       : super(const PositionsListState()) {
     on<GetPositionsListRequested>(_onGetPositionsRequested);
+    _subscription = cacheChangedStream.listen((_) {
+      add(GetPositionsListRequested(forceRefresh: false));
+    });
   }
-
-  // OPTIMIZE : watch for position repo for cache update. follow work order for pattern
 
   Future<void> _onGetPositionsRequested(
       GetPositionsListRequested event, Emitter<PositionsListState> emit) async {
@@ -34,5 +41,11 @@ class PositionsListBloc extends Bloc<PositionsListEvent, PositionsListState> {
         positions: data,
       )),
     );
+  }
+
+  @override
+  Future<void> close() {
+    _subscription.cancel();
+    return super.close();
   }
 }

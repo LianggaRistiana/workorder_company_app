@@ -40,7 +40,7 @@ class ServiceUpdatePage extends StatelessWidget {
 
           if (state.status == ServiceUpdateStatus.success) {
             context.showSuccess("Berhasil Memperbarui Layanan");
-            context.pop();
+            context.pop(true);
           }
         },
         builder: (context, state) {

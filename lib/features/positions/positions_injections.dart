@@ -12,14 +12,11 @@ import 'package:workorder_company_app/features/positions/presentation/bloc/list/
 import 'package:workorder_company_app/features/positions/presentation/bloc/update/position_update_cubit.dart';
 
 Future<void> initPositionsFeature() async {
-  sl.registerFactory<PositionsListBloc>(
-      () => PositionsListBloc(getPositionsUseCase: sl()));
-  sl.registerFactory<PositionCreateCubit>(
-      () => PositionCreateCubit(createPositionUsecase: sl()));
-  sl.registerFactory<PositionUpdateCubit>(
-      () => PositionUpdateCubit(updatePositionUsecase: sl()));
-  sl.registerFactory<PositionDetailCubit>(
-      () => PositionDetailCubit(getPositionByidUsecase: sl()));
+  sl.registerLazySingleton<PositionsRemoteDatasource>(
+      () => PositionsRemoteDatasourceImpl(sl()));
+
+  sl.registerLazySingleton<PositionsRepository>(
+      () => PositionsRepositoryImpl(sl()));
 
   sl.registerLazySingleton<GetPositionsUsecase>(
       () => GetPositionsUsecase(sl()));
@@ -30,8 +27,15 @@ Future<void> initPositionsFeature() async {
   sl.registerLazySingleton<UpdatePositionUsecase>(
       () => UpdatePositionUsecase(sl()));
 
-  sl.registerLazySingleton<PositionsRepository>(
-      () => PositionsRepositoryImpl(sl()));
-  sl.registerLazySingleton<PositionsRemoteDatasource>(
-      () => PositionsRemoteDatasourceImpl(sl()));
+  sl.registerFactory<PositionsListBloc>(() => PositionsListBloc(
+        getPositionsUseCase: sl<GetPositionsUsecase>(),
+        cacheChangedStream: sl<PositionsRepository>().cacheChanged,
+      ));
+
+  sl.registerFactory<PositionCreateCubit>(
+      () => PositionCreateCubit(createPositionUsecase: sl()));
+  sl.registerFactory<PositionUpdateCubit>(
+      () => PositionUpdateCubit(updatePositionUsecase: sl()));
+  sl.registerFactory<PositionDetailCubit>(
+      () => PositionDetailCubit(getPositionByidUsecase: sl()));
 }

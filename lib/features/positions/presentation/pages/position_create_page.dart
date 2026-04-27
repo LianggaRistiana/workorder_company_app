@@ -6,10 +6,8 @@ import 'package:workorder_company_app/core/error/failures.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/create/position_create_cubit.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/create/position_create_state.dart';
 import 'package:workorder_company_app/features/positions/presentation/widget/position_form_view.dart';
-// import 'package:workorder_company_app/features/positions/presentation/widget/Position_form_view.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 
-// Inject Cubit here
 class PositionCreatePage extends StatelessWidget {
   const PositionCreatePage({super.key});
 
@@ -21,7 +19,7 @@ class PositionCreatePage extends StatelessWidget {
         listener: (context, state) {
           if (state.status == PositionCreateStatus.success) {
             context.showSuccess("Departemen berhasil dibuat");
-            context.pop(state.createdPosition);
+            context.pop();
           }
 
           if (state.status == PositionCreateStatus.error) {

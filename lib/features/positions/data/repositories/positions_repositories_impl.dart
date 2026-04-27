@@ -20,6 +20,10 @@ class PositionsRepositoryImpl implements PositionsRepository {
   @override
   Stream<void> get cacheChanged => _refreshController.stream;
 
+  void _notifyChanged() {
+    _refreshController.add(null);
+  }
+
   PositionsRepositoryImpl(this._remoteDatasource);
 
   @override
@@ -50,6 +54,7 @@ class PositionsRepositoryImpl implements PositionsRepository {
         updated,
         (a, b) => a.id == b.id,
       );
+      _notifyChanged();
     });
   }
 
@@ -67,6 +72,7 @@ class PositionsRepositoryImpl implements PositionsRepository {
         updated,
         (a, b) => a.id == b.id,
       );
+      _notifyChanged();
     });
   }
 

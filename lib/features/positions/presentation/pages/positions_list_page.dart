@@ -7,7 +7,6 @@ import 'package:workorder_company_app/core/authorization/util/access_gate_on_wid
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
-import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/list/positions_list_bloc.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/list/positions_list_event.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/list/positions_list_state.dart';
@@ -63,18 +62,8 @@ class _PositionsListView extends StatelessWidget {
             text: "Tidak ada departemen",
           ),
           floatingActionButton: FloatingActionButton.extended(
-            onPressed: () async {
-              // OPTIMIZE : Remove this later if bloc already watch repo cache state
-              final result =
-                  await context.push<PositionEntity>(AppRoutes.positionsCreate);
-
-              if (!context.mounted) return;
-
-              if (result != null) {
-                context
-                    .read<PositionsListBloc>()
-                    .add(GetPositionsListRequested());
-              }
+            onPressed: () {
+              context.push(AppRoutes.positionsCreate);
             },
             icon: const Icon(Icons.add),
             label: const Text('Tambah Departemen'),
