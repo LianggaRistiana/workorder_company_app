@@ -115,7 +115,6 @@ class AuthRepositoryImpl implements AuthRepository {
       await _remoteDatasource.logout();
       await _localDatasource.clearUser();
       await _tokenStorage.clearToken();
-      _cache = null;
 
       return Right(null);
     } on ApiException catch (e) {
@@ -142,5 +141,10 @@ class AuthRepositoryImpl implements AuthRepository {
       return _remoteDatasource
           .userRegistration(UserRegistrationModel.fromEntity(registrationData));
     });
+  }
+
+  @override
+  void clearCache() {
+    _cache = null;
   }
 }

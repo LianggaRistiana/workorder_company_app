@@ -52,4 +52,9 @@ class InternalCompanyRepositoryImpl implements InternalCompanyRepository {
       _cache.update(data);
     });
   }
+
+  @override
+  void clearCache() {
+    _cache.clear();
+  }
 }

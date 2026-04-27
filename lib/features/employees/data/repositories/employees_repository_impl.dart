@@ -46,4 +46,9 @@ class EmployeesRepositoryImpl implements EmployeesRepository {
       return matchSearch && matchPosition;
     }).toList();
   }
+  
+  @override
+  void clearCache() {
+    _cache.clear();
+  }
 }

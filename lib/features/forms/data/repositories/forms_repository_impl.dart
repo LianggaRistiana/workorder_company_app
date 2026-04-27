@@ -67,4 +67,9 @@ class FormsRepositoryImpl implements FormsRepository {
       );
     });
   }
+  
+  @override
+  void clearCache() {
+    _cache.clear();
+  }
 }

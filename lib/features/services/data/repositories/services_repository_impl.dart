@@ -113,4 +113,9 @@ class ServicesRepositoryImpl implements ServicesRepository {
       return payload.data;
     });
   }
+
+  @override
+  void clearCache() {
+    _cache.clear();
+  }
 }

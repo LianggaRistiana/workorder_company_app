@@ -70,4 +70,9 @@ class PositionsRepositoryImpl implements PositionsRepository {
       return payload.data;
     });
   }
+  
+  @override
+  void clearCache() {
+    _cache.clear();
+  }
 }

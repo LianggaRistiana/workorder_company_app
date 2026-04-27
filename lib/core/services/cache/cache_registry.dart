@@ -65,8 +65,8 @@ class CacheRegistry {
   void clearAll() {
     appLogger.d("Clearing all caches provide by CacheRegistry");
     for (final cache in _caches) {
-      appLogger.d("Clearing cache ${cache.runtimeType}");
       cache.clearCache();
+      appLogger.d("${cache.runtimeType} cache cleared");
     }
   }
 }
