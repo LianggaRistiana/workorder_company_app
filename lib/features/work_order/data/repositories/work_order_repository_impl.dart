@@ -36,23 +36,26 @@ class WorkOrderRepositoryImpl implements WorkOrderRepository {
   };
 
   FutureEitherWithMeta<WorkOrderEntity> _handleMetaCall(
-    Future<ApiResponseWithMeta<WorkOrderEntity>> Function() remoteCall,
-  ) async {
+    Future<ApiResponseWithMeta<WorkOrderEntity>> Function() remoteCall, {
+    bool clearCache = false,
+  }) async {
     final result = await safeCall(() async {
       final response = await remoteCall();
       return response.toResultDynamic(metaFactories: _metaFactories);
     });
 
     return result.onSuccess((updated) {
-      _cache.mergeSingle(
-        updated.data,
-        (a, b) => a.id == b.id,
-      );
+      if (clearCache) {
+        _cache.clear();
+      } else {
+        _cache.mergeSingle(
+          updated.data,
+          (a, b) => a.id == b.id,
+        );
+      }
       _notifyChanged();
     });
   }
-
-  // TODO : create a method for clear cache when hit for cancel, and create work order. reason: response just give single wo but multiple wo Affected
 
   // ==============================
   // List
@@ -90,6 +93,7 @@ class WorkOrderRepositoryImpl implements WorkOrderRepository {
   ) {
     return _handleMetaCall(
       () => _remoteDatasource.createWorkOrder(serviceId),
+      clearCache: true,
     );
   }
 
@@ -118,6 +122,7 @@ class WorkOrderRepositoryImpl implements WorkOrderRepository {
   ) {
     return _handleMetaCall(
       () => _remoteDatasource.cancelWorkOrder(workOrderId),
+      clearCache: true,
     );
   }
 
