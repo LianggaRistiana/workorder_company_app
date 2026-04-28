@@ -1,5 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
+import 'package:workorder_company_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:workorder_company_app/features/notification/data/pipeline/event_bus/notification_event_bus.dart';
 import 'package:workorder_company_app/features/notification/data/pipeline/listener/fcm_listener.dart';
 import 'package:workorder_company_app/features/notification/data/datasources/fcm_datasource.dart';
@@ -48,8 +49,8 @@ Future<void> initNotificationFeature() async {
     ),
   );
 
-  sl.registerLazySingleton<NotificationNavigator>(
-    () => NotificationNavigatorImpl(appRouter),
+  sl.registerFactory<NotificationNavigator>(
+    () => NotificationNavigatorImpl(appRouter, sl<AuthRepository>()),
   );
 
   sl.registerLazySingleton<FcmListener>(

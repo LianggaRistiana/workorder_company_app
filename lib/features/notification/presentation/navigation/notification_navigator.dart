@@ -3,7 +3,6 @@ import 'package:workorder_company_app/core/authorization/feature/invitation_perm
 import 'package:workorder_company_app/core/authorization/feature/service_request_permission.dart';
 import 'package:workorder_company_app/core/authorization/util/check_permission.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
-import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
@@ -17,8 +16,9 @@ abstract class NotificationNavigator {
 
 class NotificationNavigatorImpl implements NotificationNavigator {
   final GoRouter router;
+  final AuthRepository auth;
 
-  NotificationNavigatorImpl(this.router);
+  NotificationNavigatorImpl(this.router, this.auth);
 
   void _safePush(String location, {Object? extra}) {
     final currentLocation =
@@ -36,25 +36,23 @@ class NotificationNavigatorImpl implements NotificationNavigator {
 
   @override
   void openInvitationsPage() {
-    final authRepo = sl<AuthRepository>();
-    final user = authRepo.currentUser;
+    final user = auth.currentUser;
     if (user == null) return;
-
     if (user.role.canAll(InvitationPermission.receiver)) {
       _safePush(AppRoutes.invitationsPending);
-    } else {
+    }
+    if (user.role.canAll(InvitationPermission.sender)) {
       _safePush(AppRoutes.invitationsHistory);
+    } else {
+      return;
     }
   }
 
   @override
   void openServiceRequestPage(String srId) {
-    final authRepo = sl<AuthRepository>();
-    final user = authRepo.currentUser;
+    final user = auth.currentUser;
     if (user == null) return;
-
     final route = AppRoutes.serviceRequestDetail.fillId(srId);
-
     final extra = user.role.canAll(ServiceRequestPermission.provider)
         ? ServiceRequestSide.provider
         : ServiceRequestSide.requester;
