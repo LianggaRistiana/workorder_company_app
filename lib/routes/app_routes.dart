@@ -16,7 +16,7 @@ class AppRoutes {
   static const companyUpdate = '/company/update';
   static const companyFaqConfig = '/company/faq-config';
   static const companyManageMenu = '/company/menu';
-  static const companyFLowConfig = '/company/flow-config';
+  static const companyFlowConfig = '/company/flow-config';
 
   // Positions
   static const positions = '/positions';

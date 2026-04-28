@@ -3,7 +3,7 @@ import 'package:workorder_company_app/features/invitations/presentation/pages/in
 import 'package:workorder_company_app/features/invitations/presentation/pages/receiver_invitations_page.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 
-final invitationsRoute = [
+final invitationsRouter = [
   GoRoute(
     path: AppRoutes.invitationsHistory,
     builder: (_, __) => const InvitationsHistoryPage(),

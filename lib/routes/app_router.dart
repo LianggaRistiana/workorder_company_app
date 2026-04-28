@@ -1,19 +1,18 @@
 import 'package:go_router/go_router.dart';
-import 'package:workorder_company_app/features/auth/presentation/pages/profile_page.dart';
-import 'package:workorder_company_app/features/notification/presentation/pages/notification_logs_page.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/routes/common_router.dart';
-import 'package:workorder_company_app/routes/feature_routes.dart/company_route.dart';
-import 'package:workorder_company_app/routes/feature_routes.dart/employees_route.dart';
-import 'package:workorder_company_app/routes/feature_routes.dart/forms_route.dart';
-import 'package:workorder_company_app/routes/feature_routes.dart/home_route.dart';
-import 'package:workorder_company_app/routes/feature_routes.dart/invitations_route.dart';
-import 'package:workorder_company_app/routes/feature_routes.dart/memberships_route.dart';
-import 'package:workorder_company_app/routes/feature_routes.dart/positions_route.dart';
-import 'package:workorder_company_app/routes/feature_routes.dart/service_request_route.dart';
-import 'package:workorder_company_app/routes/feature_routes.dart/services_route.dart';
-import 'package:workorder_company_app/routes/feature_routes.dart/work_order_route.dart';
-import 'package:workorder_company_app/routes/feature_routes.dart/work_report_route.dart';
+import 'package:workorder_company_app/routes/public_router.dart';
+import 'package:workorder_company_app/routes/feature_routes.dart/company_router.dart';
+import 'package:workorder_company_app/routes/feature_routes.dart/employees_router.dart';
+import 'package:workorder_company_app/routes/feature_routes.dart/forms_router.dart';
+import 'package:workorder_company_app/routes/feature_routes.dart/home_router.dart';
+import 'package:workorder_company_app/routes/feature_routes.dart/invitations_router.dart';
+import 'package:workorder_company_app/routes/feature_routes.dart/memberships_router.dart';
+import 'package:workorder_company_app/routes/feature_routes.dart/positions_router.dart';
+import 'package:workorder_company_app/routes/feature_routes.dart/service_request_router.dart';
+import 'package:workorder_company_app/routes/feature_routes.dart/service_router.dart';
+import 'package:workorder_company_app/routes/feature_routes.dart/work_order_router.dart';
+import 'package:workorder_company_app/routes/feature_routes.dart/work_report_router.dart';
 import 'package:workorder_company_app/routes/guards/auth_guard.dart';
 import 'package:workorder_company_app/shared/layout/app_layout.dart';
 import 'package:workorder_company_app/shared/page/not_found_page.dart';
@@ -32,24 +31,16 @@ final GoRouter appRouter = GoRouter(
             ...positionsRouter,
             ...employeesRouter,
             ...formsRouter,
-            ...serviceRoute,
-            ...invitationsRoute,
-            ...membershipsRoute,
+            ...serviceRouter,
+            ...invitationsRouter,
+            ...membershipsRouter,
             ...publicCompaniesRouter,
-            ...serviceRequestRoute,
+            ...serviceRequestRouter,
             ...workOrderRouter,
-            ...workReportRoute,
-            GoRoute(
-              path: AppRoutes.profile,
-              builder: (_, __) => const ProfilePage(), // HACK FIX THIS LATER
-            ),
-            GoRoute(
-              path: AppRoutes.notifications,
-              builder: (_, __) =>
-                  const NotificationLogsPage(), // HACK FIX THIS LATER
-            ),
+            ...workReportRouter,
+            ...commonRouter,
           ]),
-      ...commonRouter,
+      ...publicRouter,
       GoRoute(
         path: "/",
         redirect: (context, state) => AppRoutes.home,

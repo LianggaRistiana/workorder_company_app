@@ -11,7 +11,7 @@ import 'package:workorder_company_app/features/services/domain/entities/base_ser
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/page/forbidden_page.dart';
 
-final serviceRequestRoute = [
+final serviceRequestRouter = [
   GoRoute(
     path: AppRoutes.serviceRequestSent,
     builder: (_, __) => RequesterServiceRequestListPage(),

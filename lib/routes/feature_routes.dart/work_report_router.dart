@@ -5,7 +5,7 @@ import 'package:workorder_company_app/features/work_report/presentation/pages/wo
 import 'package:workorder_company_app/features/work_report/presentation/pages/work_report_page.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 
-final workReportRoute = [
+final workReportRouter = [
   GoRoute(
     path: AppRoutes.workReport,
     builder: (_, state) {

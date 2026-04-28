@@ -7,7 +7,7 @@ import 'package:workorder_company_app/features/services/presentation/pages/servi
 import 'package:workorder_company_app/features/services/presentation/pages/services_list_page.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 
-final serviceRoute = [
+final serviceRouter = [
   GoRoute(
     path: AppRoutes.services,
     builder: (_, state) {

@@ -19,7 +19,7 @@ final companyRouter = [
     builder: (_, __) => InternalCompanyProfilePage(),
   ),
   GoRoute(
-    path: AppRoutes.companyFLowConfig,
+    path: AppRoutes.companyFlowConfig,
     builder: (_, __) => InternalCompanyConfigFlow(),
   ),
   GoRoute(

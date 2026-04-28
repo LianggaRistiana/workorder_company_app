@@ -4,7 +4,7 @@ import 'package:workorder_company_app/features/memberships/presentation/pages/me
 import 'package:workorder_company_app/features/memberships/presentation/pages/membership_codes_list_page.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 
-final membershipsRoute = [
+final membershipsRouter = [
   GoRoute(
       path: AppRoutes.memberships, builder: (_, __) => const MemberListPage()),
   GoRoute(

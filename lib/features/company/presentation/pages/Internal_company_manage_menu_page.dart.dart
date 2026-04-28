@@ -115,7 +115,7 @@ class _InternalCompanyManageMenuPageState
               icon: AppIcon.flowBusiness,
               label: "Konfigurasi Flow bisnis",
               onTap: () {
-                context.push(AppRoutes.companyFLowConfig);
+                context.push(AppRoutes.companyFlowConfig);
               }),
           MenuItem(
               icon: AppIcon.help,
