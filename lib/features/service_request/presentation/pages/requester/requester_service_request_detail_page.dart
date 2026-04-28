@@ -50,6 +50,11 @@ class RequesterServiceRequestDetailPage extends StatelessWidget {
               ? _actionWidget(context, serviceRequest)
               : null,
           body: ServiceRequestContent(
+            onRefresh: () async {
+              await context
+                  .read<RequesterServiceRequestDetailCubit>()
+                  .getServiceRequestDetail(id);
+            },
             isLoading: isLoading,
             serviceRequest: state.request,
           ),

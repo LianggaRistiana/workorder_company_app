@@ -50,6 +50,7 @@ class _ServicesListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<ServicesListBloc, ServicesListState>(
       listener: (context, state) {
+        if (!context.mounted) return;
         if (state.status == ServicesListStatus.error &&
             state.errorMessage != null) {
           context.showError(state.errorMessage!);

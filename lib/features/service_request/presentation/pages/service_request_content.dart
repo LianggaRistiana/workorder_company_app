@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:workorder_company_app/core/constants/app_enums/service_request_enum.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/service_request/domain/entities/service_request_entity.dart';
 import 'package:workorder_company_app/features/service_request/presentation/widgets/service_request_step_card.dart';
 import 'package:workorder_company_app/shared/widgets/adaptive_split_column.dart';
+import 'package:workorder_company_app/shared/widgets/app_bottom_sheet.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/error_body.dart';
 import 'package:workorder_company_app/shared/widgets/filled_form_view.dart';
+import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
 import 'package:workorder_company_app/shared/widgets/property_display.dart';
 
 class ServiceRequestContent extends StatelessWidget {
@@ -101,6 +104,25 @@ class ServiceRequestContent extends StatelessWidget {
       //               byServiceRequestId: serviceRequest.id));
       //     },
       //     icon: Icon(AppIcon.workOrder)),
+      if (serviceRequest.status.isReviewAvailable) ...[
+        HorizontalButton(
+            leadingIcon: AppIcon.review,
+            onTap: () {
+              final reviewForm = serviceRequest.reviewForm;
+              showAppBottomSheet(
+                context,
+                content: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      if (reviewForm != null)
+                        FilledFormView(filledForm: reviewForm),
+                    ],
+                  ),
+                ),
+              );
+            },
+            title: "Ulasan")
+      ],
       const SizedBox(
         height: AppSpacing.md,
       ),

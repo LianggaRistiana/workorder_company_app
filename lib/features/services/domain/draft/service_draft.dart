@@ -234,7 +234,7 @@ extension ServiceDraftMapper on ServiceDraft {
         intakeForm: intakeForm!,
         reviewForm: reviewForm!,
         serviceRequestApprovalAccessType: requestApprovalAccess,
-        reviewNeed: true,
+        reviewNeed: true, // FIXME : add Ui to config this
       ),
       workOrdersConfig: workOrders.map((e) => e.toEntity()).toList(),
     );

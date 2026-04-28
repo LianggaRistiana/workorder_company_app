@@ -24,7 +24,8 @@ class RequesterServiceRequestAuthorizer {
 
   AuthorizationRule get reviewRule => rules([
         roleCan(ServiceRequestPermission.update),
-        _ServiceRequestStatusRule(request, ServiceRequestStatus.completed),
+        _ServiceRequestStatusRule(request,
+            ServiceRequestStatus.completed), // FIXME : match to enum in SR
         _ServiceRequestOwner(request)
       ]);
 

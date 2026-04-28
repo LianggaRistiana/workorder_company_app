@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/services/network/endpoints.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_request_config_entity.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
@@ -35,13 +37,17 @@ class ServiceRequestTabView extends StatelessWidget {
             HorizontalButton(
               leadingIcon: Icons.inbox_outlined,
               title: config.intakeForm.title,
-              onTap: () {},
+              onTap: () {
+                context.push(Endpoints.forms.byId(config.intakeForm.id));
+              },
             ),
             SectionTitle("Formulir Review"),
             HorizontalButton(
               leadingIcon: Icons.reviews_outlined,
               title: config.reviewForm.title,
-              onTap: () {},
+              onTap: () {
+                context.push(Endpoints.forms.byId(config.reviewForm.id));
+              },
             ),
           ])),
     );

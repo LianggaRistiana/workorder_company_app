@@ -55,3 +55,20 @@ enum ServiceRequestSide {
   provider,
   requester,
 }
+
+extension ServiceRequestStatusFlowX on ServiceRequestStatus {
+  static const reviewAbleStates = {
+    ServiceRequestStatus.completed,
+    ServiceRequestStatus.partiallyCompleted,
+    ServiceRequestStatus.closed,
+  };
+
+  static const reviewAvailableStates = {
+    ServiceRequestStatus.completed,
+    ServiceRequestStatus.closed,
+    ServiceRequestStatus.partiallyCompleted,
+  };
+
+  bool get isReviewAble => reviewAbleStates.contains(this);
+  bool get isReviewAvailable => reviewAvailableStates.contains(this);
+}
