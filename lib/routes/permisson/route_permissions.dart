@@ -6,17 +6,28 @@ import 'package:workorder_company_app/routes/permisson/route_invitation_permissi
 import 'package:workorder_company_app/routes/permisson/route_memberships_permissions.dart';
 import 'package:workorder_company_app/routes/permisson/route_position_permissions.dart';
 import 'package:workorder_company_app/routes/permisson/route_service_permissions.dart';
+import 'package:workorder_company_app/routes/permisson/route_service_request_permissions.dart';
 import 'package:workorder_company_app/routes/permisson/route_work_order_permissions.dart';
+import 'package:workorder_company_app/routes/permisson/route_work_report_permissions.dart';
 
 class RoutePermissions {
   static final Map<String, AppPermission> map = {
-    ...RouteEmployeePermissions.route,
-    ...RouteFormPermissions.route,
-    ...RouteInvitationPermissions.route,
-    ...RoutePositionPermissions.route,
-    ...RouteServicePermissions.route,
-    ...RouteWorkOrderPermissions.route,
+    // Company Fetaure
     ...RouteCompanyPermissions.route,
     ...RouteMembershipsPermissions.route,
+
+    // Human Resource Feature
+    ...RoutePositionPermissions.route,
+    ...RouteEmployeePermissions.route,
+    ...RouteInvitationPermissions.route,
+
+    // Service Feature
+    ...RouteFormPermissions.route,
+    ...RouteServicePermissions.route,
+
+    // Work Order Trilogy
+    ...RouteServiceRequestPermissions.route,
+    ...RouteWorkOrderPermissions.route,
+    ...RouteWorkReportPermissions.route,
   };
 }

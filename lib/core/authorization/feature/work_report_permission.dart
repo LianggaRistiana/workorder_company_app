@@ -71,7 +71,7 @@ import 'package:workorder_company_app/core/authorization/model/app_permission.da
 /// - This class only defines capability exposure.
 /// - Enforcement must still be performed at the authorization layer.
 /// - UI-level checks alone are not sufficient for security.
-/// 
+///
 class WorkReportPermissions {
   static const view =
       AppPermission(AppFeature.workReport, PermissionAction.view);
