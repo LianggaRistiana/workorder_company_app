@@ -35,7 +35,7 @@ class ProviderServiceRequestListPage extends StatelessWidget {
           isLoading: state.status == ProviderServiceRequestsListStatus.loading,
           onRefresh: () async {
             context.read<ProviderServiceRequestsListBloc>().add(
-                  GetProviderServiceRequestsRequested(),
+                  GetProviderServiceRequestsRequested(forceRefresh: true),
                 );
           },
           items: items,

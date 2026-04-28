@@ -6,6 +6,7 @@ import 'package:workorder_company_app/features/employees/domain/repositories/emp
 import 'package:workorder_company_app/features/forms/domain/repositories/forms_repository.dart';
 import 'package:workorder_company_app/features/notification/domain/repositories/notification_repository.dart';
 import 'package:workorder_company_app/features/positions/domain/repositories/positions_repository.dart';
+import 'package:workorder_company_app/features/service_request/domain/repositories/provider_service_request_repository.dart';
 import 'package:workorder_company_app/features/service_request/domain/repositories/requester_service_request_repository.dart';
 import 'package:workorder_company_app/features/services/domain/repositories/services_repository.dart';
 import 'package:workorder_company_app/features/work_order/domain/repositories/work_order_repository.dart';
@@ -22,11 +23,9 @@ Future<void> initCacheService() async {
       sl<PositionsRepository>(),
       sl<FormsRepository>(),
       sl<ServicesRepository>(),
-      
+
       sl<RequesterServiceRequestRepository>(),
-
-      // sl.<ProviderServiceRequestRepository>(),
-
+      sl<ProviderServiceRequestRepository>(),
       sl<WorkOrderRepository>(),
     ]),
   );

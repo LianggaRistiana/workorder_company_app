@@ -44,10 +44,14 @@ Future<void> _initDataSources() async {
 Future<void> _initRepositories() async {
   sl.registerLazySingleton<RequesterServiceRequestRepository>(() =>
       RequesterServiceRequestRepositoryImpl(
-          sl(), sl<NotificationEventBus>().stream));
+          sl<RequesterServiceRequestRemoteDatasource>(),
+          sl<NotificationEventBus>().stream));
 
   sl.registerLazySingleton<ProviderServiceRequestRepository>(
-      () => ProviderServiceRequestRepositoryImpl(sl()));
+      () => ProviderServiceRequestRepositoryImpl(
+            sl<ProviderServiceRequestRemoteDatasource>(),
+            sl<NotificationEventBus>().stream,
+          ));
 }
 
 Future<void> _initUseCases() async {
@@ -109,8 +113,11 @@ Future<void> _initUiStates() async {
       () => RequesterSubmitIntakeFormCubit(submitIntakeFormUsecase: sl()));
 
   /// [State Management].Provider
-  sl.registerFactory<ProviderServiceRequestsListBloc>(
-      () => ProviderServiceRequestsListBloc(getServiceRequestsUsecase: sl()));
+  sl.registerFactory<ProviderServiceRequestsListBloc>(() =>
+      ProviderServiceRequestsListBloc(
+          getServiceRequestsUsecase: sl<ProviderGetServiceRequestsUsecase>(),
+          providerRepoStream:
+              sl<ProviderServiceRequestRepository>().cacheChanged));
 
   sl.registerFactory<ProviderServiceRequestDetailCubit>(() =>
       ProviderServiceRequestDetailCubit(getServiceRequestDetailUsecase: sl()));

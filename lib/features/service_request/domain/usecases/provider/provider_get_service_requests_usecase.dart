@@ -7,7 +7,11 @@ class ProviderGetServiceRequestsUsecase {
 
   ProviderGetServiceRequestsUsecase(this.repository);
 
-  FutureEitherList<ProviderServiceRequestEntity> call() async {
-    return repository.getServiceRequests();
+  FutureEitherList<ProviderServiceRequestEntity> call({
+    bool forceRefresh = false,
+  }) async {
+    return repository.getServiceRequests(
+      forceRefresh: forceRefresh,
+    );
   }
 }

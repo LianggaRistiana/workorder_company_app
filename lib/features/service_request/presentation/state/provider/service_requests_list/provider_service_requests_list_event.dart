@@ -7,4 +7,12 @@ abstract class ProviderServiceRequestsListEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GetProviderServiceRequestsRequested extends ProviderServiceRequestsListEvent {}
+class GetProviderServiceRequestsRequested
+    extends ProviderServiceRequestsListEvent {
+  final bool forceRefresh;
+
+  const GetProviderServiceRequestsRequested({this.forceRefresh = false});
+
+  @override
+  List<Object> get props => [forceRefresh];
+}

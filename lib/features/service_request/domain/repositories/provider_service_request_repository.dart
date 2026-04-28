@@ -5,7 +5,8 @@ import 'package:workorder_company_app/features/service_request/domain/entities/s
 
 abstract class ProviderServiceRequestRepository
     implements Cacheable, StreamableCache {
-  FutureEitherList<ProviderServiceRequestEntity> getServiceRequests();
+  FutureEitherList<ProviderServiceRequestEntity> getServiceRequests(
+      {bool forceRefresh = false});
   FutureEither<ProviderServiceRequestEntity> getServiceRequestDetail(String id);
   FutureEither<ProviderServiceRequestEntity> approveServiceRequest(String id);
   FutureEither<ProviderServiceRequestEntity> rejectServiceRequest(String id);
