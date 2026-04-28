@@ -7,4 +7,12 @@ abstract class RequesterServiceRequestsListEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GetRequesterServiceRequestsRequested extends RequesterServiceRequestsListEvent {}
+class GetRequesterServiceRequestsRequested
+    extends RequesterServiceRequestsListEvent {
+  final bool isRefresh;
+
+  const GetRequesterServiceRequestsRequested({this.isRefresh = false});
+
+  @override
+  List<Object> get props => [isRefresh];
+}

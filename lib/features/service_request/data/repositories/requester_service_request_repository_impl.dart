@@ -1,5 +1,9 @@
+import 'dart:async';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
+import 'package:workorder_company_app/core/constants/app_enums/notification_enum.dart';
+import 'package:workorder_company_app/core/services/cache/list_cache_helper.dart';
 import 'package:workorder_company_app/core/types/future_either.dart';
+import 'package:workorder_company_app/core/utils/either_helper.dart';
 import 'package:workorder_company_app/core/utils/safe_call.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
 import 'package:workorder_company_app/features/service_request/data/datasources/requester_service_request_remote_datasource.dart';
@@ -13,27 +17,61 @@ class RequesterServiceRequestRepositoryImpl
   final RequesterServiceRequestRemoteDatasource
       _requesterServiceRequestDatasource;
 
-  const RequesterServiceRequestRepositoryImpl(
-      this._requesterServiceRequestDatasource);
+  final _refreshController = StreamController<void>.broadcast();
 
-  // add cache system
+  final Stream<ResourceType> _eventBus;
+
+  final ListCacheHelper<RequesterServiceRequestEntity> _cache =
+      ListCacheHelper();
 
   @override
-  FutureEither<RequesterServiceRequestEntity> cancelServiceRequest(String id) {
-    return safeCall(() async {
+  Stream<void> get cacheChanged => _refreshController.stream;
+
+  RequesterServiceRequestRepositoryImpl(
+    this._requesterServiceRequestDatasource,
+    this._eventBus,
+  ) {
+    _eventBus.listen((event) {
+      if (event == ResourceType.serviceRequest) {
+        _cache.clear();
+        _notifyChanged();
+      }
+    });
+  }
+
+  void _notifyChanged() {
+    _refreshController.add(null);
+  }
+
+  @override
+  FutureEither<RequesterServiceRequestEntity> cancelServiceRequest(
+      String id) async {
+    final response = await safeCall(() async {
       final payload =
           await _requesterServiceRequestDatasource.cancelServiceRequest(id);
       return payload.data;
     });
+
+    return response.onSuccess((data) {
+      _cache.mergeSingle(
+        data,
+        (a, b) => a.id == b.id,
+      );
+      _notifyChanged();
+    });
   }
 
   @override
-  FutureEitherList<RequesterServiceRequestEntity> getServiceRequests() {
-    return safeCall(() async {
-      final payload =
-          await _requesterServiceRequestDatasource.getServiceRequests();
-      return payload.data;
-    });
+  FutureEitherList<RequesterServiceRequestEntity> getServiceRequests(
+      {bool forceRefresh = false}) {
+    return _cache.fetchList(
+      remoteCall: () async {
+        final payload =
+            await _requesterServiceRequestDatasource.getServiceRequests();
+        return payload.data;
+      },
+      forceRefresh: forceRefresh,
+    );
   }
 
   @override
@@ -55,6 +93,7 @@ class RequesterServiceRequestRepositoryImpl
         return payload.data;
       });
     }
+
     return safeCall(() async {
       final payload = await _requesterServiceRequestDatasource
           .getIntakeFormForInternal(serviceId);
@@ -64,22 +103,38 @@ class RequesterServiceRequestRepositoryImpl
 
   @override
   FutureEither<RequesterServiceRequestEntity> submitIntakeForm(
-      String serviceId, SubmissionEntity submission) {
-    return safeCall(() async {
+      String serviceId, SubmissionEntity submission) async {
+    final response = await safeCall(() async {
       final payload = await _requesterServiceRequestDatasource.submitIntakeForm(
           serviceId, SubmissionsModel.fromEntity(submission));
       return payload.data;
+    });
+
+    return response.onSuccess((data) {
+      _cache.mergeSingle(
+        data,
+        (a, b) => a.id == b.id,
+      );
+      _notifyChanged();
     });
   }
 
   @override
   FutureEither<RequesterServiceRequestEntity> submitReviewForm(
-      String serviceRequestId, SubmissionEntity submission) {
-    return safeCall(() async {
+      String serviceRequestId, SubmissionEntity submission) async {
+    final response = await safeCall(() async {
       final payload = await _requesterServiceRequestDatasource.submitReviewForm(
           serviceRequestId, SubmissionsModel.fromEntity(submission));
 
       return payload.data;
+    });
+
+    return response.onSuccess((data) {
+      _cache.mergeSingle(
+        data,
+        (a, b) => a.id == b.id,
+      );
+      _notifyChanged();
     });
   }
 
@@ -90,5 +145,10 @@ class RequesterServiceRequestRepositoryImpl
           .getReviewForm(serviceRequestId);
       return payload.data;
     });
+  }
+
+  @override
+  void clearCache() {
+    _cache.clear();
   }
 }

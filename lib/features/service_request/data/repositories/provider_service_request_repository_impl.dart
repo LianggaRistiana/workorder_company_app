@@ -50,4 +50,13 @@ class ProviderServiceRequestRepositoryImpl
       return payload.data;
     });
   }
+  
+  @override
+  // TODO: implement cacheChanged
+  Stream<void> get cacheChanged => throw UnimplementedError();
+  
+  @override
+  void clearCache() {
+    // TODO: implement clearCache
+  }
 }

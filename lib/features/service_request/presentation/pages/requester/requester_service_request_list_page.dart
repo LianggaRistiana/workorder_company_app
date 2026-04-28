@@ -40,7 +40,7 @@ class RequesterServiceRequestListPage extends StatelessWidget {
           onRefresh: () async {
             context
                 .read<RequesterServiceRequestsListBloc>()
-                .add(GetRequesterServiceRequestsRequested());
+                .add(GetRequesterServiceRequestsRequested(isRefresh: true));
           },
           floatingActionButton: FloatingActionButton.extended(
                   icon: Icon(AppIcon.send),

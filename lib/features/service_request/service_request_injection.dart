@@ -1,4 +1,5 @@
 import 'package:workorder_company_app/core/di/injection.dart';
+import 'package:workorder_company_app/features/notification/data/pipeline/event_bus/notification_event_bus.dart';
 import 'package:workorder_company_app/features/service_request/data/datasources/provider_service_request_remote_datasource.dart';
 import 'package:workorder_company_app/features/service_request/data/datasources/requester_service_request_remote_datasource.dart';
 import 'package:workorder_company_app/features/service_request/data/repositories/provider_service_request_repository_impl.dart';
@@ -41,8 +42,9 @@ Future<void> _initDataSources() async {
 }
 
 Future<void> _initRepositories() async {
-  sl.registerLazySingleton<RequesterServiceRequestRepository>(
-      () => RequesterServiceRequestRepositoryImpl(sl()));
+  sl.registerLazySingleton<RequesterServiceRequestRepository>(() =>
+      RequesterServiceRequestRepositoryImpl(
+          sl(), sl<NotificationEventBus>().stream));
 
   sl.registerLazySingleton<ProviderServiceRequestRepository>(
       () => ProviderServiceRequestRepositoryImpl(sl()));
@@ -85,7 +87,11 @@ Future<void> _initUseCases() async {
 Future<void> _initUiStates() async {
   /// [State Management].Requester
   sl.registerFactory<RequesterServiceRequestsListBloc>(
-      () => RequesterServiceRequestsListBloc(getServiceRequestsUsecase: sl()));
+      () => RequesterServiceRequestsListBloc(
+            getServiceRequestsUsecase: sl(),
+            requesterServiceRequestChangedStream:
+                sl<RequesterServiceRequestRepository>().cacheChanged,
+          ));
 
   sl.registerFactory<RequesterServiceRequestDetailCubit>(() =>
       RequesterServiceRequestDetailCubit(getServiceRequestDetailUsecase: sl()));
