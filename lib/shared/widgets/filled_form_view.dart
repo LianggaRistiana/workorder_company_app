@@ -71,7 +71,12 @@ class FilledFormView extends StatelessWidget {
 
       case FieldType.date:
         try {
-          return _textAnswer(DateFormat('d MMMM yyyy', 'id_ID').format(answer));
+          if (answer == null) {
+            return _textAnswer('-');
+          }
+          final DateTime date = DateTime.parse(answer.toString());
+          return _textAnswer(
+              DateFormat('d MMMM yyyy', 'id_ID').format(date.toLocal()));
         } catch (_) {
           return _textAnswer(answer.toString());
         }

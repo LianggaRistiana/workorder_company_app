@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/invitations/domain/entities/invitation_entity.dart';
 import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
@@ -38,12 +37,9 @@ class ReceiverInvitationCard extends StatelessWidget {
           Row(
             children: [
               Spacer(),
-              if (invitation.createdAt != null)
-                Text(
-                    DateFormat('d MMM yyyy', 'id_ID')
-                        .format(invitation.createdAt!),
-                    textAlign: TextAlign.end,
-                    style: Theme.of(context).textTheme.bodySmall),
+              Text(invitation.localizeCreatedDate(),
+                  textAlign: TextAlign.end,
+                  style: Theme.of(context).textTheme.bodySmall),
             ],
           )
         ],

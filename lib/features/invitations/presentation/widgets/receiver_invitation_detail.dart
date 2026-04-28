@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:workorder_company_app/features/invitations/domain/entities/invitation_entity.dart';
 import 'package:workorder_company_app/features/invitations/presentation/widgets/invitation_status_badge.dart';
 import 'package:workorder_company_app/shared/widgets/property_display.dart';
@@ -29,18 +28,13 @@ class ReceiverInvitationDetail extends StatelessWidget {
             child: InvitationStatusBadge(
                 status: invitation.status, showIcon: true)),
         PropertyItem.text(
-          icon: Icons.date_range_outlined,
-          label: "Berlaku hingga",
-          value: invitation.expiresAt != null
-              ? DateFormat('d MMM yyyy', 'id_ID').format(invitation.expiresAt!)
-              : "-",
-        ),
+            icon: Icons.date_range_outlined,
+            label: "Berlaku hingga",
+            value: invitation.localizeExpiredDate()),
         PropertyItem.text(
           icon: Icons.calendar_month_outlined,
           label: "Tanggal dikirim",
-          value: invitation.createdAt != null
-              ? DateFormat('d MMM yyyy', 'id_ID').format(invitation.createdAt!)
-              : "-",
+          value: invitation.localizeCreatedDate(),
         ),
       ]),
     );
