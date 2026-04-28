@@ -1,4 +1,5 @@
 import 'package:workorder_company_app/core/authorization/feature/service_request_permission.dart';
+import 'package:workorder_company_app/core/authorization/feature/work_order_permission.dart';
 import 'package:workorder_company_app/core/authorization/model/authorization_result.dart';
 import 'package:workorder_company_app/core/authorization/rule/authorization_rule.dart';
 import 'package:workorder_company_app/core/authorization/rule/composite_rule/composite_rule_helper.dart';
@@ -14,12 +15,18 @@ class ProviderServiceRequestAuthorizer {
 
   AuthorizationRule get approveRule => rules([
         roleCan(ServiceRequestPermission.approve),
-        _ServiceRequestStatusRule(request, ServiceRequestStatus.received),
+        _ServiceRequestStatusRule(request, {ServiceRequestStatus.received}),
+      ]);
+
+  AuthorizationRule get workOrderAccessRule => rules([
+        roleCan(WorkOrderPermissions.view),
+        _ServiceRequestStatusRule(
+            request, ServiceRequestStatusFlowX.workOrderAvailable),
       ]);
 
   AuthorizationRule get rejectRule => rules([
         roleCan(ServiceRequestPermission.reject),
-        _ServiceRequestStatusRule(request, ServiceRequestStatus.received),
+        _ServiceRequestStatusRule(request, {ServiceRequestStatus.received}),
       ]);
 
   AuthorizationRule get actionRule => rules([
@@ -27,13 +34,13 @@ class ProviderServiceRequestAuthorizer {
           ServiceRequestPermission.reject,
           ServiceRequestPermission.approve,
         ]),
-        _ServiceRequestStatusRule(request, ServiceRequestStatus.received),
+        _ServiceRequestStatusRule(request, {ServiceRequestStatus.received}),
       ]);
 }
 
 class _ServiceRequestStatusRule extends AuthorizationRule {
   final ProviderServiceRequestEntity request;
-  final ServiceRequestStatus expectedStatus;
+  final Set<ServiceRequestStatus> expectedStatus;
 
   _ServiceRequestStatusRule(
     this.request,
@@ -42,7 +49,7 @@ class _ServiceRequestStatusRule extends AuthorizationRule {
 
   @override
   AuthorizationResult evaluate(UserEntity user) {
-    if (request.status == expectedStatus) {
+    if (expectedStatus.contains(request.status)) {
       return const AuthorizationResult.allowed();
     }
 
