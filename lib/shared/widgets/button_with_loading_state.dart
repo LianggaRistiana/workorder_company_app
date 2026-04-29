@@ -77,7 +77,7 @@ class ButtonWithLoadingState extends StatelessWidget {
                 : Text(label,
                     key: const ValueKey("label"),
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.primary,
+                          color: Theme.of(context).colorScheme.onPrimary,
                         )),
       ),
     );

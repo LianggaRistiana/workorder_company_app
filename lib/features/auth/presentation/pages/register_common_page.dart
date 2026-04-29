@@ -7,9 +7,10 @@ import 'package:workorder_company_app/core/utils/validators.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_registration_entity.dart';
 import 'package:workorder_company_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/utils/confirm_dialog.dart';
+import 'package:workorder_company_app/shared/utils/confirm_leave.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/button_with_loading_state.dart';
-import 'package:workorder_company_app/shared/widgets/custom_back_buttom.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
 
@@ -96,28 +97,44 @@ class _RegisterCommonPageState extends State<RegisterCommonPage> {
               .go("${AppRoutes.login}?email=${_emailController.text.trim()}");
         }
       },
-      child: Scaffold(
-        appBar: AppBar(
-          leading: CustomBackButton(
-            showConfirm: _isFieldFilled(),
-          ),
-        ),
-        resizeToAvoidBottomInset: true,
-        body: SafeArea(
-          child: Column(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                  child: Form(
-                    key: _formKey,
-                    child: _buildFormContent(),
+      child: PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (didPop, result) {
+          if (didPop) return;
+
+          BackNavigationHandler.handle(
+            context: context,
+            isDirty: _isFieldFilled(),
+            onConfirmLeave: () {
+              return showConfirmDialog(
+                context: context,
+                title: "Data belum disimpan",
+                message:
+                    "Apakah Anda yakin ingin meninggalkan halaman ini tanpa menyimpan perubahan?",
+                type: ConfirmDialogType.warning,
+              );
+            },
+          );
+        },
+        child: Scaffold(
+          appBar: AppBar(),
+          resizeToAvoidBottomInset: true,
+          body: SafeArea(
+            child: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                    child: Form(
+                      key: _formKey,
+                      child: _buildFormContent(),
+                    ),
                   ),
                 ),
-              ),
-              _buildRegisterButton(),
-            ],
+                _buildRegisterButton(),
+              ],
+            ),
           ),
         ),
       ),
