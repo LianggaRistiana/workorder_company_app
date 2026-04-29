@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:workorder_company_app/core/constants/app_enums/work_order_enum.dart';
 import 'package:workorder_company_app/features/work_order/domain/usecases/get_work_orders_usecase.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/list/work_orders_list_event.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/list/work_orders_list_state.dart';
@@ -18,9 +17,7 @@ class WorkOrdersListBloc
     required this.getWorkOrdersUseCase,
     required this.workOrderChangedStream,
   }) : super(WorkOrdersListState(
-          filter: WorkOrderParams(
-            status: WorkOrderStatusFlowStateX.cancellableStatesList,
-          ),
+          filter: WorkOrderParams.initialParams(),
           status: WorkOrdersListStatus.initial,
           workOrders: [],
         )) {

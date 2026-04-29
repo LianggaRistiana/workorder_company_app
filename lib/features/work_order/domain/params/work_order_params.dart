@@ -16,6 +16,12 @@ class WorkOrderParams extends Equatable {
     this.status,
   });
 
+  factory WorkOrderParams.initialParams() {
+    return WorkOrderParams(
+      status: WorkOrderStatusFlowStateX.cancellableStatesList,
+    );
+  }
+
   WorkOrderParams copyWith({
     Object? search = _sentinel,
     Object? status = _sentinel,

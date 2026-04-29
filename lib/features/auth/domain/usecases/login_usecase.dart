@@ -12,7 +12,6 @@ class LoginUseCase {
 
   Future<Either<Failure, UserEntity>> call(LoginParams params) async {
     final result = await repository.login(params.email, params.password);
-// OPTIMIZE :Move this logic into repository
     return result.fold(
       (failure) => Left(failure),
       (data) async {

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/services/logger/app_logger.dart';
 import 'package:workorder_company_app/features/helps/presentation/widgets/fab_help.dart';
 import 'package:workorder_company_app/features/helps/presentation/widgets/work_order_tips.dart';
+import 'package:workorder_company_app/features/work_order/domain/params/work_order_params.dart';
 import 'package:workorder_company_app/features/work_order/domain/params/work_order_temp_local_params.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/create/work_order_create_cubit.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/list/work_orders_list_bloc.dart';
@@ -18,11 +20,15 @@ import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
 import 'package:workorder_company_app/shared/widgets/list_page_scafold.dart';
 
-// TODO : add auto scroll when got temp params,
-// TODO : refresh when got temp params
 class WorkOrdersListPage extends StatefulWidget {
   final WorkOrderTempLocalParams? params;
-  const WorkOrdersListPage({super.key, this.params});
+  final WorkOrderParams? filter;
+
+  const WorkOrdersListPage({
+    super.key,
+    this.params,
+    this.filter,
+  });
 
   @override
   State<WorkOrdersListPage> createState() => _WorkOrdersListPageState();
@@ -71,13 +77,24 @@ class _WorkOrdersListPageState extends State<WorkOrdersListPage> {
 
   @override
   Widget build(BuildContext context) {
+    final params = widget.filter ??
+        (highlightServiceRequestId == null
+            ? WorkOrderParams.initialParams()
+            : WorkOrderParams(
+                status: [
+                  WorkOrderStatus.drafted,
+                  WorkOrderStatus.approved,
+                ],
+              ));
+
     return MultiBlocProvider(
         providers: [
           BlocProvider(
             create: (_) => sl<WorkOrdersListBloc>()
               ..add(GetWorkOrdersRequested(
                 forceRefresh: highlightServiceRequestId != null,
-              )),
+              ))
+              ..add(SetWorkOrderFilter(params)),
           ),
           BlocProvider(
             create: (_) => sl<WorkOrderCreateCubit>(),
@@ -140,12 +157,6 @@ class _WorkOrdersListPageState extends State<WorkOrdersListPage> {
                 ),
               );
             },
-            // itemBuilder: (item) => WorkOrderItemCard(
-            //   workOrder: item,
-            //   onTap: () {
-            //     context.push(AppRoutes.workOrdersDetail.fillId(item.id));
-            //   },
-            // ),
           );
         }));
   }

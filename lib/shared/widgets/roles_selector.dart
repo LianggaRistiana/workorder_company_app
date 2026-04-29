@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 
-// OPTIMIZE : Consider to move this to auth feature
 class RolesSelector extends StatelessWidget {
   final String title;
   final List<UserRole> roles;

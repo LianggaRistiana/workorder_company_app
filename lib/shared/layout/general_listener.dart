@@ -19,8 +19,6 @@ class GeneralListener extends StatelessWidget {
                 .showError("Terjadi kesalahan saat mengambil data notifikasi");
           }
         })
-        // TODO : add notification logs listener here
-        // TODO : add notification active status listener here
       ],
       child: child,
     );
