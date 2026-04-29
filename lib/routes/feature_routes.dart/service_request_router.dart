@@ -9,7 +9,7 @@ import 'package:workorder_company_app/features/service_request/presentation/page
 import 'package:workorder_company_app/features/service_request/presentation/pages/requester/requester_service_request_list_page.dart';
 import 'package:workorder_company_app/features/services/domain/entities/base_service_entity.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
-import 'package:workorder_company_app/shared/page/forbidden_page.dart';
+import 'package:workorder_company_app/routes/guards/route_guard.dart';
 
 final serviceRequestRouter = [
   GoRoute(
@@ -34,10 +34,11 @@ final serviceRequestRouter = [
   ),
   GoRoute(
     path: AppRoutes.serviceRequestDetail,
+    redirect: requireExtra<ServiceRequestSide>(),
     builder: (_, state) {
-      final extra = state.extra;
+      final extra = state.extra as ServiceRequestSide;
       switch (extra) {
-        case ServiceRequestSide.provider as ServiceRequestSide:
+        case ServiceRequestSide.provider:
           return ProviderServiceRequestDetailPage(
             id: state.pathParameters['id']!,
           );
@@ -45,8 +46,6 @@ final serviceRequestRouter = [
           return RequesterServiceRequestDetailPage(
             id: state.pathParameters['id']!,
           );
-        default:
-          return const ForbiddenPage();
       }
     },
   ),

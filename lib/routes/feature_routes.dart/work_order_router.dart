@@ -6,6 +6,7 @@ import 'package:workorder_company_app/features/work_order/presentation/pages/wor
 import 'package:workorder_company_app/features/work_order/presentation/pages/work_order_fill_form_page.dart';
 import 'package:workorder_company_app/features/work_order/presentation/pages/work_orders_list_page.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/routes/guards/route_guard.dart';
 
 final workOrderRouter = [
   GoRoute(
@@ -20,6 +21,7 @@ final workOrderRouter = [
   ),
   GoRoute(
     path: AppRoutes.workOrdersAssignStaff,
+    redirect: requireExtra<WorkOrderEntity>(),
     builder: (_, state) {
       final workOrder = state.extra as WorkOrderEntity;
       return WorkOrderAssignStaffsPage(workOrder: workOrder);
@@ -27,6 +29,7 @@ final workOrderRouter = [
   ),
   GoRoute(
     path: AppRoutes.workOrdersSubmission,
+    redirect: requireExtra<WorkOrderEntity>(),
     builder: (_, state) {
       final workOrder = state.extra as WorkOrderEntity;
       return WorkOrderFillFormPage(workOrder: workOrder);

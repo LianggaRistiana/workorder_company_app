@@ -78,7 +78,6 @@ class _InternalCompanyProfilePageState
       const SizedBox(height: AppSpacing.md),
       TextButton.icon(
         onPressed: () {
-          debugPrint("Edit Profil Perusahaan");
           context.push(AppRoutes.companyUpdate, extra: company);
         },
         label: Text("Edit Profil Perusahaan"),

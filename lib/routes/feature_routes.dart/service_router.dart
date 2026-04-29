@@ -6,6 +6,7 @@ import 'package:workorder_company_app/features/services/presentation/pages/servi
 import 'package:workorder_company_app/features/services/presentation/pages/service_update_page.dart';
 import 'package:workorder_company_app/features/services/presentation/pages/services_list_page.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/routes/guards/route_guard.dart';
 
 final serviceRouter = [
   GoRoute(
@@ -27,6 +28,7 @@ final serviceRouter = [
   ),
   GoRoute(
     path: AppRoutes.servicesUpdate,
+    redirect: requireExtra<ServiceEntity>(),
     builder: (_, state) {
       final service = state.extra as ServiceEntity;
       return ServiceUpdatePage(

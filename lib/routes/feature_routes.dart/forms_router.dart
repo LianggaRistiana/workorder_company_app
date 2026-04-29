@@ -5,6 +5,7 @@ import 'package:workorder_company_app/features/forms/presentation/pages/form_det
 import 'package:workorder_company_app/features/forms/presentation/pages/form_update_page.dart';
 import 'package:workorder_company_app/features/forms/presentation/pages/forms_list_page.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/routes/guards/route_guard.dart';
 
 final formsRouter = [
   GoRoute(
@@ -17,6 +18,7 @@ final formsRouter = [
   ),
   GoRoute(
     path: AppRoutes.formsUpdate,
+    redirect: requireExtra<FormEntity>(),
     builder: (_, state) {
       final form = state.extra as FormEntity;
       return FormUpdatePage(form: form);

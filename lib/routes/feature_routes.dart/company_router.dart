@@ -8,6 +8,7 @@ import 'package:workorder_company_app/features/faq/presentation/pages/company_fa
 import 'package:workorder_company_app/features/company/presentation/pages/public_companies_list_page.dart';
 import 'package:workorder_company_app/features/company/presentation/pages/public_company_detail_page.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/routes/guards/route_guard.dart';
 
 final companyRouter = [
   GoRoute(
@@ -24,6 +25,7 @@ final companyRouter = [
   ),
   GoRoute(
     path: AppRoutes.companyUpdate,
+    redirect: requireExtra<CompanyEntity>(),
     builder: (_, state) {
       return InternalCompanyEditPage(
         company: state.extra as CompanyEntity,
