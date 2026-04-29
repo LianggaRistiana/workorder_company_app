@@ -25,7 +25,7 @@ Failure _mapExceptionToFailure(dynamic error) {
       case 401:
         return AuthFailure(message: "Unauthorized");
       case 403:
-        return AuthFailure(message: "Anda tidak diijinkan mengakses data ini");
+        return AuthFailure(message: error.message);
       case 404:
       case 409:
         return ServerFailure(message: error.message);

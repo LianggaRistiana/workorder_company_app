@@ -13,7 +13,6 @@ class LogoutUsecase {
       this._authRepository, this._notificationRepository, this._cacheRegistry);
 
   Future<Either<Failure, void>> call() async {
-    // FIXME[Medium] : clear all cache when logout
     await _notificationRepository.dispose();
     _cacheRegistry.clearAll();
     return _authRepository.logOut();

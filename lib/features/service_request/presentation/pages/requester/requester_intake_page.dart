@@ -12,6 +12,7 @@ import 'package:workorder_company_app/features/services/presentation/widgets/ser
 import 'package:workorder_company_app/features/submissions/domain/draft/submisson_draft.dart';
 import 'package:workorder_company_app/features/submissions/presentation/coordinator/form_renderer_coordinator.dart';
 import 'package:workorder_company_app/features/submissions/presentation/widgets/form_renderer.dart';
+import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/adaptive_split_column.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
@@ -102,9 +103,9 @@ class _RequesterIntakePageState extends State<RequesterIntakePage> {
               context.showError(state.errorMessage ?? "Terjadi Kesalahan");
             }
             if (state.status == RequesterSubmitIntakeFormStatus.success) {
-              // TODO[High] : redirect to detail sr page
               context.showSuccess("Berhasil mengirim formulir");
               context.pop();
+              context.push(AppRoutes.serviceRequestSent);
             }
           },
           builder: (context, state) => ButtonWithLoadingState(
