@@ -68,8 +68,9 @@ class FabHelp extends StatelessWidget {
       heroTag: null,
       tooltip: title,
       elevation: 0,
-      backgroundColor:
-          darkMode ? Colors.yellow.withAlpha(50) : Colors.yellow.withAlpha(75),
+      backgroundColor: darkMode
+          ? const Color.fromARGB(255, 122, 111, 0)
+          : Color.fromRGBO(255, 251, 172, 1),
       foregroundColor: darkMode ? Colors.amber : Colors.black,
       onPressed: () => _openBottomSheet(context),
       child: Icon(AppIcon.tips),

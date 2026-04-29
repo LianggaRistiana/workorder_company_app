@@ -20,6 +20,7 @@ import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 import 'package:workorder_company_app/features/submissions/presentation/widgets/filled_form_view.dart';
 import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
+import 'package:workorder_company_app/shared/widgets/information_block.dart';
 import 'package:workorder_company_app/shared/widgets/section_title.dart';
 import 'package:workorder_company_app/features/work_order/presentation/widgets/staff_quota_chip.dart';
 
@@ -68,6 +69,7 @@ class WorkOrderDetailBody extends StatelessWidget {
         margin: EdgeInsets.all(0),
         child: CustomList(
           separatorHeight: 6,
+          emptyWidget: InformationBlock.empty("Belum ada pegawai bertugas"),
           items: workOrder.assignedStaffs,
           itemBuilder: (item, index) => Row(
             mainAxisSize: MainAxisSize.min,
