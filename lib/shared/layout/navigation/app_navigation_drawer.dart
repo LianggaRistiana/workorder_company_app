@@ -3,9 +3,9 @@ import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/auth/presentation/widgets/current_user_chip.dart';
+import 'package:workorder_company_app/features/notification/presentation/widgets/notification_button_tile.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/layout/navigation/nav_config.dart';
-import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
 import 'package:workorder_company_app/shared/layout/widget/custom_navigation_bar.dart';
 
 class AppNavigationDrawer extends StatefulWidget {
@@ -67,21 +67,7 @@ class _AppNavigationDrawerState extends State<AppNavigationDrawer> {
                 },
               ),
             ),
-            ClickableCustomCard(
-                margin: EdgeInsets.only(
-                    bottom: AppSpacing.sm,
-                    left: AppSpacing.sm,
-                    right: AppSpacing.sm),
-                child: Row(
-                  children: [
-                    Icon(Icons.notifications_none_outlined),
-                    SizedBox(width: 8),
-                    Text("Notifikasi")
-                  ],
-                ),
-                onTap: () {
-                  context.push(AppRoutes.notifications);
-                }), // TODO : put this on notifications feature
+            NotificationButtonTile(),
             Expanded(
               child: ListView.builder(
                 itemCount: _items.length,

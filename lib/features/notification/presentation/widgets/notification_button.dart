@@ -19,6 +19,7 @@ class NotificationButton extends StatelessWidget {
         },
         icon: Badge(
             backgroundColor: Theme.of(context).colorScheme.primary,
+            textColor: Theme.of(context).colorScheme.onPrimary,
             isLabelVisible: state.unReadCount > 0,
             label: Text(state.unReadCount.toString()),
             child: Icon(AppIcon.notification)),

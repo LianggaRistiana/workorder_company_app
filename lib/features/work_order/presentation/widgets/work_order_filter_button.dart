@@ -105,6 +105,7 @@ class WorkOrderFilterButton extends StatelessWidget {
           },
           icon: Badge(
             backgroundColor: Theme.of(context).colorScheme.primary,
+            textColor: Theme.of(context).colorScheme.onPrimary,
             isLabelVisible: activeCount > 0,
             label: Text(activeCount.toString()),
             child: Icon(
