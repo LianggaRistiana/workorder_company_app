@@ -18,7 +18,7 @@ import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/widgets/adaptive_split_column.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
-import 'package:workorder_company_app/shared/widgets/filled_form_view.dart';
+import 'package:workorder_company_app/features/submissions/presentation/widgets/filled_form_view.dart';
 import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
 import 'package:workorder_company_app/shared/widgets/section_title.dart';
 import 'package:workorder_company_app/features/work_order/presentation/widgets/staff_quota_chip.dart';

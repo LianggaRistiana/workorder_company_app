@@ -19,7 +19,7 @@ import 'package:workorder_company_app/features/work_report/presentation/ui_mappe
 import 'package:workorder_company_app/features/work_report/presentation/widgets/work_report_property_view.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/widgets/adaptive_split_column.dart';
-import 'package:workorder_company_app/shared/widgets/filled_form_view.dart';
+import 'package:workorder_company_app/features/submissions/presentation/widgets/filled_form_view.dart';
 import 'package:workorder_company_app/shared/widgets/loading_state_inline.dart';
 
 class WorkReportPage extends StatelessWidget {

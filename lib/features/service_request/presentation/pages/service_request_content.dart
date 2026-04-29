@@ -13,7 +13,7 @@ import 'package:workorder_company_app/shared/widgets/adaptive_split_column.dart'
 import 'package:workorder_company_app/shared/widgets/app_bottom_sheet.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 import 'package:workorder_company_app/shared/widgets/error_body.dart';
-import 'package:workorder_company_app/shared/widgets/filled_form_view.dart';
+import 'package:workorder_company_app/features/submissions/presentation/widgets/filled_form_view.dart';
 import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
 import 'package:workorder_company_app/shared/widgets/property_display.dart';
 

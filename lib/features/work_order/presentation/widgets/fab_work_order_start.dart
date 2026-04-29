@@ -9,7 +9,6 @@ import 'package:workorder_company_app/features/work_order/presentation/bloc/star
 import 'package:workorder_company_app/features/work_order/presentation/bloc/start/start_work_order_state.dart';
 import 'package:workorder_company_app/shared/widgets/loading_state_inline.dart';
 
-// TODO : hide this button when there is no siblings
 class FabWorkOrderStart extends StatelessWidget {
   final WorkOrderEntity workOrder;
   final WorkOrderCapabilities? capabilities;

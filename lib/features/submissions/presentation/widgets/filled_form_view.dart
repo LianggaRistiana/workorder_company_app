@@ -6,7 +6,6 @@ import 'package:workorder_company_app/features/forms/domain/entities/option_enti
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:intl/intl.dart';
 
-// OPTIMIZE : consider to move this into submission feature
 class FilledFormView extends StatelessWidget {
   final FilledFormEntity filledForm;
 
