@@ -16,7 +16,7 @@ class NavConfig {
       case UserRole.managerCompany:
         return const [
           NavItem('Utama', Icons.home_rounded, AppRoutes.home),
-          NavItem('Pengajuan Layanan', Icons.inbox_rounded,
+          NavItem('Permintaan Layanan', Icons.inbox_rounded,
               AppRoutes.serviceRequestInbox),
           NavItem(
               'Perintah Kerja', Icons.assignment_rounded, AppRoutes.workOrders),
@@ -25,7 +25,6 @@ class NavConfig {
       case UserRole.staffCompany:
         return const [
           NavItem('Utama', Icons.home_rounded, AppRoutes.home),
-          // NavItem('Tugas', Icons.task_rounded, AppRoutes.staffWorkorder),
           NavItem(
               'Perintah Kerja', Icons.assignment_rounded, AppRoutes.workOrders),
         ];

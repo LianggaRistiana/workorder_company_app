@@ -29,7 +29,7 @@ class FormTypeTips extends StatelessWidget {
           const SizedBox(height: 16),
           InfoItem(
             icon: Icons.inbox_outlined,
-            title: "Pengajuan",
+            title: "Permintaan",
             description:
                 "Digunakan untuk membuat formulir permintaan dari pengguna. "
                 "Formulir ini biasanya akan diproses atau ditindaklanjuti oleh manajer perusahaan",

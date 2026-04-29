@@ -45,7 +45,7 @@ class UserChip extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 10),
-        
+
               /// 🔥 Tambahkan Expanded di sini
               Expanded(
                 child: Column(
@@ -58,7 +58,10 @@ class UserChip extends StatelessWidget {
                             user.name,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge
+                                ?.copyWith(
                                   fontWeight: FontWeight.bold,
                                 ),
                           ),
@@ -68,8 +71,10 @@ class UserChip extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 12, vertical: 4),
                           decoration: BoxDecoration(
-                            color:
-                                Theme.of(context).colorScheme.primary.withAlpha(15),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .primary
+                                .withAlpha(15),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Text(

@@ -41,7 +41,10 @@ class StaffContent extends StatelessWidget {
         //   ],
         // ),
         const SizedBox(height: 8),
-        const SectionTitle("Menu"),
+        SectionTitle(
+          "Menu",
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
         const SizedBox(height: 12),
         MenuGrid(
           items: [

@@ -24,13 +24,16 @@ class ClientContent extends StatelessWidget {
           },
         ),
         const SizedBox(height: 8),
-        const SectionTitle("Menu"),
+        SectionTitle(
+          "Menu",
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
         const SizedBox(height: 12),
         MenuGrid(
           items: [
             MenuItem(
                 icon: AppIcon.serviceRequestSend,
-                label: "Pengajuan Layanan Saya",
+                label: "Permintaan Layanan Saya",
                 onTap: () => context.push(AppRoutes.serviceRequestSent)),
             MenuItem(
                 icon: AppIcon.company,
@@ -42,7 +45,7 @@ class ClientContent extends StatelessWidget {
                 onTap: () => context.push(AppRoutes.membershipsClaim)),
             MenuItem(
                 icon: AppIcon.history,
-                label: "Riwayat Pengajuan",
+                label: "Riwayat Permintaan",
                 onTap: () {}),
             MenuItem(
                 icon: Icons.help_outline_outlined,

@@ -17,18 +17,22 @@ class ManagerContent extends StatelessWidget {
       children: [
         HorizontalButton(
           leadingIcon: Icons.assignment_add,
-          title: "Buat Tugas Kerja Baru",
-          description: "Buat tugas kerja baru khusus untuk internal perusahaan",
+          title: "Buat Perintah Kerja Baru",
+          description:
+              "Buat perintah kerja baru khusus untuk internal perusahaan",
           onTap: () {},
         ),
         const SizedBox(height: 8),
-        const SectionTitle("Menu Operasional"),
+        SectionTitle(
+          "Menu Operasional",
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
         const SizedBox(height: 12),
         MenuGrid(
           items: [
             MenuItem(
                 icon: AppIcon.serviceRequestInbox,
-                label: "Pengajuan Layanan",
+                label: "Permintaan Layanan",
                 onTap: () {
                   context.go(AppRoutes.serviceRequestInbox);
                 }),
@@ -50,7 +54,7 @@ class ManagerContent extends StatelessWidget {
                 onTap: () {}),
             MenuItem(
                 icon: AppIcon.history,
-                label: "Riwayat Pengajuan",
+                label: "Riwayat Permintaan",
                 onTap: () {}),
             MenuItem(
                 icon: AppIcon.history,

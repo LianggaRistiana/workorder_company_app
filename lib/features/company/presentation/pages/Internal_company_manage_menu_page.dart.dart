@@ -147,13 +147,13 @@ class _InternalCompanyManageMenuPageState
         items: [
           MenuItem(
               icon: AppIcon.serviceRequestInbox,
-              label: "Pengajuan Layanan",
+              label: "Permintaan Layanan",
               onTap: () {
                 context.push(AppRoutes.serviceRequestInbox);
               }),
           MenuItem(
               icon: AppIcon.workOrder,
-              label: "Tugas Kerja",
+              label: "Perintah Kerja",
               onTap: () {
                 context.push(AppRoutes.workOrders);
               }),

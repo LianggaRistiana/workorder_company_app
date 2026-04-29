@@ -31,13 +31,13 @@ enum FormType {
   String get displayName {
     switch (this) {
       case FormType.workOrder:
-        return 'Tugas Kerja';
+        return 'Perinta Kerja';
       case FormType.review:
         return 'Ulasan';
       case FormType.report:
         return 'Laporan';
       case FormType.intake:
-        return 'Pengajuan';
+        return 'Permintaan';
     }
   }
 
