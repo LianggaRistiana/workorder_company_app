@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
+import 'package:workorder_company_app/features/company/presentation/widgets/internal_company_card.dart';
+import 'package:workorder_company_app/shared/widgets/adaptive_split_column.dart';
 import 'package:workorder_company_app/shared/widgets/dashed_button.dart';
 import 'package:workorder_company_app/shared/widgets/horizontal_switch.dart';
 
@@ -19,42 +21,45 @@ class _CompanyFaqConfigView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-        child: Column(
-          children: [
-            // Row(
-            //   children: [
-            //     IconBox(icon: Icons.chat_bubble_outline_outlined),
-            //     const SizedBox(width: 12),
-            //     Text(
-            //       "Konfigurasi Tanya Jawab",
-            //       style: Theme.of(context).textTheme.titleLarge,
-            //       maxLines: 2,
-            //       overflow: TextOverflow.ellipsis,
-            //     ),
-            //   ],
-            // ),
-            HorizontalSwitch(
-                leadingIcon: Icons.chat_bubble_outline_outlined,
-                title: "Aktifkan fitur tanya jawab",
-                description:
-                    "Saat diaktifkan, pelanggan dapat menggunakan fitur tanya jawab untuk membantu menjawab pertanyaan mereka",
-                value: false,
-                onChanged: (_) {}),
-            const SizedBox(height: 12),
-            DashedButton(
-              title: "Unggah Berkas Basis Pengetahuan",
-              icon: Icons.upload_outlined,
-              onTap: () {},
-              height: 200,
-              color: Theme.of(context).colorScheme.primary,
-              borderColor: Theme.of(context).disabledColor,
-            )
-          ],
-        ),
+        appBar: AppBar(),
+        body: SafeArea(
+            child: AdaptiveSplitColumn(
+                leftChildren: _leftChildren(),
+                rightChildren: _rightChildren(context))));
+  }
+
+  List<Widget> _leftChildren() {
+    return [
+      Hero(
+        tag: "company-card",
+        child: InternalCompanyCard(),
       ),
-    );
+      const SizedBox(
+        height: AppSpacing.sm,
+      ),
+      HorizontalSwitch(
+          leadingIcon: Icons.chat_bubble_outline_outlined,
+          title: "Aktifkan fitur tanya jawab",
+          description:
+              "Saat diaktifkan, pelanggan dapat menggunakan fitur tanya jawab untuk membantu menjawab pertanyaan mereka",
+          value: false,
+          onChanged: (_) {}),
+      const SizedBox(
+        height: AppSpacing.sm,
+      )
+    ];
+  }
+
+  List<Widget> _rightChildren(BuildContext context) {
+    return [
+      DashedButton(
+        title: "Unggah Berkas Basis Pengetahuan",
+        icon: Icons.upload_outlined,
+        onTap: () {},
+        height: 200,
+        color: Theme.of(context).colorScheme.primary,
+        borderColor: Theme.of(context).disabledColor,
+      )
+    ];
   }
 }
