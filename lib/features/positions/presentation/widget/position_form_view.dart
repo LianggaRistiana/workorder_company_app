@@ -144,7 +144,6 @@ class _PositionFormViewState extends State<PositionFormView> {
 
   List<Widget> _leftChildren() {
     return [
-      const SizedBox(height: AppSpacing.sm),
       CustomInputField(
         label: 'Nama Departemen',
         controller: _nameController,

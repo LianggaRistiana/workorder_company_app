@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
+import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/invitations/domain/entities/invitation_draft_entity.dart';
 import 'package:workorder_company_app/features/invitations/presentation/bloc/invite/invite_employees_cubit.dart';
 import 'package:workorder_company_app/features/invitations/presentation/bloc/invite/invite_employees_state.dart';
@@ -11,8 +12,11 @@ import 'package:workorder_company_app/features/invitations/presentation/widgets/
 import 'package:workorder_company_app/features/positions/presentation/bloc/list/positions_list_bloc.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/list/positions_list_event.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
+import 'package:workorder_company_app/shared/widgets/adaptive_split_column.dart';
 import 'package:workorder_company_app/shared/widgets/button_with_loading_state.dart';
+import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/dashed_button.dart';
+import 'package:workorder_company_app/shared/widgets/information_block.dart';
 
 class InviteEmployeePage extends StatelessWidget {
   const InviteEmployeePage({super.key});
@@ -48,6 +52,7 @@ class InviteEmployeePage extends StatelessWidget {
   }
 }
 
+// TODO : mapping error here and add form validator before submit
 class _InviteEmployeeView extends StatefulWidget {
   final InviteEmployeesState state;
 
@@ -97,7 +102,10 @@ class _InviteEmployeeViewState extends State<_InviteEmployeeView> {
 
     final validInvites = _invites.where((e) => e.email.isNotEmpty).toList();
 
-    if (validInvites.isEmpty) return;
+    if (validInvites.isEmpty) {
+      context.showWarning("Tidak ada data");
+      return;
+    }
 
     cubit.inviteEmployees(validInvites);
   }
@@ -106,77 +114,87 @@ class _InviteEmployeeViewState extends State<_InviteEmployeeView> {
   Widget build(BuildContext context) {
     final isLoading = widget.state.status == InviteEmployeesStatus.loading;
 
-    return Scaffold(
-      appBar: AppBar(title: const Text("Undangan Pegawai")),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            DashedButton(
-              title: "Tambah Undangan",
-              icon: Icons.add,
-              onTap: isLoading ? null : _addInvite,
-              height: 100,
-              color: Theme.of(context).colorScheme.primary,
-              borderColor: Theme.of(context).colorScheme.primary,
+    return SafeArea(
+      child: Scaffold(
+          appBar: AppBar(title: const Text("Undangan Pegawai")),
+          bottomNavigationBar: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.md,
             ),
-            const SizedBox(height: 16),
-            Expanded(
-              child: _invites.isEmpty
-                  ? const Center(
-                      child: Text('Belum ada Undangan'),
-                    )
-                  : ListView.builder(
-                      keyboardDismissBehavior:
-                          ScrollViewKeyboardDismissBehavior.onDrag,
-                      itemCount: _invites.length,
-                      itemBuilder: (context, index) {
-                        final invite = _invites[index];
-
-                        return InvitationConfigCard(
-                          key: ValueKey(invite.id),
-                          email: invite.email,
-                          role: invite.role,
-                          position: invite.position,
-                          onEmailChanged: (val) {
-                            _updateInvite(
-                              index,
-                              invite.copyWith(email: val),
-                            );
-                          },
-                          onRoleChanged: (val) {
-                            _updateInvite(
-                              index,
-                              invite.copyWith(
-                                role: val,
-                                position: val != UserRole.staffCompany
-                                    ? null
-                                    : invite.position,
-                              ),
-                            );
-                          },
-                          onPositionChanged: (val) {
-                            _updateInvite(
-                              index,
-                              invite.copyWith(position: val),
-                            );
-                          },
-                          onRemove:
-                              isLoading ? null : () => _removeInvite(index),
-                        );
-                      },
-                    ),
-            ),
-            const SizedBox(height: 12),
-            ButtonWithLoadingState(
-                icon: AppIcon.send,
-                onPressed: _submitInvites,
-                isLoading: isLoading,
-                label: "Kirim Undangan"),
-            const SizedBox(height: 12),
-          ],
-        ),
-      ),
+            child: ButtonWithLoadingState(
+                    icon: AppIcon.send,
+                    onPressed: _submitInvites,
+                    isLoading: isLoading,
+                    label: "Kirim Undangan")
+                .hideOnLargeScreen(),
+          ),
+          body: AdaptiveSplitColumn(
+            leftChildren: _leftChildren(isLoading),
+            rightChildren: _rightChildren(isLoading),
+          )),
     );
+  }
+
+  List<Widget> _leftChildren(bool isLoading) {
+    return [
+      DashedButton(
+        title: "Tambah Undangan",
+        icon: Icons.add,
+        onTap: isLoading ? null : _addInvite,
+        height: 100,
+        color: Theme.of(context).colorScheme.primary,
+        borderColor: Theme.of(context).colorScheme.primary,
+      ),
+      const SizedBox(height: 16),
+      ButtonWithLoadingState(
+              icon: AppIcon.send,
+              onPressed: _submitInvites,
+              isLoading: isLoading,
+              label: "Kirim Undangan")
+          .hideOnSmallScreen()
+    ];
+  }
+
+  List<Widget> _rightChildren(bool isLoading) {
+    return [
+      CustomList(
+        scrollable: false,
+        emptyWidget: InformationBlock.warning("Belum ada Undangan"),
+        items: _invites,
+        itemBuilder: (context, index) {
+          final invite = _invites[index];
+
+          return InvitationConfigCard(
+            key: ValueKey(invite.id),
+            email: invite.email,
+            role: invite.role,
+            position: invite.position,
+            onEmailChanged: (val) {
+              _updateInvite(
+                index,
+                invite.copyWith(email: val),
+              );
+            },
+            onRoleChanged: (val) {
+              _updateInvite(
+                index,
+                invite.copyWith(
+                  role: val,
+                  position:
+                      val != UserRole.staffCompany ? null : invite.position,
+                ),
+              );
+            },
+            onPositionChanged: (val) {
+              _updateInvite(
+                index,
+                invite.copyWith(position: val),
+              );
+            },
+            onRemove: isLoading ? null : () => _removeInvite(index),
+          );
+        },
+      ),
+    ];
   }
 }

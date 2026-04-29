@@ -17,8 +17,10 @@ class AdaptiveSplitColumn extends StatelessWidget {
     this.breakpoint = 768,
     this.heightSpacing = 0,
     this.widthSpacing = AppSpacing.md,
-    this.padding = const EdgeInsets.symmetric(
-      horizontal: AppSpacing.md,
+    this.padding = const EdgeInsets.only(
+      left: AppSpacing.md,
+      right: AppSpacing.md,
+      top: AppSpacing.xs,
     ),
   });
 
