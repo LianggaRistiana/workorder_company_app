@@ -2,6 +2,9 @@ import 'dart:async';
 import 'package:workorder_company_app/core/constants/app_enums/notification_enum.dart';
 import 'package:workorder_company_app/core/services/cache/list_cache_helper.dart';
 import 'package:workorder_company_app/core/services/logger/app_logger.dart';
+import 'package:workorder_company_app/core/services/retry_system/circuit_breaker.dart';
+import 'package:workorder_company_app/core/services/retry_system/retry_helper.dart';
+import 'package:workorder_company_app/core/services/retry_system/retry_policy.dart';
 import 'package:workorder_company_app/core/types/future_either.dart';
 import 'package:workorder_company_app/features/notification/data/datasources/fcm_datasource.dart';
 import 'package:workorder_company_app/features/notification/data/datasources/notification_local_datasource.dart';
@@ -13,6 +16,7 @@ class NotificationRepositoryImpl implements NotificationRepository {
   final NotificationLocalDataSource _local;
   final NotificationRemoteDatasource _remote;
   final FcmDataSource _fcm;
+  final CircuitBreaker _circuitBreaker;
 
   StreamSubscription<String>? _tokenSubscription;
 
@@ -24,6 +28,7 @@ class NotificationRepositoryImpl implements NotificationRepository {
     this._local,
     this._remote,
     this._fcm,
+    this._circuitBreaker,
   );
 
   bool get _isListening => _tokenSubscription != null;
@@ -130,6 +135,16 @@ class NotificationRepositoryImpl implements NotificationRepository {
   // Private helpers
   // ========================
 
+  Future<void> _tokenSync(String token) async {
+    await _circuitBreaker.call(() {
+      return RetryHelper.retryWithJitter(
+        () => _remote.registerToken(token),
+        shouldRetry: RetryPolicy.shouldRetry,
+      );
+    });
+    appLogger.i("fcm token synced");
+  }
+
   Future<void> _startTokenSync() async {
     if (_isListening || _isStarting) return;
 
@@ -140,9 +155,7 @@ class NotificationRepositoryImpl implements NotificationRepository {
 
       final token = await _fcm.getToken();
       if (token != null) {
-        // OPTIMIZE : add retry system
-        await _remote.registerToken(token);
-        appLogger.i("fcm token registered");
+        await _tokenSync(token);
       }
     } catch (e) {
       appLogger.e("Failed to start token sync: $e");
@@ -155,10 +168,10 @@ class NotificationRepositoryImpl implements NotificationRepository {
     _tokenSubscription?.cancel();
     _tokenSubscription = _fcm.onTokenRefresh().listen((newToken) async {
       try {
-        await _remote.registerToken(newToken);
-        appLogger.i("fcm token refreshed & registered");
+        await _tokenSync(newToken);
+        appLogger.i("fcm token refreshed");
       } catch (e) {
-        appLogger.e("Failed to register refreshed token: $e");
+        appLogger.e("Failed to refreshed token: $e");
       }
     });
   }

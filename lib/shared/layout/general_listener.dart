@@ -15,8 +15,8 @@ class GeneralListener extends StatelessWidget {
         BlocListener<NotificationLogCubit, NotificationLogState>(
             listener: (context, state) {
           if (state.status == NotificationLogStatus.error) {
-            context.showError(state.errorMessage ??
-                "Terjadi kesalahan saat mengambil data notifikasi");
+            context
+                .showError("Terjadi kesalahan saat mengambil data notifikasi");
           }
         })
         // TODO : add notification logs listener here

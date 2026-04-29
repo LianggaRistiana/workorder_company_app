@@ -145,14 +145,56 @@ class DioApiClient implements ApiClient {
   }
 
   /// Error handling wrapper
+  // Future<T> _handle<T>(Future<T> Function() request) async {
+  //   try {
+  //     return await request();
+  //   } on DioException catch (e) {
+  //     final statusCode = e.response?.statusCode ?? -1;
+  //     final message = e.response?.data?['message'] ?? e.message;
+  //     final errors = e.response?.data?['errors'] ?? e.message;
+  //     throw ApiException(statusCode, message, errors: errors);
+  //   }
+  // }
+
   Future<T> _handle<T>(Future<T> Function() request) async {
     try {
       return await request();
     } on DioException catch (e) {
-      final statusCode = e.response?.statusCode ?? -1;
-      final message = e.response?.data?['message'] ?? e.message;
-      final errors = e.response?.data?['errors'] ?? e.message;
-      throw ApiException(statusCode, message, errors: errors);
+      final response = e.response;
+
+      final statusCode = response?.statusCode;
+
+      final message = response?.data is Map<String, dynamic>
+          ? response?.data['message']
+          : e.message;
+
+      final errors = response?.data is Map<String, dynamic>
+          ? response?.data['errors']
+          : null;
+
+      throw ApiException(
+        statusCode ?? _mapDioErrorToStatus(e.type),
+        message ?? "Unexpected error",
+        errors: errors,
+      );
+    }
+  }
+
+  int _mapDioErrorToStatus(DioExceptionType type) {
+    switch (type) {
+      case DioExceptionType.connectionTimeout:
+      case DioExceptionType.receiveTimeout:
+      case DioExceptionType.sendTimeout:
+        return 408;
+
+      case DioExceptionType.connectionError:
+        return 503;
+
+      case DioExceptionType.cancel:
+        return -1;
+
+      default:
+        return 500;
     }
   }
 

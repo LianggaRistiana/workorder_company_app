@@ -1,5 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
+import 'package:workorder_company_app/core/services/retry_system/circuit_breaker.dart';
 import 'package:workorder_company_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:workorder_company_app/features/notification/data/pipeline/event_bus/notification_event_bus.dart';
 import 'package:workorder_company_app/features/notification/data/pipeline/listener/fcm_listener.dart';
@@ -65,6 +66,10 @@ Future<void> initNotificationFeature() async {
             sl<NotificationLocalDataSource>(),
             sl<NotificationRemoteDatasource>(),
             sl<FcmDataSource>(),
+            CircuitBreaker(
+              failureThreshold: 3,
+              resetTimeout: const Duration(seconds: 30),
+            ),
           ));
 
   sl.registerSingleton<NotificationEventBus>(
