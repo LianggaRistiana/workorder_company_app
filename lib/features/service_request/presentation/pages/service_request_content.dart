@@ -7,12 +7,11 @@ import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/service_request/domain/authorization/provider_service_request_authorizer.dart';
 import 'package:workorder_company_app/features/service_request/domain/entities/service_request_entity.dart';
-import 'package:workorder_company_app/features/service_request/presentation/widgets/service_request_step_card.dart';
+import 'package:workorder_company_app/features/service_request/presentation/widgets/service_request_property_view.dart';
 import 'package:workorder_company_app/features/work_order/domain/params/work_order_temp_local_params.dart';
 import 'package:workorder_company_app/shared/widgets/adaptive_split_column.dart';
 import 'package:workorder_company_app/shared/widgets/app_bottom_sheet.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
-import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/error_body.dart';
 import 'package:workorder_company_app/shared/widgets/filled_form_view.dart';
 import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
@@ -62,44 +61,7 @@ class ServiceRequestContent extends StatelessWidget {
   List<Widget> _serviceRequestMetaData(
       BuildContext context, ServiceRequestEntity serviceRequest) {
     return [
-      CustomCard(
-          margin: const EdgeInsets.only(bottom: AppSpacing.xs),
-          child: PropertyDisplay(properties: [
-            PropertyItem.text(
-                label: "Kode Permintaan",
-                value: serviceRequest.code,
-                icon: AppIcon.code),
-            PropertyItem.text(
-                label: "Layanan",
-                value: serviceRequest.service.title,
-                icon: AppIcon.service),
-            if (serviceRequest is RequesterServiceRequestEntity)
-              PropertyItem.text(
-                  label: "Tujuan",
-                  value: serviceRequest.company.name,
-                  icon: AppIcon.company),
-            if (serviceRequest is ProviderServiceRequestEntity)
-              PropertyItem.text(
-                  label: "Diajukan oleh",
-                  value: serviceRequest.requestedBy.name,
-                  icon: AppIcon.user),
-            if (serviceRequest.approvedBy != null)
-              PropertyItem.text(
-                  label: "Disetujui oleh",
-                  value: serviceRequest.approvedBy!.name,
-                  icon: AppIcon.approve),
-            PropertyItem.text(
-                label: "Diajukan pada",
-                value: serviceRequest.statusDate.getCreatedAtString(),
-                icon: AppIcon.date),
-            PropertyItem.widget(
-              label: "Status",
-              icon: AppIcon.step,
-              child: ServiceRequestStepCard(
-                  currentStatus: serviceRequest.status,
-                  statusDate: serviceRequest.statusDate),
-            )
-          ])),
+      ServiceRequestPropertyView(serviceRequest: serviceRequest),
       // FIXME : Add view work order button here with rules,
       // dont use temp local params, use wo params instead
       if (serviceRequest is ProviderServiceRequestEntity)
