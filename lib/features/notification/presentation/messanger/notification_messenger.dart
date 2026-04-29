@@ -14,6 +14,7 @@ class NotificationMessenger {
     messenger.showSnackBar(
       SnackBar(
           elevation: 0,
+          dismissDirection: DismissDirection.horizontal,
           behavior: SnackBarBehavior.floating,
           backgroundColor: Colors.transparent,
           padding: EdgeInsets.all(0),

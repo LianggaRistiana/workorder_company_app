@@ -54,6 +54,7 @@ extension ContextSnackbar on BuildContext {
         SnackBar(
           elevation: 0,
           behavior: SnackBarBehavior.floating,
+          dismissDirection: DismissDirection.horizontal,
           backgroundColor: background,
           margin: const EdgeInsets.all(16),
           shape: RoundedRectangleBorder(
