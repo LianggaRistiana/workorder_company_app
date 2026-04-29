@@ -14,9 +14,9 @@ abstract class FcmDataSource {
   Stream<RemoteMessage> onMessageOpenedApp();
   Future<RemoteMessage?> getInitialMessage();
   Future<NotificationPermissionStatus>
-      checkPermission(); // FIXME : should return raw data, there is no dto in here
+      checkPermission(); // OPTIMIZE : should return raw data, there is no dto in here
   Future<NotificationPermissionStatus>
-      requestPermission(); // FIXME : should return raw data, there is no dto in here
+      requestPermission(); // OPTIMIZE : should return raw data, there is no dto in here
   Future<void> deleteToken();
 }
 

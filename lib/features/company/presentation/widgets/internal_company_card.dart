@@ -7,7 +7,6 @@ import 'package:workorder_company_app/shared/widgets/shimmer_placeholder.dart';
 import 'package:workorder_company_app/shared/widgets/smart_shimmer.dart';
 
 // FIXME[API REQUIRED] : currently, staff forbidden to access this. allowed expected
-// FIXME[MEDIUM] : bottom overflow when transition to page with thicker space
 class InternalCompanyCard extends StatelessWidget {
   const InternalCompanyCard({
     super.key,

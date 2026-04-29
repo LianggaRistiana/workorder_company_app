@@ -158,7 +158,7 @@ class WorkOrderDetailBody extends StatelessWidget {
           leadingIcon: AppIcon.workReport,
           description: "Lihat hasil pekerjaan oleh pegawai bertugas",
           onTap: () {
-            // TODO : refetch if there is any update on report
+            // OPTIMIZE : refetch if there is any update on report
             context.push(
               AppRoutes.workReport,
               extra: workOrder,

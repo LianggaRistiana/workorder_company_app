@@ -25,7 +25,6 @@ class ServiceRequestCancel extends StatelessWidget {
           }
 
           if (state.status == RequesterCancelServiceRequestStatus.success) {
-            // TODO[High] : if success update sr detail here
             context.showSuccess("Permintaan dibatalkan");
             context.pop();
           }

@@ -3,7 +3,6 @@ import 'package:workorder_company_app/core/constants/app_enums/service_request_e
 import 'package:workorder_company_app/features/service_request/presentation/ui_mappers.dart/service_request_status_color_mapper.dart';
 import 'package:workorder_company_app/features/service_request/presentation/ui_mappers.dart/service_request_status_icon_mapper.dart';
 
-// TODO : add ui mapper by enum for UI icon and colors. follow work order for pattern
 class ServiceRequestStatusIcon extends StatelessWidget {
   final ServiceRequestStatus status;
 
