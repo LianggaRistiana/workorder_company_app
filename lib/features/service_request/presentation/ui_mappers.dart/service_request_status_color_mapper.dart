@@ -9,10 +9,11 @@ extension ServiceRequestStatusColorMapper on ServiceRequestStatus {
       ServiceRequestStatus.rejected => Colors.red,
       ServiceRequestStatus.approved => Colors.blue,
       ServiceRequestStatus.onProgress => Colors.orange,
-      ServiceRequestStatus.unProcessable => const Color.fromARGB(255, 213, 121, 93),
+      ServiceRequestStatus.unProcessable =>
+        const Color.fromARGB(255, 213, 121, 93),
       ServiceRequestStatus.completed => Colors.green,
       ServiceRequestStatus.partiallyCompleted => Colors.amber,
-      ServiceRequestStatus.closed => Colors.black,
+      ServiceRequestStatus.closed => Colors.purpleAccent,
     };
   }
 }
