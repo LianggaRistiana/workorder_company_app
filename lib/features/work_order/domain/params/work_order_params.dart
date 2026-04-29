@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:workorder_company_app/core/constants/app_enums/work_order_enum.dart';
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
+import 'package:workorder_company_app/features/service_request/domain/entities/service_request_entity.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_summary_entity.dart';
 
 class WorkOrderParams extends Equatable {
@@ -8,12 +9,14 @@ class WorkOrderParams extends Equatable {
   final List<WorkOrderStatus>? status;
   final PositionEntity? positionOnDuty;
   final ServiceSummaryEntity? service;
+  final ServiceRequestEntity? serviceRequest;
 
   const WorkOrderParams({
     this.positionOnDuty,
     this.service,
     this.search,
     this.status,
+    this.serviceRequest,
   });
 
   factory WorkOrderParams.initialParams() {
@@ -27,6 +30,7 @@ class WorkOrderParams extends Equatable {
     Object? status = _sentinel,
     Object? positionOnDuty = _sentinel,
     Object? service = _sentinel,
+    Object? serviceRequest = _sentinel,
   }) {
     return WorkOrderParams(
       positionOnDuty: positionOnDuty == _sentinel
@@ -38,6 +42,9 @@ class WorkOrderParams extends Equatable {
       search: search == _sentinel ? this.search : search as String?,
       status:
           status == _sentinel ? this.status : status as List<WorkOrderStatus>?,
+      serviceRequest: serviceRequest == _sentinel
+          ? this.serviceRequest
+          : serviceRequest as ServiceRequestEntity?,
     );
   }
 
@@ -61,6 +68,9 @@ class WorkOrderParams extends Equatable {
     if (service != null) {
       count++;
     }
+    if (serviceRequest != null) {
+      count++;
+    }
 
     return count;
   }
@@ -71,5 +81,6 @@ class WorkOrderParams extends Equatable {
         status,
         positionOnDuty,
         service,
+        serviceRequest,
       ];
 }

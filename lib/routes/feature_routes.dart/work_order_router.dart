@@ -1,5 +1,7 @@
 import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/services/logger/app_logger.dart';
 import 'package:workorder_company_app/features/work_order/domain/entities/work_order_entity.dart';
+import 'package:workorder_company_app/features/work_order/domain/params/work_order_params.dart';
 import 'package:workorder_company_app/features/work_order/domain/params/work_order_temp_local_params.dart';
 import 'package:workorder_company_app/features/work_order/presentation/pages/work_order_assign_staffs_page.dart';
 import 'package:workorder_company_app/features/work_order/presentation/pages/work_order_detail_page.dart';
@@ -15,6 +17,11 @@ final workOrderRouter = [
       final params = state.extra;
       if (params != null && params is WorkOrderTempLocalParams) {
         return WorkOrdersListPage(params: params);
+      } else if (params is WorkOrderParams) {
+        appLogger.i(params);
+        return WorkOrdersListPage(
+          filter: params,
+        );
       }
       return WorkOrdersListPage();
     },

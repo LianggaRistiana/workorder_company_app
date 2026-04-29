@@ -46,7 +46,14 @@ class WorkOrdersListState extends Equatable {
       final matchService =
           filter.service == null || wo.service.id == filter.service!.id;
 
-      return matchSearch && matchStatus && matchPosition && matchService;
+      final matchServiceRequest = filter.serviceRequest == null ||
+          wo.serviceRequestId == filter.serviceRequest!.id;
+
+      return matchSearch &&
+          matchStatus &&
+          matchPosition &&
+          matchService &&
+          matchServiceRequest;
     }).toList();
   }
 
@@ -72,29 +79,3 @@ class WorkOrdersListState extends Equatable {
         errorMessage,
       ];
 }
-// class WorkOrdersListState extends Equatable {
-//   final WorkOrdersListStatus status;
-//   final List<WorkOrderEntity> workOrders;
-//   final String? errorMessage;
-
-//   const WorkOrdersListState({
-//     required this.status,
-//     required this.workOrders,
-//     this.errorMessage,
-//   });
-
-//   WorkOrdersListState copyWith({
-//     WorkOrdersListStatus? status,
-//     List<WorkOrderEntity>? workOrders,
-//     String? errorMessage,
-//   }) {
-//     return WorkOrdersListState(
-//       status: status ?? this.status,
-//       workOrders: workOrders ?? this.workOrders,
-//       errorMessage: errorMessage ?? this.errorMessage,
-//     );
-//   }
-
-//   @override
-//   List<Object?> get props => [status, workOrders, errorMessage];
-// }

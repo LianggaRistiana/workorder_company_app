@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
-import 'package:workorder_company_app/core/services/logger/app_logger.dart';
 import 'package:workorder_company_app/features/helps/presentation/widgets/fab_help.dart';
 import 'package:workorder_company_app/features/helps/presentation/widgets/work_order_tips.dart';
 import 'package:workorder_company_app/features/work_order/domain/params/work_order_params.dart';
@@ -41,8 +40,6 @@ class _WorkOrdersListPageState extends State<WorkOrdersListPage> {
   @override
   void initState() {
     super.initState();
-    appLogger.i(highlightServiceRequestId);
-
     highlightServiceRequestId = widget.params?.byServiceRequestId;
   }
 

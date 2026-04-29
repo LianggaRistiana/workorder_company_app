@@ -8,7 +8,7 @@ import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/service_request/domain/authorization/provider_service_request_authorizer.dart';
 import 'package:workorder_company_app/features/service_request/domain/entities/service_request_entity.dart';
 import 'package:workorder_company_app/features/service_request/presentation/widgets/service_request_property_view.dart';
-import 'package:workorder_company_app/features/work_order/domain/params/work_order_temp_local_params.dart';
+import 'package:workorder_company_app/features/work_order/domain/params/work_order_params.dart';
 import 'package:workorder_company_app/shared/widgets/adaptive_split_column.dart';
 import 'package:workorder_company_app/shared/widgets/app_bottom_sheet.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
@@ -62,16 +62,13 @@ class ServiceRequestContent extends StatelessWidget {
       BuildContext context, ServiceRequestEntity serviceRequest) {
     return [
       ServiceRequestPropertyView(serviceRequest: serviceRequest),
-      // FIXME : Add view work order button here with rules,
-      // dont use temp local params, use wo params instead
       if (serviceRequest is ProviderServiceRequestEntity)
         HorizontalButton(
                 margin: const EdgeInsets.only(bottom: AppSpacing.xs),
                 title: "Lihat Perintah Kerja",
                 onTap: () {
                   context.push(Endpoints.workorders,
-                      extra: WorkOrderTempLocalParams.fromServiceRequest(
-                          byServiceRequestId: serviceRequest.id));
+                      extra: WorkOrderParams(serviceRequest: serviceRequest));
                 },
                 leadingIcon: AppIcon.workOrder)
             .require(ProviderServiceRequestAuthorizer(serviceRequest)
