@@ -5,13 +5,11 @@ import 'package:workorder_company_app/core/authorization/feature/invitation_perm
 import 'package:workorder_company_app/core/authorization/rule/role_permission_rule/role_permission_helper.dart';
 import 'package:workorder_company_app/core/authorization/util/access_gate_on_widget.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
-import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 import 'package:workorder_company_app/features/employees/presentation/bloc/employees_bloc.dart';
 import 'package:workorder_company_app/features/employees/presentation/widget/employee_item.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
-import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
 import 'package:workorder_company_app/shared/widgets/list_page_scafold.dart';
 
@@ -50,18 +48,9 @@ class EmployeesPage extends StatelessWidget {
               icon: const Icon(Icons.person_add_alt_1),
             ).require(roleCan(InvitationPermission.create)),
             itemBuilder: (item) {
-              // OPTIMIZE : move clickable to employee item
-              return ClickableCustomCard(
-                onTap: () {},
-                margin: const EdgeInsets.symmetric(
-                  horizontal: AppSpacing.md,
-                  vertical: AppSpacing.xs,
-                ),
-                padding: const EdgeInsets.all(16),
-                child: EmployeeItem(
-                  user: item,
-                  showPosition: true,
-                ),
+              return EmployeeItem(
+                user: item,
+                showPosition: true,
               );
             },
           );

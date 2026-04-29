@@ -6,7 +6,6 @@ import 'package:workorder_company_app/features/employees/presentation/bloc/emplo
 import 'package:workorder_company_app/features/employees/presentation/widget/employee_item.dart';
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
-import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/information_block.dart';
 import 'package:workorder_company_app/shared/widgets/loading_state_inline.dart';
@@ -37,8 +36,10 @@ class PositionedEmployeeList extends StatelessWidget {
         return CustomList(
             items: state.employees,
             emptyWidget: InformationBlock.empty("Belum ada pegawai"),
-            itemBuilder: (item, index) => ClickableCustomCard(
-                onTap: () {}, child: EmployeeItem(user: item)));
+            itemBuilder: (item, index) => EmployeeItem(
+                  user: item,
+                  margin: const EdgeInsets.all(0),
+                ));
       }),
     );
   }

@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
+import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
 
 class EmployeeItem extends StatelessWidget {
   final UserEntity user;
   final bool showPosition;
   final VoidCallback? onTap;
+  final EdgeInsets? margin;
 
   const EmployeeItem({
     super.key,
     required this.user,
     this.onTap,
     this.showPosition = false,
+    this.margin = const EdgeInsets.symmetric(
+      horizontal: AppSpacing.md,
+      vertical: AppSpacing.xs,
+    ),
   });
 
   String _getInitials(String name) {
@@ -24,8 +31,9 @@ class EmployeeItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return ClickableCustomCard(
       borderRadius: BorderRadius.circular(12),
+      margin: margin,
       onTap: onTap,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
