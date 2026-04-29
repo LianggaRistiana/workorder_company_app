@@ -12,6 +12,7 @@ class FabWorkOrderApprove extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton.extended(
+        heroTag: null,
         icon: Icon(AppIcon.approve),
         onPressed: () => _showDialog(context),
         label: Text('Setujui'));

@@ -12,6 +12,7 @@ class FabWorkOrderReject extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
+      heroTag: null,
       backgroundColor: Theme.of(context).colorScheme.errorContainer,
       foregroundColor: Theme.of(context).colorScheme.error,
       onPressed: () => _showDialog(context),

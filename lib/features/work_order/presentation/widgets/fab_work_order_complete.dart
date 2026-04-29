@@ -13,6 +13,7 @@ class FabWorkOrderComplete extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton.extended(
+        heroTag: null,
         icon: Icon(AppIcon.complete),
         onPressed: () {
           _showDialog(context);

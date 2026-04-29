@@ -77,7 +77,6 @@ class _ServicesListView extends StatelessWidget {
               children: [
                 FabHelp(
                   title: "Layanan",
-                  heroTag: "service-list-tag",
                   child: InformationBlock.warning("Under Development"),
                 ),
                 if (nextStepMode == ServiceListNextAction.serviceDetail) ...[

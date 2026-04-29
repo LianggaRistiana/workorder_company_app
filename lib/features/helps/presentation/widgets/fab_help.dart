@@ -4,14 +4,13 @@ import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/shared/widgets/app_bottom_sheet.dart';
 
 class FabHelp extends StatelessWidget {
-  final String heroTag;
   final Widget child;
   final String title;
-  const FabHelp(
-      {super.key,
-      required this.child,
-      required this.title,
-      required this.heroTag});
+  const FabHelp({
+    super.key,
+    required this.child,
+    required this.title,
+  });
 
   void _openBottomSheet(BuildContext context) {
     final darkMode = Theme.of(context).brightness == Brightness.dark;
@@ -66,7 +65,7 @@ class FabHelp extends StatelessWidget {
   Widget build(BuildContext context) {
     final darkMode = Theme.of(context).brightness == Brightness.dark;
     return FloatingActionButton.small(
-      heroTag: heroTag,
+      heroTag: null,
       tooltip: title,
       elevation: 0,
       backgroundColor:

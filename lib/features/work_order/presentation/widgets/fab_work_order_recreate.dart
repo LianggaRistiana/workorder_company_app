@@ -25,6 +25,7 @@ class FabWorkOrderRecreate extends StatelessWidget {
     return BlocBuilder<RecreateWorkOrderCubit, RecreateWorkOrderState>(
         builder: (context, state) {
       return FloatingActionButton.extended(
+              heroTag: null,
               icon: Icon(AppIcon.recreate),
               onPressed: () {
                 _showDialog(context, () {

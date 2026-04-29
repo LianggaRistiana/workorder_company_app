@@ -24,6 +24,7 @@ class FabWorkOrderStart extends StatelessWidget {
     return BlocBuilder<StartWorkOrderCubit, StartWorkOrderState>(
         builder: (context, state) {
       return FloatingActionButton.extended(
+        heroTag: null,
         icon: Icon(AppIcon.start),
         onPressed: () {
           context.read<StartWorkOrderCubit>().startWorkOrder(workOrder);

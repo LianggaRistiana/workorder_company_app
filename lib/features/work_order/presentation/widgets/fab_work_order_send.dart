@@ -26,6 +26,7 @@ class FabWorkOrderSend extends StatelessWidget {
     return BlocBuilder<SendWorkOrderCubit, SendWorkOrderState>(
         builder: (context, state) {
       return FloatingActionButton.extended(
+        heroTag: null,
         icon: Icon(AppIcon.send),
         onPressed: () {
           _showDialog(context, () {

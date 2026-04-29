@@ -16,6 +16,17 @@ class FabWorkOrderSibling extends StatelessWidget {
   const FabWorkOrderSibling(
       {super.key, required this.siblings, required this.currentWorkOrderId});
 
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton.small(
+      heroTag: null,
+      backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+      foregroundColor: Theme.of(context).colorScheme.onSecondaryContainer,
+      onPressed: () => _openBottomSheet(context),
+      child: Icon(AppIcon.branch),
+    );
+  }
+
   void _openBottomSheet(BuildContext context) {
     showAppBottomSheet(
       context,
@@ -69,16 +80,6 @@ class FabWorkOrderSibling extends StatelessWidget {
                   ),
                 )),
       ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FloatingActionButton.small(
-      backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-      foregroundColor: Theme.of(context).colorScheme.onSecondaryContainer,
-      onPressed: () => _openBottomSheet(context),
-      child: Icon(AppIcon.branch),
     );
   }
 }
