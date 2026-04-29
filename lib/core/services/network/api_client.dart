@@ -171,7 +171,16 @@ class DioApiClient implements ApiClient {
       final errors = response?.data is Map<String, dynamic>
           ? response?.data['errors']
           : null;
+      final isNetworkError = [
+        DioExceptionType.connectionError,
+        DioExceptionType.connectionTimeout,
+        DioExceptionType.sendTimeout,
+        DioExceptionType.receiveTimeout,
+      ].contains(e.type);
 
+      if (isNetworkError) {
+        throw NetworkException();
+      }
       throw ApiException(
         statusCode ?? _mapDioErrorToStatus(e.type),
         message ?? "Unexpected error",
