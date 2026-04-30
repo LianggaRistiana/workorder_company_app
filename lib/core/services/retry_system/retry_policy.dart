@@ -8,6 +8,9 @@ class RetryPolicy {
           error.statusCode == 503 ||
           error.statusCode == -1;
     }
+    if (error is NetworkException) {
+      return true;
+    }
     appLogger.e("Blocked by retry policy: $error");
     return false;
   }

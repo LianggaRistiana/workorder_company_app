@@ -53,6 +53,8 @@ class ListPageScaffold<T> extends StatelessWidget {
       floatingActionButtonAnimator: FloatingActionButtonAnimator.noAnimation,
       floatingActionButton: floatingActionButton,
       body: SafeArea(
+        top: false,
+        bottom: false,
         child: RefreshIndicator(
           onRefresh: onRefresh,
           child: CustomScrollView(

@@ -74,4 +74,7 @@ class AppRoutes {
 
   // Notification
   static const notifications = '/notifications';
+
+  // TODO : Remove this later, route for lab features
+  static const String lab = '/lab-feature';
 }

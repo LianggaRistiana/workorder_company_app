@@ -87,6 +87,8 @@ class FilledFormView extends StatelessWidget {
         final listAnswer =
             (answer as List?)?.map((e) => e.toString()).toList() ?? [];
         return _optionAnswer(context, field.options ?? [], listAnswer);
+      case FieldType.image:
+        return _renderImage(context, answer); // HACK : need type check
     }
   }
 
@@ -100,6 +102,37 @@ class FilledFormView extends StatelessWidget {
         answer.isEmpty ? "-" : answer,
         style: const TextStyle(),
       ),
+    );
+  }
+
+  Widget _renderImage(BuildContext context, String? path) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(12),
+      child: AspectRatio(
+          aspectRatio: 1,
+          child: path == null || path.isEmpty
+              ? Center(
+                  child: Icon(
+                    Icons.broken_image_rounded,
+                    color: Theme.of(context).disabledColor,
+                  ),
+                )
+              : Image.network(
+                  path,
+                  fit: BoxFit.cover,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  },
+                  errorBuilder: (_, __, ___) {
+                    return const Center(
+                      child: Icon(Icons.broken_image),
+                    );
+                  },
+                )),
     );
   }
 

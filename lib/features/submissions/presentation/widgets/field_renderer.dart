@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
+import 'package:workorder_company_app/core/services/logger/app_logger.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/field_entity.dart';
 import 'package:workorder_company_app/features/submissions/domain/draft/field_data_draft.dart';
+import 'package:workorder_company_app/features/submissions/domain/entities/media_item.dart';
+import 'package:workorder_company_app/features/submissions/presentation/widgets/image_field_widget.dart';
 import 'package:workorder_company_app/features/submissions/presentation/widgets/multi_select_field_widget.dart';
 import 'package:workorder_company_app/features/submissions/presentation/widgets/number_form_field_widget.dart';
 import 'package:workorder_company_app/features/submissions/presentation/widgets/single_select_field_widget.dart';
@@ -30,6 +33,21 @@ class FieldRenderer extends StatelessWidget {
       final v = value.trim();
       if (v.isEmpty) return null;
       return num.tryParse(v);
+    }
+
+    return null;
+  }
+
+  MediaItem? _normalizeToMediaItem(dynamic value) {
+    appLogger.i("normalizeToMediaItem: $value");
+    if (value == null) return null;
+
+    if (value is MediaItem) return value;
+
+    if (value is String) {
+      final v = value.trim();
+      if (v.isEmpty) return null;
+      return MediaItem(path: v, isNetwork: true);
     }
 
     return null;
@@ -85,16 +103,6 @@ class FieldRenderer extends StatelessWidget {
           ),
         );
 
-      // return MultiSelectFormFieldWidget(
-      //   field: field,
-      //   initialValue: [],
-      //   onChanged: (vals) => onChanged(
-      //
-      //     field.order.toString(),
-      //     vals.map((e) => e.key).toList(),
-      //   ),
-      // );
-
       case FieldType.singleSelect:
         final savedKey = value?.value as String?;
 
@@ -112,12 +120,15 @@ class FieldRenderer extends StatelessWidget {
             val?.key,
           ),
         );
-      // return SingleSelectFormFieldWidget(
-      //   field: field,
-      //   initialValue: null,
-      //   onChanged: (val) =>
-      //       onChanged( field.order.toString(), val?.key),
-      // );
+
+      case FieldType.image:
+        return ImageFieldWidget(
+            field: field,
+            onChanged: (val) {
+              appLogger.i("onChangedTriggered: $val");
+              onChanged(field.order.toString(), val);
+            },
+            value: _normalizeToMediaItem(value?.value));
 
       default:
         return Text("Unsupported field type: ${field.type}");

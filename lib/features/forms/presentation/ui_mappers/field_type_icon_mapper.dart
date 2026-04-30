@@ -10,6 +10,7 @@ extension FieldTypeIconMapper on FieldType {
       FieldType.textarea => Icons.notes,
       FieldType.number => LucideIcons.sigma,
       FieldType.date => LucideIcons.calendar,
+      FieldType.image => Icons.image,
       FieldType.time => Icons.access_time,
       FieldType.multiSelect => LucideIcons.listChecks,
       FieldType.singleSelect => Icons.radio_button_checked,

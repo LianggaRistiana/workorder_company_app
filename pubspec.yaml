@@ -33,6 +33,7 @@ dependencies:
   flutter_expandable_fab: ^2.5.1
   firebase_core: ^4.7.0
   firebase_messaging: ^16.2.0
+  image_picker: ^1.2.0
 
 
 dev_dependencies:

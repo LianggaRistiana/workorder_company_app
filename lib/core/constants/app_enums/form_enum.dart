@@ -53,6 +53,7 @@ enum FieldType {
   time,
   multiSelect,
   singleSelect,
+  image,
   // file,
   // phone,
   email;
@@ -74,6 +75,8 @@ enum FieldType {
       case 'single_select':
         return FieldType.singleSelect;
       case 'email':
+        return FieldType.email;
+      case 'image':
         return FieldType.email;
       default:
         throw ParsingException('Unknown FieldType: $value');
@@ -98,6 +101,8 @@ enum FieldType {
         return 'Date';
       case FieldType.time:
         return 'Time';
+      case FieldType.image:
+        return 'Gambar';
       case FieldType.multiSelect:
         return 'Pilihan Ganda';
       case FieldType.singleSelect:
