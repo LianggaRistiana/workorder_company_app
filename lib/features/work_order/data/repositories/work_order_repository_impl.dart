@@ -7,7 +7,7 @@ import 'package:workorder_company_app/core/types/future_either.dart';
 import 'package:workorder_company_app/core/utils/either_helper.dart';
 import 'package:workorder_company_app/core/utils/safe_call.dart';
 import 'package:workorder_company_app/features/submissions/data/model/submissions_model.dart';
-import 'package:workorder_company_app/features/submissions/domain/entitties/submission_entity.dart';
+import 'package:workorder_company_app/features/submissions/domain/entities/submission_entity.dart';
 import 'package:workorder_company_app/features/work_order/data/datasources/work_order_remote_datasource.dart';
 import 'package:workorder_company_app/features/work_order/domain/draft/assigned_staffs_draft.dart';
 import 'package:workorder_company_app/features/work_order/domain/entities/work_order_entity.dart';

@@ -1,7 +1,7 @@
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
 import 'package:workorder_company_app/features/submissions/domain/draft/field_data_draft.dart';
-import 'package:workorder_company_app/features/submissions/domain/entitties/submission_entity.dart';
+import 'package:workorder_company_app/features/submissions/domain/entities/submission_entity.dart';
 
 // TODO[FUTURE IMPROVEMENT] : Make coordinator with isDirty feature
 class SubmissionDraft {

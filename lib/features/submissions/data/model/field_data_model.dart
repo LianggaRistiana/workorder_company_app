@@ -1,4 +1,4 @@
-import 'package:workorder_company_app/features/submissions/domain/entitties/field_data_entity.dart';
+import 'package:workorder_company_app/features/submissions/domain/entities/field_data_entity.dart';
 
 class FieldDataModel extends FieldDataEntity {
   FieldDataModel({

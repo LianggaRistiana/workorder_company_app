@@ -4,7 +4,7 @@ import 'package:workorder_company_app/core/services/cache/streamable_cache.dart'
 import 'package:workorder_company_app/core/types/future_either.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
 import 'package:workorder_company_app/features/service_request/domain/entities/service_request_entity.dart';
-import 'package:workorder_company_app/features/submissions/domain/entitties/submission_entity.dart';
+import 'package:workorder_company_app/features/submissions/domain/entities/submission_entity.dart';
 
 abstract class RequesterServiceRequestRepository
     implements Cacheable, StreamableCache {

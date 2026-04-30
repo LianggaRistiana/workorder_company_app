@@ -1,7 +1,7 @@
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/utils/safe_parse.dart';
 import 'package:workorder_company_app/features/submissions/data/model/field_data_model.dart';
-import 'package:workorder_company_app/features/submissions/domain/entitties/submission_entity.dart';
+import 'package:workorder_company_app/features/submissions/domain/entities/submission_entity.dart';
 
 class SubmissionsModel extends SubmissionEntity {
   SubmissionsModel({

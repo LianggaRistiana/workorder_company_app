@@ -1,7 +1,7 @@
 import 'package:workorder_company_app/core/services/cache/cacheable.dart';
 import 'package:workorder_company_app/core/services/cache/streamable_cache.dart';
 import 'package:workorder_company_app/core/types/future_either.dart';
-import 'package:workorder_company_app/features/submissions/domain/entitties/submission_entity.dart';
+import 'package:workorder_company_app/features/submissions/domain/entities/submission_entity.dart';
 import 'package:workorder_company_app/features/work_order/domain/draft/assigned_staffs_draft.dart';
 import 'package:workorder_company_app/features/work_order/domain/entities/work_order_entity.dart';
 

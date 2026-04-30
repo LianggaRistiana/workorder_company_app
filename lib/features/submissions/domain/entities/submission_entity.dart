@@ -1,6 +1,6 @@
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
-import 'package:workorder_company_app/features/submissions/domain/entitties/field_data_entity.dart';
+import 'package:workorder_company_app/features/submissions/domain/entities/field_data_entity.dart';
 
 class SubmissionEntity {
   final String id;
