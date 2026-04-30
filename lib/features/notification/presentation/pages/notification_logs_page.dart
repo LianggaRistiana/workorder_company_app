@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:workorder_company_app/core/constants/app_enums/notification_enum.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
@@ -116,7 +117,8 @@ class _NotificationLogItem extends StatelessWidget {
           const SizedBox(width: 8),
           Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.max,
               children: [
                 Text(
                   item.title,
@@ -129,6 +131,13 @@ class _NotificationLogItem extends StatelessWidget {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: theme.textTheme.bodyMedium,
+                ),
+                Text(
+                  DateFormat('HH:mm, d MMM yyyy')
+                      .format(item.createdAt.toLocal()),
+                  textAlign: TextAlign.end,
+                  style: theme.textTheme.labelSmall
+                      ?.copyWith(fontStyle: FontStyle.italic),
                 ),
               ],
             ),
