@@ -14,6 +14,7 @@ class UploadHelper {
   Future<SubmissionDraft> processDraft(SubmissionDraft submission) async {
     final groupId = _generateGroupId();
     SubmissionDraft workingDraft = submission.clone();
+
     final media = _extractMedia(workingDraft);
     if (media.isEmpty) return workingDraft;
 
@@ -51,7 +52,6 @@ class UploadHelper {
   }
 
   Future<List<UploadTask>> _waitUploadDone(String groupId) async {
-    // appLogger.i("Waiting upload done for $groupId");
     final completer = Completer<List<UploadTask>>();
     late StreamSubscription sub;
 
@@ -106,7 +106,7 @@ class UploadHelper {
       return field;
     }).toList();
 
-    return SubmissionDraft.same(
+    return SubmissionDraft(
       formId: draft.formId,
       submissionType: draft.submissionType,
       fieldsData: updated,
