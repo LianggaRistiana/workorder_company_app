@@ -136,4 +136,36 @@ class UseCaseExecutor {
       return Left(UnexpectedFailure(message: e.toString()));
     }
   }
+
+  static FutureEither<R> runWithFutureMap<E, R>({
+    required Future<E> Function() map,
+    AuthorizationResult Function(E entity)? authorize,
+    required FutureEither<R> Function(E entity) action,
+  }) async {
+    try {
+      final entity = await map();
+
+      // Authorization
+      if (authorize != null) {
+        final result = authorize(entity);
+        if (!result.isAllowed) {
+          return Left(PolicyFailure(result.message));
+        }
+      }
+
+      // Action
+      return await action(entity);
+    } on ValidationException catch (e) {
+      return Left(
+        ValidationFailure(
+          message: e.message ?? "Terjadi Kesalahan",
+          errors: {},
+        ),
+      );
+    } catch (e) {
+      return Left(
+        UnexpectedFailure(message: e.toString()),
+      );
+    }
+  }
 }

@@ -1,4 +1,5 @@
 import 'package:workorder_company_app/core/di/injection.dart';
+import 'package:workorder_company_app/features/submissions/core/file_upload_manager.dart';
 import 'package:workorder_company_app/features/work_order/data/datasources/work_order_remote_datasource.dart';
 import 'package:workorder_company_app/features/work_order/data/repositories/work_order_repository_impl.dart';
 import 'package:workorder_company_app/features/work_order/domain/repositories/work_order_repository.dart';
@@ -89,7 +90,10 @@ Future<void> _initUseCases() async {
   );
 
   sl.registerLazySingleton<SubmitWorkOrderSubmissionUseCase>(
-    () => SubmitWorkOrderSubmissionUseCase(sl()),
+    () => SubmitWorkOrderSubmissionUseCase(
+      sl<WorkOrderRepository>(),
+      sl<UploadManager>(),
+    ),
   );
 
   sl.registerLazySingleton<CreateWorkOrderUsecase>(

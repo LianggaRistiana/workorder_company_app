@@ -6,49 +6,31 @@ import 'package:workorder_company_app/features/submissions/core/file_upload_mana
 import 'package:workorder_company_app/features/submissions/core/upload_helper.dart';
 import 'package:workorder_company_app/features/submissions/domain/draft/submisson_draft.dart';
 
-// class RequesterSubmitIntakeFormUsecase {
-//   final RequesterServiceRequestRepository repository;
-//   final UploadManager uploadManager;
-
-//   RequesterSubmitIntakeFormUsecase(this.repository, this.uploadManager);
-
-//   FutureEither<RequesterServiceRequestEntity> call(
-//       String serviceId, SubmissionDraft submission) async {
-//     return UseCaseExecutor.run(
-//       map: () => submission.toEntity(),
-//       authorize: null,
-//       action: (entity) => repository.submitIntakeForm(serviceId, entity),
-//     );
-//   }
-// }
-
 class RequesterSubmitIntakeFormUsecase {
-  final RequesterServiceRequestRepository repository;
-  final UploadManager uploadManager;
-  late final UploadHelper uploadHelper;
+  final RequesterServiceRequestRepository _repository;
+  final UploadManager _uploadManager;
+  late final UploadHelper _uploadHelper;
 
   RequesterSubmitIntakeFormUsecase(
-    this.repository,
-    this.uploadManager,
+    this._repository,
+    this._uploadManager,
   ) {
-    uploadHelper = UploadHelper(uploadManager);
+    _uploadHelper = UploadHelper(_uploadManager);
   }
 
   FutureEither<RequesterServiceRequestEntity> call(
     String serviceId,
     SubmissionDraft submission,
   ) async {
-    return UseCaseExecutor.run(
-      map: () => submission,
-      authorize: null,
-      action: (draft) async {
-        final processedDraft = await uploadHelper.processDraft(draft);
-
-        return repository.submitIntakeForm(
-          serviceId,
-          processedDraft.toEntity(),
-        );
-      },
-    );
+    return UseCaseExecutor.runWithFutureMap(
+        map: () async {
+          final processedDraft = await _uploadHelper.processDraft(submission);
+          return processedDraft.toEntity();
+        },
+        authorize: null,
+        action: (entity) => _repository.submitIntakeForm(
+              serviceId,
+              entity,
+            ));
   }
 }

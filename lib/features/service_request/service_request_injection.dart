@@ -76,7 +76,10 @@ Future<void> _initUseCases() async {
           ));
 
   sl.registerLazySingleton<RequesterSubmitReviewFormUsecase>(
-      () => RequesterSubmitReviewFormUsecase(sl()));
+      () => RequesterSubmitReviewFormUsecase(
+            sl<RequesterServiceRequestRepository>(),
+            sl<UploadManager>(),
+          ));
 
   /// [Usecase].Provider
   sl.registerLazySingleton<ProviderGetServiceRequestsUsecase>(
