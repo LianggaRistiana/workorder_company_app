@@ -4,6 +4,32 @@ import 'package:workorder_company_app/features/submissions/domain/entities/uploa
 import 'package:workorder_company_app/features/submissions/domain/entities/upload_task.dart';
 import 'package:workorder_company_app/features/submissions/domain/usecases/file_upload_usecase.dart';
 
+// =========================
+// OPTIMIZE : Add queue system in Upload manager
+// =========================
+// FUTURE IMPROVEMENT (QUEUE SYSTEM)
+//
+// Current implementation executes uploads in unbounded concurrency,
+// meaning every task starts immediately without any limit.
+//
+// Planned enhancement:
+// Introduce a bounded concurrency worker pool (queue system)
+// to control the number of active uploads running simultaneously.
+//
+// Example target behavior:
+// - Limit active uploads to maxConcurrent (e.g. 5)
+// - Queue remaining tasks until a slot becomes available
+// - Automatically start next task when one completes or fails
+//
+// This will improve:
+// - Network stability
+// - Server load control
+// - Predictable upload performance
+// =========================
+//
+// int _activeUploads = 0;
+// final int maxConcurrent = 5;
+
 class UploadManager {
   final UploadFileUseCase _useCase;
 
@@ -11,6 +37,9 @@ class UploadManager {
   final Map<String, int> _retryCount = {};
 
   final int maxRetry;
+
+  // int _activeUploads = 0;
+  // final int maxConcurrent = 5;
 
   final _controller = StreamController<List<UploadTask>>.broadcast();
   Stream<List<UploadTask>> get stream => _controller.stream;
@@ -53,7 +82,26 @@ class UploadManager {
 
     _emit();
     _startUpload(task);
+    // _tryStartNext(); dont direct start in queue upload implement
   }
+
+  // void _tryStartNext() {
+  //   if (_activeUploads >= maxConcurrent) return;
+
+  //   final nextTask = _tasks.firstWhere(
+  //     (t) => !t.isDone && !_isRunning(t.id),
+  //     orElse: () => null,
+  //   );
+
+  //   if (nextTask == null) return;
+
+  //   _activeUploads++;
+  //   _startUpload(nextTask);
+  // }
+
+//   bool _isRunning(String taskId) {
+//   return _subscriptions.containsKey(taskId);
+// }
 
   void _startUpload(UploadTask task) {
     _subscriptions[task.id]?.cancel();
@@ -65,6 +113,9 @@ class UploadManager {
         if (result.isDone && result.url != null) {
           _retryCount.remove(task.id);
           _subscriptions.remove(task.id)?.cancel(); // cleanup
+
+          // _activeUploads--;
+          // _tryStartNext();
         }
       },
       onError: (e) {
@@ -90,6 +141,9 @@ class UploadManager {
       _failTask(task.id, error);
       _retryCount.remove(task.id);
       _subscriptions.remove(task.id)?.cancel();
+
+      // _activeUploads--;
+      // _tryStartNext();
     }
   }
 
