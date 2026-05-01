@@ -50,7 +50,9 @@ class ClientContent extends StatelessWidget {
             MenuItem(
                 icon: Icons.help_outline_outlined,
                 label: "Bantuan",
-                onTap: () {}),
+                onTap: () {
+                  context.push(AppRoutes.lab);
+                }),
           ],
         ),
       ],

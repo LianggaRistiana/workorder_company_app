@@ -20,6 +20,14 @@ abstract class ApiClient {
     T Function(dynamic data)? fromJson,
   });
 
+  Future<T> postFormData<T>(
+    String endpoint, {
+    FormData? data,
+    void Function(int, int)? onSendProgress,
+    void Function(int, int)? onReceiveProgress,
+    T Function(dynamic data)? fromJson,
+  });
+
   Future<T> patch<T>(
     String endpoint, {
     dynamic data,
@@ -97,6 +105,36 @@ class DioApiClient implements ApiClient {
   }) async {
     return _handle(() async {
       final response = await _dio.post(endpoint, data: data, options: options);
+      return _parseResponse<T>(response.data, fromJson);
+    });
+  }
+
+  @override
+  Future<T> postFormData<T>(
+    String endpoint, {
+    FormData? data,
+    void Function(int, int)? onSendProgress,
+    void Function(int, int)? onReceiveProgress,
+    T Function(dynamic data)? fromJson,
+  }) async {
+    return _handle(() async {
+      if (data != null) {
+        final fields = data.fields.map((e) => "${e.key}=${e.value}").join(", ");
+
+        final files =
+            data.files.map((e) => "${e.key}=${e.value.filename}").join(", ");
+
+        appLogger.i("Upload started | fields: [$fields] | files: [$files]");
+      }
+      final response = await _dio.post(
+        endpoint,
+        data: data,
+        onSendProgress: onSendProgress,
+        onReceiveProgress: onReceiveProgress,
+        options: Options(
+          contentType: "multipart/form-data",
+        ),
+      );
       return _parseResponse<T>(response.data, fromJson);
     });
   }
@@ -231,9 +269,26 @@ class LoggingInterceptor extends Interceptor {
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    String body;
+
+    if (options.data is FormData) {
+      final formData = options.data as FormData;
+
+      final fields =
+          formData.fields.map((e) => "${e.key}=${e.value}").join(", ");
+
+      final files =
+          formData.files.map((e) => "${e.key}=${e.value.filename}").join(", ");
+
+      body = "FormData | fields: [$fields] | files: [$files]";
+    } else {
+      body = _prettyPrintJson(options.data);
+    }
+
     appLogger.i(
-        "➡️ ${options.method} ${options.uri}\nHeaders: ${options.headers}\nBody: ${_prettyPrintJson(options.data)}");
-    // prettyPrintJson(options.data);
+      "➡️ ${options.method} ${options.uri}\nHeaders: ${options.headers}\nBody: $body",
+    );
+
     super.onRequest(options, handler);
   }
 

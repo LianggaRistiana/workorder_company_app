@@ -11,6 +11,7 @@ import 'package:workorder_company_app/features/services/domain/entities/base_ser
 import 'package:workorder_company_app/features/services/presentation/widgets/service_summary_property_view.dart';
 import 'package:workorder_company_app/features/submissions/domain/draft/submisson_draft.dart';
 import 'package:workorder_company_app/features/submissions/presentation/coordinator/form_renderer_coordinator.dart';
+import 'package:workorder_company_app/features/submissions/presentation/cubit/file_upload_progress_cubit.dart';
 import 'package:workorder_company_app/features/submissions/presentation/widgets/form_renderer.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
@@ -110,6 +111,11 @@ class _RequesterIntakePageState extends State<RequesterIntakePage> {
           },
           builder: (context, state) => ButtonWithLoadingState(
                 icon: Icons.send,
+                loadingLabel: context
+                        .watch<FileUploadProgressCubit>()
+                        .state
+                        .bottonMessage ??
+                    "Mengunggah",
                 isLoading:
                     state.status == RequesterSubmitIntakeFormStatus.loading,
                 onPressed: () {

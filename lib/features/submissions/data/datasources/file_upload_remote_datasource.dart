@@ -1,6 +1,11 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
+import 'package:workorder_company_app/core/services/logger/app_logger.dart';
+import 'package:workorder_company_app/core/services/network/api_client.dart';
+import 'package:workorder_company_app/core/services/network/api_response.dart';
+import 'package:workorder_company_app/core/services/network/endpoints.dart';
+import 'package:workorder_company_app/features/submissions/data/model/upload_payload.dart';
 import 'package:workorder_company_app/features/submissions/domain/entities/upload_result.dart';
 
 abstract class FileRemoteDataSource {
@@ -8,15 +13,16 @@ abstract class FileRemoteDataSource {
 }
 
 class FileRemoteDataSourceImpl implements FileRemoteDataSource {
-  final Dio dio;
+  final ApiClient _apiClient;
 
-  FileRemoteDataSourceImpl(this.dio);
+  FileRemoteDataSourceImpl(this._apiClient);
 
   @override
   Stream<UploadResult> uploadFile(String filePath) {
     final controller = StreamController<UploadResult>();
-
     () async {
+      appLogger.i("Upload started");
+
       double lastProgress = 0;
 
       try {
@@ -24,12 +30,9 @@ class FileRemoteDataSourceImpl implements FileRemoteDataSource {
           "file": await MultipartFile.fromFile(filePath),
         });
 
-        final response = await dio.post(
-          "/files",
+        final response = await _apiClient.postFormData(
+          Endpoints.fileUpload,
           data: formData,
-          options: Options(
-            contentType: "multipart/form-data",
-          ),
           onSendProgress: (sent, total) {
             if (total <= 0) return;
 
@@ -42,21 +45,22 @@ class FileRemoteDataSourceImpl implements FileRemoteDataSource {
           },
         );
 
-        final url = response.data["data"]["url"];
+        final result = ApiResponse.fromJson(
+            response, (data) => UploadPayload.fromMap(data));
 
         controller.add(
-          UploadResult.success(url),
+          UploadResult.success(result.data.url),
         );
 
         await controller.close();
       } catch (e) {
+        appLogger.e(e);
         controller.add(
           UploadResult.failure(
             _mapError(e),
             progress: lastProgress,
           ),
         );
-
         await controller.close();
       }
     }();

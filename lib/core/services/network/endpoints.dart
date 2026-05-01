@@ -87,6 +87,9 @@ class Endpoints {
   // Notifications
   static const String notificationLogs = '/notifications';
   static const String notificationFcmToken = '/notifications/fcm-token';
+
+  // File Upload
+  static const String fileUpload = '/files';
 }
 
 extension EndpointIdExtension on String {

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:workorder_company_app/core/services/logger/app_logger.dart';
 import 'package:workorder_company_app/features/submissions/domain/entities/upload_result.dart';
 import 'package:workorder_company_app/features/submissions/domain/entities/upload_task.dart';
 import 'package:workorder_company_app/features/submissions/domain/usecases/file_upload_usecase.dart';
@@ -7,51 +8,104 @@ class UploadManager {
   final UploadFileUseCase _useCase;
 
   final List<UploadTask> _tasks = [];
+  final Map<String, int> _retryCount = {};
+
+  final int maxRetry;
 
   final _controller = StreamController<List<UploadTask>>.broadcast();
-
   Stream<List<UploadTask>> get stream => _controller.stream;
+  final Map<String, StreamSubscription> _subscriptions = {};
 
-  UploadManager(this._useCase);
+  UploadManager(this._useCase, {this.maxRetry = 3});
 
-  // 🔥 Add new upload
+  void closeGroup(String groupId) {
+    final tasks = _tasks.where((t) => t.groupId == groupId).toList();
+
+    for (final t in tasks) {
+      _subscriptions.remove(t.id)?.cancel();
+      _retryCount.remove(t.id);
+    }
+
+    _tasks.removeWhere((t) => t.groupId == groupId);
+
+    _emit();
+  }
+
+  void dispose() {
+    for (final sub in _subscriptions.values) {
+      sub.cancel();
+    }
+    _controller.close();
+  }
+
   void addUpload({
     required String filePath,
     required String groupId,
   }) {
+    appLogger.i("Add upload for $filePath");
     final task = UploadTask.create(
       filePath: filePath,
       groupId: groupId,
     );
 
     _tasks.add(task);
-    _emit();
+    _retryCount[task.id] = 0;
 
-    _useCase(filePath).listen(
-      (result) {
-        _updateTask(task.id, result);
-      },
-      onError: (e) {
-        _failTask(task.id, e.toString());
-      },
-    );
+    _emit();
+    _startUpload(task);
   }
 
-  // 🔄 Update task from UploadResult
+  void _startUpload(UploadTask task) {
+    _subscriptions[task.id]?.cancel();
+
+    final sub = _useCase(task.filePath).listen(
+      (result) {
+        _updateTask(task.id, result);
+
+        if (result.isDone && result.url != null) {
+          _retryCount.remove(task.id);
+          _subscriptions.remove(task.id)?.cancel(); // cleanup
+        }
+      },
+      onError: (e) {
+        _handleRetry(task, e.toString());
+      },
+    );
+
+    _subscriptions[task.id] = sub;
+  }
+
+  Future<void> _handleRetry(UploadTask task, String error) async {
+    final retry = _retryCount[task.id] ?? 0;
+
+    if (retry < maxRetry) {
+      final delay = Duration(seconds: 2 * (retry + 1));
+
+      _retryCount[task.id] = retry + 1;
+
+      await Future.delayed(delay);
+
+      _startUpload(task);
+    } else {
+      _failTask(task.id, error);
+      _retryCount.remove(task.id);
+      _subscriptions.remove(task.id)?.cancel();
+    }
+  }
+
   void _updateTask(String taskId, UploadResult result) {
     final index = _tasks.indexWhere((t) => t.id == taskId);
     if (index == -1) return;
 
     final current = _tasks[index];
 
-    final updated = current.copyWith(
+    _tasks[index] = current.copyWith(
       progress: result.progress,
       isDone: result.isDone,
       url: result.url ?? current.url,
       error: result.error,
     );
 
-    _tasks[index] = updated;
     _emit();
   }
 
@@ -69,35 +123,7 @@ class UploadManager {
     _emit();
   }
 
-  // 📡 Emit immutable list
   void _emit() {
     _controller.add(List.unmodifiable(_tasks));
-  }
-
-  // 🎯 Helper: get tasks by group
-  List<UploadTask> getByGroup(String groupId) {
-    return _tasks.where((t) => t.groupId == groupId).toList();
-  }
-
-  // 📊 Helper: progress aggregate
-  ({int done, int total}) getProgress(String groupId) {
-    final tasks = getByGroup(groupId);
-
-    final total = tasks.length;
-    final done = tasks.where((t) => t.isDone).length;
-
-    return (done: done, total: total);
-  }
-
-  // 🧹 Optional: clear finished tasks
-  void clearCompleted(String groupId) {
-    _tasks.removeWhere(
-      (t) => t.groupId == groupId && t.isDone,
-    );
-    _emit();
-  }
-
-  void dispose() {
-    _controller.close();
   }
 }

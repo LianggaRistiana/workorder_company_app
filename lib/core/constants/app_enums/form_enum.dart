@@ -77,7 +77,7 @@ enum FieldType {
       case 'email':
         return FieldType.email;
       case 'image':
-        return FieldType.email;
+        return FieldType.image;
       default:
         throw ParsingException('Unknown FieldType: $value');
     }

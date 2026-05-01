@@ -56,7 +56,8 @@ class AppLayout extends StatelessWidget {
               ? AppNavigationDrawer(role: role)
               : null,
           // floatingActionButton: UploadLoadingState(),
-          // floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+          // floatingActionButtonLocation:
+          //     FloatingActionButtonLocation.centerFloat,
           bottomNavigationBar:
               isMainPage && !isLandscape ? AppNavigationBar(role: role) : null,
           body: child,

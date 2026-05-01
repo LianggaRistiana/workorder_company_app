@@ -25,6 +25,7 @@ import 'package:workorder_company_app/features/service_request/presentation/stat
 import 'package:workorder_company_app/features/service_request/presentation/state/requester/service_requests_list/requester_service_requests_list_bloc.dart';
 import 'package:workorder_company_app/features/service_request/presentation/state/requester/submit_intake_form/requester_submit_intake_form_cubit.dart';
 import 'package:workorder_company_app/features/service_request/presentation/state/requester/submit_review_form/requester_submit_review_form_cubit.dart';
+import 'package:workorder_company_app/features/submissions/core/file_upload_manager.dart';
 
 Future<void> initServiceRequestFeature() async {
   _initDataSources();
@@ -69,7 +70,10 @@ Future<void> _initUseCases() async {
       () => RequesterGetIntakeFormUsecase(sl(), sl()));
 
   sl.registerLazySingleton<RequesterSubmitIntakeFormUsecase>(
-      () => RequesterSubmitIntakeFormUsecase(sl()));
+      () => RequesterSubmitIntakeFormUsecase(
+            sl<RequesterServiceRequestRepository>(),
+            sl<UploadManager>(),
+          ));
 
   sl.registerLazySingleton<RequesterSubmitReviewFormUsecase>(
       () => RequesterSubmitReviewFormUsecase(sl()));

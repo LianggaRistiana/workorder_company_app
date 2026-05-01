@@ -12,6 +12,7 @@ import 'package:workorder_company_app/features/memberships/memberships_injection
 import 'package:workorder_company_app/features/notification/notification_injection.dart';
 import 'package:workorder_company_app/features/positions/positions_injections.dart';
 import 'package:workorder_company_app/features/services/services_injection.dart';
+import 'package:workorder_company_app/features/submissions/submissions_injection.dart';
 import 'package:workorder_company_app/features/work_order/work_order_injection.dart';
 import 'package:workorder_company_app/features/work_report/work_report_injection.dart';
 
@@ -22,6 +23,7 @@ Future<void> init() async {
   /// Core
   sl.registerLazySingleton<TokenStorage>(() => TokenStorage());
   sl.registerLazySingleton<ApiClient>(() => DioApiClient(tokenStorage: sl()));
+  await initSubmissionsFeature();
 
   /// General Feature
   await initAuthFeature();

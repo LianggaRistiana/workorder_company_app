@@ -17,4 +17,5 @@ class FieldDataDraft {
   FieldDataEntity toEntity() {
     return FieldDataEntity(order: order, value: value);
   }
+
 }

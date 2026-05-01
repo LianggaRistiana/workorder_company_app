@@ -1,53 +1,88 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:workorder_company_app/features/submissions/presentation/cubit/file_upload_progress_cubit.dart';
+import 'package:workorder_company_app/features/submissions/presentation/cubit/file_upload_progress_state.dart';
 
+// Todo : Remove this later
 class UploadLoadingState extends StatelessWidget {
   const UploadLoadingState({super.key});
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<FileUploadProgressCubit, FileUploadProgressState>(
+      buildWhen: (prev, curr) => prev.tasks != curr.tasks,
+      builder: (context, state) {
+        if (state.tasks.isEmpty) {
+          return const SizedBox.shrink();
+        }
+
+        return _buildLoadingIndicator(context, state);
+      },
+    );
+  }
+
+  Widget _buildLoadingIndicator(
+    BuildContext context,
+    FileUploadProgressState state,
+  ) {
+    final double progress = state.totalProgress.clamp(0, 1);
+    final isDone = state.isAllDone;
+    final hasError = state.hasError;
+
     return Container(
-      padding: const EdgeInsets.all(4),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(50),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           CircleAvatar(
             radius: 12,
             backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-            child: Container(
+            child: Padding(
               padding: const EdgeInsets.all(4),
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-                valueColor: AlwaysStoppedAnimation(
-                  Theme.of(context).colorScheme.primary,
-                ),
-              ),
+              child: _buildIndicator(context, progress, isDone, hasError),
             ),
           ),
-          SizedBox(
-            width: 8,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'Menguggah',
-                style: Theme.of(context).textTheme.titleSmall,
-                textAlign: TextAlign.start,
-              ),
-              Text(
-                '1 dari 3 Berkas',
-                style: Theme.of(context).textTheme.labelMedium,
-                textAlign: TextAlign.start,
-              ),
-            ],
+          const SizedBox(width: 8),
+          Text(
+            "${state.uploadState} ${state.progress}",
+            style: Theme.of(context).textTheme.titleSmall,
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildIndicator(
+    BuildContext context,
+    double progress,
+    bool isDone,
+    bool hasError,
+  ) {
+    if (hasError) {
+      return Icon(
+        Icons.error,
+        size: 16,
+        color: Theme.of(context).colorScheme.error,
+      );
+    }
+
+    if (isDone) {
+      return Icon(
+        Icons.check,
+        size: 16,
+        color: Theme.of(context).colorScheme.primary,
+      );
+    }
+
+    return CircularProgressIndicator(
+      value: progress == 0 ? null : progress,
+      strokeWidth: 2,
+      valueColor: AlwaysStoppedAnimation(
+        Theme.of(context).colorScheme.primary,
       ),
     );
   }
