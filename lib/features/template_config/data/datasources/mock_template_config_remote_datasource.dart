@@ -51,7 +51,7 @@ class MockTemplateConfigRemoteDatasourceImpl implements TemplateConfigRemoteData
         'serviceRequestConfig': {
           'intakeForm': _dummyFormJson,
           'reviewForm': _dummyFormJson,
-          'serviceRequestApprovalAccessType': 'public',
+          'serviceRequestApprovalAccessType': 'auto',
           'reviewNeed': false,
         },
         'workOrdersConfig': [
@@ -59,8 +59,8 @@ class MockTemplateConfigRemoteDatasourceImpl implements TemplateConfigRemoteData
             'workOrderForm': _dummyFormJson,
             'workReportForm': _dummyFormJson,
             'positionsOnDuty': _dummyPositionJson,
-            'workOrderApprovalAccessType': 'public',
-            'workReportApprovalAccessType': 'public',
+            'workOrderApprovalAccessType': 'auto',
+            'workReportApprovalAccessType': 'auto',
             'minStaff': 1,
             'maxStaff': 5,
           }

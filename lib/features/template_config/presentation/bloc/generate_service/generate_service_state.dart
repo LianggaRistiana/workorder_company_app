@@ -10,6 +10,7 @@ class GenerateServiceState extends Equatable {
   final List<ServiceEntity>? generatedServices;
   final String? errorMessage;
 
+  bool get isLoading => status == GenerateServiceStatus.loading;
   bool get isSuccess => status == GenerateServiceStatus.success;
 
   const GenerateServiceState({

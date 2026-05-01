@@ -11,6 +11,9 @@ class GenerateServiceCubit extends Cubit<GenerateServiceState> {
   }) : super(GenerateServiceState.initial());
 
   Future<void> generateServices() async {
+    if (state.isLoading) {
+      return;
+    }
     emit(state.copyWith(status: GenerateServiceStatus.loading));
     final result = await generateServiceUsecase(state.selectedDraft);
     result.fold(
@@ -26,6 +29,9 @@ class GenerateServiceCubit extends Cubit<GenerateServiceState> {
   }
 
   Future<void> addSelectedTemplate(ServiceTemplateEntity template) async {
+    if (state.isLoading) {
+      return;
+    }
     emit(state.copyWith(
       selectedDraft: state.selectedDraft.copyWith(
         selectedServiceTemplate: [
@@ -37,6 +43,9 @@ class GenerateServiceCubit extends Cubit<GenerateServiceState> {
   }
 
   Future<void> removeSelectedTemplate(ServiceTemplateEntity template) async {
+    if (state.isLoading) {
+      return;
+    }
     emit(state.copyWith(
       selectedDraft: state.selectedDraft.copyWith(
         selectedServiceTemplate: state.selectedDraft.selectedServiceTemplate
@@ -47,6 +56,9 @@ class GenerateServiceCubit extends Cubit<GenerateServiceState> {
   }
 
   Future<void> clearSelectedTemplates() async {
+    if (state.isLoading) {
+      return;
+    }
     emit(state.copyWith(
       selectedDraft: state.selectedDraft.copyWith(
         selectedServiceTemplate: [],

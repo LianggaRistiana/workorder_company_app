@@ -7,13 +7,15 @@ import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/template_config/domain/entities/service_template_entity.dart';
 import 'package:workorder_company_app/features/template_config/presentation/bloc/generate_service/generate_service_cubit.dart';
+import 'package:workorder_company_app/features/template_config/presentation/bloc/generate_service/generate_service_state.dart';
 import 'package:workorder_company_app/features/template_config/presentation/bloc/service_template_list/service_template_list_cubit.dart';
 import 'package:workorder_company_app/features/template_config/presentation/bloc/service_template_list/service_template_list_state.dart';
-import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
+import 'package:workorder_company_app/features/template_config/presentation/listener/service_template_listener.dart';
 import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
 import 'package:workorder_company_app/shared/widgets/information_block.dart';
 import 'package:workorder_company_app/shared/widgets/list_page_scafold.dart';
+import 'package:workorder_company_app/shared/widgets/loading_state_inline.dart';
 
 class ServiceTemplatesPage extends StatelessWidget {
   final String companyTypeId;
@@ -32,83 +34,104 @@ class ServiceTemplatesPage extends StatelessWidget {
         ),
         BlocProvider(create: (_) => sl<GenerateServiceCubit>()),
       ],
-      child: BlocConsumer<ServiceTemplateListCubit, ServiceTemplateListState>(
-          listener: (context, state) {
-        if (state.status == ServiceTemplateListStatus.error) {
-          context.showError(
-              state.errorMessage ?? 'Terjadi kesalahan saat memuat data');
-        }
-      }, builder: (context, state) {
-        final selectedList =
-            context.watch<GenerateServiceCubit>().state.selectedDraft;
+      child: ServiceTemplateListener(
+        child: BlocBuilder<ServiceTemplateListCubit, ServiceTemplateListState>(
+            builder: (context, state) {
+          final selectedList =
+              context.watch<GenerateServiceCubit>().state.selectedDraft;
 
-        return ListPageScaffold<ServiceTemplateEntity>(
-            title: "Pilih layanan",
-            header: Padding(
-              padding: const EdgeInsets.only(
-                left: AppSpacing.md,
-                right: AppSpacing.md,
-                bottom: AppSpacing.sm,
-              ),
-              child: InformationBlock.info(
-                  "Klik dan tahan untuk melihat detail informasi"),
-            ),
-            isLoading: state.isLoading,
-            items: state.serviceTemplates ?? [],
-            onRefresh: () async => unawaited(
-                context.read<ServiceTemplateListCubit>().fetchServiceTemplates(
-                      companyTypeId,
-                    )),
-            itemBuilder: (item) {
-              final isSelected =
-                  selectedList.selectedServiceTemplate.contains(item);
-              return ClickableCustomCard(
-                borderColor:
-                    isSelected ? Theme.of(context).colorScheme.primary : null,
-                margin: EdgeInsets.only(
+          return ListPageScaffold<ServiceTemplateEntity>(
+              title: "Pilih layanan",
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.centerFloat,
+              floatingActionButton:
+                  BlocBuilder<GenerateServiceCubit, GenerateServiceState>(
+                      builder: (context, state) {
+                bool isLoading = state.isLoading;
+                return AnimatedSwitcher(
+                  duration: Duration(
+                    milliseconds: 200,
+                  ),
+                  child: state.selectedDraft.selectedServiceTemplate.isNotEmpty
+                      ? isLoading
+                          ? LoadingStateInline()
+                          : FloatingActionButton.extended(
+                              icon: Icon(AppIcon.add),
+                              label: Text("Buat Layanan"),
+                              onPressed: () => context
+                                  .read<GenerateServiceCubit>()
+                                  .generateServices(),
+                            )
+                      : SizedBox.shrink(),
+                );
+              }),
+              header: Padding(
+                padding: const EdgeInsets.only(
                   left: AppSpacing.md,
                   right: AppSpacing.md,
                   bottom: AppSpacing.sm,
                 ),
-                key: Key(item.id),
-                onTap: () {
-                  isSelected
-                      ? context
-                          .read<GenerateServiceCubit>()
-                          .removeSelectedTemplate(item)
-                      : context
-                          .read<GenerateServiceCubit>()
-                          .addSelectedTemplate(item);
-                },
-                onLongPress: () {},
-                child: Row(children: [
-                  IconBox(
-                    isDisabled: !isSelected,
-                    icon: AppIcon.service,
+                child: InformationBlock.info(
+                    "Klik dan tahan untuk melihat detail informasi"),
+              ),
+              isLoading: state.isLoading,
+              items: state.serviceTemplates ?? [],
+              onRefresh: () async => unawaited(context
+                  .read<ServiceTemplateListCubit>()
+                  .fetchServiceTemplates(
+                    companyTypeId,
+                  )),
+              itemBuilder: (item) {
+                final isSelected =
+                    selectedList.selectedServiceTemplate.contains(item);
+                return ClickableCustomCard(
+                  borderColor:
+                      isSelected ? Theme.of(context).colorScheme.primary : null,
+                  margin: EdgeInsets.only(
+                    left: AppSpacing.md,
+                    right: AppSpacing.md,
+                    bottom: AppSpacing.sm,
                   ),
-                  const SizedBox(width: AppSpacing.sm),
-                  Expanded(
-                      child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        item.title,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        item.desc,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ))
-                ]),
-              );
-            });
-      }),
+                  key: Key(item.id),
+                  onTap: () {
+                    isSelected
+                        ? context
+                            .read<GenerateServiceCubit>()
+                            .removeSelectedTemplate(item)
+                        : context
+                            .read<GenerateServiceCubit>()
+                            .addSelectedTemplate(item);
+                  },
+                  onLongPress: () {},
+                  child: Row(children: [
+                    IconBox(
+                      isDisabled: !isSelected,
+                      icon: AppIcon.service,
+                    ),
+                    const SizedBox(width: AppSpacing.sm),
+                    Expanded(
+                        child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          item.title,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          item.desc,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ))
+                  ]),
+                );
+              });
+        }),
+      ),
     );
   }
 }

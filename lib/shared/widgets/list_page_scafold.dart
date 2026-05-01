@@ -16,6 +16,7 @@ class ListPageScaffold<T> extends StatelessWidget {
   final Widget Function(T item) itemBuilder;
 
   final Widget? floatingActionButton;
+  final FloatingActionButtonLocation? floatingActionButtonLocation;
   final PreferredSizeWidget? bottomAppBar;
   final Widget? header;
   final List<Widget>? actions;
@@ -30,6 +31,7 @@ class ListPageScaffold<T> extends StatelessWidget {
     required this.items,
     required this.onRefresh,
     required this.itemBuilder,
+    this.floatingActionButtonLocation,
     this.errorMessage,
     this.floatingActionButton,
     this.bottomAppBar,
@@ -50,6 +52,7 @@ class ListPageScaffold<T> extends StatelessWidget {
         actions: actions,
         bottom: bottomAppBar,
       ),
+      floatingActionButtonLocation: floatingActionButtonLocation,
       floatingActionButtonAnimator: FloatingActionButtonAnimator.noAnimation,
       floatingActionButton: floatingActionButton,
       body: SafeArea(
