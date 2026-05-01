@@ -5,6 +5,7 @@ import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/option_entity.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:intl/intl.dart';
+import 'package:workorder_company_app/shared/widgets/smart_shimmer.dart';
 
 class FilledFormView extends StatelessWidget {
   final FilledFormEntity filledForm;
@@ -123,9 +124,7 @@ class FilledFormView extends StatelessWidget {
                   loadingBuilder: (context, child, loadingProgress) {
                     if (loadingProgress == null) return child;
 
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
+                    return const SmartShimmer();
                   },
                   errorBuilder: (_, __, ___) {
                     return const Center(

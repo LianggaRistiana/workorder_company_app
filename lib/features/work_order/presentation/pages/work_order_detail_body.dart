@@ -51,6 +51,20 @@ class WorkOrderDetailBody extends StatelessWidget {
   List<Widget> _leftChildren(BuildContext context) {
     return [
       WorkOrderPropertyView.fullView(workOrder: workOrder),
+      if (workOrder.status.isReportable) ...[
+        HorizontalButton(
+          title: "Laporan Kerja",
+          leadingIcon: AppIcon.workReport,
+          description: "Lihat hasil pekerjaan oleh pegawai bertugas",
+          onTap: () {
+            // OPTIMIZE : refetch if there is any update on report
+            context.push(
+              AppRoutes.workReport,
+              extra: workOrder,
+            );
+          },
+        ),
+      ], // TODO [API REQUIRED] : Work Report need Review meta data
       Row(
         children: [
           SectionTitle(
@@ -154,19 +168,6 @@ class WorkOrderDetailBody extends StatelessWidget {
           WorkOrderAuthorizer(workOrder: workOrder, capabilities: capabilities)
               .fillWorkOrder),
       const SizedBox(height: AppSpacing.lg),
-      if (workOrder.status.isReportable)
-        HorizontalButton(
-          title: "Laporan Kerja",
-          leadingIcon: AppIcon.workReport,
-          description: "Lihat hasil pekerjaan oleh pegawai bertugas",
-          onTap: () {
-            // OPTIMIZE : refetch if there is any update on report
-            context.push(
-              AppRoutes.workReport,
-              extra: workOrder,
-            );
-          },
-        ),
       CancelWorkOrderButton(
         workOrder: workOrder,
         capabilities: capabilities,

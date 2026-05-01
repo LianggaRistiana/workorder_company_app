@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/field_entity.dart';
 import 'package:workorder_company_app/features/submissions/domain/entities/media_item.dart';
 import 'package:workorder_company_app/shared/widgets/dashed_button.dart';
+import 'package:workorder_company_app/shared/widgets/smart_shimmer.dart';
 
 class ImageFieldWidget extends StatefulWidget {
   final FieldEntity field;
@@ -82,9 +83,7 @@ class _ImageFieldWidgetState extends State<ImageFieldWidget> {
                     loadingBuilder: (context, child, loadingProgress) {
                       if (loadingProgress == null) return child;
 
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
+                      return const SmartShimmer();
                     },
                     errorBuilder: (_, __, ___) {
                       return const Center(
@@ -135,12 +134,9 @@ class _ImageFieldWidgetState extends State<ImageFieldWidget> {
         isNetwork: false,
       ),
     );
-
-    debugPrint("Picked image: ${picked.path}");
   }
 
   void _clearImage() {
-    debugPrint("Clear image");
     _handleChanged(null);
   }
 
@@ -158,7 +154,7 @@ class _ImageFieldWidgetState extends State<ImageFieldWidget> {
               children: [
                 ListTile(
                   leading: const Icon(Icons.camera_alt),
-                  title: const Text("Camera"),
+                  title: const Text("Kamera"),
                   onTap: () {
                     Navigator.pop(context);
                     _pickImage(ImageSource.camera);
@@ -166,7 +162,7 @@ class _ImageFieldWidgetState extends State<ImageFieldWidget> {
                 ),
                 ListTile(
                   leading: const Icon(Icons.photo_library),
-                  title: const Text("Gallery"),
+                  title: const Text("Galeri"),
                   onTap: () {
                     Navigator.pop(context);
                     _pickImage(ImageSource.gallery);
