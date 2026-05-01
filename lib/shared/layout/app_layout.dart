@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/features/auth/presentation/bloc/auth_bloc.dart';
-// import 'package:workorder_company_app/features/submissions/presentation/widgets/upload_loading_state.dart';
 import 'package:workorder_company_app/shared/layout/authenticated_bloc_provider.dart';
 import 'package:workorder_company_app/shared/layout/general_listener.dart';
 import 'package:workorder_company_app/shared/layout/navigation/app_navigation_drawer.dart';
@@ -55,6 +54,7 @@ class AppLayout extends StatelessWidget {
           drawer: isMainPage && isLandscape
               ? AppNavigationDrawer(role: role)
               : null,
+          // OPTIMIZE : currently there is no global UI for loading state since there is synchronized process for each submission
           // floatingActionButton: UploadLoadingState(),
           // floatingActionButtonLocation:
           //     FloatingActionButtonLocation.centerFloat,
