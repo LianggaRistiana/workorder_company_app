@@ -8,6 +8,15 @@ class SelectedServiceTemplateDraft extends Equatable {
     required this.selectedServiceTemplate,
   });
 
+  SelectedServiceTemplateDraft copyWith({
+    List<ServiceTemplateEntity>? selectedServiceTemplate,
+  }) {
+    return SelectedServiceTemplateDraft(
+      selectedServiceTemplate:
+          selectedServiceTemplate ?? this.selectedServiceTemplate,
+    );
+  }
+
   @override
   List<Object?> get props => [
         selectedServiceTemplate,
