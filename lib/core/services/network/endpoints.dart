@@ -90,6 +90,12 @@ class Endpoints {
 
   // File Upload
   static const String fileUpload = '/files';
+
+  // Template config
+  static const String companyType = '/template/company-types';
+  static const String serviceTemplates = '/template/company-type/:id/services';
+  static const String serviceTemplatePreview = '/template/services/:id';
+  static const String generateServices = '/template/services/generate';
 }
 
 extension EndpointIdExtension on String {
