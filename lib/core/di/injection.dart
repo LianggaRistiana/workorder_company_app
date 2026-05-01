@@ -13,6 +13,7 @@ import 'package:workorder_company_app/features/notification/notification_injecti
 import 'package:workorder_company_app/features/positions/positions_injections.dart';
 import 'package:workorder_company_app/features/services/services_injection.dart';
 import 'package:workorder_company_app/features/submissions/submissions_injection.dart';
+import 'package:workorder_company_app/features/template_config/template_config_injection.dart';
 import 'package:workorder_company_app/features/work_order/work_order_injection.dart';
 import 'package:workorder_company_app/features/work_report/work_report_injection.dart';
 
@@ -46,6 +47,9 @@ Future<void> init() async {
   await initServiceRequestFeature();
   await initWorkOrderFeature();
   await initWorkReportFeature();
+
+  /// Template feature
+  await initTemplateConfigFeature();
 
   // Cache
   await initCacheService();
