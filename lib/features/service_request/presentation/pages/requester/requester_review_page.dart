@@ -9,6 +9,7 @@ import 'package:workorder_company_app/features/service_request/presentation/stat
 import 'package:workorder_company_app/features/service_request/presentation/state/requester/submit_review_form/requester_submit_review_form_state.dart';
 import 'package:workorder_company_app/features/service_request/presentation/widgets/service_request_property_view.dart';
 import 'package:workorder_company_app/features/submissions/presentation/coordinator/form_renderer_coordinator.dart';
+import 'package:workorder_company_app/features/submissions/presentation/cubit/file_upload_progress_cubit.dart';
 import 'package:workorder_company_app/features/submissions/presentation/widgets/form_renderer.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/adaptive_split_column.dart';
@@ -59,17 +60,10 @@ class _RequesterReviewPageState extends State<RequesterReviewPage> {
           appBar: AppBar(),
           bottomNavigationBar: Padding(
             padding: const EdgeInsets.all(AppSpacing.md),
-            child: ButtonWithLoadingState(
-                icon: AppIcon.send,
-                onPressed: () {
-                  context
-                      .read<RequesterSubmitReviewFormCubit>()
-                      .submitReviewForm(widget.request.id, coordinator.draft);
-                },
-                isLoading:
-                    state.status == RequesterSubmitReviewFormStatus.loading,
-                label: "Kirim"),
-          ).hideOnLargeScreen(),
+            child: _buildSubmitButton(context,
+                    state.status == RequesterSubmitReviewFormStatus.loading)
+                .hideOnLargeScreen(),
+          ),
           body: SafeArea(
             child: AdaptiveSplitColumn(leftChildren: [
               ServiceRequestPropertyView(serviceRequest: widget.request),
@@ -80,17 +74,8 @@ class _RequesterReviewPageState extends State<RequesterReviewPage> {
                   coordinator: coordinator,
                 ),
                 const SizedBox(height: 16),
-                ButtonWithLoadingState(
-                        icon: AppIcon.send,
-                        onPressed: () {
-                          context
-                              .read<RequesterSubmitReviewFormCubit>()
-                              .submitReviewForm(
-                                  widget.request.id, coordinator.draft);
-                        },
-                        isLoading: state.status ==
-                            RequesterSubmitReviewFormStatus.loading,
-                        label: "Kirim")
+                _buildSubmitButton(context,
+                        state.status == RequesterSubmitReviewFormStatus.loading)
                     .hideOnSmallScreen()
               ] else ...[
                 const SizedBox.shrink(),
@@ -101,5 +86,21 @@ class _RequesterReviewPageState extends State<RequesterReviewPage> {
         ),
       ),
     );
+  }
+
+  Widget _buildSubmitButton(BuildContext context, bool isLoading) {
+    return ButtonWithLoadingState(
+        icon: AppIcon.send,
+        progress: context.watch<FileUploadProgressCubit>().state.totalProgress,
+        loadingLabel:
+            context.watch<FileUploadProgressCubit>().state.bottonMessage ??
+                "Menyimpan...",
+        onPressed: () {
+          context
+              .read<RequesterSubmitReviewFormCubit>()
+              .submitReviewForm(widget.request.id, coordinator.draft);
+        },
+        isLoading: isLoading,
+        label: "Kirim");
   }
 }

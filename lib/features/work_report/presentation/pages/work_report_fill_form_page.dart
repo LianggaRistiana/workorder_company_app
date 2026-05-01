@@ -6,6 +6,7 @@ import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/filled_form_with_history_entity.dart';
 import 'package:workorder_company_app/features/submissions/presentation/coordinator/form_renderer_coordinator.dart';
+import 'package:workorder_company_app/features/submissions/presentation/cubit/file_upload_progress_cubit.dart';
 import 'package:workorder_company_app/features/submissions/presentation/widgets/form_renderer.dart';
 import 'package:workorder_company_app/features/work_report/domain/entities/work_report_entity.dart';
 import 'package:workorder_company_app/features/work_report/presentation/state/submit/submit_work_report_submission_cubit.dart';
@@ -56,24 +57,12 @@ class _WorkReportFillFormPageState extends State<WorkReportFillFormPage> {
             child: Scaffold(
           appBar: AppBar(),
           bottomNavigationBar: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppSpacing.md,
-            ),
-            child: ButtonWithLoadingState(
-              onPressed: () {
-                context
-                    .read<SubmitWorkReportSubmissionCubit>()
-                    .submitWorkReportSubmission(
-                      widget.workReport,
-                      coordinator.draft,
-                    );
-              },
-              isLoading:
-                  state.status == SubmitWorkReportSubmissionStatus.loading,
-              icon: AppIcon.submit,
-              label: "Simpan",
-            ),
-          ).hideOnLargeScreen(),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.md,
+                  ),
+                  child: _buildSubmitbutton(context,
+                      state.status == SubmitWorkReportSubmissionStatus.loading))
+              .hideOnLargeScreen(),
           body: AdaptiveSplitColumn(
             leftChildren: [
               if (!widget.workReport.status.isFinalReport) ...[
@@ -81,20 +70,11 @@ class _WorkReportFillFormPageState extends State<WorkReportFillFormPage> {
                     "Selama belum difinalisasi, laporan merepresentasikan progres pengerjaan. Setelah difinalisasi, laporan bersifat final dan tidak dapat diubah."),
                 const SizedBox(height: AppSpacing.md),
                 WorkReportPropertyView(report: widget.workReport),
-                ButtonWithLoadingState(
-                  onPressed: () {
-                    context
-                        .read<SubmitWorkReportSubmissionCubit>()
-                        .submitWorkReportSubmission(
-                          widget.workReport,
-                          coordinator.draft,
-                        );
-                  },
-                  isLoading:
-                      state.status == SubmitWorkReportSubmissionStatus.loading,
-                  icon: AppIcon.submit,
-                  label: "Simpan",
-                ).hideOnSmallScreen()
+                _buildSubmitbutton(
+                        context,
+                        state.status ==
+                            SubmitWorkReportSubmissionStatus.loading)
+                    .hideOnSmallScreen()
               ]
             ],
             rightChildren: [
@@ -104,6 +84,26 @@ class _WorkReportFillFormPageState extends State<WorkReportFillFormPage> {
           ),
         ));
       }),
+    );
+  }
+
+  Widget _buildSubmitbutton(BuildContext context, bool isLoading) {
+    return ButtonWithLoadingState(
+      onPressed: () {
+        context
+            .read<SubmitWorkReportSubmissionCubit>()
+            .submitWorkReportSubmission(
+              widget.workReport,
+              coordinator.draft,
+            );
+      },
+      isLoading: isLoading,
+      icon: AppIcon.submit,
+      label: "Simpan",
+      progress: context.watch<FileUploadProgressCubit>().state.totalProgress,
+      loadingLabel:
+          context.watch<FileUploadProgressCubit>().state.bottonMessage ??
+              "Menyimpan...",
     );
   }
 }

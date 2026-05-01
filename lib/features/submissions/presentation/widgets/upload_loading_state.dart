@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/features/submissions/presentation/cubit/file_upload_progress_cubit.dart';
 import 'package:workorder_company_app/features/submissions/presentation/cubit/file_upload_progress_state.dart';
 
-// Todo : Remove this later
+// TODO : Remove this later if there is no global state needed
 class UploadLoadingState extends StatelessWidget {
   const UploadLoadingState({super.key});
 
@@ -25,7 +25,7 @@ class UploadLoadingState extends StatelessWidget {
     BuildContext context,
     FileUploadProgressState state,
   ) {
-    final double progress = state.totalProgress.clamp(0, 1);
+    final progress = state.totalProgress;
     final isDone = state.isAllDone;
     final hasError = state.hasError;
 
@@ -48,7 +48,7 @@ class UploadLoadingState extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           Text(
-            "${state.uploadState} ${state.progress}",
+            "${state.uploadState} ${state.progressMessage}",
             style: Theme.of(context).textTheme.titleSmall,
           ),
         ],
@@ -58,7 +58,7 @@ class UploadLoadingState extends StatelessWidget {
 
   Widget _buildIndicator(
     BuildContext context,
-    double progress,
+    double? progress,
     bool isDone,
     bool hasError,
   ) {

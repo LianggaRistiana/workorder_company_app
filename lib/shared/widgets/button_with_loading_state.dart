@@ -8,6 +8,7 @@ class ButtonWithLoadingState extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
   final bool fullWidth;
   final String loadingLabel;
+  final double? progress;
 
   const ButtonWithLoadingState({
     super.key,
@@ -18,6 +19,7 @@ class ButtonWithLoadingState extends StatelessWidget {
     this.padding,
     this.fullWidth = true,
     this.loadingLabel = "Memuat...",
+    this.progress,
   });
 
   @override
@@ -43,6 +45,7 @@ class ButtonWithLoadingState extends StatelessWidget {
                     height: 18,
                     width: 18,
                     child: CircularProgressIndicator(
+                      value: progress,
                       strokeWidth: 2,
                       valueColor: AlwaysStoppedAnimation(
                         colorScheme.primary,

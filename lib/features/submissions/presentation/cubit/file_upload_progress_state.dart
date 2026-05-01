@@ -17,9 +17,11 @@ class FileUploadProgressState {
           ? 'Selesai'
           : 'Mengunggah';
 
-  String? get bottonMessage => isInProgress ? "$uploadState $progress" : null;
+  // TODO : Fix this typo
+  String? get bottonMessage =>
+      isInProgress ? "$progressMessage terunggah" : null;
 
-  String get progress => "$doneCount dari $taskCount berkas";
+  String get progressMessage => "$doneCount dari $taskCount berkas";
 
   int get taskCount => tasks.length;
 
@@ -39,11 +41,16 @@ class FileUploadProgressState {
   // 📈 PROGRESS
   // =========================
 
-  double get totalProgress {
-    if (tasks.isEmpty) return 0;
+  double? get totalProgress {
+    if (tasks.isEmpty) return null;
 
-    final sum = tasks.fold(0.0, (a, b) => a + b.progress);
-    return sum / tasks.length;
+    if (tasks.length == 1) {
+      return tasks.first.progress.clamp(0.0, 1.0);
+    }
+
+    final completed = tasks.where((t) => t.isDone && t.error == null).length;
+
+    return completed / tasks.length;
   }
 
   // =========================

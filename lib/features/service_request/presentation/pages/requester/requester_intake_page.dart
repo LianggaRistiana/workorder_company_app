@@ -93,6 +93,7 @@ class _RequesterIntakePageState extends State<RequesterIntakePage> {
     );
   }
 
+  // FIXME  : When it rotate IT WILL LOSE THE LOADING STATE
   Widget _buildSubmitButton(
       BuildContext context, SubmissionDraft draft, String serviceId) {
     return BlocProvider(
@@ -111,11 +112,15 @@ class _RequesterIntakePageState extends State<RequesterIntakePage> {
           },
           builder: (context, state) => ButtonWithLoadingState(
                 icon: Icons.send,
+                progress: context
+                    .watch<FileUploadProgressCubit>()
+                    .state
+                    .totalProgress,
                 loadingLabel: context
                         .watch<FileUploadProgressCubit>()
                         .state
                         .bottonMessage ??
-                    "Mengunggah",
+                    "Menyimpan...",
                 isLoading:
                     state.status == RequesterSubmitIntakeFormStatus.loading,
                 onPressed: () {
