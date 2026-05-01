@@ -8,6 +8,7 @@ class ServiceTemplateListState extends Equatable {
   final List<ServiceTemplateEntity>? serviceTemplates;
   final String? errorMessage;
 
+  bool get isLoading => status == ServiceTemplateListStatus.loading;
   bool get isSuccess => status == ServiceTemplateListStatus.success;
 
   const ServiceTemplateListState({

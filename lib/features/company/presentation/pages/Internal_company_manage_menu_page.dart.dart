@@ -69,7 +69,9 @@ class _InternalCompanyManageMenuPageState
         title: "Konfigurasi Cepat",
         description:
             "Konfigurasi Departemen, Formulir, Layanan dengan memilih template yang tersedia",
-        onTap: () {},
+        onTap: () {
+          context.push(AppRoutes.templateCompanyType);
+        },
       ),
       const SizedBox(height: 12),
       MenuGrid(

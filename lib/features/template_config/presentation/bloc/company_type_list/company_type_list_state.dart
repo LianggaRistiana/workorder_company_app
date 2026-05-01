@@ -8,6 +8,7 @@ class CompanyTypeListState extends Equatable {
   final List<CompanyTypeEntity>? companyTypes;
   final String? errorMessage;
 
+  bool get isLoading => status == CompanyTypeListStatus.loading;
   bool get isSuccess => status == CompanyTypeListStatus.success;
 
   const CompanyTypeListState({
