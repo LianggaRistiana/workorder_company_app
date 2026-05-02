@@ -61,7 +61,6 @@ class FormPreviewPage extends StatelessWidget {
               sliver: SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
-                    debugPrint("BUILD ITEM: $index");
                     final field = form.fields![index];
                     return FormFieldCard(field: field);
                   },
