@@ -75,9 +75,11 @@ class AppRoutes {
   // Notification
   static const notifications = '/notifications';
 
-  // Template Config 
+  // Template Config
   static const templateCompanyType = '/template/company-type';
   static const templateService = '/template/company-type/:id/services';
+  static const templateServicePreview = '/template/services/:id/preview';
+  static const templateFormPreview = '/template/form/preview';
 
   // TODO : Remove this later, route for lab features
   static const String lab = '/lab-feature';

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
@@ -11,6 +12,8 @@ import 'package:workorder_company_app/features/template_config/presentation/bloc
 import 'package:workorder_company_app/features/template_config/presentation/bloc/service_template_list/service_template_list_cubit.dart';
 import 'package:workorder_company_app/features/template_config/presentation/bloc/service_template_list/service_template_list_state.dart';
 import 'package:workorder_company_app/features/template_config/presentation/listener/service_template_listener.dart';
+import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
 import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
 import 'package:workorder_company_app/shared/widgets/information_block.dart';
@@ -102,7 +105,10 @@ class ServiceTemplatesPage extends StatelessWidget {
                             .read<GenerateServiceCubit>()
                             .addSelectedTemplate(item);
                   },
-                  onLongPress: () {},
+                  onLongPress: () {
+                    context
+                        .push(AppRoutes.templateServicePreview.fillId(item.id));
+                  },
                   child: Row(children: [
                     IconBox(
                       isDisabled: !isSelected,

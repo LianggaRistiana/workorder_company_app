@@ -8,31 +8,39 @@ import 'package:workorder_company_app/features/template_config/data/model/select
 import 'package:workorder_company_app/features/template_config/data/model/service_template_model.dart';
 import 'package:workorder_company_app/features/template_config/data/model/service_template_preview_model.dart';
 
-class MockTemplateConfigRemoteDatasourceImpl implements TemplateConfigRemoteDatasource {
+class MockTemplateConfigRemoteDatasourceImpl
+    implements TemplateConfigRemoteDatasource {
   bool shouldThrowError = false;
 
-  Map<String, dynamic> get _dummyOptionJson => {
-        'key': 'opt-1',
-        'value': 'Option 1',
-      };
+  static Map<String, dynamic> generateDummyField(int i) {
+    return {
+      'order': i,
+      'label': 'Field $i',
+      'type': 'single_select',
+      'required': true,
+      'placeholder': 'Enter value...',
+      'min': 0,
+      'max': 100,
+      'options': List.generate(
+        14,
+        (index) => {
+          'key': 'opt-$index',
+          'value': 'Option $index',
+        },
+      ),
+    };
+  }
 
-  Map<String, dynamic> get _dummyFieldJson => {
-        'order': 1,
-        'label': 'Dummy Field Label',
-        'type': 'text',
-        'required': true,
-        'placeholder': 'Enter value...',
-        'min': 0,
-        'max': 100,
-        'options': [_dummyOptionJson],
-      };
+  List<Map<String, dynamic>> generateFields() {
+    return List.generate(1000, (i) => generateDummyField(i));
+  }
 
   Map<String, dynamic> get _dummyFormJson => {
         '_id': 'form-1',
         'title': 'Dummy Form',
         'formType': 'intake',
         'description': 'This is a fully generated dummy form.',
-        'fields': [_dummyFieldJson],
+        'fields': generateFields(),
       };
 
   Map<String, dynamic> get _dummyPositionJson => {
@@ -85,7 +93,8 @@ class MockTemplateConfigRemoteDatasourceImpl implements TemplateConfigRemoteData
   }
 
   @override
-  ApiFutureList<ServiceTemplateModel> getServiceTemplates(String companyTypeId) async {
+  ApiFutureList<ServiceTemplateModel> getServiceTemplates(
+      String companyTypeId) async {
     await Future.delayed(const Duration(seconds: 1));
     if (shouldThrowError) {
       throw ApiException(500, 'Mock Error fetching service templates');
@@ -109,7 +118,8 @@ class MockTemplateConfigRemoteDatasourceImpl implements TemplateConfigRemoteData
   }
 
   @override
-  ApiFuture<ServiceTemplatePreviewModel> getServiceTemplatePreview(String serviceTemplateId) async {
+  ApiFuture<ServiceTemplatePreviewModel> getServiceTemplatePreview(
+      String serviceTemplateId) async {
     await Future.delayed(const Duration(seconds: 1));
     if (shouldThrowError) {
       throw ApiException(500, 'Mock Error fetching service template preview');
@@ -126,7 +136,8 @@ class MockTemplateConfigRemoteDatasourceImpl implements TemplateConfigRemoteData
   }
 
   @override
-  ApiFutureList<ServiceModel> generateServices(SelectedServiceTemplatePayloadModel payload) async {
+  ApiFutureList<ServiceModel> generateServices(
+      SelectedServiceTemplatePayloadModel payload) async {
     await Future.delayed(const Duration(seconds: 1));
     if (shouldThrowError) {
       throw ApiException(500, 'Mock Error generating services');
@@ -134,9 +145,7 @@ class MockTemplateConfigRemoteDatasourceImpl implements TemplateConfigRemoteData
 
     return ApiResponse(
       message: 'Success',
-      data: [
-        ServiceModel.fromJson(_dummyServiceJson)
-      ],
+      data: [ServiceModel.fromJson(_dummyServiceJson)],
     );
   }
 }

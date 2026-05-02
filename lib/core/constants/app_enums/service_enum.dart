@@ -127,6 +127,11 @@ enum ServiceAccessType {
   String toString() => displayName;
 }
 
+enum FormShowType {
+  previewPage,
+  formDetailPage,
+}
+
 enum ServiceListNextAction {
   serviceDetail,
   createServiceRequest,

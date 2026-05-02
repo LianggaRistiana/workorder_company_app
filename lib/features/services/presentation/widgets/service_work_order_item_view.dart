@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
 import 'package:workorder_company_app/features/services/domain/entities/work_order_config_entity.dart';
@@ -11,14 +12,16 @@ import 'package:workorder_company_app/shared/widgets/property_display.dart';
 
 class ServiceWorkOrderItemView extends StatelessWidget {
   final WorkOrderConfigEntity config;
-  const ServiceWorkOrderItemView({super.key, required this.config});
+  final FormShowType formShowType;
+
+  const ServiceWorkOrderItemView(
+      {super.key, required this.config, required this.formShowType});
 
   @override
   Widget build(BuildContext context) {
     return ClickableCustomCard(
         onTap: () {
           showAppBottomSheet(context,
-              // header: IconBox(icon: Icons.task_outlined),
               footer: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -48,8 +51,9 @@ class ServiceWorkOrderItemView extends StatelessWidget {
                         PropertyItem.widget(
                             label: "Formulir Perintah Kerja",
                             icon: AppIcon.workOrder,
-                            child:
-                                ClickableFormCard(form: config.workOrderForm)),
+                            child: ClickableFormCard(
+                                formShowType: formShowType,
+                                form: config.workOrderForm)),
                         PropertyItem.text(
                             icon: Icons.admin_panel_settings,
                             label: "Hak Persetujuan Perintah Kerja",
@@ -61,7 +65,9 @@ class ServiceWorkOrderItemView extends StatelessWidget {
                         PropertyItem.widget(
                           label: "Formulir Laporan",
                           icon: AppIcon.workReport,
-                          child: ClickableFormCard(form: config.workReportForm),
+                          child: ClickableFormCard(
+                              formShowType: formShowType,
+                              form: config.workReportForm),
                         ),
                         PropertyItem.text(
                             icon: Icons.admin_panel_settings,
@@ -93,7 +99,13 @@ class ServiceWorkOrderItemView extends StatelessWidget {
 
 class ClickableFormCard extends StatelessWidget {
   final FormEntity form;
-  const ClickableFormCard({super.key, required this.form});
+  final FormShowType formShowType;
+
+  const ClickableFormCard({
+    super.key,
+    required this.form,
+    required this.formShowType,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +114,11 @@ class ClickableFormCard extends StatelessWidget {
         child: ClickableCustomCard(
             onTap: () {
               context.pop();
-              context.push(AppRoutes.formsDetail.fillId(form.id));
+              if (formShowType == FormShowType.formDetailPage) {
+                context.push(AppRoutes.formsDetail.fillId(form.id));
+              } else if (formShowType == FormShowType.previewPage) {
+                context.push(AppRoutes.templateFormPreview, extra: form);
+              }
             },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

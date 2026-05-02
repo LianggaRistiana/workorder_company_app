@@ -15,6 +15,7 @@ class AppDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final maxHeight = MediaQuery.of(context).size.height * 0.8;
 
     return Dialog(
       backgroundColor: theme.colorScheme.surface,
@@ -27,8 +28,9 @@ class AppDialog extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
       ),
       child: ConstrainedBox(
-        constraints: const BoxConstraints(
+        constraints: BoxConstraints(
           maxWidth: 500,
+          maxHeight: maxHeight,
         ),
         child: Padding(
           padding: const EdgeInsets.all(16),

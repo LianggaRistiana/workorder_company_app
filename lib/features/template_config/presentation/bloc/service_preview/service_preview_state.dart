@@ -8,6 +8,7 @@ class ServicePreviewState extends Equatable {
   final ServiceTemplatePreviewEntity? servicePreview;
   final String? errorMessage;
 
+  bool get isLoading => status == ServicePreviewStatus.loading;
   bool get isSuccess => status == ServicePreviewStatus.success;
 
   const ServicePreviewState({

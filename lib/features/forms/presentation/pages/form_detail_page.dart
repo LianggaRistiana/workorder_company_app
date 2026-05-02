@@ -7,13 +7,13 @@ import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/detail/form_detail_cubit.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/detail/form_detail_state.dart';
+import 'package:workorder_company_app/features/forms/presentation/pages/form_property_view.dart';
 import 'package:workorder_company_app/features/forms/presentation/widgets/form_field_card.dart';
 import 'package:workorder_company_app/features/helps/presentation/widgets/form_type_tips.dart';
 import 'package:workorder_company_app/features/helps/presentation/widgets/help_button.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/widgets/adaptive_split_column.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
-import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/error_body.dart';
 import 'package:workorder_company_app/shared/widgets/header_of_page.dart';
@@ -119,34 +119,17 @@ class _FormDetailViewState extends State<_FormDetailView> {
   List<Widget> _formMetaData(FormEntity form) {
     return [
       HeaderOfPage(title: form.title, icon: AppIcon.form),
-      const SizedBox(height: 12),
-      CustomCard(
-          child: PropertyDisplay(properties: [
-        PropertyItem.text(
-          label: 'Deskripsi',
-          icon: Icons.info_outline,
-          value: form.description,
-        ),
-        PropertyItem.text(
-          label: 'Tipe Formulir',
-          icon: Icons.category_outlined,
-          value: form.formType.displayName,
-        ),
-        PropertyItem.text(
-          label: 'Jumlah Pertanyaan',
-          icon: Icons.question_mark_outlined,
-          value: form.fields?.length.toString() ?? "-",
-        ),
-      ])),
+      const SizedBox(height: AppSpacing.sm),
+      FormPropertyView(form: form),
       HelpButton(title: "Kenali Tipe Formulir", child: FormTypeTips()),
-      const SizedBox(height: 16),
+      const SizedBox(height: AppSpacing.md),
     ];
   }
 
   List<Widget> _formFields(FormEntity form) {
     return [
       PropertyTitle(label: "Daftar Pertanyaan", icon: Icons.question_mark),
-      const SizedBox(height: 12),
+      const SizedBox(height: AppSpacing.md),
       CustomList(
         items: form.fields ?? [],
         emptyFooterHeight: AppSpacing.lg,
