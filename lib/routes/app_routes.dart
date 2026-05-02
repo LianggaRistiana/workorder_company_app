@@ -81,6 +81,9 @@ class AppRoutes {
   static const templateServicePreview = '/template/services/:id/preview';
   static const templateFormPreview = '/template/form/preview';
 
+  // FAQ
+  static const chatBot = '/chatbot';
+
   // TODO : Remove this later, route for lab features
   static const String lab = '/lab-feature';
 }

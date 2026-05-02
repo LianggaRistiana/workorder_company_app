@@ -178,16 +178,10 @@ class _InternalCompanyManageMenuPageState
                 context.push(AppRoutes.memberships);
               }),
           MenuItem(
-              icon: AppIcon.help,
-              label: "Bantuan",
+              icon: AppIcon.qna,
+              label: "Chat bantuan",
               onTap: () {
-                showAppBottomSheet(context,
-                    content: SizedBox(
-                      height: 200,
-                      child: Center(
-                        child: Text("Fitur ini belum tersedia"),
-                      ),
-                    ));
+                context.push(AppRoutes.chatBot);
               }),
         ],
       ),
