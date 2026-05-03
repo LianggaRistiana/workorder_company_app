@@ -1,52 +1,66 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
+import 'package:workorder_company_app/features/company/domain/entities/company_entity.dart';
+import 'package:workorder_company_app/features/faq/domain/entitties/chat_item_entity.dart';
+import 'package:workorder_company_app/features/faq/presentation/bloc/chat/faq_chat_cubit.dart';
+import 'package:workorder_company_app/features/faq/presentation/bloc/chat/faq_chat_state.dart';
 
-// NOTE:
-// - This is UI-only chatbot screen
-// - NO persistence (no database, no API)
-// - Messages are stored in local state (List)
-// - Replace dummy response with API / AI service later
+class ChatPage extends StatelessWidget {
+  final CompanyEntity company;
 
-class ChatPage extends StatefulWidget {
-  const ChatPage({super.key});
+  const ChatPage({
+    super.key,
+    required this.company,
+  });
 
   @override
-  State<ChatPage> createState() => _ChatPageState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => sl<FaqChatCubit>()..init(company),
+      child: ChatView(
+        company: company,
+      ),
+    );
+  }
 }
 
-class _ChatPageState extends State<ChatPage> {
+class ChatView extends StatefulWidget {
+  final CompanyEntity company;
+
+  const ChatView({
+    super.key,
+    required this.company,
+  });
+
+  @override
+  State<ChatView> createState() => _ChatViewState();
+}
+
+class _ChatViewState extends State<ChatView> {
   final TextEditingController _controller = TextEditingController();
   final ScrollController _scrollController = ScrollController();
 
-  // Temporary in-memory messages (NOT persistent)
-  final List<ChatMessage> _messages = [];
+  @override
+  void initState() {
+    super.initState();
+  }
 
   void _sendMessage() {
     final text = _controller.text.trim();
     if (text.isEmpty) return;
 
-    setState(() {
-      _messages.add(ChatMessage(text: text, isUser: true));
-    });
+    context.read<FaqChatCubit>().askQuestion(widget.company, text);
 
     _controller.clear();
-
-    // Simulate bot reply (replace with API call later)
-    Future.delayed(const Duration(milliseconds: 600), () {
-      setState(() {
-        _messages.add(ChatMessage(
-          text: "This is a dummy response. Connect to backend later.",
-          isUser: false,
-        ));
-      });
-      _scrollToBottom();
-    });
-
     _scrollToBottom();
   }
 
   void _scrollToBottom() {
     Future.delayed(const Duration(milliseconds: 100), () {
+      if (!_scrollController.hasClients) return;
+
       _scrollController.animateTo(
         _scrollController.position.maxScrollExtent,
         duration: const Duration(milliseconds: 300),
@@ -64,23 +78,32 @@ class _ChatPageState extends State<ChatPage> {
       body: Column(
         children: [
           Expanded(
-            child: ListView.builder(
-              controller: _scrollController,
-              padding: const EdgeInsets.all(12),
-              itemCount: _messages.length,
-              itemBuilder: (context, index) {
-                final message = _messages[index];
-                return _MessageBubble(message: message);
+            child: BlocConsumer<FaqChatCubit, FaqChatState>(
+              listener: (context, state) {
+                _scrollToBottom();
+              },
+              builder: (context, state) {
+                final chats = state.roomChat?.chatItems ?? [];
+
+                return ListView.builder(
+                  controller: _scrollController,
+                  padding: const EdgeInsets.all(12),
+                  itemCount: chats.length,
+                  itemBuilder: (context, index) {
+                    final chat = chats[index];
+                    return _MessageBubble(chat: chat);
+                  },
+                );
               },
             ),
           ),
-          _buildInputArea(),
+          _buildInputArea(context),
         ],
       ),
     );
   }
 
-  Widget _buildInputArea() {
+  Widget _buildInputArea(BuildContext context) {
     return SafeArea(
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -104,7 +127,7 @@ class _ChatPageState extends State<ChatPage> {
             ),
             const SizedBox(width: 8),
             IconButton(
-              onPressed: _sendMessage,
+              onPressed: () => _sendMessage(),
               icon: Icon(AppIcon.send),
             ),
           ],
@@ -114,55 +137,75 @@ class _ChatPageState extends State<ChatPage> {
   }
 }
 
-class ChatMessage {
-  final String text;
-  final bool isUser;
-
-  ChatMessage({required this.text, required this.isUser});
-}
-
 class _MessageBubble extends StatelessWidget {
-  final ChatMessage message;
+  final ChatItemEntity chat;
 
-  const _MessageBubble({required this.message});
+  const _MessageBubble({required this.chat});
 
   @override
   Widget build(BuildContext context) {
-    final alignment =
-        message.isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start;
+    Widget content;
 
-    final color = message.isUser
-        ? Theme.of(context).colorScheme.primary
-        : Colors.transparent;
-    final textColor = message.isUser
-        ? Theme.of(context).colorScheme.onPrimary
-        : Theme.of(context).textTheme.bodyLarge!.color;
+    switch (chat.state) {
+      case ChatState.waiting:
+        content = Row(
+          mainAxisSize: MainAxisSize.min,
+          children: const [
+            SizedBox(
+              width: 16,
+              height: 16,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            ),
+            SizedBox(width: 8),
+            Text("Typing..."),
+          ],
+        );
+        break;
+
+      case ChatState.success:
+        content = Text(
+          chat.botResponse ?? "",
+          style: TextStyle(),
+        );
+        break;
+
+      case ChatState.error:
+        content = Text(
+          chat.botResponse ?? "Error",
+          style: TextStyle(color: Colors.red),
+        );
+        break;
+    }
 
     return Column(
-      crossAxisAlignment: alignment,
       children: [
+        /// user message
         Container(
           margin: const EdgeInsets.symmetric(vertical: 4),
           padding: const EdgeInsets.all(12),
           constraints: const BoxConstraints(maxWidth: 280),
           decoration: BoxDecoration(
-            color: color,
+            color: Theme.of(context).colorScheme.primary,
             borderRadius: BorderRadius.circular(16),
           ),
-          child: Row(
-            children: [
-              if (!message.isUser) ...[
-                Icon(Icons.support_agent),
-                const SizedBox(width: 8),
-              ],
-              Expanded(
-                child: Text(
-                  message.text,
-                  style: TextStyle(color: textColor),
-                ),
-              ),
-            ],
+          child: Text(
+            chat.userQuery,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
           ),
+        ),
+
+        /// bot response
+        Container(
+          margin: const EdgeInsets.symmetric(vertical: 4),
+          padding: const EdgeInsets.all(12),
+          constraints: const BoxConstraints(maxWidth: 280),
+          decoration: BoxDecoration(
+            // color: color,
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: content,
         ),
       ],
     );

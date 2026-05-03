@@ -1,10 +1,12 @@
+import 'package:equatable/equatable.dart';
+
 enum ChatState {
   success,
   error,
   waiting,
 }
 
-class ChatItemEntity {
+class ChatItemEntity extends Equatable {
   final String id;
   final String userQuery;
   final String? botResponse;
@@ -46,4 +48,14 @@ class ChatItemEntity {
       responseAt: DateTime.now(),
     );
   }
+
+  @override
+  List<Object?> get props => [
+        id,
+        userQuery,
+        botResponse,
+        state,
+        createdAt,
+        responseAt,
+      ];
 }

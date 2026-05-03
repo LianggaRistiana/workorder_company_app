@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
@@ -8,6 +9,7 @@ import 'package:workorder_company_app/features/company/presentation/bloc/public_
 import 'package:workorder_company_app/features/company/presentation/bloc/public_company_services.dart/public_company_services_cubit.dart';
 import 'package:workorder_company_app/features/company/presentation/widgets/public_services_list.dart';
 import 'package:workorder_company_app/features/memberships/presentation/widgets/subcription_chip.dart';
+import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
@@ -61,7 +63,9 @@ class _View extends StatelessWidget {
           floatingActionButton: state.company == null
               ? null
               : FloatingActionButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.push(AppRoutes.chatBot, extra: state.company);
+                  },
                   child: const Icon(AppIcon.qna),
                 ),
         );

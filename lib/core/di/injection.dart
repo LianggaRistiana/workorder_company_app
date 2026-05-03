@@ -3,6 +3,7 @@ import 'package:workorder_company_app/core/services/cache/cache_injection.dart';
 import 'package:workorder_company_app/core/services/network/api_client.dart';
 import 'package:workorder_company_app/core/services/storage/token_storage.dart';
 import 'package:workorder_company_app/features/auth/auth_injection.dart';
+import 'package:workorder_company_app/features/faq/faq_injection.dart';
 import 'package:workorder_company_app/features/service_request/service_request_injection.dart';
 import 'package:workorder_company_app/features/company/company_injection.dart';
 import 'package:workorder_company_app/features/employees/employees_injection.dart';
@@ -33,6 +34,7 @@ Future<void> init() async {
   /// Company Feature
   await initCompanyFeature();
   await initMembershipsFeature();
+  await initFaqFeature();
 
   /// Human Resource Feature
   await initPositionsFeature();
