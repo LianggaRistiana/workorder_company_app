@@ -5,3 +5,4 @@ export 'package:workorder_company_app/core/constants/app_enums/work_order_enum.d
 export 'package:workorder_company_app/core/constants/app_enums/work_report_enum.dart';
 export 'package:workorder_company_app/core/constants/app_enums/user_enum.dart';
 export 'package:workorder_company_app/core/constants/app_enums/invitation_enum.dart';
+export 'package:workorder_company_app/core/constants/app_enums/faq_enum.dart';
