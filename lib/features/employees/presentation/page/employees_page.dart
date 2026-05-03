@@ -34,7 +34,9 @@ class EmployeesPage extends StatelessWidget {
             items: state.employees,
             loadingMessage: "Memuat pegawai...",
             onRefresh: () async {
-              context.read<EmployeesBloc>().add(GetEmployeesRequested());
+              context
+                  .read<EmployeesBloc>()
+                  .add(GetEmployeesRequested(forceRefresh: true));
             },
             emptyWidget: const EmptyStateWidget(
               icon: Icons.group_off_outlined,

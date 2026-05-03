@@ -112,6 +112,7 @@ class ListPageScaffold<T> extends StatelessWidget {
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
+                      debugPrint("RENEDER ITEM $index");
                       return itemBuilder(items[index]);
                     },
                     childCount: items.length,
