@@ -20,6 +20,7 @@ import 'package:workorder_company_app/shared/widgets/header_of_page.dart';
 import 'package:workorder_company_app/shared/widgets/information_block.dart';
 import 'package:workorder_company_app/shared/widgets/property_display.dart';
 
+// OPTIMIZE : add sliver to support lazy load
 class FormDetailPage extends StatelessWidget {
   final String formId;
   const FormDetailPage({super.key, required this.formId});

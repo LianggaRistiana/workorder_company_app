@@ -113,6 +113,7 @@ class _FieldRangeInfo extends StatelessWidget {
   }
 }
 
+// OPTIMIZE : add feature Toggle to see all option to reduce render time
 class _FieldOptionsSection extends StatelessWidget {
   final FieldEntity field;
 
