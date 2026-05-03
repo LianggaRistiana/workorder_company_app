@@ -103,7 +103,11 @@ class NotificationRepositoryImpl implements NotificationRepository {
   }) async {
     return _cache.fetchList(
       remoteCall: () async {
-        final response = await _remote.getNotificationLogs();
+        final response = await RetryHelper.retryWithJitter(
+          () => _remote.getNotificationLogs(),
+          shouldRetry: RetryPolicy.shouldRetry,
+          maxAttempts: 3,
+        );
         return response.data;
       },
       forceRefresh: forceRefresh,

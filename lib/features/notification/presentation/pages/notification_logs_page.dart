@@ -13,7 +13,6 @@ import 'package:workorder_company_app/features/notification/presentation/bloc/no
 import 'package:workorder_company_app/features/notification/presentation/bloc/notification_log_state.dart';
 import 'package:workorder_company_app/features/notification/presentation/navigation/notification_navigator.dart';
 import 'package:workorder_company_app/features/notification/presentation/ui_mapper.dart/resource_type_icon_mapper.dart';
-import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
@@ -25,13 +24,8 @@ class NotificationLogsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<NotificationLogCubit, NotificationLogState>(
-        listener: (context, state) {
-      if (state.status == NotificationLogStatus.error) {
-        context.showError(state.errorMessage ??
-            "Terjadi kesalahan saat mengambil data notifikasi");
-      }
-    }, builder: (context, state) {
+    return BlocBuilder<NotificationLogCubit, NotificationLogState>(
+        builder: (context, state) {
       return ListPageScaffold(
           title: "Notifikasi",
           header: _NotificationStatusWidget(),
