@@ -96,6 +96,14 @@ class Endpoints {
   static const String serviceTemplates = '/template/company-type/:id/services';
   static const String serviceTemplatePreview = '/template/services/:id';
   static const String generateServices = '/template/services/generate';
+
+  // FAQ
+  static const String askQuestion = '/faq/ask';
+  static const String faqToggleActive = '/faq/toggle-active';
+  static const String faqDocs = '/faq/docs';
+  static const String faqTextDocs = '/faq/text-docs';
+  static const String faqPDfDocs = '/faq/pdf-docs';
+  static const String faqDeleteDocs = '/faq/docs/:id';
 }
 
 extension EndpointIdExtension on String {

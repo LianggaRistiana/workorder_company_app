@@ -9,7 +9,6 @@ abstract class MockFactory<T> {
 class MockApiResponse<T> extends ApiResponse<T> {
   MockApiResponse({required super.message, required super.data});
 
-  /// ✅ Simple mock (tanpa JSON)
   factory MockApiResponse.success(T data) {
     return MockApiResponse<T>(
       message: "Success",
