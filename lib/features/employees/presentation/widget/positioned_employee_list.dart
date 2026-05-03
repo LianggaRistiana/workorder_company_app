@@ -33,6 +33,8 @@ class PositionedEmployeeList extends StatelessWidget {
             isEndAlign: false,
           );
         }
+
+        // OPTIMIZE : Lazy load here
         return CustomList(
             items: state.employees,
             emptyWidget: InformationBlock.empty("Belum ada pegawai"),
