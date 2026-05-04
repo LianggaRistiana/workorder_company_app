@@ -10,8 +10,10 @@ import 'package:workorder_company_app/features/faq/domain/repositories/faq_repos
 import 'package:workorder_company_app/features/faq/domain/usecases/ask_question_usecase.dart';
 import 'package:workorder_company_app/features/faq/domain/usecases/get_faq_docs_usecase.dart';
 import 'package:workorder_company_app/features/faq/domain/usecases/get_faq_room_chat_usecase.dart';
+import 'package:workorder_company_app/features/faq/domain/usecases/upload_text_faq_usecase.dart';
 import 'package:workorder_company_app/features/faq/presentation/bloc/chat/faq_chat_cubit.dart';
 import 'package:workorder_company_app/features/faq/presentation/bloc/get_docs/get_faq_docs_cubit.dart';
+import 'package:workorder_company_app/features/faq/presentation/bloc/upload_docs/upload_text_doc_cubit.dart';
 
 Future<void> initFaqFeature() async {
   sl.registerLazySingleton<FaqRemoteDatasource>(
@@ -50,6 +52,12 @@ Future<void> initFaqFeature() async {
     ),
   );
 
+  sl.registerLazySingleton<UploadTextFaqUsecase>(
+    () => UploadTextFaqUsecase(
+      sl<FaqConfigRepository>(),
+    ),
+  );
+
   sl.registerFactory<FaqChatCubit>(
     () => FaqChatCubit(
       sl<GetFaqRoomChatUsecase>(),
@@ -60,6 +68,12 @@ Future<void> initFaqFeature() async {
   sl.registerFactory<GetFaqDocsCubit>(
     () => GetFaqDocsCubit(
       sl<GetFaqDocsUsecase>(),
+    ),
+  );
+
+  sl.registerFactory<UploadTextDocCubit>(
+    () => UploadTextDocCubit(
+      sl<UploadTextFaqUsecase>(),
     ),
   );
 }

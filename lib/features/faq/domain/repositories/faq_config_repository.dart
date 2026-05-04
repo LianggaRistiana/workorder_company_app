@@ -6,7 +6,8 @@ import 'package:workorder_company_app/features/company/domain/entities/company_e
 import 'package:workorder_company_app/features/faq/domain/entitties/faq_doc_entity.dart';
 import 'package:workorder_company_app/features/faq/domain/entitties/text_faq_doc_draft.dart';
 
-abstract class FaqConfigRepository implements Cacheable{
+// TODO : add streamable here
+abstract class FaqConfigRepository implements Cacheable {
   FutureEither<CompanyEntity> toggleFaqFeature(bool value);
   FutureEitherList<FaqDocEntity> getFaqDocs({
     bool forceRefresh = false,

@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/routes/common_router.dart';
+import 'package:workorder_company_app/routes/feature_routes.dart/faq_router.dart';
 import 'package:workorder_company_app/routes/feature_routes.dart/template_config_router.dart';
 import 'package:workorder_company_app/routes/public_router.dart';
 import 'package:workorder_company_app/routes/feature_routes.dart/company_router.dart';
@@ -30,6 +31,7 @@ final GoRouter appRouter = GoRouter(
             ...homeRouter,
             ...companyRouter,
             ...templateConfigRouters,
+            ...faqRouter,
             ...positionsRouter,
             ...employeesRouter,
             ...formsRouter,

@@ -67,4 +67,5 @@ class AppIcon {
   static const IconData lock = LucideIcons.lock;
   static const IconData date = LucideIcons.calendar;
   static const IconData file = LucideIcons.file;
+  static const IconData text = LucideIcons.caseSensitive;
 }
