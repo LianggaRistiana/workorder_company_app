@@ -57,15 +57,7 @@ class _ViewState extends State<_View> {
       builder: (context, state) {
         return SafeArea(
           child: Scaffold(
-            appBar: AppBar(),
-            bottomNavigationBar: Container(
-              padding: const EdgeInsets.all(16),
-              child: ButtonWithLoadingState(
-                  icon: AppIcon.submit,
-                  onPressed: _submit,
-                  isLoading: state.status == UploadTextDocStatus.loading,
-                  label: "Simpan"),
-            ),
+            appBar: AppBar(title: const Text("Tambah Dokumen FaQ")),
             body: Form(
               key: _formKey,
               child: Padding(
@@ -94,7 +86,13 @@ class _ViewState extends State<_View> {
                         }
                         return null;
                       },
-                    )
+                    ),
+                    const SizedBox(height: AppSpacing.md),
+                    ButtonWithLoadingState(
+                        icon: AppIcon.submit,
+                        onPressed: _submit,
+                        isLoading: state.status == UploadTextDocStatus.loading,
+                        label: "Simpan"),
                   ],
                 )),
               ),

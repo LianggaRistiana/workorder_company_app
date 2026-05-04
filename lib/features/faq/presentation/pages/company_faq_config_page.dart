@@ -61,7 +61,7 @@ class CompanyFaqConfigPage extends StatelessWidget {
                       ),
                       FloatingActionButton.extended(
                         heroTag: null,
-                        onPressed: null,
+                        onPressed: () => context.push(AppRoutes.addPdfFaqDoc),
                         label: Text('Dengan Pdf'),
                         icon: Icon(AppIcon.file),
                         shape: RoundedRectangleBorder(
