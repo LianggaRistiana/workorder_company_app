@@ -1,46 +1,95 @@
+import 'dart:async';
+
+import 'package:dio/dio.dart';
+import 'package:workorder_company_app/core/error/error.dart';
+import 'package:workorder_company_app/core/model/multipart_result.dart';
+import 'package:workorder_company_app/core/services/network/api_client.dart';
 import 'package:workorder_company_app/core/services/network/api_response.dart';
+import 'package:workorder_company_app/core/services/network/endpoints.dart';
 import 'package:workorder_company_app/core/types/future_api.dart';
 import 'package:workorder_company_app/features/company/data/models/company_model.dart';
 import 'package:workorder_company_app/features/faq/data/model/faq_doc_model.dart';
 import 'package:workorder_company_app/features/faq/data/model/text_faq_doc_model.dart';
-import 'package:workorder_company_app/features/submissions/domain/entities/upload_result.dart';
+import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
 
 abstract class FaqConfigRemoteDatasource {
   ApiFutureList<FaqDocModel> getFaqDocs();
   ApiFuture<Empty> deleteFaqDoc(String id);
   ApiFuture<CompanyModel> toggleFaqFeature(bool value);
   ApiFuture<FaqDocModel> uploadTextDocs(TextFaqDocModel draft);
-  Stream<UploadResult> uploadPdfDoc(String filePath);
+  Stream<MultipartResult<FaqDocModel>> uploadPdfDoc(String filePath);
 }
 
 class FaqConfigRemoteDatasourceImpl implements FaqConfigRemoteDatasource {
+  final ApiClient _apiClient;
+
+  FaqConfigRemoteDatasourceImpl(this._apiClient);
+
   @override
-  ApiFuture<Empty> deleteFaqDoc(String id) {
-    // TODO: implement deleteFaqDoc
-    throw UnimplementedError();
+  ApiFuture<Empty> deleteFaqDoc(String id) async {
+    return await _apiClient.delete(Endpoints.faqDeleteDocs.fillId(id));
   }
 
   @override
-  ApiFutureList<FaqDocModel> getFaqDocs() {
-    // TODO: implement getFaqDocs
-    throw UnimplementedError();
+  ApiFutureList<FaqDocModel> getFaqDocs() async {
+    return await _apiClient.get(Endpoints.faqDocs);
   }
 
   @override
-  ApiFuture<CompanyModel> toggleFaqFeature(bool value) {
-    // TODO: implement toggleFaqFeature
-    throw UnimplementedError();
+  ApiFuture<CompanyModel> toggleFaqFeature(bool value) async {
+    return await _apiClient.put(Endpoints.faqToggleActive, data: {
+      "isActive": value,
+    });
   }
 
   @override
-  Stream<UploadResult> uploadPdfDoc(String filePath) {
-    // TODO: implement uploadPdfDoc
-    throw UnimplementedError();
+  Stream<MultipartResult<FaqDocModel>> uploadPdfDoc(String filePath) {
+    final controller = StreamController<MultipartResult<FaqDocModel>>();
+    () async {
+      try {
+        final formData = FormData.fromMap({
+          "file": await MultipartFile.fromFile(filePath),
+        });
+
+        final response = await _apiClient.postFormData(
+          Endpoints.faqPDfDocs,
+          data: formData,
+          onSendProgress: (sent, total) {
+            if (total <= 0) return;
+
+            final progress = sent / total;
+
+            controller.add(
+              MultipartResult<FaqDocModel>.progress(progress),
+            );
+          },
+        );
+
+        final result = ApiResponse.fromJson(
+            response, (data) => FaqDocModel.fromJson(data));
+
+        controller.add(
+          MultipartResult<FaqDocModel>.success(result.data),
+        );
+      } on ApiException catch (e) {
+        controller.add(
+          MultipartResult<FaqDocModel>.failure(e.message),
+        );
+      } catch (e) {
+        controller.add(
+          MultipartResult<FaqDocModel>.failure(
+              "Terjadi kesalahan saat upload file"),
+        );
+      } finally {
+        await controller.close();
+      }
+    }();
+
+    return controller.stream;
   }
 
   @override
-  ApiFuture<FaqDocModel> uploadTextDocs(TextFaqDocModel draft) {
-    // TODO: implement uploadTextDocs
-    throw UnimplementedError();
+  ApiFuture<FaqDocModel> uploadTextDocs(TextFaqDocModel draft) async {
+    return await _apiClient.post(Endpoints.faqTextDocs, data: draft.toJson());
   }
 }

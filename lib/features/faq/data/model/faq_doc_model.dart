@@ -9,6 +9,7 @@ class FaqDocModel extends FaqDocEntity {
     required super.content,
     required super.type,
     required super.createdAt,
+    super.url,
   });
 
   factory FaqDocModel.fromJson(Map<String, dynamic> json) {
@@ -17,6 +18,7 @@ class FaqDocModel extends FaqDocEntity {
       title: json.field('title').reqString(),
       content: json.field('content').reqString(),
       type: json.field('type').reqEnum(FaqDocsType.fromString),
+      url: json.field('url').optString(),
       createdAt: json.field('createdAt').reqDate(),
     );
   }
