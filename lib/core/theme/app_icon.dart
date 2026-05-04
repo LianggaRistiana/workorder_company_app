@@ -18,7 +18,7 @@ class AppIcon {
   static const IconData tips = Icons.tips_and_updates;
   static const IconData more = LucideIcons.layoutGrid;
   static const IconData memberCode = LucideIcons.ticket;
-  static const IconData qna = Icons.question_answer_outlined;
+  static const IconData qna = Icons.chat_bubble_outline_outlined;
   static const IconData history = LucideIcons.history;
   static const IconData membership = Icons.workspace_premium_rounded;
   static const IconData company = Icons.home_work_outlined;
@@ -26,7 +26,6 @@ class AppIcon {
   static const IconData flowBusiness = LucideIcons.workflow;
   static const IconData notification = LucideIcons.bell;
   static const IconData invitation = LucideIcons.mail;
-
 
   // Icon For Action
   static const IconData submit = LucideIcons.uploadCloud;
@@ -67,4 +66,5 @@ class AppIcon {
   static const IconData pic = LucideIcons.userCog2;
   static const IconData lock = LucideIcons.lock;
   static const IconData date = LucideIcons.calendar;
+  static const IconData file = LucideIcons.file;
 }
