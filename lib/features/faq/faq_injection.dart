@@ -11,11 +11,13 @@ import 'package:workorder_company_app/features/faq/domain/usecases/ask_question_
 import 'package:workorder_company_app/features/faq/domain/usecases/detete_faq_docs.dart';
 import 'package:workorder_company_app/features/faq/domain/usecases/get_faq_docs_usecase.dart';
 import 'package:workorder_company_app/features/faq/domain/usecases/get_faq_room_chat_usecase.dart';
+import 'package:workorder_company_app/features/faq/domain/usecases/toggle_active_faq_usecase.dart';
 import 'package:workorder_company_app/features/faq/domain/usecases/upload_pdf_faq_usecase.dart';
 import 'package:workorder_company_app/features/faq/domain/usecases/upload_text_faq_usecase.dart';
 import 'package:workorder_company_app/features/faq/presentation/bloc/chat/faq_chat_cubit.dart';
 import 'package:workorder_company_app/features/faq/presentation/bloc/delete_docs/delete_doc_cubit.dart';
 import 'package:workorder_company_app/features/faq/presentation/bloc/get_docs/get_faq_docs_cubit.dart';
+import 'package:workorder_company_app/features/faq/presentation/bloc/toggle_active/toggle_active_faq_cubit.dart';
 import 'package:workorder_company_app/features/faq/presentation/bloc/upload_docs/upload_pdf_doc_cubit.dart';
 import 'package:workorder_company_app/features/faq/presentation/bloc/upload_docs/upload_text_doc_cubit.dart';
 
@@ -68,6 +70,12 @@ Future<void> initFaqFeature() async {
     ),
   );
 
+  sl.registerLazySingleton<ToggleActiveFaqUsecase>(
+    () => ToggleActiveFaqUsecase(
+      sl<FaqConfigRepository>(),
+    ),
+  );
+
   sl.registerLazySingleton<DeleteFaqUsecase>(
     () => DeleteFaqUsecase(
       sl<FaqConfigRepository>(),
@@ -96,6 +104,12 @@ Future<void> initFaqFeature() async {
   sl.registerFactory<UploadPdfDocCubit>(
     () => UploadPdfDocCubit(
       sl<UploadPdfFaqUsecase>(),
+    ),
+  );
+
+  sl.registerFactory<ToggleActiveFaqCubit>(
+    () => ToggleActiveFaqCubit(
+      sl<ToggleActiveFaqUsecase>(),
     ),
   );
 

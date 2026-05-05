@@ -5,15 +5,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
-import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/faq/presentation/bloc/delete_docs/delete_doc_cubit.dart';
 import 'package:workorder_company_app/features/faq/presentation/bloc/delete_docs/delete_doc_state.dart';
 import 'package:workorder_company_app/features/faq/presentation/bloc/get_docs/get_faq_docs_cubit.dart';
 import 'package:workorder_company_app/features/faq/presentation/bloc/get_docs/get_faq_docs_state.dart';
+import 'package:workorder_company_app/features/faq/presentation/bloc/toggle_active/toggle_active_faq_cubit.dart';
+import 'package:workorder_company_app/features/faq/presentation/bloc/toggle_active/toggle_active_faq_state.dart';
+import 'package:workorder_company_app/features/faq/presentation/widgets/faq_active_status_switch.dart';
 import 'package:workorder_company_app/features/faq/presentation/widgets/faq_doc_item.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
-import 'package:workorder_company_app/shared/widgets/horizontal_switch.dart';
 import 'package:workorder_company_app/shared/widgets/list_page_scafold.dart';
 
 class CompanyFaqConfigPage extends StatelessWidget {
@@ -28,6 +29,11 @@ class CompanyFaqConfigPage extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => sl<DeleteDocCubit>(),
+          ),
+          BlocProvider(
+            create: (context) => sl<ToggleActiveFaqCubit>()
+              ..initActiveStatus(
+                  isActive: false), // TODO : connect to company bloc
           ),
         ],
         child: MultiBlocListener(
@@ -45,6 +51,14 @@ class CompanyFaqConfigPage extends StatelessWidget {
               } else if (state.status == DeleteDocStats.error) {
                 context.showError(state.errorMessage ?? "Terjadi Kesalahan");
               }
+            }),
+            BlocListener<ToggleActiveFaqCubit, ToggleActiveFaqState>(
+                listener: (context, state) {
+              if (state.errorMessage != null) {
+                context.showError(state.errorMessage ??
+                    "Terjadi kesalahan saat mengubah status faq");
+              }
+              // TODO : Update company data here
             }),
           ],
           child: BlocBuilder<GetFaqDocsCubit, GetFaqDocsState>(
@@ -92,18 +106,7 @@ class CompanyFaqConfigPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                header: HorizontalSwitch(
-                    margin: EdgeInsets.only(
-                      bottom: AppSpacing.sm,
-                      left: AppSpacing.md,
-                      right: AppSpacing.md,
-                    ),
-                    leadingIcon: AppIcon.qna,
-                    title: "Aktifkan fitur tanya jawab",
-                    description:
-                        "Saat diaktifkan, pelanggan dapat menggunakan fitur tanya jawab untuk membantu menjawab pertanyaan mereka",
-                    value: false,
-                    onChanged: (_) {}),
+                header: FaqActiveStatusSwitch(),
                 isLoading: state.status == GetFaqDocsStatus.loading,
                 items: state.docs,
                 onRefresh: () async => unawaited(context

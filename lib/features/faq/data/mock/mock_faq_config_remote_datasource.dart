@@ -1,3 +1,4 @@
+import 'package:workorder_company_app/core/error/error.dart';
 import 'package:workorder_company_app/core/model/multipart_result.dart';
 import 'package:workorder_company_app/core/services/network/api_response.dart';
 import 'package:workorder_company_app/core/types/future_api.dart';
@@ -47,12 +48,21 @@ class MockFaqConfigRemoteDatasource implements FaqConfigRemoteDatasource {
   ApiFuture<CompanyModel> toggleFaqFeature(bool value) async {
     await Future.delayed(const Duration(milliseconds: 400));
 
+    final isError = Random().nextBool(); // true / false random
+
+    if (isError) {
+      throw ApiException(
+        500,
+        "Mock Server Error",
+      );
+    }
+
     return ApiResponse(
       message: "Success",
       data: CompanyModel(
         id: faker.guid.guid(),
         name: faker.company.name(),
-        isActive: true,
+        isActive: value,
       ),
     );
   }
