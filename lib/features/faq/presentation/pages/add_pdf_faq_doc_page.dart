@@ -2,8 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
+import 'package:workorder_company_app/features/faq/domain/entitties/pdf_item.dart';
+import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/widgets/button_with_loading_state.dart';
 import 'package:workorder_company_app/shared/widgets/dashed_button.dart';
 
@@ -98,9 +101,30 @@ class _AddPdfFaqDocPageState extends State<AddPdfFaqDocPage> {
             style: TextStyle(color: theme.colorScheme.onSurfaceVariant),
           ),
           const SizedBox(height: 16),
-          OutlinedButton(
-            onPressed: pickPdf,
-            child: const Text("Ganti"),
+          Row(
+            children: [
+              OutlinedButton(
+                onPressed: pickPdf,
+                child: const Text("Ganti"),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: FilledButton(
+                  onPressed: () {
+                    debugPrint(_filePath);
+                    context.push(
+                      AppRoutes.previewPdf,
+                      extra: PdfItem(
+                        filePath: _filePath!,
+                        fileName: fileName,
+                        isNetwork: false,
+                      ),
+                    );
+                  },
+                  child: const Text("Lihat Berkas"),
+                ),
+              ),
+            ],
           )
         ],
       ),

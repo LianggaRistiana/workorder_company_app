@@ -45,7 +45,10 @@ class FaqConfigRemoteDatasourceImpl implements FaqConfigRemoteDatasource {
   @override
   Stream<MultipartResult<FaqDocModel>> uploadPdfDoc(String filePath) {
     final controller = StreamController<MultipartResult<FaqDocModel>>();
-    () async {
+
+    // NOTE
+    // Diffrent method from upload file
+    controller.onListen = () async {
       try {
         final formData = FormData.fromMap({
           "file": await MultipartFile.fromFile(filePath),
@@ -57,16 +60,16 @@ class FaqConfigRemoteDatasourceImpl implements FaqConfigRemoteDatasource {
           onSendProgress: (sent, total) {
             if (total <= 0) return;
 
-            final progress = sent / total;
-
             controller.add(
-              MultipartResult<FaqDocModel>.progress(progress),
+              MultipartResult<FaqDocModel>.progress(sent / total),
             );
           },
         );
 
         final result = ApiResponse.fromJson(
-            response, (data) => FaqDocModel.fromJson(data));
+          response,
+          (data) => FaqDocModel.fromJson(data),
+        );
 
         controller.add(
           MultipartResult<FaqDocModel>.success(result.data),
@@ -78,12 +81,13 @@ class FaqConfigRemoteDatasourceImpl implements FaqConfigRemoteDatasource {
       } catch (e) {
         controller.add(
           MultipartResult<FaqDocModel>.failure(
-              "Terjadi kesalahan saat upload file"),
+            "Terjadi kesalahan saat upload file",
+          ),
         );
       } finally {
         await controller.close();
       }
-    }();
+    };
 
     return controller.stream;
   }

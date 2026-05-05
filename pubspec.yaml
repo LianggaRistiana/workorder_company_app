@@ -36,6 +36,7 @@ dependencies:
   image_picker: ^1.2.0
   faker: ^2.1.0
   file_picker: ^11.0.2
+  syncfusion_flutter_pdfviewer: ^29.1.38
 
 
 dev_dependencies:
