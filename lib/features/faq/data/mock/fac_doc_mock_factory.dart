@@ -15,7 +15,7 @@ class FacDocMockFactory implements MockFactory<FaqDocModel> {
       "title": faker.lorem.sentence(),
       "content": faker.lorem.sentences(50).join(" "),
       "type": type.name.toSnakeCase(),
-      "url": faker.internet.httpsUrl(),
+      "url": "https://www.orimi.com/pdf-test.pdf",
       "createdAt": faker.date.dateTime().toIso8601String(),
     };
   }
