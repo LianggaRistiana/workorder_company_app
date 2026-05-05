@@ -28,7 +28,7 @@ class SafeMapper {
     }
 
     if (skipped > 0) {
-      appLogger.f('$skipped $T item skipped during parsing.\nError :\n$error');
+      appLogger.f('$skipped $T item skipped during parsing.\nError :\n${error.join('\n')}');
     }
 
     return result;

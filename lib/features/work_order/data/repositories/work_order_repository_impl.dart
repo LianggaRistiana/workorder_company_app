@@ -33,6 +33,8 @@ class WorkOrderRepositoryImpl implements WorkOrderRepository {
   late final Map<String, ResultMeta Function(dynamic)> _metaFactories = {
     "workOrderCapabilities": (json) => WorkOrderCapabilities.fromJson(json),
     "workOrderSiblings": (json) => WorkOrderSiblings.fromJson(json),
+    "reportNeedReview": (json) => WorkReportMeta.fromDynamic(
+        json), // OPTIMIZE[API REQUIRED] : put in on the WorkReport data object
   };
 
   FutureEitherWithMeta<WorkOrderEntity> _handleMetaCall(

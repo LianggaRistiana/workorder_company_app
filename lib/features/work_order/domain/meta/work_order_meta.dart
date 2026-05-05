@@ -43,6 +43,35 @@ class WorkOrderSibling extends ResultMeta {
   }
 }
 
+class WorkReportMeta extends ResultMeta {
+  final bool isReportNeedReview;
+
+  const WorkReportMeta({
+    required this.isReportNeedReview,
+  });
+
+  factory WorkReportMeta.fromJson(Map<String, dynamic> json) {
+    return WorkReportMeta(
+      isReportNeedReview: json['reportNeedReview'] ?? false,
+    );
+  }
+
+  factory WorkReportMeta.fromDynamic(dynamic json) {
+    if (json is bool) {
+      return WorkReportMeta(
+        isReportNeedReview: json,
+      );
+    }
+    if (json is Map<String, dynamic>) {
+      return WorkReportMeta.fromJson(json);
+    }
+
+    return WorkReportMeta(
+      isReportNeedReview: false,
+    );
+  }
+}
+
 class WorkOrderCapabilities extends ResultMeta {
   final bool canStart;
   final bool canComplete;

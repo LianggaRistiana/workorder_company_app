@@ -10,10 +10,16 @@ class FilledFormWithHistoryModel extends FilledFormWithHistoryEntity {
   });
 
   factory FilledFormWithHistoryModel.fromJson(
-    Map<String, dynamic> formJson,
+    dynamic formJson,
     dynamic submissionsJson,
   ) {
     List<SubmissionsModel>? submissions;
+
+    if (formJson is! Map<String, dynamic>) {
+      throw ParsingException(
+        "Field 'form' expected Map<String, dynamic> but got ${formJson.runtimeType}",
+      );
+    }
 
     if (submissionsJson != null) {
       if (submissionsJson is! List) {
