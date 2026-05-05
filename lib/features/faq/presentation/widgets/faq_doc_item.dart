@@ -9,6 +9,7 @@ import 'package:workorder_company_app/features/faq/domain/entitties/pdf_item.dar
 import 'package:workorder_company_app/features/faq/presentation/bloc/delete_docs/delete_doc_cubit.dart';
 import 'package:workorder_company_app/features/faq/presentation/bloc/delete_docs/delete_doc_state.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/utils/confirm_dialog.dart';
 import 'package:workorder_company_app/shared/widgets/app_bottom_sheet.dart';
 import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
@@ -36,10 +37,17 @@ class FaqDocItem extends StatelessWidget {
             final isLoading = state.status == DeleteDocStats.loading;
 
             return Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 IconButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    final shouldDelete = await showConfirmDialog(
+                        type: ConfirmDialogType.danger,
+                        context: context,
+                        title: "Anda yakin menghapus berkas ini? ",
+                        message: "Aksi ini tidak dapat dikembalikan");
+                    if (shouldDelete != true) return;
+                    if (!context.mounted) return;
                     context.read<DeleteDocCubit>().deleteDoc(doc.id);
                   },
                   icon: Icon(
@@ -67,7 +75,9 @@ class FaqDocItem extends StatelessWidget {
                   )
                 ],
               ],
-            ).withInlineLoading(isLoading);
+            ).withInlineLoading(
+              isLoading,
+            );
           }),
         ));
   }
