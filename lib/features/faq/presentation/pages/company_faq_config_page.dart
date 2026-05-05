@@ -6,10 +6,13 @@ import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
+import 'package:workorder_company_app/features/faq/presentation/bloc/delete_docs/delete_doc_cubit.dart';
+import 'package:workorder_company_app/features/faq/presentation/bloc/delete_docs/delete_doc_state.dart';
 import 'package:workorder_company_app/features/faq/presentation/bloc/get_docs/get_faq_docs_cubit.dart';
 import 'package:workorder_company_app/features/faq/presentation/bloc/get_docs/get_faq_docs_state.dart';
 import 'package:workorder_company_app/features/faq/presentation/widgets/faq_doc_item.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/horizontal_switch.dart';
 import 'package:workorder_company_app/shared/widgets/list_page_scafold.dart';
 
@@ -23,71 +26,91 @@ class CompanyFaqConfigPage extends StatelessWidget {
           BlocProvider(
             create: (context) => sl<GetFaqDocsCubit>()..getDocs(),
           ),
+          BlocProvider(
+            create: (context) => sl<DeleteDocCubit>(),
+          ),
         ],
-        child: BlocConsumer<GetFaqDocsCubit, GetFaqDocsState>(
-            listener: (context, state) {},
-            builder: (context, state) {
-              final theme = Theme.of(context);
-              return ListPageScaffold(
-                  title: "Fitur Faq",
-                  floatingActionButtonLocation: ExpandableFab.location,
-                  floatingActionButton: ExpandableFab(
-                    distance: 70,
-                    childrenAnimation: ExpandableFabAnimation.none,
-                    overlayStyle: ExpandableFabOverlayStyle(
-                      color: theme.colorScheme.surface.withAlpha(90),
-                    ),
-                    openButtonBuilder: RotateFloatingActionButtonBuilder(
-                      child: const Icon(AppIcon.add),
-                      fabSize: ExpandableFabSize.regular,
-                    ),
-                    closeButtonBuilder: DefaultFloatingActionButtonBuilder(
-                      child: const Icon(Icons.close),
-                      fabSize: ExpandableFabSize.small,
-                      foregroundColor: theme.colorScheme.onPrimary,
-                      backgroundColor: theme.colorScheme.secondary,
-                      shape: const CircleBorder(),
-                    ),
-                    type: ExpandableFabType.up,
-                    children: [
-                      FloatingActionButton.extended(
-                        heroTag: null,
-                        onPressed: () => context.push(AppRoutes.addTextFaqDoc),
-                        label: Text('Dengan Teks'),
-                        icon: Icon(AppIcon.text),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50),
-                        ),
-                      ),
-                      FloatingActionButton.extended(
-                        heroTag: null,
-                        onPressed: () => context.push(AppRoutes.addPdfFaqDoc),
-                        label: Text('Dengan Pdf'),
-                        icon: Icon(AppIcon.file),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50),
-                        ),
-                      ),
-                    ],
+        child: MultiBlocListener(
+          listeners: [
+            BlocListener<GetFaqDocsCubit, GetFaqDocsState>(
+                listener: (context, state) {
+              if (state.status == GetFaqDocsStatus.error) {
+                context.showError(state.errorMessage ?? "Terjadi Kesalahan");
+              }
+            }),
+            BlocListener<DeleteDocCubit, DeleteDocState>(
+                listener: (context, state) {
+              if (state.status == DeleteDocStats.success) {
+                context.showSuccess("Berhasil Menghapus Dokumen");
+              } else if (state.status == DeleteDocStats.error) {
+                context.showError(state.errorMessage ?? "Terjadi Kesalahan");
+              }
+            }),
+          ],
+          child: BlocBuilder<GetFaqDocsCubit, GetFaqDocsState>(
+              builder: (context, state) {
+            final theme = Theme.of(context);
+            return ListPageScaffold(
+                title: "Fitur Faq",
+                floatingActionButtonLocation: ExpandableFab.location,
+                floatingActionButton: ExpandableFab(
+                  distance: 70,
+                  childrenAnimation: ExpandableFabAnimation.none,
+                  overlayStyle: ExpandableFabOverlayStyle(
+                    color: theme.colorScheme.surface.withAlpha(90),
                   ),
-                  header: HorizontalSwitch(
-                      margin: EdgeInsets.only(
-                        bottom: AppSpacing.sm,
-                        left: AppSpacing.md,
-                        right: AppSpacing.md,
+                  openButtonBuilder: RotateFloatingActionButtonBuilder(
+                    child: const Icon(AppIcon.add),
+                    fabSize: ExpandableFabSize.regular,
+                  ),
+                  closeButtonBuilder: DefaultFloatingActionButtonBuilder(
+                    child: const Icon(Icons.close),
+                    fabSize: ExpandableFabSize.small,
+                    foregroundColor: theme.colorScheme.onPrimary,
+                    backgroundColor: theme.colorScheme.secondary,
+                    shape: const CircleBorder(),
+                  ),
+                  type: ExpandableFabType.up,
+                  children: [
+                    FloatingActionButton.extended(
+                      heroTag: null,
+                      onPressed: () => context.push(AppRoutes.addTextFaqDoc),
+                      label: Text('Dengan Teks'),
+                      icon: Icon(AppIcon.text),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
                       ),
-                      leadingIcon: AppIcon.qna,
-                      title: "Aktifkan fitur tanya jawab",
-                      description:
-                          "Saat diaktifkan, pelanggan dapat menggunakan fitur tanya jawab untuk membantu menjawab pertanyaan mereka",
-                      value: false,
-                      onChanged: (_) {}),
-                  isLoading: state.status == GetFaqDocsStatus.loading,
-                  items: state.docs,
-                  onRefresh: () async => unawaited(context
-                      .read<GetFaqDocsCubit>()
-                      .getDocs(forceRefresh: true)),
-                  itemBuilder: (item) => FaqDocItem(doc: item));
-            }));
+                    ),
+                    FloatingActionButton.extended(
+                      heroTag: null,
+                      onPressed: () => context.push(AppRoutes.addPdfFaqDoc),
+                      label: Text('Dengan Pdf'),
+                      icon: Icon(AppIcon.file),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                    ),
+                  ],
+                ),
+                header: HorizontalSwitch(
+                    margin: EdgeInsets.only(
+                      bottom: AppSpacing.sm,
+                      left: AppSpacing.md,
+                      right: AppSpacing.md,
+                    ),
+                    leadingIcon: AppIcon.qna,
+                    title: "Aktifkan fitur tanya jawab",
+                    description:
+                        "Saat diaktifkan, pelanggan dapat menggunakan fitur tanya jawab untuk membantu menjawab pertanyaan mereka",
+                    value: false,
+                    onChanged: (_) {}),
+                isLoading: state.status == GetFaqDocsStatus.loading,
+                items: state.docs,
+                onRefresh: () async => unawaited(context
+                    .read<GetFaqDocsCubit>()
+                    .getDocs(forceRefresh: true)),
+                itemBuilder: (item) => FaqDocItem(doc: item));
+          }),
+        ));
   }
 }

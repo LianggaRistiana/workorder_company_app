@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:workorder_company_app/core/services/logger/app_logger.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
 import 'package:workorder_company_app/shared/widgets/error_body.dart';
@@ -112,6 +113,11 @@ class ListPageScaffold<T> extends StatelessWidget {
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
+                      if (index >= items.length) {
+                        appLogger.e(
+                            "Range out of bound trying to acesss $index of ${items.length} in ${items.runtimeType}");
+                        return const SizedBox();
+                      }
                       debugPrint("RENEDER ITEM $index");
                       return itemBuilder(items[index]);
                     },

@@ -13,7 +13,7 @@ class FacDocMockFactory implements MockFactory<FaqDocModel> {
     return {
       "id": faker.guid.guid(),
       "title": faker.lorem.sentence(),
-      "content": faker.lorem.sentences(10).join(" "),
+      "content": faker.lorem.sentences(50).join(" "),
       "type": type.name.toSnakeCase(),
       "url": faker.internet.httpsUrl(),
       "createdAt": faker.date.dateTime().toIso8601String(),

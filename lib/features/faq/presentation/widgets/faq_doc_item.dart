@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/constants/app_enums/faq_enum.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/faq/domain/entitties/faq_doc_entity.dart';
+import 'package:workorder_company_app/features/faq/domain/entitties/pdf_item.dart';
+import 'package:workorder_company_app/features/faq/presentation/bloc/delete_docs/delete_doc_cubit.dart';
+import 'package:workorder_company_app/features/faq/presentation/bloc/delete_docs/delete_doc_state.dart';
+import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/widgets/app_bottom_sheet.dart';
 import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
+import 'package:workorder_company_app/shared/widgets/loading_state_inline.dart';
 
 class FaqDocItem extends StatelessWidget {
   final FaqDocEntity doc;
@@ -13,7 +22,56 @@ class FaqDocItem extends StatelessWidget {
     required this.doc,
   });
 
-  // TODO : add drawer to detail
+  void _showDetail(BuildContext context, FaqDocEntity doc) {
+    showAppBottomSheet(context,
+        content: _DocDetailContent(doc: doc),
+        footer: BlocProvider.value(
+          value: context.read<DeleteDocCubit>(),
+          child: BlocConsumer<DeleteDocCubit, DeleteDocState>(
+              listener: (context, state) {
+            if (state.status == DeleteDocStats.success) {
+              context.pop();
+            }
+          }, builder: (context, state) {
+            final isLoading = state.status == DeleteDocStats.loading;
+
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    context.read<DeleteDocCubit>().deleteDoc(doc.id);
+                  },
+                  icon: Icon(
+                    AppIcon.delete,
+                    color: Theme.of(context).colorScheme.error,
+                  ),
+                ),
+                if (doc.url != null &&
+                    doc.url!.isNotEmpty &&
+                    doc.type == FaqDocsType.pdf) ...[
+                  Expanded(
+                    child: FilledButton(
+                        onPressed: () {
+                          context.pop();
+
+                          context.push(
+                            AppRoutes.previewPdf,
+                            extra: PdfItem(
+                                filePath: doc.url!,
+                                fileName: doc.title,
+                                isNetwork: true),
+                          );
+                        },
+                        child: Text("Lihat Berkas")),
+                  )
+                ],
+              ],
+            ).withInlineLoading(isLoading);
+          }),
+        ));
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -23,13 +81,18 @@ class FaqDocItem extends StatelessWidget {
           left: AppSpacing.md,
           right: AppSpacing.md,
         ),
-        onTap: () {},
+        onTap: () {
+          _showDetail(context, doc);
+        },
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(children: [
-              IconBox.small(icon: AppIcon.file),
+              IconBox.small(
+                  icon: doc.type == FaqDocsType.text
+                      ? AppIcon.text
+                      : AppIcon.file),
               const SizedBox(width: AppSpacing.sm),
               Expanded(
                   child: Text(
@@ -48,5 +111,41 @@ class FaqDocItem extends StatelessWidget {
             ),
           ],
         ));
+  }
+}
+
+class _DocDetailContent extends StatelessWidget {
+  final FaqDocEntity doc;
+
+  const _DocDetailContent({
+    required this.doc,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Row(children: [
+            IconBox.small(
+              icon: doc.type == FaqDocsType.text ? AppIcon.text : AppIcon.file,
+            ),
+            const SizedBox(width: AppSpacing.sm),
+            Expanded(
+                child: Text(
+              doc.title,
+              style: theme.textTheme.titleMedium,
+            )),
+          ]),
+          const SizedBox(height: AppSpacing.sm),
+          Text(
+            doc.content,
+            style: theme.textTheme.bodySmall,
+          ),
+        ],
+      ),
+    );
   }
 }

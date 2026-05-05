@@ -59,7 +59,8 @@ class ListCacheHelper<T> {
 
     return result.map((data) {
       _cache.update(data);
-      return data;
+      // HACK : observe this shit if someting goes wrong, this is return new list
+      return List.of(data);
     });
   }
 
