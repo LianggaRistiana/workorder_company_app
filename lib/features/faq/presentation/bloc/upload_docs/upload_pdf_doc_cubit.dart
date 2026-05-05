@@ -16,6 +16,9 @@ class UploadPdfDocCubit extends Cubit<UploadPdfDocState> {
     _sub?.cancel();
     _sub = _uploadPdfFaqUsecase(filePath).listen((data) {
       emit(UploadPdfDocState(result: data));
+      if (data.isDone) {
+        _sub?.cancel();
+      }
     });
   }
 

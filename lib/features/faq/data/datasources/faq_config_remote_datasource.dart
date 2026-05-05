@@ -46,8 +46,6 @@ class FaqConfigRemoteDatasourceImpl implements FaqConfigRemoteDatasource {
   Stream<MultipartResult<FaqDocModel>> uploadPdfDoc(String filePath) {
     final controller = StreamController<MultipartResult<FaqDocModel>>();
 
-    // NOTE
-    // Diffrent method from upload file
     controller.onListen = () async {
       try {
         final formData = FormData.fromMap({
@@ -58,7 +56,7 @@ class FaqConfigRemoteDatasourceImpl implements FaqConfigRemoteDatasource {
           Endpoints.faqPDfDocs,
           data: formData,
           onSendProgress: (sent, total) {
-            if (total <= 0) return;
+            if (total <= 0 || controller.isClosed) return;
 
             controller.add(
               MultipartResult<FaqDocModel>.progress(sent / total),
@@ -71,19 +69,25 @@ class FaqConfigRemoteDatasourceImpl implements FaqConfigRemoteDatasource {
           (data) => FaqDocModel.fromJson(data),
         );
 
-        controller.add(
-          MultipartResult<FaqDocModel>.success(result.data),
-        );
+        if (!controller.isClosed) {
+          controller.add(
+            MultipartResult<FaqDocModel>.success(result.data),
+          );
+        }
       } on ApiException catch (e) {
-        controller.add(
-          MultipartResult<FaqDocModel>.failure(e.message),
-        );
+        if (!controller.isClosed) {
+          controller.add(
+            MultipartResult<FaqDocModel>.failure(e.message),
+          );
+        }
       } catch (e) {
-        controller.add(
-          MultipartResult<FaqDocModel>.failure(
-            "Terjadi kesalahan saat upload file",
-          ),
-        );
+        if (!controller.isClosed) {
+          controller.add(
+            MultipartResult<FaqDocModel>.failure(
+              "Terjadi kesalahan saat upload file",
+            ),
+          );
+        }
       } finally {
         await controller.close();
       }

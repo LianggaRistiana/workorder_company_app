@@ -2,11 +2,16 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/faq/domain/entitties/pdf_item.dart';
+import 'package:workorder_company_app/features/faq/presentation/bloc/upload_docs/upload_pdf_doc_cubit.dart';
+import 'package:workorder_company_app/features/faq/presentation/bloc/upload_docs/upload_pdf_doc_state.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/button_with_loading_state.dart';
 import 'package:workorder_company_app/shared/widgets/dashed_button.dart';
 
@@ -31,42 +36,79 @@ class _AddPdfFaqDocPageState extends State<AddPdfFaqDocPage> {
         _filePath = result.files.single.path!;
       });
     } else {
-      debugPrint("User cancel");
+      // debugPrint("User cancel");
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Scaffold(
-      appBar: AppBar(title: const Text("Unggah Berkas FaQ")),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: _filePath == null
-              ? DashedButton(
-                  borderColor: theme.colorScheme.primary,
-                  color: theme.colorScheme.primary,
-                  height: 200,
-                  onTap: pickPdf,
-                  title: "Pilih Berkas",
-                  icon: AppIcon.file,
-                )
-              : Column(
-                  children: [
-                    _buildSelectedFile(theme),
-                    const SizedBox(height: AppSpacing.md),
-                    ButtonWithLoadingState(
-                      icon: AppIcon.submit,
-                      isLoading: false,
-                      label: "Simpan",
-                      onPressed: () {},
-                    ),
-                  ],
-                ),
+    return BlocProvider(
+      create: (context) => sl<UploadPdfDocCubit>(),
+      child: BlocListener<UploadPdfDocCubit, UploadPdfDocState>(
+        listener: (context, state) {
+          if (state.isSuccess) {
+            context.showSuccess("Berhasil menambahkan dokumen");
+            context.pop();
+          } else if (state.hasError) {
+            context.showError(state.errorMessage ?? "Terjadi Kesalahan");
+          }
+        },
+        child: SafeArea(
+          child: Scaffold(
+            appBar: AppBar(title: const Text("Unggah Berkas FaQ")),
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: _filePath == null
+                    ? _buildPickButton(context)
+                    : _buildContent(context),
+              ),
+            ),
+          ),
         ),
       ),
+    );
+  }
+
+  Widget _buildContent(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Column(
+      children: [
+        _buildSelectedFile(theme),
+        const SizedBox(height: AppSpacing.md),
+        BlocBuilder<UploadPdfDocCubit, UploadPdfDocState>(
+          buildWhen: (prev, curr) =>
+              prev.result?.progress != curr.result?.progress,
+          builder: (context, state) {
+            return ButtonWithLoadingState(
+              icon: AppIcon.submit,
+              isLoading: state.isUploading,
+              progress: state.progress,
+              label: "Simpan",
+              loadingLabel: "Mengunggah Berkas",
+              onPressed: state.isUploading
+                  ? null
+                  : () {
+                      context.read<UploadPdfDocCubit>().uploadPdf(_filePath!);
+                    },
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPickButton(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return DashedButton(
+      borderColor: theme.colorScheme.primary,
+      color: theme.colorScheme.primary,
+      height: 200,
+      onTap: pickPdf,
+      title: "Pilih Berkas",
+      icon: AppIcon.file,
     );
   }
 

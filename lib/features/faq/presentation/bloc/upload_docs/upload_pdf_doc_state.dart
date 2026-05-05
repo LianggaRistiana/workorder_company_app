@@ -5,11 +5,22 @@ import 'package:workorder_company_app/features/faq/domain/entitties/faq_doc_enti
 class UploadPdfDocState extends Equatable {
   final MultipartResult<FaqDocEntity>? result;
 
-  const UploadPdfDocState({required this.result});
+  const UploadPdfDocState({
+    required this.result,
+  });
 
   bool get isUploading {
     final r = result;
     return r != null && r.progress < 1 && !r.isDone;
+  }
+
+  bool get hasError {
+    return result?.error != null;
+  }
+
+  String? get errorMessage {
+    final r = result;
+    return r?.error;
   }
 
   double get progress {
@@ -17,8 +28,20 @@ class UploadPdfDocState extends Equatable {
     return r?.progress ?? 0;
   }
 
+  bool get isDone {
+    final r = result;
+    return r != null && r.isDone;
+  }
+
+  bool get isSuccess {
+    final r = result;
+    return r != null && r.data != null && r.isDone;
+  }
+
   @override
   List<Object?> get props => [
+        hasError,
+        isSuccess,
         isUploading,
         progress,
       ];
