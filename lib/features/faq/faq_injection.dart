@@ -76,8 +76,8 @@ Future<void> initFaqFeature() async {
     ),
   );
 
-  sl.registerLazySingleton<DeleteFaqUsecase>(
-    () => DeleteFaqUsecase(
+  sl.registerLazySingleton<DeleteFaqDocUsecase>(
+    () => DeleteFaqDocUsecase(
       sl<FaqConfigRepository>(),
     ),
   );
@@ -115,7 +115,7 @@ Future<void> initFaqFeature() async {
 
   sl.registerFactory<DeleteDocCubit>(
     () => DeleteDocCubit(
-      sl<DeleteFaqUsecase>(),
+      sl<DeleteFaqDocUsecase>(),
     ),
   );
 }

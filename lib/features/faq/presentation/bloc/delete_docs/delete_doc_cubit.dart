@@ -3,7 +3,7 @@ import 'package:workorder_company_app/features/faq/domain/usecases/detete_faq_do
 import 'package:workorder_company_app/features/faq/presentation/bloc/delete_docs/delete_doc_state.dart';
 
 class DeleteDocCubit extends Cubit<DeleteDocState> {
-  final DeleteFaqUsecase _deleteFaqUsecase;
+  final DeleteFaqDocUsecase _deleteFaqUsecase;
 
   DeleteDocCubit(this._deleteFaqUsecase) : super(DeleteDocState());
 
