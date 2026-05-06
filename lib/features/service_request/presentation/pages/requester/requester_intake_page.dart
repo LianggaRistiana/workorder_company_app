@@ -29,108 +29,254 @@ class RequesterIntakePage extends StatefulWidget {
 }
 
 class _RequesterIntakePageState extends State<RequesterIntakePage> {
-  late final FormRendererCoordinator coordinator;
-
-  @override
-  void initState() {
-    super.initState();
-  }
+  FormRendererCoordinator? coordinator;
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => sl<RequesterGetIntakeFormCubit>()
-        ..getIntakeForm(widget.baseService.id),
-      child: BlocConsumer<RequesterGetIntakeFormCubit,
-          RequesterGetIntakeFormState>(
-        listener: (context, state) {
-          if (state.status == RequesterGetIntakeFormStatus.error) {
-            context.showError(state.errorMessage ?? "Terjadi Kesalahan");
-            context.pop();
-          }
-          if (state.status == RequesterGetIntakeFormStatus.loaded) {
-            coordinator = FormRendererCoordinator.form(state.form!);
-          }
-        },
-        builder: (context, state) => Scaffold(
-            appBar: AppBar(),
-            bottomNavigationBar: state.status ==
-                        RequesterGetIntakeFormStatus.loaded &&
-                    state.form != null
-                ? SafeArea(
-                    child: Padding(
-                      padding: const EdgeInsets.all(AppSpacing.md),
-                      child: _buildSubmitButton(
-                          context, coordinator.draft, widget.baseService.id),
-                    ).hideOnLargeScreen(),
-                  )
-                : null,
-            body: SafeArea(
-              child: AdaptiveSplitColumn(
-                leftChildren: [
-                  ServiceSummaryPropertyView(service: widget.baseService),
-                  const SizedBox(height: 16),
-                ],
-                rightChildren: [
-                  if (state.status == RequesterGetIntakeFormStatus.loading) ...[
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => sl<RequesterGetIntakeFormCubit>()
+            ..getIntakeForm(widget.baseService.id),
+        ),
+        BlocProvider(
+          create: (_) => sl<RequesterSubmitIntakeFormCubit>(),
+        ),
+      ],
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<RequesterGetIntakeFormCubit,
+              RequesterGetIntakeFormState>(
+            listener: (context, state) {
+              if (state.status == RequesterGetIntakeFormStatus.error) {
+                context.showError(state.errorMessage ?? "Terjadi Kesalahan");
+                context.pop();
+              }
+
+              if (state.status == RequesterGetIntakeFormStatus.loaded) {
+                coordinator = FormRendererCoordinator.form(state.form!);
+              }
+            },
+          ),
+          BlocListener<RequesterSubmitIntakeFormCubit,
+              RequesterSubmitIntakeFormState>(
+            listener: (context, state) {
+              if (state.status == RequesterSubmitIntakeFormStatus.error) {
+                context.showError(state.errorMessage ?? "Terjadi Kesalahan");
+              }
+
+              if (state.status == RequesterSubmitIntakeFormStatus.success) {
+                context.showSuccess("Berhasil mengirim formulir");
+                context.pop();
+                context.push(AppRoutes.serviceRequestSent);
+              }
+            },
+          ),
+        ],
+        child: Scaffold(
+          appBar: AppBar(),
+          body: SafeArea(
+            child: BlocBuilder<RequesterGetIntakeFormCubit,
+                RequesterGetIntakeFormState>(
+              builder: (context, state) {
+                return AdaptiveSplitColumn(
+                  leftChildren: [
+                    ServiceSummaryPropertyView(service: widget.baseService),
                     const SizedBox(height: 16),
-                    AppLoading()
                   ],
+                  rightChildren: [
+                    if (state.status ==
+                        RequesterGetIntakeFormStatus.loading) ...[
+                      const SizedBox(height: 16),
+                      AppLoading(),
+                    ],
+                    if (state.status == RequesterGetIntakeFormStatus.loaded &&
+                        coordinator != null) ...[
+                      FormRenderer(
+                        coordinator: coordinator!,
+                      ),
+                      const SizedBox(height: 16),
+                      _SubmitButton(
+                        draft: coordinator!.draft,
+                        serviceId: widget.baseService.id,
+                      ).hideOnSmallScreen(),
+                    ],
+                  ],
+                );
+              },
+            ),
+          ),
+          bottomNavigationBar: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(AppSpacing.md),
+              child: BlocBuilder<RequesterGetIntakeFormCubit,
+                  RequesterGetIntakeFormState>(
+                builder: (context, state) {
                   if (state.status == RequesterGetIntakeFormStatus.loaded &&
-                      state.form != null) ...[
-                    FormRenderer(
-                      coordinator: coordinator,
-                    ),
-                    const SizedBox(height: 16),
-                    _buildSubmitButton(
-                            context, coordinator.draft, widget.baseService.id)
-                        .hideOnSmallScreen(),
-                  ]
-                ],
+                      coordinator != null) {
+                    return _SubmitButton(
+                      draft: coordinator!.draft,
+                      serviceId: widget.baseService.id,
+                    ).hideOnLargeScreen();
+                  }
+                  return const SizedBox();
+                },
               ),
-            )),
+            ),
+          ),
+        ),
       ),
     );
   }
+}
 
-  // FIXME  : When it rotate IT WILL LOSE THE LOADING STATE
-  Widget _buildSubmitButton(
-      BuildContext context, SubmissionDraft draft, String serviceId) {
-    return BlocProvider(
-      create: (_) => sl<RequesterSubmitIntakeFormCubit>(),
-      child: BlocConsumer<RequesterSubmitIntakeFormCubit,
-              RequesterSubmitIntakeFormState>(
-          listener: (context, state) {
-            if (state.status == RequesterSubmitIntakeFormStatus.error) {
-              context.showError(state.errorMessage ?? "Terjadi Kesalahan");
-            }
-            if (state.status == RequesterSubmitIntakeFormStatus.success) {
-              context.showSuccess("Berhasil mengirim formulir");
-              context.pop();
-              context.push(AppRoutes.serviceRequestSent);
-            }
+class _SubmitButton extends StatelessWidget {
+  final SubmissionDraft draft;
+  final String serviceId;
+
+  const _SubmitButton({
+    required this.draft,
+    required this.serviceId,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<RequesterSubmitIntakeFormCubit,
+        RequesterSubmitIntakeFormState>(
+      builder: (context, state) {
+        final uploadState = context.watch<FileUploadProgressCubit>().state;
+
+        return ButtonWithLoadingState(
+          icon: Icons.send,
+          progress: uploadState.totalProgress,
+          loadingLabel: uploadState.buttonMessage ?? "Menyimpan...",
+          isLoading: state.status == RequesterSubmitIntakeFormStatus.loading,
+          onPressed: () {
+            FocusScope.of(context).unfocus();
+
+            context
+                .read<RequesterSubmitIntakeFormCubit>()
+                .submitIntakeForm(serviceId, draft);
           },
-          builder: (context, state) => ButtonWithLoadingState(
-                icon: Icons.send,
-                progress: context
-                    .watch<FileUploadProgressCubit>()
-                    .state
-                    .totalProgress,
-                loadingLabel: context
-                        .watch<FileUploadProgressCubit>()
-                        .state
-                        .buttonMessage ??
-                    "Menyimpan...",
-                isLoading:
-                    state.status == RequesterSubmitIntakeFormStatus.loading,
-                onPressed: () {
-                  FocusScope.of(context).unfocus();
-                  context
-                      .read<RequesterSubmitIntakeFormCubit>()
-                      .submitIntakeForm(serviceId, draft);
-                },
-                label: "Kirim",
-              )),
+          label: "Kirim",
+        );
+      },
     );
   }
 }
+
+// HACK : Bring back this if something goes wrong
+// class RequesterIntakePage extends StatefulWidget {
+//   final BaseServiceEntity baseService;
+
+//   const RequesterIntakePage({super.key, required this.baseService});
+
+//   @override
+//   State<RequesterIntakePage> createState() => _RequesterIntakePageState();
+// }
+
+// class _RequesterIntakePageState extends State<RequesterIntakePage> {
+//   late final FormRendererCoordinator coordinator;
+
+//   @override
+//   void initState() {
+//     super.initState();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocProvider(
+//       create: (_) => sl<RequesterGetIntakeFormCubit>()
+//         ..getIntakeForm(widget.baseService.id),
+//       child: BlocConsumer<RequesterGetIntakeFormCubit,
+//           RequesterGetIntakeFormState>(
+//         listener: (context, state) {
+//           if (state.status == RequesterGetIntakeFormStatus.error) {
+//             context.showError(state.errorMessage ?? "Terjadi Kesalahan");
+//             context.pop();
+//           }
+//           if (state.status == RequesterGetIntakeFormStatus.loaded) {
+//             coordinator = FormRendererCoordinator.form(state.form!);
+//           }
+//         },
+//         builder: (context, state) => Scaffold(
+//             appBar: AppBar(),
+//             bottomNavigationBar: state.status ==
+//                         RequesterGetIntakeFormStatus.loaded &&
+//                     state.form != null
+//                 ? SafeArea(
+//                     child: Padding(
+//                       padding: const EdgeInsets.all(AppSpacing.md),
+//                       child: _buildSubmitButton(
+//                           context, coordinator.draft, widget.baseService.id),
+//                     ).hideOnLargeScreen(),
+//                   )
+//                 : null,
+//             body: SafeArea(
+//               child: AdaptiveSplitColumn(
+//                 leftChildren: [
+//                   ServiceSummaryPropertyView(service: widget.baseService),
+//                   const SizedBox(height: 16),
+//                 ],
+//                 rightChildren: [
+//                   if (state.status == RequesterGetIntakeFormStatus.loading) ...[
+//                     const SizedBox(height: 16),
+//                     AppLoading()
+//                   ],
+//                   if (state.status == RequesterGetIntakeFormStatus.loaded &&
+//                       state.form != null) ...[
+//                     FormRenderer(
+//                       coordinator: coordinator,
+//                     ),
+//                     const SizedBox(height: 16),
+//                     _buildSubmitButton(
+//                             context, coordinator.draft, widget.baseService.id)
+//                         .hideOnSmallScreen(),
+//                   ]
+//                 ],
+//               ),
+//             )),
+//       ),
+//     );
+//   }
+
+//   Widget _buildSubmitButton(
+//       BuildContext context, SubmissionDraft draft, String serviceId) {
+//     return BlocProvider(
+//       create: (_) => sl<RequesterSubmitIntakeFormCubit>(),
+//       child: BlocConsumer<RequesterSubmitIntakeFormCubit,
+//               RequesterSubmitIntakeFormState>(
+//           listener: (context, state) {
+//             if (state.status == RequesterSubmitIntakeFormStatus.error) {
+//               context.showError(state.errorMessage ?? "Terjadi Kesalahan");
+//             }
+//             if (state.status == RequesterSubmitIntakeFormStatus.success) {
+//               context.showSuccess("Berhasil mengirim formulir");
+//               context.pop();
+//               context.push(AppRoutes.serviceRequestSent);
+//             }
+//           },
+//           builder: (context, state) => ButtonWithLoadingState(
+//                 icon: Icons.send,
+//                 progress: context
+//                     .watch<FileUploadProgressCubit>()
+//                     .state
+//                     .totalProgress,
+//                 loadingLabel: context
+//                         .watch<FileUploadProgressCubit>()
+//                         .state
+//                         .buttonMessage ??
+//                     "Menyimpan...",
+//                 isLoading:
+//                     state.status == RequesterSubmitIntakeFormStatus.loading,
+//                 onPressed: () {
+//                   FocusScope.of(context).unfocus();
+//                   context
+//                       .read<RequesterSubmitIntakeFormCubit>()
+//                       .submitIntakeForm(serviceId, draft);
+//                 },
+//                 label: "Kirim",
+//               )),
+//     );
+//   }
+// }
