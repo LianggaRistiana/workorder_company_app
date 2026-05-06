@@ -89,6 +89,7 @@ class FilledFormView extends StatelessWidget {
             (answer as List?)?.map((e) => e.toString()).toList() ?? [];
         return _optionAnswer(context, field.options ?? [], listAnswer);
       case FieldType.image:
+        // TODO : Test this check logic
         if (answer is String?) {
           return _renderImage(context, answer);
         } else {

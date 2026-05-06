@@ -130,6 +130,7 @@ class FieldRenderer extends StatelessWidget {
             },
             value: _normalizeToMediaItem(value?.value));
 
+      // TODO : add email field
       default:
         return Text("Unsupported field type: ${field.type}");
     }
