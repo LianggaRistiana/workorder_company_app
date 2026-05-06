@@ -119,7 +119,7 @@ class _RequesterIntakePageState extends State<RequesterIntakePage> {
                 loadingLabel: context
                         .watch<FileUploadProgressCubit>()
                         .state
-                        .bottonMessage ??
+                        .buttonMessage ??
                     "Menyimpan...",
                 isLoading:
                     state.status == RequesterSubmitIntakeFormStatus.loading,

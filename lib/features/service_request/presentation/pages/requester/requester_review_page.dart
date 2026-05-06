@@ -93,7 +93,7 @@ class _RequesterReviewPageState extends State<RequesterReviewPage> {
         icon: AppIcon.send,
         progress: context.watch<FileUploadProgressCubit>().state.totalProgress,
         loadingLabel:
-            context.watch<FileUploadProgressCubit>().state.bottonMessage ??
+            context.watch<FileUploadProgressCubit>().state.buttonMessage ??
                 "Menyimpan...",
         onPressed: () {
           context

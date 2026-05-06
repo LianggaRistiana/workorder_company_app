@@ -102,7 +102,7 @@ class _WorkReportFillFormPageState extends State<WorkReportFillFormPage> {
       label: "Simpan",
       progress: context.watch<FileUploadProgressCubit>().state.totalProgress,
       loadingLabel:
-          context.watch<FileUploadProgressCubit>().state.bottonMessage ??
+          context.watch<FileUploadProgressCubit>().state.buttonMessage ??
               "Menyimpan...",
     );
   }

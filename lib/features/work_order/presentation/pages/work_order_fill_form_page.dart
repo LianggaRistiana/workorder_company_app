@@ -92,7 +92,7 @@ class _WorkOrderFillFormPageState extends State<WorkOrderFillFormPage> {
       icon: AppIcon.submit,
       progress: context.watch<FileUploadProgressCubit>().state.totalProgress,
       loadingLabel:
-          context.watch<FileUploadProgressCubit>().state.bottonMessage ??
+          context.watch<FileUploadProgressCubit>().state.buttonMessage ??
               "Menyimpan...",
       label: "Simpan",
     );

@@ -8,7 +8,6 @@ class MockPositionRemoteDatasource implements PositionsRemoteDatasource {
   @override
   Future<ApiResponse<PositionModel>> createPosition(
       PositionModel positionData) {
-    // TODO: implement createPosition
     throw UnimplementedError();
   }
 
@@ -27,7 +26,6 @@ class MockPositionRemoteDatasource implements PositionsRemoteDatasource {
   @override
   Future<ApiResponse<PositionModel>> updatePosition(
       PositionModel positionData) {
-    // TODO: implement updatePosition
     throw UnimplementedError();
   }
 }

@@ -18,7 +18,7 @@ class FileUploadProgressState {
           : 'Mengunggah';
 
   // TODO : Fix this typo
-  String? get bottonMessage =>
+  String? get buttonMessage =>
       isInProgress ? "$progressMessage terunggah" : null;
 
   String get progressMessage => "$doneCount dari $taskCount berkas";
