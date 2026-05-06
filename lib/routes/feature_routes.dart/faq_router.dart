@@ -6,6 +6,7 @@ import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/routes/guards/route_guard.dart';
 import 'package:workorder_company_app/shared/page/pdf_viewer_page.dart';
 
+// TODO : add permission to access this page
 final faqRouter = [
   GoRoute(
     path: AppRoutes.addTextFaqDoc,

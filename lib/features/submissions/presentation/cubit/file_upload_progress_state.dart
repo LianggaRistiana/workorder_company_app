@@ -17,7 +17,6 @@ class FileUploadProgressState {
           ? 'Selesai'
           : 'Mengunggah';
 
-  // TODO : Fix this typo
   String? get buttonMessage =>
       isInProgress ? "$progressMessage terunggah" : null;
 
