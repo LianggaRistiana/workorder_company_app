@@ -18,21 +18,28 @@ class RequesterServiceRequestAuthorizer {
 
   AuthorizationRule get cancelRule => rules([
         roleCan(ServiceRequestPermission.cancel),
-        _ServiceRequestStatusRule(request, ServiceRequestStatus.received),
+        _ServiceRequestStatusRule(
+          request,
+          {
+            ServiceRequestStatus.received,
+          },
+        ),
         _ServiceRequestOwner(request)
       ]);
 
   AuthorizationRule get reviewRule => rules([
         roleCan(ServiceRequestPermission.update),
-        _ServiceRequestStatusRule(request,
-            ServiceRequestStatus.completed), // FIXME : match to enum in SR
-        _ServiceRequestOwner(request)
+        _ServiceRequestStatusRule(
+          request,
+          {
+            ServiceRequestStatus.completed,
+            ServiceRequestStatus.partiallyCompleted,
+            ServiceRequestStatus.closed,
+          },
+        ),
+        _ServiceRequestOwner(request),
+        _UnreviewedRule(request),
       ]);
-
-  // AuthorizationRule get internalCreateRule => rules([
-  //       roleCan(ServiceRequestPermission.create),
-  //       _InternalServiceRequestCreate()
-  //     ]);
 }
 
 class InternalServiceRequestCreateRule extends AuthorizationRule {
@@ -48,6 +55,22 @@ class InternalServiceRequestCreateRule extends AuthorizationRule {
         'Anda tidak dapat melakukan ini',
       );
     }
+  }
+}
+
+class _UnreviewedRule extends AuthorizationRule {
+  final RequesterServiceRequestEntity request;
+
+  _UnreviewedRule(this.request);
+
+  @override
+  AuthorizationResult evaluate(UserEntity user) {
+    if (request.reviewForm?.hasSubmission ?? false) {
+      return const AuthorizationResult.denied(
+        'Ulasan sudah di isi',
+      );
+    }
+    return const AuthorizationResult.allowed();
   }
 }
 
@@ -70,7 +93,7 @@ class _ServiceRequestOwner extends AuthorizationRule {
 
 class _ServiceRequestStatusRule extends AuthorizationRule {
   final RequesterServiceRequestEntity request;
-  final ServiceRequestStatus expectedStatus;
+  final Set<ServiceRequestStatus> expectedStatus;
 
   _ServiceRequestStatusRule(
     this.request,
@@ -79,7 +102,7 @@ class _ServiceRequestStatusRule extends AuthorizationRule {
 
   @override
   AuthorizationResult evaluate(UserEntity user) {
-    if (request.status == expectedStatus) {
+    if (expectedStatus.contains(request.status)) {
       return const AuthorizationResult.allowed();
     }
 
