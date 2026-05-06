@@ -78,6 +78,41 @@ class LabPage extends StatelessWidget {
                   ])
                 ],
               )),
+              CustomCard(
+                  child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  PropertyTitle(
+                    icon: AppIcon.employee,
+                    label: "Total Pegawai",
+                  ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      "200",
+                      style: const TextStyle(
+                        fontSize: 48,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: const Text(
+                      "Pegawai",
+                      style: TextStyle(fontSize: 12),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton.icon(
+                        iconAlignment: IconAlignment.end,
+                        icon: Icon(AppIcon.next),
+                        onPressed: () {},
+                        label: Text("Lihat Semua")),
+                  )
+                ],
+              )),
             ],
           ),
         ),
