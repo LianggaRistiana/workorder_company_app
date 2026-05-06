@@ -1,108 +1,87 @@
 import 'package:flutter/material.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
-import 'package:workorder_company_app/core/services/logger/app_logger.dart';
-import 'package:workorder_company_app/features/forms/data/model/field_model.dart';
-import 'package:workorder_company_app/features/forms/data/model/option_model.dart';
-import 'package:workorder_company_app/features/forms/domain/entities/filled_form_entity.dart';
-import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
-import 'package:workorder_company_app/features/submissions/data/model/field_data_model.dart';
-import 'package:workorder_company_app/features/submissions/data/model/submissions_model.dart';
-import 'package:workorder_company_app/features/submissions/presentation/coordinator/form_renderer_coordinator.dart';
-import 'package:workorder_company_app/features/submissions/presentation/widgets/form_renderer.dart';
+import 'package:workorder_company_app/core/theme/app_icon.dart';
+import 'package:workorder_company_app/features/dashboard/domain/entitties/donut_data_entity.dart';
+import 'package:workorder_company_app/features/dashboard/presentation/widgets/multi_donut_chart.dart';
+import 'package:workorder_company_app/features/dashboard/presentation/widgets/toggleable_legend.dart';
+import 'package:workorder_company_app/features/service_request/presentation/ui_mappers.dart/service_request_status_color_mapper.dart';
+import 'package:workorder_company_app/features/work_order/presentation/ui_mappers/work_order_status_color_mapper.dart';
+import 'package:workorder_company_app/shared/widgets/custom_card.dart';
+import 'package:workorder_company_app/shared/widgets/property_display.dart';
 
-final mockForm = FilledFormEntity(
-  form: const FormEntity(
-    id: "intake-service-1",
-    title: "Intake Form",
-    description: "Please fill out the details of your request",
-    formType: FormType.intake,
-    fields: [
-      FieldModel(
-        order: 1,
-        label: "Problem Description",
-        type: FieldType.textarea,
-        required: true,
-        placeholder: "Describe the issue...",
-      ),
-      FieldModel(
-        order: 2,
-        label: "Priority",
-        type: FieldType.singleSelect,
-        required: true,
-        options: [
-          OptionModel(key: "high", value: "High"),
-          OptionModel(key: "medium", value: "Medium"),
-          OptionModel(key: "low", value: "Low"),
-        ],
-      ),
-      FieldModel(
-        order: 3,
-        label: "Preferred Date",
-        type: FieldType.date,
-        required: false,
-      ),
-      FieldModel(
-        order: 4,
-        label: "Bukti Pembayaran",
-        type: FieldType.image,
-        required: true,
-        placeholder: "Describe the issue...",
-      ),
-    ],
-  ),
-  submission: SubmissionsModel(
-    id: "sub-1",
-    formId: "intake-service-1",
-    submissionType: FormType.intake,
-    createdAt: DateTime.now().subtract(const Duration(days: 1)),
-    fieldsData: [
-      FieldDataModel(
-        order: "1",
-        value: "The hall needs a deep clean, lots of dust.",
-      ),
-      FieldDataModel(
-        order: "2",
-        value: "high",
-      ),
-      FieldDataModel(
-        order: "3",
-        value: DateTime.now(),
-      ),
-      FieldDataModel(
-        order: "4",
-        value:
-            "https://bucket-production-2556.up.railway.app/workorder/f74360c7-1b6c-4639-8546-f4d56d4b3adf.webp",
-      ),
-    ],
-  ),
-);
-
-class LabPage extends StatefulWidget {
+class LabPage extends StatelessWidget {
   const LabPage({super.key});
-
-  @override
-  State<LabPage> createState() => _LabPageState();
-}
-
-class _LabPageState extends State<LabPage> {
-  late final FormRendererCoordinator coordinator;
-
-  @override
-  void initState() {
-    coordinator = FormRendererCoordinator.filledForm(mockForm);
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
-        floatingActionButton: FloatingActionButton(
-            child: const Icon(Icons.print),
-            onPressed: () => appLogger.i(coordinator.draft.fieldsData
-                .map((val) => val.value)
-                .toString())),
-        body: SingleChildScrollView(
-            child: FormRenderer(coordinator: coordinator)));
+      appBar: AppBar(
+        title: const Text("Lab Page"),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(20),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              CustomCard(
+                  child: Column(
+                children: [
+                  PropertyTitle(
+                    icon: AppIcon.workOrder,
+                    label: "Perintah Kerja",
+                  ),
+                  MultiDonutChart(
+                    data: [
+                      ...WorkOrderStatus.values.map(
+                        (e) {
+                          return DonutDataEntity(
+                              label: e.displayName, value: 40, color: e.color);
+                        },
+                      )
+                    ],
+                  ),
+                  ToggleableLegend(data: [
+                    ...WorkOrderStatus.values.map(
+                      (e) {
+                        return DonutDataEntity(
+                            label: e.displayName, value: 40, color: e.color);
+                      },
+                    )
+                  ])
+                ],
+              )),
+              CustomCard(
+                  child: Column(
+                children: [
+                  PropertyTitle(
+                    icon: AppIcon.serviceRequestInbox,
+                    label: "Permintaan Layanan",
+                  ),
+                  MultiDonutChart(
+                    data: [
+                      ...ServiceRequestStatus.values.map(
+                        (e) {
+                          return DonutDataEntity(
+                              label: e.displayName, value: 20, color: e.color);
+                        },
+                      )
+                    ],
+                  ),
+                  ToggleableLegend(data: [
+                    ...ServiceRequestStatus.values.map(
+                      (e) {
+                        return DonutDataEntity(
+                            label: e.displayName, value: 40, color: e.color);
+                      },
+                    )
+                  ])
+                ],
+              )),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
