@@ -10,7 +10,7 @@ import 'package:workorder_company_app/shared/widgets/dashed_button.dart';
 import 'package:workorder_company_app/shared/widgets/information_block.dart';
 import 'package:workorder_company_app/shared/widgets/reorderable_custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
-
+ 
 class FieldsEditorTabView extends StatelessWidget {
   final FormEditorCoordinator coordinator;
   final VoidCallback onAddField;

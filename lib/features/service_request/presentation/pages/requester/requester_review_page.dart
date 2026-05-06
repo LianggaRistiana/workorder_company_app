@@ -50,7 +50,7 @@ class _RequesterReviewPageState extends State<RequesterReviewPage> {
         listener: (context, state) {
           if (state.status == RequesterSubmitReviewFormStatus.success) {
             context.showSuccess("Berhasil mengirim review");
-            context.pop();
+            context.pop(state.request);
           }
           if (state.status == RequesterSubmitReviewFormStatus.error) {
             context.showError(state.errorMessage ?? "Terjadi kesalahan");

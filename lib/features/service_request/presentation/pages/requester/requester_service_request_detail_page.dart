@@ -72,20 +72,28 @@ class RequesterServiceRequestDetailPage extends StatelessWidget {
         ).require(
             RequesterServiceRequestAuthorizer(request: request).cancelRule);
 
-      case ServiceRequestStatus.completed:
+      default:
         return Padding(
             padding: const EdgeInsets.all(AppSpacing.md),
             child: FilledButton.icon(
-              onPressed: () {
-                context.push(AppRoutes.serviceRequestReview, extra: request);
+              onPressed: () async {
+                // TODO : Test this feature for replace local data in cubit
+                final result =
+                    await context.push<RequesterServiceRequestEntity?>(
+                        AppRoutes.serviceRequestReview,
+                        extra: request);
+
+                if (result == null) return;
+                if (!context.mounted) return;
+                context
+                    .read<RequesterServiceRequestDetailCubit>()
+                    .replaceData(result);
               },
               label: Text("Isi Ulasan"),
               icon: Icon(AppIcon.review),
             )).require(
           RequesterServiceRequestAuthorizer(request: request).reviewRule,
         );
-      default:
-        return SizedBox.shrink();
     }
   }
 }

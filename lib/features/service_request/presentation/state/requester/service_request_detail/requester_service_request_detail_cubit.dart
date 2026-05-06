@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:workorder_company_app/features/service_request/domain/entities/service_request_entity.dart';
 import 'package:workorder_company_app/features/service_request/domain/usecases/requester/requester_get_service_request_detail_usecase.dart';
 import 'package:workorder_company_app/features/service_request/presentation/state/requester/service_request_detail/requester_service_request_detail_state.dart';
 
@@ -27,5 +28,9 @@ class RequesterServiceRequestDetailCubit
         request: request,
       )),
     );
+  }
+
+  Future<void> replaceData(RequesterServiceRequestEntity request) async {
+    emit(state.copyWith(request: request));
   }
 }
