@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
+import 'package:workorder_company_app/core/utils/validators.dart';
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
 import 'package:workorder_company_app/features/positions/presentation/widget/positions_selector_container.dart';
 import 'package:workorder_company_app/features/services/domain/draft/service_work_order_config_draft.dart';
@@ -94,15 +95,15 @@ class _WorkOrderConfigItemState extends State<WorkOrderConfigItem> {
                 iconSize: 24,
               ),
               const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    draft.workOrderForm.title,
-                    // TodoText.title("form", loremCount: 100),
-                    style: Theme.of(context).textTheme.titleMedium,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+              Expanded(
+                child: Text(
+                  draft.workOrderForm.title,
+                  // TodoText.title("form", loremCount: 100),
+                  style: Theme.of(context).textTheme.titleMedium,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
+              ),
               if (widget.onRemove != null)
                 IconButton.filled(
                   onPressed: widget.onRemove,
@@ -201,6 +202,18 @@ class _WorkOrderConfigItemState extends State<WorkOrderConfigItem> {
                   onChanged: (p0) => widget.onMinChange(
                     int.tryParse(p0),
                   ),
+                  validator: (value) {
+                    return ValidatorUtils.validate(
+                      value,
+                      fieldName: "",
+                      minValue: 0,
+                      [
+                        ValidatorType.required,
+                        ValidatorType.number,
+                        ValidatorType.minValue,
+                      ],
+                    );
+                  },
                 ),
               ),
               const SizedBox(width: 12),
@@ -212,6 +225,18 @@ class _WorkOrderConfigItemState extends State<WorkOrderConfigItem> {
                   onChanged: (p0) => widget.onMaxChange(
                     int.tryParse(p0),
                   ),
+                  validator: (value) {
+                    return ValidatorUtils.validate(
+                      value,
+                      fieldName: "",
+                      minValue: widget.draft.minStaff?.toDouble() ?? 0,
+                      [
+                        ValidatorType.required,
+                        ValidatorType.number,
+                        ValidatorType.minValue,
+                      ],
+                    );
+                  },
                 ),
               ),
             ],
