@@ -11,6 +11,7 @@ import 'package:workorder_company_app/features/faq/domain/usecases/ask_question_
 import 'package:workorder_company_app/features/faq/domain/usecases/detete_faq_docs.dart';
 import 'package:workorder_company_app/features/faq/domain/usecases/get_faq_docs_usecase.dart';
 import 'package:workorder_company_app/features/faq/domain/usecases/get_faq_room_chat_usecase.dart';
+import 'package:workorder_company_app/features/faq/domain/usecases/retry_ask_usecase.dart';
 import 'package:workorder_company_app/features/faq/domain/usecases/toggle_active_faq_usecase.dart';
 import 'package:workorder_company_app/features/faq/domain/usecases/upload_pdf_faq_usecase.dart';
 import 'package:workorder_company_app/features/faq/domain/usecases/upload_text_faq_usecase.dart';
@@ -52,6 +53,12 @@ Future<void> initFaqFeature() async {
     ),
   );
 
+  sl.registerLazySingleton<RetryAskUsecase>(
+    () => RetryAskUsecase(
+      sl<FaqRepository>(),
+    ),
+  );
+
   sl.registerLazySingleton<GetFaqDocsUsecase>(
     () => GetFaqDocsUsecase(
       sl<FaqConfigRepository>(),
@@ -86,6 +93,7 @@ Future<void> initFaqFeature() async {
     () => FaqChatCubit(
       sl<GetFaqRoomChatUsecase>(),
       sl<AskQuestionUsecase>(),
+      sl<RetryAskUsecase>(),
     ),
   );
 

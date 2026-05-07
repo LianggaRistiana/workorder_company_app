@@ -73,7 +73,7 @@ class _ChatViewState extends State<ChatView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Chatbot"),
+        title: const Text("Bantuan"),
       ),
       body: Column(
         children: [
@@ -91,19 +91,27 @@ class _ChatViewState extends State<ChatView> {
                   itemCount: chats.length,
                   itemBuilder: (context, index) {
                     final chat = chats[index];
-                    return ChatBubble(item: chat);
+                    return ChatBubble(
+                      item: chat,
+                      retry: () {
+                        context
+                            .read<FaqChatCubit>()
+                            .retryQuestion(widget.company, chat);
+                      },
+                    );
                   },
                 );
               },
             ),
           ),
-          _buildInputArea(context),
+          _buildInputArea(
+              context, !context.watch<FaqChatCubit>().state.anyLoading),
         ],
       ),
     );
   }
 
-  Widget _buildInputArea(BuildContext context) {
+  Widget _buildInputArea(BuildContext context, bool canAsk) {
     return SafeArea(
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -112,6 +120,7 @@ class _ChatViewState extends State<ChatView> {
             Expanded(
               child: TextField(
                 controller: _controller,
+                enabled: canAsk,
                 decoration: InputDecoration(
                   hintText: "Pertanyaan anda...",
                   filled: true,
@@ -127,8 +136,13 @@ class _ChatViewState extends State<ChatView> {
             ),
             const SizedBox(width: 8),
             IconButton(
-              onPressed: () => _sendMessage(),
-              icon: Icon(AppIcon.send),
+              onPressed: () => canAsk ? _sendMessage() : null,
+              icon: Icon(
+                AppIcon.send,
+                color: canAsk
+                    ? Theme.of(context).colorScheme.onSurface
+                    : Theme.of(context).colorScheme.onSurface.withAlpha(30),
+              ),
             ),
           ],
         ),

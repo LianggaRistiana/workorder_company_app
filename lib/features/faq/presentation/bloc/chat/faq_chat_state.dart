@@ -1,3 +1,4 @@
+import 'package:workorder_company_app/features/faq/domain/entitties/chat_item_entity.dart';
 import 'package:workorder_company_app/features/faq/domain/entitties/room_chat_entity.dart';
 
 class FaqChatState {
@@ -8,6 +9,9 @@ class FaqChatState {
   });
 
   factory FaqChatState.initial() => const FaqChatState();
+
+  bool get anyLoading =>
+      roomChat?.chatItems.any((e) => e.state == ChatState.waiting) ?? false;
 
   FaqChatState copyWith({
     RoomChatEntity? roomChat,

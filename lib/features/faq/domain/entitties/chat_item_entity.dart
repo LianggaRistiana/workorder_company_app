@@ -49,6 +49,16 @@ class ChatItemEntity extends Equatable {
     );
   }
 
+  ChatItemEntity retry() {
+    return ChatItemEntity(
+      id: id,
+      userQuery: userQuery,
+      botResponse: null,
+      state: ChatState.waiting,
+      responseAt: null,
+    );
+  }
+
   @override
   List<Object?> get props => [
         id,

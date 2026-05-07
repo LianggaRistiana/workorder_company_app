@@ -89,4 +89,39 @@ class FaqRepositoryImpl implements FaqRepository {
 
     _cache[index] = updatedRoom;
   }
+
+  @override
+  Future<RoomChatEntity> retry(
+      CompanyEntity company, ChatItemEntity chatItem) async {
+    var room = _getOrAddRoomChat(company);
+    room = room.updateChatItem(
+      chatItem.id,
+      (chat) => chat.retry(),
+    );
+    _replaceRoom(room);
+
+    final result = await safeCall(() async =>
+        _remoteDatasource.askQuestion(company.id, chatItem.userQuery));
+
+    result.fold(
+      (error) {
+        room = room.updateChatItem(
+          chatItem.id,
+          (chat) => chat.error(error.message),
+        );
+      },
+      (response) {
+        room = room.updateChatItem(
+          chatItem.id,
+          (chat) => chat.success(response.data.answer),
+        );
+      },
+    );
+
+    _replaceRoom(room);
+
+    appLogger.i(room);
+
+    return room;
+  }
 }
