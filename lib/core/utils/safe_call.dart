@@ -23,7 +23,7 @@ Failure _mapExceptionToFailure(dynamic error) {
       // case 400:
       //   return ServerFailure(message: error.message);
       case 401:
-        return AuthFailure(message: "Unauthorized");
+        return AuthFailure(message: "Sesi login telah berakhir");
       case 403:
         return AuthFailure(message: error.message);
       case 404:
