@@ -48,7 +48,7 @@ class ServiceModel extends ServiceEntity {
           .reqModel(ServiceRequestConfigModel.fromJsonTemplate),
       workOrdersConfig: json
               .field("workOrdersConfig")
-              .optListModel(WorkOrderConfigModel.fromJson) ??
+              .optListModel(WorkOrderConfigModel.fromJsonTemplate) ??
           [],
     );
   }
