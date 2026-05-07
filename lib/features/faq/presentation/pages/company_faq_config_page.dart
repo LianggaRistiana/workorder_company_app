@@ -3,6 +3,9 @@ import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/authorization/feature/faq_config_permission.dart';
+import 'package:workorder_company_app/core/authorization/rule/role_permission_rule/role_permission_helper.dart';
+import 'package:workorder_company_app/core/authorization/util/access_gate_on_widget.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/features/faq/presentation/bloc/delete_docs/delete_doc_cubit.dart';
@@ -105,8 +108,12 @@ class CompanyFaqConfigPage extends StatelessWidget {
                       ),
                     ),
                   ],
-                ),
-                header: FaqActiveStatusSwitch(),
+                ).require(roleCan(
+                  FaqConfigPermission.createDocs,
+                )),
+                header: FaqActiveStatusSwitch().require(roleCan(
+                  FaqConfigPermission.updateFeature,
+                )),
                 isLoading: state.status == GetFaqDocsStatus.loading,
                 items: state.docs,
                 onRefresh: () async => unawaited(context

@@ -15,5 +15,6 @@ enum AppFeature {
   senderInvitation,
   receiverInvitation,
   memberships,
-  claimCodeMembership
+  claimCodeMembership,
+  faqConfig
 }

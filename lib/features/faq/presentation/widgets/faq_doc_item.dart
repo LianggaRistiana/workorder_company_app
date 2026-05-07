@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/authorization/feature/faq_config_permission.dart';
+import 'package:workorder_company_app/core/authorization/rule/role_permission_rule/role_permission_helper.dart';
+import 'package:workorder_company_app/core/authorization/util/access_gate_on_widget.dart';
 import 'package:workorder_company_app/core/constants/app_enums/faq_enum.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
@@ -54,7 +57,9 @@ class FaqDocItem extends StatelessWidget {
                     AppIcon.delete,
                     color: Theme.of(context).colorScheme.error,
                   ),
-                ),
+                ).require(roleCan(
+                  FaqConfigPermission.deleteDocs,
+                )),
                 if (doc.url != null &&
                     doc.url!.isNotEmpty &&
                     doc.type == FaqDocsType.pdf) ...[

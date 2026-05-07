@@ -1,5 +1,6 @@
 import 'package:workorder_company_app/core/authorization/feature/company_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/employee_permission.dart';
+import 'package:workorder_company_app/core/authorization/feature/faq_config_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/form_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/invitation_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/memberships_permission.dart';
@@ -92,6 +93,7 @@ extension UserRolePermissions on UserRole {
           // Company Domain
           ...CompanyPermission.all,
           ...MembershipsPermission.provider,
+          ...FaqConfigPermission.all,
 
           // Human Resource Domain
           ...PositionsPermission.all,
