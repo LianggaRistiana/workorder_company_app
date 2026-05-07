@@ -6,8 +6,10 @@ import 'package:workorder_company_app/core/utils/either_helper.dart';
 import 'package:workorder_company_app/core/utils/safe_call.dart';
 import 'package:workorder_company_app/features/company/domain/entities/company_entity.dart';
 import 'package:workorder_company_app/features/faq/data/datasources/faq_config_remote_datasource.dart';
+import 'package:workorder_company_app/features/faq/data/model/pdf_faq_doc_model.dart';
 import 'package:workorder_company_app/features/faq/data/model/text_faq_doc_model.dart';
 import 'package:workorder_company_app/features/faq/domain/entitties/faq_doc_entity.dart';
+import 'package:workorder_company_app/features/faq/domain/entitties/pdf_faq_doc_draft.dart';
 import 'package:workorder_company_app/features/faq/domain/entitties/text_faq_doc_draft.dart';
 import 'package:workorder_company_app/features/faq/domain/repositories/faq_config_repository.dart';
 
@@ -46,8 +48,10 @@ class FaqConfigRepositoryImpl implements FaqConfigRepository {
   }
 
   @override
-  Stream<MultipartResult<FaqDocEntity>> uploadPdfDoc(String filePath) {
-    return _remoteDatasource.uploadPdfDoc(filePath).map((result) {
+  Stream<MultipartResult<FaqDocEntity>> uploadPdfDoc(PdfFaqDocDraft draft) {
+    return _remoteDatasource
+        .uploadPdfDoc(PdfFaqDocModel.fromDraft(draft))
+        .map((result) {
       if (result.isDone) {
         final data = result.data;
         if (data != null) {

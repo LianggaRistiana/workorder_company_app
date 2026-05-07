@@ -1,10 +1,12 @@
 import 'package:workorder_company_app/core/error/error.dart';
 import 'package:workorder_company_app/core/model/multipart_result.dart';
+import 'package:workorder_company_app/core/services/logger/app_logger.dart';
 import 'package:workorder_company_app/core/services/network/api_response.dart';
 import 'package:workorder_company_app/core/types/future_api.dart';
 import 'package:workorder_company_app/features/company/data/models/company_model.dart';
 import 'package:workorder_company_app/features/faq/data/datasources/faq_config_remote_datasource.dart';
 import 'package:workorder_company_app/features/faq/data/model/faq_doc_model.dart';
+import 'package:workorder_company_app/features/faq/data/model/pdf_faq_doc_model.dart';
 import 'package:workorder_company_app/features/faq/data/model/text_faq_doc_model.dart';
 import 'dart:async';
 import 'dart:math';
@@ -68,7 +70,9 @@ class MockFaqConfigRemoteDatasource implements FaqConfigRemoteDatasource {
   }
 
   @override
-  Stream<MultipartResult<FaqDocModel>> uploadPdfDoc(String filePath) async* {
+  Stream<MultipartResult<FaqDocModel>> uploadPdfDoc(
+      PdfFaqDocModel draft) async* {
+    appLogger.i(draft.toJson());
     final random = Random();
 
     double progress = 0;

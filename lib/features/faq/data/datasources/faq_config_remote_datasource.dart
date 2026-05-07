@@ -9,6 +9,7 @@ import 'package:workorder_company_app/core/services/network/endpoints.dart';
 import 'package:workorder_company_app/core/types/future_api.dart';
 import 'package:workorder_company_app/features/company/data/models/company_model.dart';
 import 'package:workorder_company_app/features/faq/data/model/faq_doc_model.dart';
+import 'package:workorder_company_app/features/faq/data/model/pdf_faq_doc_model.dart';
 import 'package:workorder_company_app/features/faq/data/model/text_faq_doc_model.dart';
 import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
 
@@ -17,7 +18,7 @@ abstract class FaqConfigRemoteDatasource {
   ApiFuture<Empty> deleteFaqDoc(String id);
   ApiFuture<CompanyModel> toggleFaqFeature(bool value);
   ApiFuture<FaqDocModel> uploadTextDocs(TextFaqDocModel draft);
-  Stream<MultipartResult<FaqDocModel>> uploadPdfDoc(String filePath);
+  Stream<MultipartResult<FaqDocModel>> uploadPdfDoc(PdfFaqDocModel draft);
 }
 
 class FaqConfigRemoteDatasourceImpl implements FaqConfigRemoteDatasource {
@@ -43,13 +44,16 @@ class FaqConfigRemoteDatasourceImpl implements FaqConfigRemoteDatasource {
   }
 
   @override
-  Stream<MultipartResult<FaqDocModel>> uploadPdfDoc(String filePath) {
+  Stream<MultipartResult<FaqDocModel>> uploadPdfDoc(PdfFaqDocModel draft) {
     final controller = StreamController<MultipartResult<FaqDocModel>>();
 
     controller.onListen = () async {
       try {
         final formData = FormData.fromMap({
-          "file": await MultipartFile.fromFile(filePath),
+          "title": draft.title,
+          "file": await MultipartFile.fromFile(
+            draft.filePath,
+          ),
         });
 
         final response = await _apiClient.postFormData(

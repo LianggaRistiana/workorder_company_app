@@ -4,6 +4,7 @@ import 'package:workorder_company_app/core/services/network/api_response.dart';
 import 'package:workorder_company_app/core/types/future_either.dart';
 import 'package:workorder_company_app/features/company/domain/entities/company_entity.dart';
 import 'package:workorder_company_app/features/faq/domain/entitties/faq_doc_entity.dart';
+import 'package:workorder_company_app/features/faq/domain/entitties/pdf_faq_doc_draft.dart';
 import 'package:workorder_company_app/features/faq/domain/entitties/text_faq_doc_draft.dart';
 
 // TODO : add streamable here
@@ -15,6 +16,6 @@ abstract class FaqConfigRepository implements Cacheable {
   FutureEither<FaqDocEntity> uploadTextDocs(
     TextFaqDocDraft draft,
   );
-  Stream<MultipartResult<FaqDocEntity>> uploadPdfDoc(String filePath);
+  Stream<MultipartResult<FaqDocEntity>> uploadPdfDoc(PdfFaqDocDraft draft);
   FutureEither<Empty> deleteFaqDoc(String id);
 }

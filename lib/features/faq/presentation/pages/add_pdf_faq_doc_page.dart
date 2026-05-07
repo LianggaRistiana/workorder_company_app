@@ -13,6 +13,7 @@ import 'package:workorder_company_app/features/faq/presentation/bloc/upload_docs
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/button_with_loading_state.dart';
+import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 import 'package:workorder_company_app/shared/widgets/dashed_button.dart';
 
 class AddPdfFaqDocPage extends StatefulWidget {
@@ -23,6 +24,9 @@ class AddPdfFaqDocPage extends StatefulWidget {
 }
 
 class _AddPdfFaqDocPageState extends State<AddPdfFaqDocPage> {
+  final _formKey = GlobalKey<FormState>();
+  final _titleController = TextEditingController();
+
   String? _filePath;
 
   Future<void> pickPdf() async {
@@ -35,8 +39,6 @@ class _AddPdfFaqDocPageState extends State<AddPdfFaqDocPage> {
       setState(() {
         _filePath = result.files.single.path!;
       });
-    } else {
-      // debugPrint("User cancel");
     }
   }
 
@@ -59,9 +61,29 @@ class _AddPdfFaqDocPageState extends State<AddPdfFaqDocPage> {
             body: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(16),
-                child: _filePath == null
-                    ? _buildPickButton(context)
-                    : _buildContent(context),
+                child: Column(
+                  children: [
+                    Form(
+                      key: _formKey,
+                      child: CustomInputField(
+                        label: "Judul",
+                        controller: _titleController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Judul tidak boleh kosong";
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.sm),
+                    if (_filePath == null) ...[
+                      _buildPickButton(context)
+                    ] else ...[
+                      _buildContent(context),
+                    ]
+                  ],
+                ),
               ),
             ),
           ),
@@ -90,7 +112,10 @@ class _AddPdfFaqDocPageState extends State<AddPdfFaqDocPage> {
               onPressed: state.isUploading
                   ? null
                   : () {
-                      context.read<UploadPdfDocCubit>().uploadPdf(_filePath!);
+                      if (!_formKey.currentState!.validate()) return;
+                      context
+                          .read<UploadPdfDocCubit>()
+                          .uploadPdf(_titleController.text, _filePath!);
                     },
             );
           },

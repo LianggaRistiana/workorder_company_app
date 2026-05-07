@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:workorder_company_app/features/faq/domain/entitties/pdf_faq_doc_draft.dart';
 import 'package:workorder_company_app/features/faq/domain/usecases/upload_pdf_faq_usecase.dart';
 import 'package:workorder_company_app/features/faq/presentation/bloc/upload_docs/upload_pdf_doc_state.dart';
 
@@ -12,9 +13,17 @@ class UploadPdfDocCubit extends Cubit<UploadPdfDocState> {
     this._uploadPdfFaqUsecase,
   ) : super(const UploadPdfDocState(result: null));
 
-  Future<void> uploadPdf(String filePath) async {
+  Future<void> uploadPdf(
+    String title,
+    String filePath,
+  ) async {
     _sub?.cancel();
-    _sub = _uploadPdfFaqUsecase(filePath).listen((data) {
+    _sub = _uploadPdfFaqUsecase(
+      PdfFaqDocDraft(
+        title: title,
+        filePath: filePath,
+      ),
+    ).listen((data) {
       emit(UploadPdfDocState(result: data));
       if (data.isDone) {
         _sub?.cancel();
