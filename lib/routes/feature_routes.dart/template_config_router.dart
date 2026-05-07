@@ -7,7 +7,6 @@ import 'package:workorder_company_app/features/template_config/presentation/page
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/routes/guards/route_guard.dart';
 
-// TODO : add permission to access this page
 final templateConfigRouters = [
   GoRoute(
     path: AppRoutes.templateCompanyType,

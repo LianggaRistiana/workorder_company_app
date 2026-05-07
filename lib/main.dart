@@ -26,6 +26,7 @@ void main() {
       options: DefaultFirebaseOptions.currentPlatform,
     );
 
+    // NOTE : uncomment This Logic if there is a feature background process when retrive notif
     // FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
     await di.init();

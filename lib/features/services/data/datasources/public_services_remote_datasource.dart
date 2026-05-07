@@ -3,12 +3,11 @@ import 'package:workorder_company_app/core/services/network/api_response.dart';
 import 'package:workorder_company_app/core/services/network/endpoints.dart';
 import 'package:workorder_company_app/core/types/future_api.dart';
 import 'package:workorder_company_app/core/utils/safe_mapper.dart';
-import 'package:workorder_company_app/features/services/data/model/service_model.dart';
 import 'package:workorder_company_app/features/services/data/model/service_summary_model.dart';
 
 abstract class PublicServicesRemoteDatasource {
   ApiFutureList<ServiceSummaryModel> getPublicServices(String companyId);
-  ApiFuture<ServiceModel> getPublicServiceDetails(String serviceId);
+  // ApiFuture<ServiceModel> getPublicServiceDetails(String serviceId);
 }
 
 class PublicServicesRemoteDatasourceImpl
@@ -25,15 +24,16 @@ class PublicServicesRemoteDatasourceImpl
     return ApiResponse.fromJson(
       response,
       (data) => SafeMapper.mapList(
-        data['services'] as List?, // FIXME[API REQUIRED] : BE SHOULD Fix THIS Response. destruct servcie direct to data, remove isSubcribbed info from this endpoint
+        data['services']
+            as List?, // FIXME[API REQUIRED] : BE SHOULD Fix THIS Response. destruct servcie direct to data, remove isSubcribbed info from this endpoint
         (json) => ServiceSummaryModel.fromJson(json),
       ),
     );
   }
 
-  @override
-  ApiFuture<ServiceModel> getPublicServiceDetails(String serviceId) {
-    // TODO[High]: implement getPublicServiceDetails
-    throw UnimplementedError();
-  }
+  // @override
+  // ApiFuture<ServiceModel> getPublicServiceDetails(String serviceId) {
+  //
+  //   throw UnimplementedError();
+  // }
 }

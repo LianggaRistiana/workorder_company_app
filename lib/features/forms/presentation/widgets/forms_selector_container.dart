@@ -27,8 +27,8 @@ class FormsSelectorContainer extends StatelessWidget {
     return BlocBuilder<FormsListBloc, FormsListState>(
       builder: (context, state) {
         final isLoading = state.status == FormsListStatus.loading;
-        final availableForms =
-            state.forms; // TODO [FUTURE IMPROVEMENT]: temp solution filtering here
+        final availableForms = state
+            .forms; // TODO [FUTURE IMPROVEMENT]: temp solution filtering here
 
         return FormsSelector(
           selectedForms: selectedForms,

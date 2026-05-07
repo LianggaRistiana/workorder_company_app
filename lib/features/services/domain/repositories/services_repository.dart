@@ -7,7 +7,7 @@ import 'package:workorder_company_app/features/services/domain/entities/service_
 abstract class ServicesRepository implements Cacheable, StreamableCache {
   // Public Service
   FutureEitherList<ServiceSummaryEntity> getPublicServices(String companyId);
-  FutureEither<ServiceEntity> getPublicServiceDetail(String id);
+  // FutureEither<ServiceEntity> getPublicServiceDetail(String id);
 
   // Internal Service Management
   FutureEitherList<ServiceSummaryEntity> getServices(
