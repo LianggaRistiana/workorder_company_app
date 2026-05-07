@@ -6,45 +6,28 @@ import 'package:workorder_company_app/features/invitations/domain/entities/invit
 import 'package:workorder_company_app/features/positions/data/models/position_model.dart';
 
 class InvitationModel extends InvitationEntity {
-  InvitationModel(
-      {required super.id,
-      required super.role,
-      required super.status,
-      super.company,
-      super.toUser,
-      super.createdAt,
-      super.updatedAt,
-      super.expiresAt,
-      super.position});
+  InvitationModel({
+    required super.id,
+    required super.role,
+    required super.status,
+    super.company,
+    super.toUser,
+    super.createdAt,
+    super.updatedAt,
+    super.expiresAt,
+    super.position,
+  });
 
   factory InvitationModel.fromJson(Map<String, dynamic> json) {
-    // TODO : add gate parse here
     return InvitationModel(
-        id: safeParse<String>(json, "_id"),
-        role: UserRole.fromString(safeParse<String>(json, "role")),
-        toUser: json['user'] != null
-            ? UserSummaryModel.fromJson(json['user'])
-            : null,
-        status: InvitationStatus.fromString(safeParse<String>(json, "status")),
-        createdAt: safeParse<DateTime>(
-          json,
-          "createdAt",
-          requiredField: false,
-          parser: (value) => DateTime.parse(value as String),
-        ),
+        id: json.field('_id').reqString(),
+        role: json.field("role").reqEnum(UserRole.fromString),
+        toUser: json.field("user").optModel(UserSummaryModel.fromJson),
+        status: json.field("status").reqEnum(InvitationStatus.fromString),
+        createdAt: json.field("createdAt").optDate(),
         updatedAt: json.field("updatedAt").optDate(),
-        expiresAt: safeParse<DateTime>(
-          json,
-          "expiresAt",
-          requiredField: false,
-          parser: (value) => DateTime.parse(value as String),
-        ),
-        company: json['company'] != null
-            ? CompanyModel.fromJson(json['company'])
-            : null,
-        position: json['position'] != null
-            ? PositionModel.fromJson(
-                safeParse<Map<String, dynamic>>(json, "position"))
-            : null);
+        expiresAt: json.field("expiresAt").optDate(),
+        company: json.field("company").optModel(CompanyModel.fromJson),
+        position: json.field("position").optModel(PositionModel.fromJson));
   }
 }

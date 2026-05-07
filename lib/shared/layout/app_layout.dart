@@ -54,7 +54,7 @@ class AppLayout extends StatelessWidget {
           drawer: isMainPage && isLandscape
               ? AppNavigationDrawer(role: role)
               : null,
-          // OPTIMIZE : currently there is no global UI for loading state since there is synchronized process for each submission
+          // NOTE : Activate this code if there global upload file loading state needed
           // floatingActionButton: UploadLoadingState(),
           // floatingActionButtonLocation:
           //     FloatingActionButtonLocation.centerFloat,

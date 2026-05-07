@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/features/submissions/presentation/cubit/file_upload_progress_cubit.dart';
 import 'package:workorder_company_app/features/submissions/presentation/cubit/file_upload_progress_state.dart';
 
-// TODO : Remove this later if there is no global state needed
+// NOTE : UI for global state uploading state. remove it if there is no need
 class UploadLoadingState extends StatelessWidget {
   const UploadLoadingState({super.key});
 

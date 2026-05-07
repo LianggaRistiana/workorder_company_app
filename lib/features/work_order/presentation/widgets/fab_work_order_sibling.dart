@@ -53,9 +53,11 @@ class FabWorkOrderSibling extends StatelessWidget {
             separatorHeight: AppSpacing.sm,
             itemBuilder: (item, _) => InkWell(
                   onTap: () {
+                    // NOTE : Since .replace doesnt refresh the page, double pop is needed
+                    // First pop for bottom sheet
+                    // Second pop for detail page
                     context.pop();
-                    context
-                        .pop(); // HACK : Observe this, if any bug occur during switch work order, remove this double pop
+                    context.pop();
                     context.push(AppRoutes.workOrdersDetail.fillId(item.id));
                   },
                   child: Row(

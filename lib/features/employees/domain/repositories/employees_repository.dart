@@ -8,5 +8,5 @@ abstract class EmployeesRepository implements Cacheable {
     EmployeesParams? params,
     bool forceRefresh = false,
   });
+  // TODO [API REQUIRED] : kick staff
 }
-// TODO [API REQUIRED]: Make this repo streamablecache if there is feature kick out employee

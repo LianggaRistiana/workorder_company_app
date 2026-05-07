@@ -5,7 +5,7 @@ import 'package:workorder_company_app/features/submissions/domain/entities/uploa
 import 'package:workorder_company_app/features/submissions/domain/usecases/file_upload_usecase.dart';
 
 // =========================
-// OPTIMIZE : Add queue system in Upload manager
+// OPTIMIZE : Queue system in Upload manager
 // =========================
 // FUTURE IMPROVEMENT (QUEUE SYSTEM)
 //

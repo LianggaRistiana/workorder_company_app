@@ -36,7 +36,8 @@ class CompanyFaqConfigPage extends StatelessWidget {
           BlocProvider(
             create: (context) => sl<ToggleActiveFaqCubit>()
               ..initActiveStatus(
-                  isActive: false), // TODO : connect to company bloc
+                  isActive:
+                      false), // TODO [API REQUIRED] : connect to company bloc
           ),
         ],
         child: MultiBlocListener(
@@ -61,7 +62,7 @@ class CompanyFaqConfigPage extends StatelessWidget {
                 context.showError(state.errorMessage ??
                     "Terjadi kesalahan saat mengubah status faq");
               }
-              // TODO : Update company data here
+              // TODO [API REQUIRED]: Update company data here
             }),
           ],
           child: BlocBuilder<GetFaqDocsCubit, GetFaqDocsState>(
