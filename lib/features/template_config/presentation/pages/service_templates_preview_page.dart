@@ -12,6 +12,7 @@ import 'package:workorder_company_app/features/services/presentation/widgets/ser
 import 'package:workorder_company_app/features/services/presentation/widgets/service_work_order_tab_view.dart';
 import 'package:workorder_company_app/features/template_config/presentation/bloc/service_preview/service_preview_cubit.dart';
 import 'package:workorder_company_app/features/template_config/presentation/bloc/service_preview/service_preview_state.dart';
+import 'package:workorder_company_app/features/template_config/presentation/widgets/position_required_view.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 import 'package:workorder_company_app/shared/widgets/header_of_page.dart';
@@ -37,6 +38,7 @@ class ServiceTemplatesPreviewPage extends StatelessWidget {
           }
         }, builder: (context, state) {
           final service = state.servicePreview?.service;
+          final positions = state.servicePreview?.positionsRequired;
           Widget body;
           if (state.isLoading) {
             body = Center(child: AppLoading());
@@ -82,6 +84,8 @@ class ServiceTemplatesPreviewPage extends StatelessWidget {
                                     title: "Ketahui jenis akses layanan",
                                     child: ServiceAccessTypeTips(),
                                   ),
+                                  if (positions != null)
+                                    PositionRequiredView(positions: positions)
                                 ],
                               ),
                             ),
