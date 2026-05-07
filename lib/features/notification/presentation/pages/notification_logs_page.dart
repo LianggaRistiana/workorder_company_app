@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -31,7 +30,7 @@ class NotificationLogsPage extends StatelessWidget {
           header: _NotificationStatusWidget(),
           isLoading: state.status == NotificationLogStatus.loading,
           items: state.logs,
-          emptyWidget: EmptyStateWidget(text: "Tidak ada notifikasi"),
+          emptyWidget: EmptyStateWidget(text: "Tidak ada notifikasi Terbaru"),
           onRefresh: () async =>
               unawaited(context.read<NotificationLogCubit>().fetchLogs(
                     forceRefresh: true,
