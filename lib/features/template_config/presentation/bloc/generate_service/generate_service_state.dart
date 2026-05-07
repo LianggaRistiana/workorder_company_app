@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
+import 'package:workorder_company_app/features/services/domain/entities/service_summary_entity.dart';
 import 'package:workorder_company_app/features/template_config/domain/entities/selected_service_template_draft.dart';
 
 enum GenerateServiceStatus { initial, loading, success, error }
@@ -7,7 +7,7 @@ enum GenerateServiceStatus { initial, loading, success, error }
 class GenerateServiceState extends Equatable {
   final GenerateServiceStatus status;
   final SelectedServiceTemplateDraft selectedDraft;
-  final List<ServiceEntity>? generatedServices;
+  final List<ServiceSummaryEntity>? generatedServices;
   final String? errorMessage;
 
   bool get isLoading => status == GenerateServiceStatus.loading;
@@ -27,7 +27,7 @@ class GenerateServiceState extends Equatable {
   GenerateServiceState copyWith({
     GenerateServiceStatus? status,
     SelectedServiceTemplateDraft? selectedDraft,
-    List<ServiceEntity>? generatedServices,
+    List<ServiceSummaryEntity>? generatedServices,
     String? errorMessage,
   }) {
     return GenerateServiceState(

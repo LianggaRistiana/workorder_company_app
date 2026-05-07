@@ -17,7 +17,7 @@ class CompanyTypeModel extends CompanyTypeEntity {
   factory CompanyTypeModel.fromJson(Map<String, dynamic> json) {
     return CompanyTypeModel(
       id: json.field('_id').reqString(),
-      name: json.field('name').reqString(),
+      name: json.field('companyTypeName').reqString(),
     );
   }
 }

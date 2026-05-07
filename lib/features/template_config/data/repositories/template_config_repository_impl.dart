@@ -1,6 +1,6 @@
 import 'package:workorder_company_app/core/types/future_either.dart';
 import 'package:workorder_company_app/core/utils/safe_call.dart';
-import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
+import 'package:workorder_company_app/features/services/domain/entities/service_summary_entity.dart';
 import 'package:workorder_company_app/features/template_config/data/datasources/template_config_remote_datasource.dart';
 import 'package:workorder_company_app/features/template_config/data/model/selected_service_template_payload_model.dart';
 import 'package:workorder_company_app/features/template_config/domain/entities/company_type_entity.dart';
@@ -43,7 +43,7 @@ class TemplateConfigRepositoryImpl implements TemplateConfigRepository {
   }
 
   @override
-  FutureEitherList<ServiceEntity> generateServices(
+  FutureEitherList<ServiceSummaryEntity> generateServices(
       SelectedServiceTemplateDraft draft) async {
     return safeCall(() async {
       final response = await _remoteDatasource.generateServices(

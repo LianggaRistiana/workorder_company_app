@@ -18,6 +18,7 @@ class InvitationModel extends InvitationEntity {
       super.position});
 
   factory InvitationModel.fromJson(Map<String, dynamic> json) {
+    // TODO : add gate parse here
     return InvitationModel(
         id: safeParse<String>(json, "_id"),
         role: UserRole.fromString(safeParse<String>(json, "role")),
@@ -31,12 +32,7 @@ class InvitationModel extends InvitationEntity {
           requiredField: false,
           parser: (value) => DateTime.parse(value as String),
         ),
-        updatedAt: safeParse<DateTime>(
-          json,
-          "updatedAt",
-          requiredField: false,
-          parser: (value) => DateTime.parse(value as String),
-        ),
+        updatedAt: json.field("updatedAt").optDate(),
         expiresAt: safeParse<DateTime>(
           json,
           "expiresAt",

@@ -1,7 +1,7 @@
 import 'package:workorder_company_app/core/error/error.dart';
 import 'package:workorder_company_app/core/services/network/api_response.dart';
 import 'package:workorder_company_app/core/types/future_api.dart';
-import 'package:workorder_company_app/features/services/data/model/service_model.dart';
+import 'package:workorder_company_app/features/services/data/model/service_summary_model.dart';
 import 'package:workorder_company_app/features/template_config/data/datasources/template_config_remote_datasource.dart';
 import 'package:workorder_company_app/features/template_config/data/model/company_type_model.dart';
 import 'package:workorder_company_app/features/template_config/data/model/selected_service_template_payload_model.dart';
@@ -136,7 +136,7 @@ class MockTemplateConfigRemoteDatasourceImpl
   }
 
   @override
-  ApiFutureList<ServiceModel> generateServices(
+  ApiFutureList<ServiceSummaryModel> generateServices(
       SelectedServiceTemplatePayloadModel payload) async {
     await Future.delayed(const Duration(seconds: 1));
     if (shouldThrowError) {
@@ -145,7 +145,7 @@ class MockTemplateConfigRemoteDatasourceImpl
 
     return ApiResponse(
       message: 'Success',
-      data: [ServiceModel.fromJson(_dummyServiceJson)],
+      data: [ServiceSummaryModel.fromJson(_dummyServiceJson)],
     );
   }
 }

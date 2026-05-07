@@ -1,4 +1,5 @@
 import 'package:workorder_company_app/core/constants/app_enums.dart';
+import 'package:workorder_company_app/core/services/generator/random_string.dart';
 import 'package:workorder_company_app/core/utils/safe_parse.dart';
 import 'package:workorder_company_app/features/forms/data/model/field_model.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
@@ -14,9 +15,22 @@ class FormModel extends FormEntity {
 
   factory FormModel.fromJson(Map<String, dynamic> json) {
     return FormModel(
-      id: safeParse<String>(json, "_id"),
-      title: safeParse<String>(json, "title"),
-      formType: FormType.fromString(json["formType"].toString()),
+      id: json.field('_id').reqString(),
+      title: json.field('title').reqString(),
+      formType: json.field('formType').reqEnum(FormType.fromString),
+      description: json["description"]?.toString() ?? "",
+      fields: (json["fields"] as List<dynamic>?)
+              ?.map((e) => FieldModel.fromJson(e))
+              .toList() ??
+          [],
+    );
+  }
+
+  factory FormModel.fromJsonTemplate(Map<String, dynamic> json) {
+    return FormModel(
+      id: RandomString.generate(),
+      title: json.field('title').reqString(),
+      formType: json.field('formType').reqEnum(FormType.fromString),
       description: json["description"]?.toString() ?? "",
       fields: (json["fields"] as List<dynamic>?)
               ?.map((e) => FieldModel.fromJson(e))

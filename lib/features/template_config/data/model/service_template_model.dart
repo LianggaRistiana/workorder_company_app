@@ -12,7 +12,7 @@ class ServiceTemplateModel extends ServiceTemplateEntity {
     return ServiceTemplateModel(
       id: json.field('_id').reqString(),
       title: json.field('title').reqString(),
-      desc: json.field('desc').reqString(),
+      desc: json.field('description').reqString(),
     );
   }
 }

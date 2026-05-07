@@ -1,5 +1,5 @@
 import 'package:workorder_company_app/core/di/injection.dart';
-import 'package:workorder_company_app/features/template_config/data/datasources/mock_template_config_remote_datasource.dart';
+import 'package:workorder_company_app/core/services/network/api_client.dart';
 import 'package:workorder_company_app/features/template_config/data/datasources/template_config_remote_datasource.dart';
 import 'package:workorder_company_app/features/template_config/data/repositories/template_config_repository_impl.dart';
 import 'package:workorder_company_app/features/template_config/domain/repositories/template_config_repository.dart';
@@ -14,7 +14,9 @@ import 'package:workorder_company_app/features/template_config/presentation/bloc
 
 Future<void> initTemplateConfigFeature() async {
   sl.registerLazySingleton<TemplateConfigRemoteDatasource>(
-      () => MockTemplateConfigRemoteDatasourceImpl());
+      () => TemplateConfigRemoteDatasourceImpl(
+            sl<ApiClient>(),
+          ));
 
   sl.registerLazySingleton<TemplateConfigRepository>(
     () => TemplateConfigRepositoryImpl(

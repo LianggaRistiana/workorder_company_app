@@ -5,26 +5,50 @@ import 'package:workorder_company_app/features/positions/data/models/position_mo
 import 'package:workorder_company_app/features/services/domain/entities/work_order_config_entity.dart';
 
 class WorkOrderConfigModel extends WorkOrderConfigEntity {
-  const WorkOrderConfigModel(
-      {required super.workOrderForm,
-      required super.workReportForm,
-      required super.positionOnDuty,
-      required super.workOrderAprrovalAccessType,
-      required super.workReportApprovalAccessType,
-      required super.minStaff,
-      required super.maxStaff});
+  const WorkOrderConfigModel({
+    required super.workOrderForm,
+    required super.workReportForm,
+    required super.positionOnDuty,
+    required super.workOrderAprrovalAccessType,
+    required super.workReportApprovalAccessType,
+    required super.minStaff,
+    required super.maxStaff,
+  });
 
   factory WorkOrderConfigModel.fromJson(Map<String, dynamic> json) {
     return WorkOrderConfigModel(
-      workOrderForm: FormModel.fromJson(json["workOrderForm"]),
-      workReportForm: FormModel.fromJson(json["workReportForm"]),
-      positionOnDuty: PositionModel.fromJson(json["positionsOnDuty"]),
-      workOrderAprrovalAccessType: WorkOrderAprrovalAccess.fromString(
-          safeParse<String>(json, "workOrderApprovalAccessType")),
-      workReportApprovalAccessType: WorkReportApprovalAccess.fromString(
-          safeParse<String>(json, "workReportApprovalAccessType")),
-      minStaff: safeParse<int>(json, "minStaff"),
-      maxStaff: safeParse<int>(json, "maxStaff"),
+      workOrderForm: json.field("workOrderForm").reqModel(FormModel.fromJson),
+      workReportForm: json.field("workReportForm").reqModel(FormModel.fromJson),
+      positionOnDuty:
+          json.field("positionsOnDuty").reqModel(PositionModel.fromJson),
+      workOrderAprrovalAccessType: json
+          .field("workOrderApprovalAccessType")
+          .reqEnum(WorkOrderAprrovalAccess.fromString),
+      workReportApprovalAccessType: json
+          .field("workReportApprovalAccessType")
+          .reqEnum(WorkReportApprovalAccess.fromString),
+      minStaff: json.field("minStaff").reqInt(),
+      maxStaff: json.field("maxStaff").reqInt(),
+    );
+  }
+
+  factory WorkOrderConfigModel.fromJsonTemplate(Map<String, dynamic> json) {
+    return WorkOrderConfigModel(
+      workOrderForm:
+          json.field("workOrderForm").reqModel(FormModel.fromJsonTemplate),
+      workReportForm:
+          json.field("workReportForm").reqModel(FormModel.fromJsonTemplate),
+      positionOnDuty: json
+          .field("positionsOnDuty")
+          .reqModel(PositionModel.fromJsonTemplate),
+      workOrderAprrovalAccessType: json
+          .field("workOrderApprovalAccessType")
+          .reqEnum(WorkOrderAprrovalAccess.fromString),
+      workReportApprovalAccessType: json
+          .field("workReportApprovalAccessType")
+          .reqEnum(WorkReportApprovalAccess.fromString),
+      minStaff: json.field("minStaff").reqInt(),
+      maxStaff: json.field("maxStaff").reqInt(),
     );
   }
 
@@ -46,7 +70,8 @@ class WorkOrderConfigModel extends WorkOrderConfigEntity {
       "workReportFormId": workReportForm.id,
       "positionId": positionOnDuty.id,
       "workOrderApprovalAccessType": workOrderAprrovalAccessType.toSnakeCase(),
-      "workReportApprovalAccessType": workReportApprovalAccessType.toSnakeCase(),
+      "workReportApprovalAccessType":
+          workReportApprovalAccessType.toSnakeCase(),
       "minStaff": minStaff,
       "maxStaff": maxStaff,
     };

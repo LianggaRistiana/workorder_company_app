@@ -13,7 +13,7 @@ class ServiceTemplatePreviewModel extends ServiceTemplatePreviewEntity {
   factory ServiceTemplatePreviewModel.fromJson(Map<String, dynamic> json) {
     return ServiceTemplatePreviewModel(
       id: json.field('_id').reqString(),
-      service: json.field('service').reqModel(ServiceModel.fromJson),
+      service: json.field('service').reqModel(ServiceModel.fromJsonTemplate),
       positionsRequired:
           json.field('positionsRequired').reqListModel(PositionModel.fromJson),
     );

@@ -1,4 +1,5 @@
 import 'package:workorder_company_app/core/constants/app_enums.dart';
+import 'package:workorder_company_app/core/services/generator/random_string.dart';
 import 'package:workorder_company_app/core/utils/safe_parse.dart';
 import 'package:workorder_company_app/features/services/data/model/service_request_config_model.dart';
 import 'package:workorder_company_app/features/services/data/model/work_order_config_model.dart';
@@ -18,18 +19,36 @@ class ServiceModel extends ServiceEntity {
 
   factory ServiceModel.fromJson(Map<String, dynamic> json) {
     return ServiceModel(
-      id: safeParse<String>(json, "_id"),
-      title: safeParse<String>(json, "title"),
-      description:
-          safeParse<String?>(json, "description", requiredField: false),
+      id: json.field('_id').reqString(),
+      title: json.field('title').reqString(),
+      description: json.field('description').optString() ?? "",
       accessType:
-          ServiceAccessType.fromString(safeParse<String>(json, "accessType")),
-      isActive: safeParse<bool>(json, "isActive"),
-      serviceRequestConfig:
-          ServiceRequestConfigModel.fromJson(json["serviceRequestConfig"]),
-      workOrdersConfig: (json["workOrdersConfig"] as List<dynamic>?)
-              ?.map((e) => WorkOrderConfigModel.fromJson(e))
-              .toList() ??
+          json.field('accessType').reqEnum(ServiceAccessType.fromString),
+      isActive: json.field('isActive').reqBool(),
+      serviceRequestConfig: json
+          .field("serviceRequestConfig")
+          .reqModel(ServiceRequestConfigModel.fromJson),
+      workOrdersConfig: json
+              .field("workOrdersConfig")
+              .optListModel(WorkOrderConfigModel.fromJson) ??
+          [],
+    );
+  }
+
+  factory ServiceModel.fromJsonTemplate(Map<String, dynamic> json) {
+    return ServiceModel(
+      id: RandomString.generate(),
+      title: json.field('title').reqString(),
+      description: json.field('description').optString() ?? "",
+      accessType:
+          json.field('accessType').reqEnum(ServiceAccessType.fromString),
+      isActive: json.field('isActive').reqBool(),
+      serviceRequestConfig: json
+          .field("serviceRequestConfig")
+          .reqModel(ServiceRequestConfigModel.fromJsonTemplate),
+      workOrdersConfig: json
+              .field("workOrdersConfig")
+              .optListModel(WorkOrderConfigModel.fromJson) ??
           [],
     );
   }

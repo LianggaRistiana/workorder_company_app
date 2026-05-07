@@ -4,23 +4,38 @@ import 'package:workorder_company_app/features/forms/data/model/form_model.dart'
 import 'package:workorder_company_app/features/services/domain/entities/service_request_config_entity.dart';
 
 class ServiceRequestConfigModel extends ServiceRequestConfigEntity {
-  const ServiceRequestConfigModel(
-      {required super.intakeForm,
-      required super.reviewForm,
-      required super.serviceRequestApprovalAccessType,
-      required super.reviewNeed});
+  const ServiceRequestConfigModel({
+    required super.intakeForm,
+    required super.reviewForm,
+    required super.serviceRequestApprovalAccessType,
+    required super.reviewNeed,
+  });
 
   factory ServiceRequestConfigModel.fromJson(Map<String, dynamic> json) {
     return ServiceRequestConfigModel(
-      intakeForm: FormModel.fromJson(json["intakeForm"]),
-      reviewForm: FormModel.fromJson(json["reviewForm"]),
-      serviceRequestApprovalAccessType: ServiceRequestApprovalAccess.fromString(
-          safeParse<String>(json, "serviceRequestApprovalAccessType")),
-      reviewNeed: safeParse<bool>(json, "reviewNeed"),
+      intakeForm: json.field("intakeForm").reqModel(FormModel.fromJson),
+      reviewForm: json.field("reviewForm").reqModel(FormModel.fromJson),
+      serviceRequestApprovalAccessType: json
+          .field("serviceRequestApprovalAccessType")
+          .reqEnum(ServiceRequestApprovalAccess.fromString),
+      reviewNeed: json.field("reviewNeed").reqBool(),
     );
   }
 
-  factory ServiceRequestConfigModel.fromEntity(ServiceRequestConfigEntity entity) {
+  factory ServiceRequestConfigModel.fromJsonTemplate(
+      Map<String, dynamic> json) {
+    return ServiceRequestConfigModel(
+      intakeForm: json.field("intakeForm").reqModel(FormModel.fromJsonTemplate),
+      reviewForm: json.field("reviewForm").reqModel(FormModel.fromJsonTemplate),
+      serviceRequestApprovalAccessType: json
+          .field("serviceRequestApprovalAccessType")
+          .reqEnum(ServiceRequestApprovalAccess.fromString),
+      reviewNeed: json.field("reviewNeed").reqBool(),
+    );
+  }
+
+  factory ServiceRequestConfigModel.fromEntity(
+      ServiceRequestConfigEntity entity) {
     return ServiceRequestConfigModel(
       intakeForm: entity.intakeForm,
       reviewForm: entity.reviewForm,
@@ -29,14 +44,13 @@ class ServiceRequestConfigModel extends ServiceRequestConfigEntity {
     );
   }
 
-  Map<String, dynamic> toJson() { 
+  Map<String, dynamic> toJson() {
     return {
-      "intakeFormId": intakeForm.id ,
+      "intakeFormId": intakeForm.id,
       "reviewFormId": reviewForm.id,
-      "serviceRequestApprovalAccessType": serviceRequestApprovalAccessType.toSnakeCase(),
+      "serviceRequestApprovalAccessType":
+          serviceRequestApprovalAccessType.toSnakeCase(),
       "reviewNeed": reviewNeed,
     };
   }
-
-  
 }

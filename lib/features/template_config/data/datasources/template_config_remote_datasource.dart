@@ -3,7 +3,7 @@ import 'package:workorder_company_app/core/services/network/api_response.dart';
 import 'package:workorder_company_app/core/services/network/endpoints.dart';
 import 'package:workorder_company_app/core/types/future_api.dart';
 import 'package:workorder_company_app/core/utils/safe_mapper.dart';
-import 'package:workorder_company_app/features/services/data/model/service_model.dart';
+import 'package:workorder_company_app/features/services/data/model/service_summary_model.dart';
 import 'package:workorder_company_app/features/template_config/data/model/company_type_model.dart';
 import 'package:workorder_company_app/features/template_config/data/model/selected_service_template_payload_model.dart';
 import 'package:workorder_company_app/features/template_config/data/model/service_template_model.dart';
@@ -15,7 +15,7 @@ abstract class TemplateConfigRemoteDatasource {
   ApiFutureList<ServiceTemplateModel> getServiceTemplates(String companyTypeId);
   ApiFuture<ServiceTemplatePreviewModel> getServiceTemplatePreview(
       String serviceTemplateId);
-  ApiFutureList<ServiceModel> generateServices(
+  ApiFutureList<ServiceSummaryModel> generateServices(
     SelectedServiceTemplatePayloadModel payload,
   );
 }
@@ -27,7 +27,7 @@ class TemplateConfigRemoteDatasourceImpl
   TemplateConfigRemoteDatasourceImpl(this._apiClient);
 
   @override
-  ApiFutureList<ServiceModel> generateServices(
+  ApiFutureList<ServiceSummaryModel> generateServices(
       SelectedServiceTemplatePayloadModel payload) async {
     final response = await _apiClient.post(Endpoints.generateServices,
         data: payload.toJson());
@@ -35,7 +35,7 @@ class TemplateConfigRemoteDatasourceImpl
       response,
       (data) => SafeMapper.mapList(
         data,
-        (json) => ServiceModel.fromJson(json),
+        (json) => ServiceSummaryModel.fromJson(json),
       ),
     );
   }
