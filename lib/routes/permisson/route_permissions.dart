@@ -6,6 +6,7 @@ import 'package:workorder_company_app/routes/permisson/route_form_permissions.da
 import 'package:workorder_company_app/routes/permisson/route_invitation_permissions.dart';
 import 'package:workorder_company_app/routes/permisson/route_memberships_permissions.dart';
 import 'package:workorder_company_app/routes/permisson/route_position_permissions.dart';
+import 'package:workorder_company_app/routes/permisson/route_quick_config_permissions.dart';
 import 'package:workorder_company_app/routes/permisson/route_service_permissions.dart';
 import 'package:workorder_company_app/routes/permisson/route_service_request_permissions.dart';
 import 'package:workorder_company_app/routes/permisson/route_work_order_permissions.dart';
@@ -17,6 +18,7 @@ class RoutePermissions {
     ...RouteCompanyPermissions.route,
     ...RouteMembershipsPermissions.route,
     ...RouteFaqPermissions.route,
+    ...RouteQuickConfigPermissions.route,
 
     // Human Resource Feature
     ...RoutePositionPermissions.route,
