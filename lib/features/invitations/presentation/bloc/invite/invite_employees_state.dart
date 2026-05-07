@@ -1,27 +1,36 @@
 import 'package:equatable/equatable.dart';
+import 'package:workorder_company_app/core/error/error.dart';
 import 'package:workorder_company_app/features/invitations/domain/entities/invitation_entity.dart';
 
 enum InviteEmployeesStatus { initial, loading, success, error }
 
 class InviteEmployeesState extends Equatable {
   final InviteEmployeesStatus status;
-  final String? errorMessage;
+  final Failure? failure;
   final List<InvitationEntity> invitationsSuccess;
+
+  // HACK : temp solution for show the error from validation error
+  String? get errorMessage {
+    if (failure is ValidationFailure) {
+      return (failure as ValidationFailure).mergedErrorValue();
+    }
+    return failure?.message;
+  }
 
   const InviteEmployeesState({
     this.status = InviteEmployeesStatus.initial,
-    this.errorMessage,
+    this.failure,
     this.invitationsSuccess = const [],
   });
 
   InviteEmployeesState copyWith({
     InviteEmployeesStatus? status,
-    String? errorMessage,
+    Failure? failure,
     List<InvitationEntity>? invitationsSuccess,
   }) {
     return InviteEmployeesState(
       status: status ?? this.status,
-      errorMessage: errorMessage ?? this.errorMessage,
+      failure: failure ?? this.failure,
       invitationsSuccess: invitationsSuccess ?? this.invitationsSuccess,
     );
   }
@@ -29,7 +38,7 @@ class InviteEmployeesState extends Equatable {
   @override
   List<Object?> get props => [
         status,
-        errorMessage,
+        failure,
         invitationsSuccess,
       ];
 }

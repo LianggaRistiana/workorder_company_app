@@ -24,6 +24,13 @@ class ValidationFailure extends Failure {
   @override
   List<Object?> get props => [errors, message];
 
+  String? mergedErrorValue() {
+    if (errors.isEmpty) {
+      return null;
+    }
+    return errors.values.join(", ");
+  }
+
   String? errorOf(PropertyKey property) {
     return errors[property.key];
   }

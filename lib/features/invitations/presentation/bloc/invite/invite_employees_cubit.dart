@@ -17,7 +17,7 @@ class InviteEmployeesCubit extends Cubit<InviteEmployeesState> {
         (fail) => emit(
               state.copyWith(
                 status: InviteEmployeesStatus.error,
-                errorMessage: fail.message,
+                failure: fail,
               ),
             ),
         (data) => emit(
