@@ -10,7 +10,7 @@ import 'package:workorder_company_app/shared/widgets/dashed_button.dart';
 import 'package:workorder_company_app/shared/widgets/information_block.dart';
 import 'package:workorder_company_app/shared/widgets/reorderable_custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
- 
+
 class FieldsEditorTabView extends StatelessWidget {
   final FormEditorCoordinator coordinator;
   final VoidCallback onAddField;
@@ -170,16 +170,20 @@ class _FieldCardWidgetState extends State<FieldCardWidget> {
                       int.tryParse(val) ?? 0,
                     ),
                     validator: (value) {
-                      return ValidatorUtils.single(
+                      return ValidatorUtils.validate(
                         value,
-                        fieldName: "Minimal",
-                        ValidatorType.required,
+                        fieldName: "",
+                        minValue: 0,
+                        [
+                          ValidatorType.required,
+                          ValidatorType.number,
+                          ValidatorType.minValue,
+                        ],
                       );
                     },
                   ),
                 ),
                 const SizedBox(width: 8),
-                // FIXME[Medium] : validator min max
                 Expanded(
                   child: CustomInputField(
                     label: "Maksimal",
@@ -190,10 +194,18 @@ class _FieldCardWidgetState extends State<FieldCardWidget> {
                       int.tryParse(val) ?? 0,
                     ),
                     validator: (value) {
-                      return ValidatorUtils.single(
+                      return ValidatorUtils.validate(
                         value,
-                        fieldName: "Maksimal",
-                        ValidatorType.required,
+                        fieldName: "",
+                        minValue: widget
+                                .coordinator.draft.fields[widget.index].min
+                                ?.toDouble() ??
+                            0,
+                        [
+                          ValidatorType.required,
+                          ValidatorType.number,
+                          ValidatorType.minValue,
+                        ],
                       );
                     },
                   ),
