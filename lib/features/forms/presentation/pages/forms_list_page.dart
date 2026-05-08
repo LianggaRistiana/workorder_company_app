@@ -83,7 +83,7 @@ class FormsListPage extends StatelessWidget {
                           children: [
                             Text(
                               form.title,
-                              style: Theme.of(context).textTheme.titleLarge,
+                              style: Theme.of(context).textTheme.titleMedium,
                               overflow: TextOverflow.ellipsis,
                             ),
                             const SizedBox(height: 4),
