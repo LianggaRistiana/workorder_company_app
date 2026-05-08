@@ -10,6 +10,7 @@ import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 import 'package:workorder_company_app/shared/widgets/dashed_button.dart';
 import 'package:workorder_company_app/shared/widgets/enum_selector.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
+import 'package:workorder_company_app/shared/widgets/item_tile_lined.dart';
 
 class WorkOrderConfigItem extends StatefulWidget {
   final ServiceWorkOrderConfigDraft draft;
@@ -78,21 +79,14 @@ class _WorkOrderConfigItemState extends State<WorkOrderConfigItem> {
   @override
   Widget build(BuildContext context) {
     final draft = widget.draft;
-    debugPrint(
-        "🔥 Rebuild WorkOrderConfigItem ${widget.draft.workOrderForm.title}");
-
     return CustomCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          /// Header
           Row(
             children: [
-              const IconBox(
+              const IconBox.small(
                 icon: Icons.assignment_turned_in_outlined,
-                paddingSize: 8,
-                borderRadius: 8,
-                iconSize: 24,
               ),
               const SizedBox(width: 12),
               Expanded(
@@ -149,25 +143,17 @@ class _WorkOrderConfigItemState extends State<WorkOrderConfigItem> {
             buttonBuilder: (context, onPressed, isLoading) {
               if (draft.departmentOnDuty != null) {
                 return ClickableCustomCard(
-                  margin: EdgeInsets.all(0),
-                  onTap: onPressed,
-                  child: Row(
-                    children: [
-                      const IconBox(
-                        icon: Icons.badge_outlined,
-                        paddingSize: 8,
-                        iconSize: 20,
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
+                    margin: EdgeInsets.all(0),
+                    onTap: onPressed,
+                    child: ItemTileLined(
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
                         child: Text(
                           draft.departmentOnDuty!.name,
                           style: Theme.of(context).textTheme.titleSmall,
                         ),
-                      )
-                    ],
-                  ),
-                );
+                      ),
+                    ));
               }
 
               return DashedButton(

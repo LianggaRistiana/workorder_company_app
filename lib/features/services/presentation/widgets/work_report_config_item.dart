@@ -29,14 +29,14 @@ class WorkReportConfigItem extends StatelessWidget {
         children: [
           Row(
             children: [
-              const IconBox(icon: Icons.assignment_turned_in_outlined),
+              const IconBox.small(icon: Icons.assignment_turned_in_outlined),
               const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    draft.workOrderForm.title,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                )
+              Expanded(
+                child: Text(
+                  draft.workOrderForm.title,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              )
             ],
           ),
           const SizedBox(height: 12),
@@ -56,19 +56,18 @@ class WorkReportConfigItem extends StatelessWidget {
             "Formulir Laporan",
             style: Theme.of(context).textTheme.titleSmall,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           FormsSelectorContainer(
             selectedForms: draft.reportForm != null ? [draft.reportForm!] : [],
             onAdd: onFormUpdate,
             buttonBuilder: (context, onPressed, isLoading) {
-
               if (draft.reportForm != null) {
                 return ClickableCustomCard(
                   margin: EdgeInsets.zero,
                   onTap: onPressed,
                   child: Row(
                     children: [
-                      const IconBox(icon: Icons.assignment_outlined),
+                      const IconBox.small(icon: Icons.assignment_outlined),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(

@@ -5,12 +5,14 @@ class ItemTileLined extends StatelessWidget {
   final double spacing;
   final double lineWidth;
   final Widget child;
+  final Color? lineColor;
 
   const ItemTileLined({
     super.key,
     required this.child,
     this.spacing = AppSpacing.md,
     this.lineWidth = 2,
+    this.lineColor,
   });
 
   @override
@@ -22,7 +24,7 @@ class ItemTileLined extends StatelessWidget {
           Container(
             width: lineWidth,
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primary,
+              color: lineColor ?? Theme.of(context).colorScheme.primary,
               borderRadius: BorderRadius.circular(999),
             ),
           ),
