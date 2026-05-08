@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/features/work_report/domain/entities/work_report_entity.dart';
+import 'package:workorder_company_app/features/work_report/presentation/widgets/work_report_status_step_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/property_display.dart';
 
@@ -23,10 +23,13 @@ class WorkReportPropertyView extends StatelessWidget {
             label: "Disetujui oleh",
             value: report.approvedBy!.name,
           ),
-        PropertyItem.text(
+        PropertyItem.widget(
           icon: AppIcon.step,
           label: "Status",
-          value: report.status.displayName,
+          child: WorkReportStatusStepCard(
+            currentStatus: report.status,
+            statusDate: report.statusDate, // TODO : test this new UI
+          ),
         ),
       ]),
     );
