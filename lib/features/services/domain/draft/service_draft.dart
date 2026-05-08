@@ -186,6 +186,13 @@ class ServiceDraft extends Equatable {
 
   bool get hasAtLeastOneWorkOrder => workOrders.isNotEmpty;
 
+  bool get allWorkOrderHasDepartment =>
+      workOrders.every((e) => e.hasDepartment);
+
+  bool get allWorkOrderHasValidStaff => workOrders.every((e) => e.isStaffValid);
+
+
+
   bool get isBasicInfoValid =>
       title.trim().isNotEmpty && description.trim().isNotEmpty;
 

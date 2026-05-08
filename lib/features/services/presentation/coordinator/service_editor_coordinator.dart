@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
+import 'package:workorder_company_app/core/utils/condition_evaluator.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
 import 'package:workorder_company_app/features/services/domain/draft/service_draft.dart';
 
@@ -127,7 +128,11 @@ class ServiceEditorCoordinator extends ChangeNotifier {
   }
 
   bool _validateWorkOrder() {
-    return _draft.workOrders.isNotEmpty;
+    return allOf([
+      () => _draft.hasAtLeastOneWorkOrder,
+      () => _draft.allWorkOrderHasDepartment,
+      () => _draft.allWorkOrderHasValidStaff,
+    ]);
   }
 
   bool _validateReport() {

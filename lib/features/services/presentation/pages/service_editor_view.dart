@@ -43,6 +43,9 @@ class _ServiceEditorViewState extends State<ServiceEditorView>
   late final ServiceEditorCoordinator _coordinator;
   late final ServiceConfigControllers _controllers;
 
+  final _configFormKey = GlobalKey<FormState>();
+  final _workOrderFormKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
@@ -83,6 +86,9 @@ class _ServiceEditorViewState extends State<ServiceEditorView>
     _coordinator.updateDescription(
       _controllers.description.text,
     );
+
+    _configFormKey.currentState?.validate();
+    _workOrderFormKey.currentState?.validate();
 
     if (_coordinator.canGoNext(current)) {
       if (current < 3) {
@@ -191,14 +197,17 @@ class _ServiceEditorViewState extends State<ServiceEditorView>
             controller: _tabController,
             physics: const NeverScrollableScrollPhysics(),
             children: [
-              ServiceConfigFormTabView(
-                isUpdate: widget.initialEntity != null,
-                isActive: draft.isActive,
-                titleController: _controllers.title,
-                descriptionController: _controllers.description,
-                accessType: draft.accessType,
-                onActiveChanged: _coordinator.updateIsActive,
-                onAccessTypeChanged: _coordinator.updateAccessType,
+              Form(
+                key: _configFormKey,
+                child: ServiceConfigFormTabView(
+                  isUpdate: widget.initialEntity != null,
+                  isActive: draft.isActive,
+                  titleController: _controllers.title,
+                  descriptionController: _controllers.description,
+                  accessType: draft.accessType,
+                  onActiveChanged: _coordinator.updateIsActive,
+                  onAccessTypeChanged: _coordinator.updateAccessType,
+                ),
               ),
               ServiceRequestFormTabView(
                 approvalAccess: draft.requestApprovalAccess,
@@ -211,14 +220,17 @@ class _ServiceEditorViewState extends State<ServiceEditorView>
                 onReviewFormChanged: _coordinator.updateReviewForm,
                 onReviewNeedChanged: _coordinator.updateReviewNeed,
               ),
-              ServiceWorkOrderFormTabView(
-                workOrders: draft.workOrders,
-                onAdd: _coordinator.addWorkOrder,
-                onRemove: _coordinator.removeWorkOrder,
-                onDepartmentUpdate: _coordinator.updateDepartment,
-                onMinChange: _coordinator.updateMinStaff,
-                onMaxChange: _coordinator.updateMaxStaff,
-                onApprovalChange: _coordinator.updateApproval,
+              Form(
+                key: _workOrderFormKey,
+                child: ServiceWorkOrderFormTabView(
+                  workOrders: draft.workOrders,
+                  onAdd: _coordinator.addWorkOrder,
+                  onRemove: _coordinator.removeWorkOrder,
+                  onDepartmentUpdate: _coordinator.updateDepartment,
+                  onMinChange: _coordinator.updateMinStaff,
+                  onMaxChange: _coordinator.updateMaxStaff,
+                  onApprovalChange: _coordinator.updateApproval,
+                ),
               ),
               ServiceWorkReportFormTabView(
                 workOrders: draft.workOrders,
