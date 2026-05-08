@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:workorder_company_app/core/model/multipart_result.dart';
 import 'package:workorder_company_app/core/services/cache/list_cache_helper.dart';
 import 'package:workorder_company_app/core/services/network/api_response.dart';
@@ -15,15 +17,32 @@ import 'package:workorder_company_app/features/faq/domain/repositories/faq_confi
 
 class FaqConfigRepositoryImpl implements FaqConfigRepository {
   final FaqConfigRemoteDatasource _remoteDatasource;
+
   final ListCacheHelper<FaqDocEntity> _cache = ListCacheHelper();
+  final _refreshController = StreamController<void>.broadcast();
+
+  @override
+  Stream<void> get cacheChanged => _refreshController.stream;
+
+  void _notifyChanged() {
+    _refreshController.add(null);
+  }
 
   FaqConfigRepositoryImpl(this._remoteDatasource);
 
   @override
-  FutureEither<Empty> deleteFaqDoc(String id) async {
-    return safeCall(() async {
-      final response = await _remoteDatasource.deleteFaqDoc(id);
+  FutureEither<Empty> deleteFaqDoc(FaqDocEntity doc) async {
+    final result = await safeCall(() async {
+      final response = await _remoteDatasource.deleteFaqDoc(doc.id);
       return response.data;
+    });
+
+    return result.onSuccess((updated) {
+      _cache.removeSingle(
+        doc,
+        (a, b) => a.id == b.id,
+      );
+      _notifyChanged();
     });
   }
 
@@ -59,6 +78,7 @@ class FaqConfigRepositoryImpl implements FaqConfigRepository {
             data,
             (a, b) => a.id == b.id,
           );
+          _notifyChanged();
         }
       }
       return result;
@@ -78,6 +98,7 @@ class FaqConfigRepositoryImpl implements FaqConfigRepository {
         updated,
         (a, b) => a.id == b.id,
       );
+      _notifyChanged();
     });
   }
 

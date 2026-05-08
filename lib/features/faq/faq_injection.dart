@@ -100,6 +100,7 @@ Future<void> initFaqFeature() async {
   sl.registerFactory<GetFaqDocsCubit>(
     () => GetFaqDocsCubit(
       sl<GetFaqDocsUsecase>(),
+      sl<FaqConfigRepository>().cacheChanged,
     ),
   );
 

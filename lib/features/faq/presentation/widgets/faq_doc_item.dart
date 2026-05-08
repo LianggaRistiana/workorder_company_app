@@ -51,7 +51,7 @@ class FaqDocItem extends StatelessWidget {
                         message: "Aksi ini tidak dapat dikembalikan");
                     if (shouldDelete != true) return;
                     if (!context.mounted) return;
-                    context.read<DeleteDocCubit>().deleteDoc(doc.id);
+                    context.read<DeleteDocCubit>().deleteDoc(doc);
                   },
                   icon: Icon(
                     AppIcon.delete,
