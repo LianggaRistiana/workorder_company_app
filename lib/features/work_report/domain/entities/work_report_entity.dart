@@ -2,8 +2,8 @@ import 'package:equatable/equatable.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/filled_form_with_history_entity.dart';
+import 'package:workorder_company_app/features/work_report/domain/entities/work_report_status_date_entity.dart';
 
-// FIXME : add status date later
 class WorkReportEntity extends Equatable {
   final String id;
   final String workOrderId;
@@ -11,6 +11,7 @@ class WorkReportEntity extends Equatable {
   final WorkReportApprovalAccess approvalAccess;
   final WorkReportStatus status;
   final UserEntity? approvedBy;
+  final WorkReportStatusDateEntity statusDate;
 
   const WorkReportEntity({
     required this.id,
@@ -19,6 +20,7 @@ class WorkReportEntity extends Equatable {
     required this.approvalAccess,
     required this.status,
     this.approvedBy,
+    required this.statusDate,
   });
 
   @override
