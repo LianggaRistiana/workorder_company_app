@@ -23,6 +23,10 @@ class ServiceEditorCoordinator extends ChangeNotifier {
     _update(_draft.copyWith(title: value));
   }
 
+  void updateReviewNeed(bool value) {
+    _update(_draft.copyWith(reviewNeed: value));
+  }
+
   void updateDescription(String value) {
     _update(_draft.copyWith(description: value));
   }

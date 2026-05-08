@@ -204,10 +204,12 @@ class _ServiceEditorViewState extends State<ServiceEditorView>
                 approvalAccess: draft.requestApprovalAccess,
                 intakeForm: draft.intakeForm,
                 reviewForm: draft.reviewForm,
+                reviewNeed: draft.reviewNeed,
                 onApprovalAccessChanged:
                     _coordinator.updateRequestApprovalAccess,
                 onIntakeFormChanged: _coordinator.updateIntakeForm,
                 onReviewFormChanged: _coordinator.updateReviewForm,
+                onReviewNeedChanged: _coordinator.updateReviewNeed,
               ),
               ServiceWorkOrderFormTabView(
                 workOrders: draft.workOrders,

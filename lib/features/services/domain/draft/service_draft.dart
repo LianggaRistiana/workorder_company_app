@@ -19,6 +19,7 @@ class ServiceDraft extends Equatable {
   final FormEntity? reviewForm;
 
   final List<ServiceWorkOrderConfigDraft> workOrders;
+  final bool reviewNeed;
 
   const ServiceDraft({
     required this.id,
@@ -30,6 +31,7 @@ class ServiceDraft extends Equatable {
     required this.intakeForm,
     required this.reviewForm,
     required this.workOrders,
+    required this.reviewNeed,
   });
 
   factory ServiceDraft.initial() {
@@ -43,6 +45,7 @@ class ServiceDraft extends Equatable {
       intakeForm: null,
       reviewForm: null,
       workOrders: [],
+      reviewNeed: true,
     );
   }
 
@@ -60,6 +63,7 @@ class ServiceDraft extends Equatable {
       workOrders: entity.workOrdersConfig
           .map((e) => ServiceWorkOrderConfigDraft.fromEntity(e))
           .toList(),
+      reviewNeed: entity.serviceRequestConfig.reviewNeed,
     );
   }
 
@@ -72,6 +76,7 @@ class ServiceDraft extends Equatable {
     FormEntity? intakeForm,
     FormEntity? reviewForm,
     List<ServiceWorkOrderConfigDraft>? workOrders,
+    bool? reviewNeed,
   }) {
     return ServiceDraft(
       id: id,
@@ -84,6 +89,7 @@ class ServiceDraft extends Equatable {
       intakeForm: intakeForm ?? this.intakeForm,
       reviewForm: reviewForm ?? this.reviewForm,
       workOrders: workOrders ?? this.workOrders,
+      reviewNeed: reviewNeed ?? this.reviewNeed,
     );
   }
 
@@ -99,15 +105,6 @@ class ServiceDraft extends Equatable {
       ],
     );
   }
-
-  // ServiceDraft addEmptyWorkOrder() {
-  //   return copyWith(
-  //     workOrders: [
-  //       ...workOrders,
-  //       ServiceWorkOrderConfigDraft.initial(),
-  //     ],
-  //   );
-  // }
 
   ServiceDraft removeWorkOrder(int index) {
     final updated = [...workOrders]..removeAt(index);
@@ -203,13 +200,14 @@ class ServiceDraft extends Equatable {
         intakeForm,
         reviewForm,
         workOrders,
+        reviewNeed,
       ];
 }
 
 extension ServiceDraftMapper on ServiceDraft {
   ServiceEntity toEntity() {
     if (!isBasicInfoValid) {
-      throw ValidationException("Informasi dasar service belum lengkap");
+      throw ValidationException("Informasi dasar layanan belum lengkap");
     }
 
     if (intakeForm == null) {
@@ -234,7 +232,7 @@ extension ServiceDraftMapper on ServiceDraft {
         intakeForm: intakeForm!,
         reviewForm: reviewForm!,
         serviceRequestApprovalAccessType: requestApprovalAccess,
-        reviewNeed: true, // FIXME : add Ui to config this
+        reviewNeed: reviewNeed,
       ),
       workOrdersConfig: workOrders.map((e) => e.toEntity()).toList(),
     );

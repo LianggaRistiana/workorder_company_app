@@ -5,6 +5,7 @@ import 'package:workorder_company_app/features/forms/domain/entities/form_entity
 import 'package:workorder_company_app/features/forms/presentation/widgets/forms_selector_container.dart';
 import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
+import 'package:workorder_company_app/shared/widgets/custom_switch_tile.dart';
 import 'package:workorder_company_app/shared/widgets/dashed_button.dart';
 import 'package:workorder_company_app/shared/widgets/enum_selector.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
@@ -19,6 +20,9 @@ class ServiceRequestFormTabView extends StatelessWidget {
   final FormEntity? reviewForm;
   final ValueChanged<FormEntity?> onReviewFormChanged;
 
+  final bool reviewNeed;
+  final ValueChanged<bool> onReviewNeedChanged;
+
   const ServiceRequestFormTabView({
     super.key,
     required this.approvalAccess,
@@ -27,6 +31,8 @@ class ServiceRequestFormTabView extends StatelessWidget {
     required this.onIntakeFormChanged,
     required this.reviewForm,
     required this.onReviewFormChanged,
+    required this.reviewNeed,
+    required this.onReviewNeedChanged,
   });
 
   @override
@@ -69,7 +75,7 @@ class ServiceRequestFormTabView extends StatelessWidget {
 
           /// Review Form
           Text(
-            "Formulir Review Layanan",
+            "Formulir ulasan Layanan",
             style: Theme.of(context).textTheme.titleSmall,
           ),
           const SizedBox(height: 12),
@@ -77,6 +83,13 @@ class ServiceRequestFormTabView extends StatelessWidget {
           _FormSelectorSection(
             form: reviewForm,
             onTap: onReviewFormChanged,
+          ),
+          const SizedBox(height: 8),
+          CustomSwitchTile(
+            title: "Ulasan diperlukan",
+            value: reviewNeed,
+            onChanged: onReviewNeedChanged,
+            description: "Ulasan diperlukan sebelum permintaan layanan ditutup",
           ),
         ],
       ),
