@@ -3,6 +3,8 @@ import 'package:workorder_company_app/core/services/cache/cache_registry.dart';
 import 'package:workorder_company_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:workorder_company_app/features/company/domain/repositories/internal_company_repository.dart';
 import 'package:workorder_company_app/features/employees/domain/repositories/employees_repository.dart';
+import 'package:workorder_company_app/features/faq/domain/repositories/faq_config_repository.dart';
+import 'package:workorder_company_app/features/faq/domain/repositories/faq_repository.dart';
 import 'package:workorder_company_app/features/forms/domain/repositories/forms_repository.dart';
 import 'package:workorder_company_app/features/notification/domain/repositories/notification_repository.dart';
 import 'package:workorder_company_app/features/positions/domain/repositories/positions_repository.dart';
@@ -19,6 +21,7 @@ Future<void> initCacheService() async {
       sl<NotificationRepository>(),
       sl<InternalCompanyRepository>(),
       sl<EmployeesRepository>(),
+      sl<FaqConfigRepository>(),
 
       sl<PositionsRepository>(),
       sl<FormsRepository>(),
@@ -27,6 +30,8 @@ Future<void> initCacheService() async {
       sl<RequesterServiceRequestRepository>(),
       sl<ProviderServiceRequestRepository>(),
       sl<WorkOrderRepository>(),
+
+      sl<FaqRepository>(),
     ]),
   );
 }
