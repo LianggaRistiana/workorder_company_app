@@ -9,8 +9,16 @@ import 'package:workorder_company_app/features/work_order/presentation/ui_mapper
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/property_display.dart';
 
-class LabPage extends StatelessWidget {
+class LabPage extends StatefulWidget {
   const LabPage({super.key});
+
+  @override
+  State<LabPage> createState() => _LabPageState();
+}
+
+class _LabPageState extends State<LabPage> {
+  DateTime? _selectedDate;
+  TimeOfDay? _selectedTime;
 
   @override
   Widget build(BuildContext context) {
@@ -113,10 +121,152 @@ class LabPage extends StatelessWidget {
                   )
                 ],
               )),
+              AppDatePickerField(
+                label: 'Start Date',
+                value: _selectedDate,
+                firstDate: DateTime(2020),
+                lastDate: DateTime(2100),
+                onChanged: (date) {
+                  setState(() {
+                    _selectedDate = date;
+                  });
+                },
+              ),
+              AppTimePickerField(
+                label: 'Start Time',
+                value: _selectedTime,
+                onChanged: (time) {
+                  setState(() {
+                    _selectedTime = time;
+                  });
+                },
+              )
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class AppTimePickerField extends StatelessWidget {
+  final String label;
+  final TimeOfDay? value;
+  final ValueChanged<TimeOfDay?> onChanged;
+  final String? Function(TimeOfDay?)? validator;
+
+  const AppTimePickerField({
+    super.key,
+    required this.label,
+    required this.value,
+    required this.onChanged,
+    this.validator,
+  });
+
+  Future<void> _pickTime(BuildContext context) async {
+    final picked = await showTimePicker(
+      context: context,
+      initialTime: value ?? TimeOfDay.now(),
+    );
+
+    if (picked != null) {
+      onChanged(picked);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FormField<TimeOfDay>(
+      initialValue: value,
+      validator: validator,
+      builder: (field) {
+        final text = value == null
+            ? ''
+            : '${value!.hour.toString().padLeft(2, '0')}:${value!.minute.toString().padLeft(2, '0')}';
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextFormField(
+              readOnly: true,
+              controller: TextEditingController(text: text),
+              decoration: InputDecoration(
+                labelText: label,
+                suffixIcon: const Icon(Icons.access_time),
+                errorText: field.errorText,
+              ),
+              onTap: () async {
+                await _pickTime(context);
+                field.didChange(value);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class AppDatePickerField extends StatelessWidget {
+  final String label;
+  final DateTime? value;
+  final ValueChanged<DateTime?> onChanged;
+  final DateTime firstDate;
+  final DateTime lastDate;
+  final String? Function(DateTime?)? validator;
+
+  const AppDatePickerField({
+    super.key,
+    required this.label,
+    required this.value,
+    required this.onChanged,
+    required this.firstDate,
+    required this.lastDate,
+    this.validator,
+  });
+
+  Future<void> _pickDate(BuildContext context) async {
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: value ?? DateTime.now(),
+      firstDate: firstDate,
+      lastDate: lastDate,
+    );
+
+    if (picked != null) {
+      onChanged(picked);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FormField<DateTime>(
+      initialValue: value,
+      validator: validator,
+      builder: (field) {
+        final text = value == null
+            ? ''
+            : '${value!.year}-${value!.month.toString().padLeft(2, '0')}-${value!.day.toString().padLeft(2, '0')}';
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextFormField(
+              readOnly: true,
+              controller: TextEditingController(text: text),
+              decoration: InputDecoration(
+                labelText: label,
+                suffixIcon: const Icon(Icons.calendar_today),
+                errorText: field.errorText,
+              ),
+              onTap: () async {
+                await _pickDate(context);
+                field.didChange(value);
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

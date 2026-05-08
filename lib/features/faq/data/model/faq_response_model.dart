@@ -9,7 +9,7 @@ class FaqResponseModel {
 
   factory FaqResponseModel.fromJson(Map<String, dynamic> json) {
     return FaqResponseModel(
-      answer: json.field("asnwer").reqString(),
+      answer: json.field("answer").reqString(),
     );
   }
 }

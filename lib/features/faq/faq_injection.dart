@@ -1,8 +1,8 @@
 import 'package:workorder_company_app/core/di/injection.dart';
+import 'package:workorder_company_app/core/services/network/api_client.dart';
 import 'package:workorder_company_app/features/faq/data/datasources/faq_config_remote_datasource.dart';
 import 'package:workorder_company_app/features/faq/data/datasources/faq_remote_datasource.dart';
 import 'package:workorder_company_app/features/faq/data/mock/mock_faq_config_remote_datasource.dart';
-import 'package:workorder_company_app/features/faq/data/mock/mock_faq_remote_datasource.dart';
 import 'package:workorder_company_app/features/faq/data/repositories/faq_config_repository_impl.dart';
 import 'package:workorder_company_app/features/faq/data/repositories/faq_repository_impl.dart';
 import 'package:workorder_company_app/features/faq/domain/repositories/faq_config_repository.dart';
@@ -24,7 +24,10 @@ import 'package:workorder_company_app/features/faq/presentation/bloc/upload_docs
 
 Future<void> initFaqFeature() async {
   sl.registerLazySingleton<FaqRemoteDatasource>(
-      () => MockFaqRemoteDatasource());
+    () => FaqRemoteDatasourceImpl(
+      sl<ApiClient>(),
+    ),
+  );
 
   sl.registerLazySingleton<FaqConfigRemoteDatasource>(
       () => MockFaqConfigRemoteDatasource());
