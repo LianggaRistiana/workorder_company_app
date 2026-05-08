@@ -63,6 +63,9 @@ class MockFaqConfigRemoteDatasource implements FaqConfigRemoteDatasource {
       message: "Success",
       data: CompanyModel(
         id: faker.guid.guid(),
+        address: faker.address.streetAddress(),
+        description: faker.lorem.sentence(),
+        isFaqActive: value,
         name: faker.company.name(),
         isActive: value,
       ),

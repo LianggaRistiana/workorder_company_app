@@ -1,3 +1,4 @@
+import 'package:workorder_company_app/core/utils/safe_parse.dart';
 import 'package:workorder_company_app/features/company/domain/entities/company_entity.dart';
 
 class CompanyModel extends CompanyEntity {
@@ -7,6 +8,7 @@ class CompanyModel extends CompanyEntity {
     super.address,
     super.description,
     required super.isActive,
+    required super.isFaqActive,
   });
 
   factory CompanyModel.fromJson(Map<String, dynamic> json) {
@@ -16,6 +18,7 @@ class CompanyModel extends CompanyEntity {
       address: json['address'] as String? ?? "",
       description: json['description'] as String? ?? "",
       isActive: json['isActive'] as bool? ?? true,
+      isFaqActive: json.field("isFaqActive").reqBool(),
     );
   }
 
@@ -26,6 +29,7 @@ class CompanyModel extends CompanyEntity {
       address: entity.address,
       description: entity.description,
       isActive: entity.isActive,
+      isFaqActive: entity.isFaqActive,
     );
   }
 
@@ -36,6 +40,7 @@ class CompanyModel extends CompanyEntity {
       'address': address,
       'description': description,
       'isActive': isActive,
+      'isFaqActive': isFaqActive,
     };
   }
 }

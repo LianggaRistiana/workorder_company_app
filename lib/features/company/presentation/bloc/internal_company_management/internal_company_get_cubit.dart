@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:workorder_company_app/features/company/domain/entities/company_entity.dart';
 import 'package:workorder_company_app/features/company/domain/usecases/internal_get_company_usecase.dart';
 import 'internal_company_get_state.dart';
 
@@ -29,5 +30,14 @@ class InternalGetCompanyCubit extends Cubit<InternalGetCompanyState> {
         ));
       },
     );
+  }
+
+  Future<void> replaceCompany(
+    CompanyEntity company,
+  ) async {
+    emit(state.copyWith(
+      company: company,
+      isLoading: false,
+    ));
   }
 }

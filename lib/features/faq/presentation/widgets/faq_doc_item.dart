@@ -142,6 +142,7 @@ class _DocDetailContent extends StatelessWidget {
 
     return SingleChildScrollView(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(children: [
             IconBox.small(
@@ -159,6 +160,7 @@ class _DocDetailContent extends StatelessWidget {
             doc.content,
             style: theme.textTheme.bodySmall,
           ),
+          const SizedBox(height: AppSpacing.lg),
         ],
       ),
     );

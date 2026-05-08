@@ -42,6 +42,7 @@ class MockRequesterServiceRequestDatasource
         id: "company-1",
         name: "Clean Corp",
         isActive: true,
+        isFaqActive: true,
         address: "123 Clean St",
         description: "Best cleaning services in town",
       ),

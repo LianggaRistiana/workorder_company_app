@@ -7,6 +7,7 @@ import 'package:workorder_company_app/core/services/network/api_client.dart';
 import 'package:workorder_company_app/core/services/network/api_response.dart';
 import 'package:workorder_company_app/core/services/network/endpoints.dart';
 import 'package:workorder_company_app/core/types/future_api.dart';
+import 'package:workorder_company_app/core/utils/safe_mapper.dart';
 import 'package:workorder_company_app/features/company/data/models/company_model.dart';
 import 'package:workorder_company_app/features/faq/data/model/faq_doc_model.dart';
 import 'package:workorder_company_app/features/faq/data/model/pdf_faq_doc_model.dart';
@@ -28,19 +29,36 @@ class FaqConfigRemoteDatasourceImpl implements FaqConfigRemoteDatasource {
 
   @override
   ApiFuture<Empty> deleteFaqDoc(String id) async {
-    return await _apiClient.delete(Endpoints.faqDeleteDocs.fillId(id));
+    final response =
+        await _apiClient.delete(Endpoints.faqDeleteDocs.fillId(id));
+    return ApiResponse.fromJson(
+      response,
+      (data) => Empty(),
+    );
   }
 
   @override
   ApiFutureList<FaqDocModel> getFaqDocs() async {
-    return await _apiClient.get(Endpoints.faqDocs);
+    final response = await _apiClient.get(Endpoints.faqDocs);
+    return ApiResponse.fromJson(
+      response,
+      (data) => SafeMapper.mapList(
+        data,
+        (json) => FaqDocModel.fromJson(json),
+      ),
+    );
   }
 
   @override
   ApiFuture<CompanyModel> toggleFaqFeature(bool value) async {
-    return await _apiClient.put(Endpoints.faqToggleActive, data: {
+    final response = await _apiClient.put(Endpoints.faqToggleActive, data: {
       "isActive": value,
     });
+
+    return ApiResponse.fromJson(
+      response,
+      (json) => CompanyModel.fromJson(json),
+    );
   }
 
   @override
@@ -102,6 +120,11 @@ class FaqConfigRemoteDatasourceImpl implements FaqConfigRemoteDatasource {
 
   @override
   ApiFuture<FaqDocModel> uploadTextDocs(TextFaqDocModel draft) async {
-    return await _apiClient.post(Endpoints.faqTextDocs, data: draft.toJson());
+    final response =
+        await _apiClient.post(Endpoints.faqTextDocs, data: draft.toJson());
+    return ApiResponse.fromJson(
+      response,
+      (json) => FaqDocModel.fromJson(json),
+    );
   }
 }

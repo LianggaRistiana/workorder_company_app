@@ -8,6 +8,7 @@ import 'package:workorder_company_app/core/authorization/rule/role_permission_ru
 import 'package:workorder_company_app/core/authorization/util/access_gate_on_widget.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
+import 'package:workorder_company_app/features/company/presentation/bloc/internal_company_management/internal_company_get_cubit.dart';
 import 'package:workorder_company_app/features/faq/presentation/bloc/delete_docs/delete_doc_cubit.dart';
 import 'package:workorder_company_app/features/faq/presentation/bloc/delete_docs/delete_doc_state.dart';
 import 'package:workorder_company_app/features/faq/presentation/bloc/get_docs/get_faq_docs_cubit.dart';
@@ -25,6 +26,10 @@ class CompanyFaqConfigPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final faqConfigActiveStatus =
+        context.read<InternalGetCompanyCubit>().state.company?.isFaqActive ??
+            false;
+
     return MultiBlocProvider(
         providers: [
           BlocProvider(
@@ -35,9 +40,7 @@ class CompanyFaqConfigPage extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => sl<ToggleActiveFaqCubit>()
-              ..initActiveStatus(
-                  isActive:
-                      false), // TODO [API REQUIRED] : connect to company bloc
+              ..initActiveStatus(isActive: faqConfigActiveStatus),
           ),
         ],
         child: MultiBlocListener(
@@ -61,8 +64,12 @@ class CompanyFaqConfigPage extends StatelessWidget {
               if (state.errorMessage != null) {
                 context.showError(state.errorMessage ??
                     "Terjadi kesalahan saat mengubah status faq");
+              } else if (state.updatedCompany != null) {
+                context.showSuccess("Berhasil mengubah status faq");
+                context.read<InternalGetCompanyCubit>().replaceCompany(
+                      state.updatedCompany!,
+                    );
               }
-              // TODO [API REQUIRED]: Update company data here
             }),
           ],
           child: BlocBuilder<GetFaqDocsCubit, GetFaqDocsState>(

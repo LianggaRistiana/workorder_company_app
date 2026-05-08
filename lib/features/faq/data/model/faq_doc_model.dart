@@ -14,12 +14,12 @@ class FaqDocModel extends FaqDocEntity {
 
   factory FaqDocModel.fromJson(Map<String, dynamic> json) {
     return FaqDocModel(
-      id: json.field('id').reqString(),
+      id: json.field('id').reqInt().toString(),
       title: json.field('title').reqString(),
       content: json.field('content').reqString(),
       type: json.field('type').reqEnum(FaqDocsType.fromString),
-      url: json.field('url').optString(),
-      createdAt: json.field('createdAt').reqDate(),
+      url: json.field('file_url').optString(),
+      createdAt: json.field('created_at').reqDate(),
     );
   }
 }

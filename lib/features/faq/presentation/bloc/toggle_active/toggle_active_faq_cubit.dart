@@ -26,7 +26,12 @@ class ToggleActiveFaqCubit extends Cubit<ToggleActiveFaqState> {
         isActive: previousState.isActive,
         errorMessage: failure.message,
       )),
-      (_) {},
+      (company) {
+        emit(ToggleActiveFaqState(
+          isActive: newValue,
+          updatedCompany: company,
+        ));
+      },
     );
 
     _isProcessing = false;

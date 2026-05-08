@@ -4,14 +4,15 @@ class CompanyEntity {
   final String address;
   final String description;
   final bool isActive;
-  
+  final bool isFaqActive;
 
   CompanyEntity({
     required this.id,
     required this.name,
-    this.address ="",
-    this.description ="",
+    this.address = "",
+    this.description = "",
     required this.isActive,
+    required this.isFaqActive,
   });
 
   CompanyEntity copyWith({
@@ -20,6 +21,7 @@ class CompanyEntity {
     String? address,
     String? description,
     bool? isActive,
+    bool? isFaqActive,
   }) {
     return CompanyEntity(
       id: id ?? this.id,
@@ -27,6 +29,7 @@ class CompanyEntity {
       address: address ?? this.address,
       description: description ?? this.description,
       isActive: isActive ?? this.isActive,
+      isFaqActive: isFaqActive ?? this.isFaqActive,
     );
   }
 }
