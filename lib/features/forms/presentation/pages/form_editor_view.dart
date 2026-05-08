@@ -65,6 +65,18 @@ class _FormEditorViewState extends State<FormEditorView>
       description: TextEditingController(text: draft.description),
     );
 
+    _controllers.title.addListener(() {
+      _coordinator.updateTitle(
+        _controllers.title.text,
+      );
+    });
+
+    _controllers.description.addListener(() {
+      _coordinator.updateDescription(
+        _controllers.description.text,
+      );
+    });
+
     _tabController = TabController(length: 2, vsync: this);
 
     _tabController.addListener(() {
@@ -119,7 +131,6 @@ class _FormEditorViewState extends State<FormEditorView>
   }
 
   void _submitForm() {
-    debugPrint("_submitForm");
     _coordinator.updateTitle(_controllers.title.text);
     _coordinator.updateDescription(_controllers.description.text);
 
@@ -135,7 +146,6 @@ class _FormEditorViewState extends State<FormEditorView>
     }
 
     if (!(_fieldsKey.currentState?.validate() ?? false)) {
-      // context.showWarning("Pertanyaan tidak valid");
       return;
     }
 

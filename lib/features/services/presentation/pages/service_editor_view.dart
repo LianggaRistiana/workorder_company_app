@@ -61,9 +61,23 @@ class _ServiceEditorViewState extends State<ServiceEditorView>
     });
 
     _controllers = ServiceConfigControllers(
-      title: TextEditingController(text: draft.title),
+      title: TextEditingController(
+        text: draft.title,
+      ),
       description: TextEditingController(text: draft.description),
     );
+
+    _controllers.title.addListener(() {
+      _coordinator.updateTitle(
+        _controllers.title.text,
+      );
+    });
+
+    _controllers.description.addListener(() {
+      _coordinator.updateDescription(
+        _controllers.description.text,
+      );
+    });
 
     _tabController = TabController(length: 4, vsync: this);
 
@@ -77,15 +91,6 @@ class _ServiceEditorViewState extends State<ServiceEditorView>
   void _onNext() {
     FocusScope.of(context).unfocus();
     final current = _tabController.index;
-
-    // FIXME[High] : fix this later, add onchange in title and description
-    _coordinator.updateTitle(
-      _controllers.title.text,
-    );
-
-    _coordinator.updateDescription(
-      _controllers.description.text,
-    );
 
     _configFormKey.currentState?.validate();
     _workOrderFormKey.currentState?.validate();
@@ -108,10 +113,6 @@ class _ServiceEditorViewState extends State<ServiceEditorView>
 
   Future<void> _onSubmit() async {
     FocusScope.of(context).unfocus();
-    final finalDraft = _coordinator.buildFinal(
-      title: _controllers.title.text,
-      description: _controllers.description.text,
-    );
 
     if (!_coordinator.isDirty(widget.initialEntity != null
         ? ServiceDraft.fromEntity(widget.initialEntity!)
@@ -120,7 +121,7 @@ class _ServiceEditorViewState extends State<ServiceEditorView>
       return;
     }
 
-    await widget.onSubmit(finalDraft);
+    await widget.onSubmit(_coordinator.draft);
   }
 
   @override

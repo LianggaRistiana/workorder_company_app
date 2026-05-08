@@ -143,16 +143,6 @@ class ServiceEditorCoordinator extends ChangeNotifier {
   // FINAL BUILD
   // ========================
 
-  ServiceDraft buildFinal({
-    required String title,
-    required String description,
-  }) {
-    return _draft.copyWith(
-      title: title,
-      description: description,
-    );
-  }
-
   bool isDirty(ServiceDraft? initalData) {
     if (initalData == null) {
       return _draft != ServiceDraft.initial();
