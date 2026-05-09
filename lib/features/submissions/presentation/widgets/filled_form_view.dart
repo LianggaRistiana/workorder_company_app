@@ -7,19 +7,134 @@ import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:intl/intl.dart';
 import 'package:workorder_company_app/shared/widgets/smart_shimmer.dart';
 
+// TODO : Test with all type of field
 class FilledFormView extends StatelessWidget {
   final FilledFormEntity filledForm;
 
-  const FilledFormView({super.key, required this.filledForm});
+  const FilledFormView({
+    super.key,
+    required this.filledForm,
+  });
 
-  // -------------------------------------------------------------
-  // FIELD WRAPPER
-  // -------------------------------------------------------------
-  Widget _filledField(
-    BuildContext context,
-    FieldEntity field,
-    dynamic answer,
-  ) {
+  Map<String, dynamic> get _answersMap {
+    final submission = filledForm.submission;
+
+    if (submission?.fieldsData == null) {
+      return {};
+    }
+
+    return {
+      for (final item in submission!.fieldsData!) item.order: item.value,
+    };
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final fields = filledForm.form.fields ?? [];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _FormHeader(filledForm: filledForm),
+        const SizedBox(height: 8),
+        if (fields.isNotEmpty)
+          CustomCard(
+            margin: const EdgeInsets.all(0),
+            child: Column(
+              children: List.generate(
+                fields.length,
+                (index) {
+                  final field = fields[index];
+
+                  return Column(
+                    children: [
+                      _FieldSection(
+                        field: field,
+                        answer: _answersMap[field.order.toString()],
+                      ),
+                      if (index != fields.length - 1) const Divider(height: 1),
+                    ],
+                  );
+                },
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+class _FormHeader extends StatelessWidget {
+  final FilledFormEntity filledForm;
+
+  const _FormHeader({
+    required this.filledForm,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return CustomCard(
+      padding: const EdgeInsets.all(0),
+      margin: const EdgeInsets.all(0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(4),
+            width: double.infinity,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.center,
+                colors: [
+                  theme.colorScheme.primaryFixedDim,
+                  theme.colorScheme.primary,
+                ],
+              ),
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(12),
+                topRight: Radius.circular(12),
+              ),
+            ),
+            child: const SizedBox(height: 1),
+          ),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  filledForm.form.title,
+                  style: theme.textTheme.titleMedium,
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  filledForm.form.description,
+                  style: theme.textTheme.bodyMedium,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _FieldSection extends StatelessWidget {
+  final FieldEntity field;
+  final dynamic answer;
+
+  const _FieldSection({
+    required this.field,
+    required this.answer,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12),
       child: Column(
@@ -33,31 +148,57 @@ class FilledFormView extends StatelessWidget {
                 ?.copyWith(fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 6),
-          _answerWidget(context, field, answer),
+          _FieldAnswer(
+            field: field,
+            answer: answer,
+          ),
         ],
       ),
     );
   }
+}
 
-  // -------------------------------------------------------------
-  // ANSWER WIDGET
-  // -------------------------------------------------------------
-  Widget _answerWidget(
-      BuildContext context, FieldEntity field, dynamic answer) {
+class _FieldAnswer extends StatelessWidget {
+  final FieldEntity field;
+  final dynamic answer;
+
+  const _FieldAnswer({
+    required this.field,
+    required this.answer,
+  });
+
+  bool _isEmpty(dynamic value) {
+    return value == null || value.toString().trim().isEmpty;
+  }
+
+  DateTime? _parseDate(dynamic value) {
+    if (value == null) return null;
+
+    return DateTime.tryParse(value.toString());
+  }
+
+  Widget _textAnswer(String answer) {
+    return SizedBox(
+      width: double.infinity,
+      child: Text(answer.isEmpty ? '-' : answer),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     switch (field.type) {
       case FieldType.text:
       case FieldType.textarea:
-      case FieldType.time:
       case FieldType.number:
-        if (answer == null || answer.toString().isEmpty) {
-          return _textAnswer('-');
-        }
-        return _textAnswer(answer.toString());
+        return _textAnswer(
+          _isEmpty(answer) ? '-' : answer.toString(),
+        );
 
       case FieldType.email:
-        if (answer == null || answer.toString().isEmpty) {
+        if (_isEmpty(answer)) {
           return _textAnswer('-');
         }
+
         return GestureDetector(
           onTap: () {},
           child: Text(
@@ -70,92 +211,80 @@ class FilledFormView extends StatelessWidget {
         );
 
       case FieldType.date:
-        try {
-          if (answer == null) {
-            return _textAnswer('-');
-          }
-          final DateTime date = DateTime.parse(answer.toString());
-          return _textAnswer(
-              DateFormat('d MMMM yyyy', 'id_ID').format(date.toLocal()));
-        } catch (_) {
-          return _textAnswer(answer.toString());
+        final date = _parseDate(answer);
+
+        if (date == null) {
+          return _textAnswer(answer?.toString() ?? '-');
         }
+
+        return _textAnswer(
+          DateFormat(
+            'd MMMM yyyy',
+            'id_ID',
+          ).format(date.toLocal()),
+        );
+
+      case FieldType.time:
+        final date = _parseDate(answer);
+
+        if (date == null) {
+          return _textAnswer(answer?.toString() ?? '-');
+        }
+
+        final time = TimeOfDay.fromDateTime(date);
+
+        return _textAnswer(
+          time.format(context),
+        );
 
       case FieldType.singleSelect:
-        return _optionAnswer(context, field.options ?? [], [answer.toString()]);
+        return _OptionAnswer(
+          options: field.options ?? [],
+          answers: <String>[answer.toString()],
+        );
 
       case FieldType.multiSelect:
-        final listAnswer =
-            (answer as List?)?.map((e) => e.toString()).toList() ?? [];
-        return _optionAnswer(context, field.options ?? [], listAnswer);
+        final answers = answer is List
+            ? answer
+                .where((e) => e != null)
+                .map<String>((e) => e.toString())
+                .toList()
+            : <String>[];
+
+        return _OptionAnswer(
+          options: field.options ?? [],
+          answers: answers,
+        );
+
       case FieldType.image:
-        // TODO : Test this check logic
-        if (answer is String?) {
-          return _renderImage(context, answer);
-        } else {
-          return _textAnswer('-');
-        }
+        return _ImageAnswer(
+          path: answer is String ? answer : null,
+        );
     }
   }
+}
 
-  // -------------------------------------------------------------
-  // TEXT ANSWER
-  // -------------------------------------------------------------
-  Widget _textAnswer(String answer) {
-    return SizedBox(
-      width: double.infinity,
-      child: Text(
-        answer.isEmpty ? "-" : answer,
-        style: const TextStyle(),
-      ),
-    );
-  }
+class _OptionAnswer extends StatelessWidget {
+  final List<OptionEntity> options;
+  final List<String> answers;
 
-  Widget _renderImage(BuildContext context, String? path) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(12),
-      child: AspectRatio(
-          aspectRatio: 1,
-          child: path == null || path.isEmpty
-              ? Center(
-                  child: Icon(
-                    Icons.broken_image_rounded,
-                    color: Theme.of(context).disabledColor,
-                  ),
-                )
-              : Image.network(
-                  path,
-                  fit: BoxFit.cover,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
+  const _OptionAnswer({
+    required this.options,
+    required this.answers,
+  });
 
-                    return const SmartShimmer();
-                  },
-                  errorBuilder: (_, __, ___) {
-                    return const Center(
-                      child: Icon(Icons.broken_image),
-                    );
-                  },
-                )),
-    );
-  }
-
-  // -------------------------------------------------------------
-  // OPTION ANSWER (CHECKBOXES)
-  // -------------------------------------------------------------
-  Widget _optionAnswer(
-    BuildContext context,
-    List<OptionEntity> options,
-    List<String> keyAnswer,
-  ) {
+  @override
+  Widget build(BuildContext context) {
     if (options.isEmpty) {
-      return const Text("-");
+      return const Text('-');
     }
+
+    final theme = Theme.of(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: options.map((opt) {
-        final isSelected = keyAnswer.contains(opt.key);
+        final isSelected = answers.contains(opt.key);
 
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 2),
@@ -165,111 +294,63 @@ class FilledFormView extends StatelessWidget {
               Icon(
                 isSelected ? Icons.check_box : Icons.check_box_outline_blank,
                 size: 20,
-                color:
-                    isSelected ? Theme.of(context).colorScheme.primary : null,
+                color: isSelected ? theme.colorScheme.primary : null,
               ),
               const SizedBox(width: 8),
-              Expanded(child: Text(opt.value)),
+              Expanded(
+                child: Text(opt.value),
+              ),
             ],
           ),
         );
       }).toList(),
     );
   }
+}
 
-  // -------------------------------------------------------------
-  // FIND ANSWER BASED ON ORDER
-  // -------------------------------------------------------------
-  dynamic _findAnswer(String order) {
-    final submission = filledForm.submission;
-    if (submission == null || submission.fieldsData == null) {
-      return null;
-    }
+class _ImageAnswer extends StatelessWidget {
+  final String? path;
 
-    final matched = submission.fieldsData!.where((f) => f.order == order);
+  const _ImageAnswer({
+    required this.path,
+  });
 
-    return matched.isNotEmpty ? matched.first.value : null;
-  }
-
-  // -------------------------------------------------------------
-  // BUILD WIDGET
-  // -------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        CustomCard(
-            padding: const EdgeInsets.all(0),
-            margin: const EdgeInsets.all(0),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Container(
-                padding: const EdgeInsets.all(4),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.center,
-                    colors: [
-                      Theme.of(context).colorScheme.primaryFixedDim,
-                      Theme.of(context).colorScheme.primary,
-                    ],
-                  ),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(12),
-                    topRight: Radius.circular(12),
-                  ),
-                ),
-                child: const SizedBox(
-                  height: 1,
-                ),
-              ),
-              Container(
-                  padding: const EdgeInsets.all(8),
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(12),
-                      topRight: Radius.circular(12),
-                    ),
-                  ),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(filledForm.form.title,
-                            style: Theme.of(context).textTheme.titleMedium),
-                        const SizedBox(height: 2),
-                        Text(filledForm.form.description,
-                            style: Theme.of(context).textTheme.bodyMedium),
-                      ])),
-            ])),
-        const SizedBox(height: 8),
-        if (filledForm.form.fields?.isNotEmpty ?? false)
-          CustomCard(
-            margin: const EdgeInsets.all(0),
-            child: Column(
-              children: List.generate(
-                filledForm.form.fields!.length,
-                (index) {
-                  final field = filledForm.form.fields![index];
+    final theme = Theme.of(context);
 
-                  return Column(
-                    children: [
-                      _filledField(
-                        context,
-                        field,
-                        _findAnswer(field.order.toString()),
-                      ),
-                      if (index != filledForm.form.fields!.length - 1)
-                        const Divider(height: 1),
-                    ],
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(12),
+      child: AspectRatio(
+        aspectRatio: 1,
+        child: path == null || path!.isEmpty
+            ? Center(
+                child: Icon(
+                  Icons.broken_image_rounded,
+                  color: theme.disabledColor,
+                ),
+              )
+            : Image.network(
+                path!,
+                fit: BoxFit.cover,
+                loadingBuilder: (
+                  context,
+                  child,
+                  loadingProgress,
+                ) {
+                  if (loadingProgress == null) {
+                    return child;
+                  }
+
+                  return const SmartShimmer();
+                },
+                errorBuilder: (_, __, ___) {
+                  return const Center(
+                    child: Icon(Icons.broken_image),
                   );
                 },
               ),
-            ),
-          ),
-      ],
+      ),
     );
   }
 }
