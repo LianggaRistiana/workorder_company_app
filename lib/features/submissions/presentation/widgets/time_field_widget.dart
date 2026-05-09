@@ -3,12 +3,12 @@ import 'package:workorder_company_app/features/forms/domain/entities/field_entit
 import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/item_tile_lined.dart';
 
-class DateFieldWidget extends StatelessWidget {
+class TimeFieldWidget extends StatelessWidget {
   final FieldEntity field;
   final DateTime? value;
   final ValueChanged<DateTime> onChanged;
 
-  const DateFieldWidget({
+  const TimeFieldWidget({
     super.key,
     required this.field,
     this.value,
