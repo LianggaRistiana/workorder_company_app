@@ -60,14 +60,18 @@ class _View extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(),
           body: _buildBody(context, state),
-          floatingActionButton: state.company == null
-              ? null
-              : FloatingActionButton(
-                  onPressed: () {
-                    context.push(AppRoutes.chatBot, extra: state.company);
-                  },
-                  child: const Icon(AppIcon.qna),
-                ),
+          floatingActionButtonAnimator:
+              FloatingActionButtonAnimator.noAnimation,
+          floatingActionButton:
+              (state.company == null || state.company!.isFaqActive == false)
+                  ? null
+                  : FloatingActionButton(
+                      heroTag: null,
+                      onPressed: () {
+                        context.push(AppRoutes.chatBot, extra: state.company);
+                      },
+                      child: const Icon(AppIcon.qna),
+                    ),
         );
       },
     );

@@ -65,6 +65,9 @@ class JsonField {
 
   int? optInt() => safeParse<int?>(json, path, requiredField: false);
   String? optString() => safeParse<String?>(json, path, requiredField: false);
+  bool? optBool() => safeParse<bool?>(json, path, requiredField: false);
+  double? optDouble() => safeParse<double?>(json, path, requiredField: false);
+
 
   Map<String, dynamic> reqMap() => safeParse<Map<String, dynamic>>(json, path);
 

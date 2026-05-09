@@ -18,7 +18,8 @@ class CompanyModel extends CompanyEntity {
       address: json['address'] as String? ?? "",
       description: json['description'] as String? ?? "",
       isActive: json['isActive'] as bool? ?? true,
-      isFaqActive: json.field("isFaqActive").reqBool(),
+      isFaqActive: json.field("isFaqActive").optBool() ??
+          false, // FIXME[API REQUIRED] : this should be required
     );
   }
 
