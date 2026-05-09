@@ -6,6 +6,7 @@ import 'package:workorder_company_app/features/dashboard/presentation/widgets/mu
 import 'package:workorder_company_app/features/dashboard/presentation/widgets/toggleable_legend.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/field_entity.dart';
 import 'package:workorder_company_app/features/service_request/presentation/ui_mappers.dart/service_request_status_color_mapper.dart';
+import 'package:workorder_company_app/features/submissions/presentation/widgets/date_field_widget.dart';
 import 'package:workorder_company_app/features/submissions/presentation/widgets/time_field_widget.dart';
 import 'package:workorder_company_app/features/work_order/presentation/ui_mappers/work_order_status_color_mapper.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
@@ -19,8 +20,8 @@ class LabPage extends StatefulWidget {
 }
 
 class _LabPageState extends State<LabPage> {
-  DateTime? _selectedDate;
   DateTime? _selectedDateTime;
+  DateTime? _selectedDateTime2;
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -126,34 +127,44 @@ class _LabPageState extends State<LabPage> {
               )),
               Form(
                 key: _formKey,
-                child: TimeFieldWidget(
-                    field: FieldEntity(
-                        order: 1,
-                        label: "Test jam",
-                        type: FieldType.time,
-                        placeholder: "kamu keren sekali",
-                        required: true),
-                    value: _selectedDateTime,
-                    onChanged: (val) {
-                      setState(() {
-                        _selectedDateTime = val;
-                      });
-                    }),
+                child: Column(
+                  children: [
+                    TimeFieldWidget(
+                        field: FieldEntity(
+                            order: 1,
+                            label: "Test jam",
+                            type: FieldType.time,
+                            placeholder: "kamu keren sekali",
+                            required: true),
+                        value: _selectedDateTime,
+                        onChanged: (val) {
+                          setState(() {
+                            _selectedDateTime = val;
+                          });
+                        }),
+                    DateFieldWidget(
+                        field: FieldEntity(
+                            order: 1,
+                            label: "Test Tanggal",
+                            type: FieldType.date,
+                            placeholder: "kamu keren sekali",
+                            required: false),
+                        value: _selectedDateTime2,
+                        onChanged: (val) {
+                          setState(() {
+                            _selectedDateTime2 = val;
+                          });
+                        }),
+                  ],
+                ),
               ),
-              TextButton(
-                  onPressed: () => {_formKey.currentState?.validate()},
-                  child: Text("test submit")),
-              AppDatePickerField(
-                label: 'Start Date',
-                value: _selectedDate,
-                firstDate: DateTime(2020),
-                lastDate: DateTime(2100),
-                onChanged: (date) {
-                  setState(() {
-                    _selectedDate = date;
-                  });
-                },
-              ),
+              ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      // _formKey.currentState!.save();
+                    }
+                  },
+                  child: Text("Submit"))
             ],
           ),
         ),

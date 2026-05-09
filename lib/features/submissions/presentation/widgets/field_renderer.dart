@@ -4,6 +4,7 @@ import 'package:workorder_company_app/core/services/logger/app_logger.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/field_entity.dart';
 import 'package:workorder_company_app/features/submissions/domain/draft/field_data_draft.dart';
 import 'package:workorder_company_app/features/submissions/domain/entities/media_item.dart';
+import 'package:workorder_company_app/features/submissions/presentation/widgets/date_field_widget.dart';
 import 'package:workorder_company_app/features/submissions/presentation/widgets/time_field_widget.dart';
 import 'package:workorder_company_app/features/submissions/presentation/widgets/email_field_widget.dart';
 import 'package:workorder_company_app/features/submissions/presentation/widgets/image_field_widget.dart';
@@ -150,9 +151,11 @@ class FieldRenderer extends StatelessWidget {
             value: _normalizeToDateTime(value?.value),
             onChanged: (val) => onChanged(field.order.toString(), val));
 
-      // TODO : add this type field render later
       case FieldType.date:
-        return Text("Unsupported field type: ${field.type}");
+        return DateFieldWidget(
+            field: field,
+            value: _normalizeToDateTime(value?.value),
+            onChanged: (val) => onChanged(field.order.toString(), val));
     }
   }
 }
