@@ -78,7 +78,9 @@ class _WorkReportFillFormPageState extends State<WorkReportFillFormPage> {
               ]
             ],
             rightChildren: [
-              FormRenderer(coordinator: coordinator),
+              FormRenderer(
+                  coordinator:
+                      coordinator), // FIXME : add Form Widget for validation here
               const SizedBox(height: AppSpacing.md),
             ],
           ),
