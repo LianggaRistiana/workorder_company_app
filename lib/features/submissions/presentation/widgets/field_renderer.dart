@@ -4,6 +4,7 @@ import 'package:workorder_company_app/core/services/logger/app_logger.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/field_entity.dart';
 import 'package:workorder_company_app/features/submissions/domain/draft/field_data_draft.dart';
 import 'package:workorder_company_app/features/submissions/domain/entities/media_item.dart';
+import 'package:workorder_company_app/features/submissions/presentation/widgets/date_field_widget.dart';
 import 'package:workorder_company_app/features/submissions/presentation/widgets/email_field_widget.dart';
 import 'package:workorder_company_app/features/submissions/presentation/widgets/image_field_widget.dart';
 import 'package:workorder_company_app/features/submissions/presentation/widgets/multi_select_field_widget.dart';
@@ -53,6 +54,22 @@ class FieldRenderer extends StatelessWidget {
     return null;
   }
 
+  DateTime? _normalizeToDateTime(dynamic value) {
+    if (value == null) return null;
+
+    if (value is DateTime) return value;
+
+    if (value is String) {
+      final v = value.trim();
+
+      if (v.isEmpty) return null;
+
+      return DateTime.tryParse(v);
+    }
+
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     switch (field.type) {
@@ -63,10 +80,6 @@ class FieldRenderer extends StatelessWidget {
           onChanged: (val) => onChanged(field.order.toString(), val),
         );
 
-      // return TextFormFieldWidget(
-      //   field: field,
-      //   onChanged: (val) => onChanged( field.order.toString(), val),
-      // );
       case FieldType.textarea:
         return TextAreaFieldWidget(
           field: field,
@@ -77,14 +90,9 @@ class FieldRenderer extends StatelessWidget {
       case FieldType.number:
         return NumberFormFieldWidget(
           field: field,
-          // value: value?.value.toNumSafe(), // biasanya num atau int
-          value: normalizeToNum(value?.value), // value: value?.value as num?,
+          value: normalizeToNum(value?.value),
           onChanged: (val) => onChanged(field.order.toString(), val),
         );
-      // return NumberFormFieldWidget(
-      //   field: field,
-      //   onChanged: (val) => onChanged( field.order.toString(), val),
-      // );
 
       case FieldType.multiSelect:
         final savedKeys = (value?.value as List?)?.cast<String>() ?? [];
@@ -136,9 +144,14 @@ class FieldRenderer extends StatelessWidget {
           onChanged: (val) => onChanged(field.order.toString(), val),
         );
 
+      case FieldType.time:
+        return DateFieldWidget(
+            field: field,
+            value: _normalizeToDateTime(value?.value),
+            onChanged: (val) => onChanged(field.order.toString(), val));
+
       // TODO : add this type field render later
       case FieldType.date:
-      case FieldType.time:
         return Text("Unsupported field type: ${field.type}");
     }
   }

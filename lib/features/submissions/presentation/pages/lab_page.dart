@@ -4,7 +4,9 @@ import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/features/dashboard/domain/entitties/donut_data_entity.dart';
 import 'package:workorder_company_app/features/dashboard/presentation/widgets/multi_donut_chart.dart';
 import 'package:workorder_company_app/features/dashboard/presentation/widgets/toggleable_legend.dart';
+import 'package:workorder_company_app/features/forms/domain/entities/field_entity.dart';
 import 'package:workorder_company_app/features/service_request/presentation/ui_mappers.dart/service_request_status_color_mapper.dart';
+import 'package:workorder_company_app/features/submissions/presentation/widgets/date_field_widget.dart';
 import 'package:workorder_company_app/features/work_order/presentation/ui_mappers/work_order_status_color_mapper.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/property_display.dart';
@@ -18,7 +20,8 @@ class LabPage extends StatefulWidget {
 
 class _LabPageState extends State<LabPage> {
   DateTime? _selectedDate;
-  TimeOfDay? _selectedTime;
+  DateTime? _selectedDateTime;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -121,6 +124,25 @@ class _LabPageState extends State<LabPage> {
                   )
                 ],
               )),
+              Form(
+                key: _formKey,
+                child: DateFieldWidget(
+                    field: FieldEntity(
+                        order: 1,
+                        label: "Test jam",
+                        type: FieldType.time,
+                        placeholder: "kamu keren sekali",
+                        required: true),
+                    value: _selectedDateTime,
+                    onChanged: (val) {
+                      setState(() {
+                        _selectedDateTime = val;
+                      });
+                    }),
+              ),
+              TextButton(
+                  onPressed: () => {_formKey.currentState?.validate()},
+                  child: Text("test submit")),
               AppDatePickerField(
                 label: 'Start Date',
                 value: _selectedDate,
@@ -132,77 +154,10 @@ class _LabPageState extends State<LabPage> {
                   });
                 },
               ),
-              AppTimePickerField(
-                label: 'Start Time',
-                value: _selectedTime,
-                onChanged: (time) {
-                  setState(() {
-                    _selectedTime = time;
-                  });
-                },
-              )
             ],
           ),
         ),
       ),
-    );
-  }
-}
-
-class AppTimePickerField extends StatelessWidget {
-  final String label;
-  final TimeOfDay? value;
-  final ValueChanged<TimeOfDay?> onChanged;
-  final String? Function(TimeOfDay?)? validator;
-
-  const AppTimePickerField({
-    super.key,
-    required this.label,
-    required this.value,
-    required this.onChanged,
-    this.validator,
-  });
-
-  Future<void> _pickTime(BuildContext context) async {
-    final picked = await showTimePicker(
-      context: context,
-      initialTime: value ?? TimeOfDay.now(),
-    );
-
-    if (picked != null) {
-      onChanged(picked);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FormField<TimeOfDay>(
-      initialValue: value,
-      validator: validator,
-      builder: (field) {
-        final text = value == null
-            ? ''
-            : '${value!.hour.toString().padLeft(2, '0')}:${value!.minute.toString().padLeft(2, '0')}';
-
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextFormField(
-              readOnly: true,
-              controller: TextEditingController(text: text),
-              decoration: InputDecoration(
-                labelText: label,
-                suffixIcon: const Icon(Icons.access_time),
-                errorText: field.errorText,
-              ),
-              onTap: () async {
-                await _pickTime(context);
-                field.didChange(value);
-              },
-            ),
-          ],
-        );
-      },
     );
   }
 }
