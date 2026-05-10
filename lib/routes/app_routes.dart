@@ -87,6 +87,9 @@ class AppRoutes {
   static const addPdfFaqDoc = '/faq/pdf-docs';
   static const previewPdf = '/preview-pdf';
 
+  // Dashboard
+  static const dashboard = '/dashboard';
+
   // TODO : Remove this later, route for lab features
   static const String lab = '/lab-feature';
 }

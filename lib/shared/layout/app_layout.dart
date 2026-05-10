@@ -48,6 +48,7 @@ class AppLayout extends StatelessWidget {
         MediaQuery.of(context).orientation == Orientation.landscape;
 
     return AuthenticatedBlocProvider(
+      role: role,
       child: GeneralListener(
         child: Scaffold(
           appBar: isMainPage && isLandscape ? AppBar() : null,

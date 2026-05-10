@@ -26,6 +26,7 @@ class AppIcon {
   static const IconData flowBusiness = LucideIcons.workflow;
   static const IconData notification = LucideIcons.bell;
   static const IconData invitation = LucideIcons.mail;
+  static const IconData dashboard = LucideIcons.pieChart;
 
   // Icon For Action
   static const IconData submit = LucideIcons.uploadCloud;

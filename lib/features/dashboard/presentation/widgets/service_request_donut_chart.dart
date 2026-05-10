@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
@@ -12,8 +11,8 @@ import 'package:workorder_company_app/features/dashboard/presentation/widgets/mu
 import 'package:workorder_company_app/features/dashboard/presentation/widgets/toggleable_legend.dart';
 import 'package:workorder_company_app/features/service_request/presentation/ui_mappers.dart/service_request_status_color_mapper.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
+import 'package:workorder_company_app/shared/widgets/icon_box.dart';
 import 'package:workorder_company_app/shared/widgets/information_block.dart';
-import 'package:workorder_company_app/shared/widgets/property_display.dart';
 import 'package:workorder_company_app/shared/widgets/shimmer_placeholder.dart';
 import 'package:workorder_company_app/shared/widgets/smart_shimmer.dart';
 
@@ -32,6 +31,7 @@ class _ServiceRequestDonutChartState extends State<ServiceRequestDonutChart> {
   @override
   void initState() {
     super.initState();
+    sl<ServiceRequestStatsCubit>().fetch(periodType: periodType);
   }
 
   void _onPeriodChanged(
@@ -46,6 +46,7 @@ class _ServiceRequestDonutChartState extends State<ServiceRequestDonutChart> {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return BlocBuilder<ServiceRequestStatsCubit, ServiceRequestStatsState>(
         builder: (context, state) {
       final stats = state.stats;
@@ -76,26 +77,39 @@ class _ServiceRequestDonutChartState extends State<ServiceRequestDonutChart> {
       return CustomCard(
           child: Column(
         children: [
-          PropertyTitle(
-            icon: AppIcon.serviceRequestInbox,
-            label: "Permintaan Layanan",
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              IconBox.small(icon: AppIcon.serviceRequestInbox),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  "Permintaan Layanan",
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              DropdownButtonHideUnderline(
+                child: DropdownButton<PeriodType>(
+                  value: periodType,
+                  borderRadius: BorderRadius.circular(12),
+                  icon: const Icon(Icons.keyboard_arrow_down_rounded),
+                  items: PeriodType.values.map((period) {
+                    return DropdownMenuItem(
+                      value: period,
+                      child: Text(period.displayName,
+                          style: Theme.of(context).textTheme.titleSmall),
+                    );
+                  }).toList(),
+                  onChanged: _onPeriodChanged,
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: AppSpacing.md),
-          DropdownButtonHideUnderline(
-            child: DropdownButton<PeriodType>(
-              value: periodType,
-              borderRadius: BorderRadius.circular(12),
-              icon: const Icon(Icons.keyboard_arrow_down_rounded),
-              items: PeriodType.values.map((period) {
-                return DropdownMenuItem(
-                  value: period,
-                  child: Text(period.displayName,
-                      style: Theme.of(context).textTheme.titleSmall),
-                );
-              }).toList(),
-              onChanged: _onPeriodChanged,
-            ),
-          ),
           if (stats != null && !isLoading) ...[
             MultiDonutChart(
               data: data,

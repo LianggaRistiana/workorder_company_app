@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/company/presentation/bloc/internal_company_management/internal_company_get_cubit.dart';
@@ -142,6 +143,16 @@ class _InternalCompanyManageMenuPageState
       SectionTitle(
         "Menu Operasional",
         style: Theme.of(context).textTheme.titleLarge,
+      ),
+      HorizontalButton(
+        key: const Key("horizontal-button-dashboard"),
+        margin: EdgeInsets.all(0),
+        leadingIcon: LucideIcons.pieChart,
+        title: "Dashboard",
+        description: "Lihat statistik perusahaan",
+        onTap: () {
+          context.push(AppRoutes.dashboard);
+        },
       ),
       const SizedBox(height: 12),
       MenuGrid(

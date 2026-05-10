@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/features/auth/presentation/pages/profile_page.dart';
 import 'package:workorder_company_app/features/company/domain/entities/company_entity.dart';
+import 'package:workorder_company_app/features/dashboard/presentation/pages/dashboard_page.dart';
 import 'package:workorder_company_app/features/faq/presentation/pages/chat_page.dart';
 import 'package:workorder_company_app/features/notification/presentation/pages/notification_logs_page.dart';
 import 'package:workorder_company_app/features/submissions/presentation/pages/lab_page.dart';
@@ -15,6 +16,10 @@ final commonRouter = [
   GoRoute(
     path: AppRoutes.lab,
     builder: (_, __) => const LabPage(),
+  ),
+  GoRoute(
+    path: AppRoutes.dashboard,
+    builder: (_, __) => const DashboardPage(),
   ),
   GoRoute(
     path: AppRoutes.notifications,
