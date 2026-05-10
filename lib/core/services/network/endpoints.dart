@@ -109,4 +109,5 @@ class Endpoints {
 
   // Dashboard
   static const String serviceRequestStat = '/dashboard/service-request';
+  static const String workOrderStat = '/dashboard/work-order';
 }

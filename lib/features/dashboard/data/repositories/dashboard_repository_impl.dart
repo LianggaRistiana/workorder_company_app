@@ -3,6 +3,7 @@ import 'package:workorder_company_app/core/types/future_either.dart';
 import 'package:workorder_company_app/core/utils/safe_call.dart';
 import 'package:workorder_company_app/features/dashboard/data/datasources/dashboard_remote_datasource.dart';
 import 'package:workorder_company_app/features/dashboard/domain/entitties/service_request_stats_entity.dart';
+import 'package:workorder_company_app/features/dashboard/domain/entitties/work_order_stats_entity.dart';
 import 'package:workorder_company_app/features/dashboard/domain/repositories/dashboard_repository.dart';
 
 class DashboardRepositoryImpl implements DashboardRepository {
@@ -16,6 +17,16 @@ class DashboardRepositoryImpl implements DashboardRepository {
   ) {
     return safeCall(() async {
       final response = await _remoteDatasource.getServiceRequestStats(
+        periodType,
+      );
+      return response.data;
+    });
+  }
+
+  @override
+  FutureEither<WorkOrderStatsEntity> getWorkOrderStats(PeriodType periodType) {
+    return safeCall(() async {
+      final response = await _remoteDatasource.getWorkOrderStats(
         periodType,
       );
       return response.data;

@@ -7,6 +7,7 @@ import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features/company/presentation/bloc/internal_company_management/internal_company_get_cubit.dart';
 import 'package:workorder_company_app/features/dashboard/presentation/bloc/service_request_stat/service_request_stats_cubit.dart';
+import 'package:workorder_company_app/features/dashboard/presentation/bloc/work_order_stat/work_order_stats_cubit.dart';
 import 'package:workorder_company_app/features/notification/presentation/bloc/notification_active_cubit.dart';
 import 'package:workorder_company_app/features/notification/presentation/bloc/notification_log_cubit.dart';
 import 'package:workorder_company_app/features/submissions/presentation/cubit/file_upload_progress_cubit.dart';
@@ -41,7 +42,8 @@ class AuthenticatedBlocProvider extends StatelessWidget {
               create: (_) => sl<ServiceRequestStatsCubit>()),
         ],
         if (role.canPermission(WorkOrderPermissions.view)) ...[
-          // TODO: WO STAT CUBIT
+          BlocProvider<WorkOrderStatsCubit>(
+              create: (_) => sl<WorkOrderStatsCubit>()),
         ]
       ],
       child: child,

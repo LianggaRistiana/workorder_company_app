@@ -1,60 +1,48 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
+import 'package:workorder_company_app/features/dashboard/domain/entitties/donut_data_entity.dart';
+import 'package:workorder_company_app/features/dashboard/presentation/bloc/work_order_stat/work_order_stats_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
-import 'package:workorder_company_app/features/dashboard/domain/entitties/donut_data_entity.dart';
-import 'package:workorder_company_app/features/dashboard/presentation/bloc/service_request_stat/service_request_stats_cubit.dart';
-import 'package:workorder_company_app/features/dashboard/presentation/bloc/service_request_stat/service_request_stats_state.dart';
+import 'package:workorder_company_app/features/dashboard/presentation/bloc/work_order_stat/work_order_stats_state.dart';
 import 'package:workorder_company_app/features/dashboard/presentation/widgets/multi_donut_chart.dart';
 import 'package:workorder_company_app/features/dashboard/presentation/widgets/toggleable_legend.dart';
-import 'package:workorder_company_app/features/service_request/presentation/ui_mappers.dart/service_request_status_color_mapper.dart';
+import 'package:workorder_company_app/features/work_order/presentation/ui_mappers/work_order_status_color_mapper.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
 import 'package:workorder_company_app/shared/widgets/information_block.dart';
 import 'package:workorder_company_app/shared/widgets/shimmer_placeholder.dart';
 import 'package:workorder_company_app/shared/widgets/smart_shimmer.dart';
 
-class ServiceRequestDonutChart extends StatefulWidget {
-  const ServiceRequestDonutChart({super.key});
+class WorkOrderDonutChart extends StatefulWidget {
+  const WorkOrderDonutChart({super.key});
 
   @override
-  State<ServiceRequestDonutChart> createState() =>
-      _ServiceRequestDonutChartState();
+  State<WorkOrderDonutChart> createState() => _WorkOrderDonutChartState();
 }
 
-class _ServiceRequestDonutChartState extends State<ServiceRequestDonutChart> {
+class _WorkOrderDonutChartState extends State<WorkOrderDonutChart> {
   List<DonutDataEntity> data = [];
-  PeriodType periodType = PeriodType.currentDay; // FIXME : Sync with cubit
 
   @override
   void initState() {
     super.initState();
-    sl<ServiceRequestStatsCubit>().fetch(periodType: periodType);
-  }
-
-  void _onPeriodChanged(
-    PeriodType? periodType,
-  ) {
-    if (periodType == null) return;
-    setState(() {
-      this.periodType = periodType;
-      sl<ServiceRequestStatsCubit>().fetch(periodType: periodType);
-    });
+    sl<WorkOrderStatsCubit>().fetch();
   }
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    return BlocBuilder<ServiceRequestStatsCubit, ServiceRequestStatsState>(
+    return BlocBuilder<WorkOrderStatsCubit, WorkOrderStatsState>(
         builder: (context, state) {
       final stats = state.stats;
-      final isLoading = state.status == ServiceRequestStatsStatus.loading;
+      final isLoading = state.status == WorkOrderStatsStatus.loading;
 
       if (stats != null) {
         data = [
-          ...ServiceRequestStatus.values.map(
+          ...WorkOrderStatus.values.map(
             (e) {
               return DonutDataEntity(
                   label: e.displayName,
@@ -65,7 +53,7 @@ class _ServiceRequestDonutChartState extends State<ServiceRequestDonutChart> {
         ];
       } else {
         data = [
-          ...ServiceRequestStatus.values.map(
+          ...WorkOrderStatus.values.map(
             (e) {
               return DonutDataEntity(
                   label: e.displayName, value: 0, color: e.color);
@@ -84,7 +72,7 @@ class _ServiceRequestDonutChartState extends State<ServiceRequestDonutChart> {
               const SizedBox(width: 10),
               Expanded(
                 child: Text(
-                  "Permintaan Layanan",
+                  "Perintah Kerja",
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: textTheme.titleSmall?.copyWith(
@@ -94,7 +82,7 @@ class _ServiceRequestDonutChartState extends State<ServiceRequestDonutChart> {
               ),
               DropdownButtonHideUnderline(
                 child: DropdownButton<PeriodType>(
-                  value: periodType,
+                  value: state.periodType,
                   borderRadius: BorderRadius.circular(12),
                   icon: const Icon(Icons.keyboard_arrow_down_rounded),
                   items: PeriodType.values.map((period) {
@@ -104,7 +92,12 @@ class _ServiceRequestDonutChartState extends State<ServiceRequestDonutChart> {
                           style: Theme.of(context).textTheme.titleSmall),
                     );
                   }).toList(),
-                  onChanged: _onPeriodChanged,
+                  onChanged: (value) {
+                    if (value == null) return;
+                    sl<WorkOrderStatsCubit>().fetch(
+                      periodType: value,
+                    );
+                  },
                 ),
               ),
             ],
