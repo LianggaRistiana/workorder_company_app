@@ -1,3 +1,5 @@
+import 'package:workorder_company_app/core/services/network/path_helper.dart';
+
 class Endpoints {
   static const String clientPrefix = "/public";
   static const String authPrefix = "/auth";
@@ -104,14 +106,7 @@ class Endpoints {
   static const String faqTextDocs = '/faq/text-docs';
   static const String faqPDfDocs = '/faq/pdf-docs';
   static const String faqDeleteDocs = '/faq/docs/:id';
-}
 
-extension EndpointIdExtension on String {
-  String byId(String id) => "$this/$id";
-
-  String withQuery(Map<String, String> query) {
-    final queryString =
-        query.entries.map((e) => "${e.key}=${e.value}").join("&");
-    return "$this?$queryString";
-  }
+  // Dashboard
+  static const String serviceRequestStat = '/dashboard/service-request';
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/constants/app_enums/service_enum.dart';
 import 'package:workorder_company_app/core/services/network/endpoints.dart';
+import 'package:workorder_company_app/core/services/network/path_helper.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_request_config_entity.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
@@ -46,7 +47,8 @@ class ServiceRequestTabView extends StatelessWidget {
               title: config.intakeForm.title,
               onTap: () {
                 if (formShowType == FormShowType.formDetailPage) {
-                  context.push(Endpoints.forms.byId(config.intakeForm.id));
+                  context.push(Endpoints.forms
+                      .byId(config.intakeForm.id)); // FIXME : dont use endpoint
                 } else if (formShowType == FormShowType.previewPage) {
                   context.push(AppRoutes.templateFormPreview,
                       extra: config.intakeForm);
@@ -59,7 +61,8 @@ class ServiceRequestTabView extends StatelessWidget {
               title: config.reviewForm.title,
               onTap: () {
                 if (formShowType == FormShowType.formDetailPage) {
-                  context.push(Endpoints.forms.byId(config.reviewForm.id));
+                  context.push(Endpoints.forms
+                      .byId(config.reviewForm.id)); // FIXME : dont use endpoint
                 } else if (formShowType == FormShowType.previewPage) {
                   context.push(AppRoutes.templateFormPreview,
                       extra: config.reviewForm);
