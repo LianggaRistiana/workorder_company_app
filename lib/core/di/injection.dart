@@ -3,6 +3,7 @@ import 'package:workorder_company_app/core/services/cache/cache_injection.dart';
 import 'package:workorder_company_app/core/services/network/api_client.dart';
 import 'package:workorder_company_app/core/services/storage/token_storage.dart';
 import 'package:workorder_company_app/features/auth/auth_injection.dart';
+import 'package:workorder_company_app/features/dashboard/dashboard_injection.dart';
 import 'package:workorder_company_app/features/faq/faq_injection.dart';
 import 'package:workorder_company_app/features/service_request/service_request_injection.dart';
 import 'package:workorder_company_app/features/company/company_injection.dart';
@@ -30,6 +31,7 @@ Future<void> init() async {
   /// General Feature
   await initAuthFeature();
   await initNotificationFeature();
+  await initDashboardFeature();
 
   /// Company Feature
   await initCompanyFeature();

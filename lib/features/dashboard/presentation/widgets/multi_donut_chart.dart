@@ -29,7 +29,7 @@ class _MultiDonutChartState extends State<MultiDonutChart>
 
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 800),
+      duration: const Duration(milliseconds: 200),
     );
 
     _animation = CurvedAnimation(

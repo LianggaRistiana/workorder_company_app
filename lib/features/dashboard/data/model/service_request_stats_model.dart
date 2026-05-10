@@ -17,17 +17,19 @@ class ServiceRequestStatsModel extends ServiceRequestStatsEntity {
 
   factory ServiceRequestStatsModel.fromJson(Map<String, dynamic> json) {
     return ServiceRequestStatsModel(
-      totalCount: json.field('total_count').reqDouble(),
-      receivedCount: json.field('status_count.received').reqDouble(),
-      cancelledCount: json.field('status_count.cancelled').reqDouble(),
-      rejectedCount: json.field('status_count.rejected').reqDouble(),
-      approvedCount: json.field('status_count.approved').reqDouble(),
-      onProgressCount: json.field('status_count.on_progress').reqDouble(),
-      unProcessableCount: json.field('status_count.unprocessable').reqDouble(),
-      completedCount: json.field('status_count.completed').reqDouble(),
+      totalCount: json.field('total_count').reqInt().toDouble(),
+      receivedCount: json.field('status_count.received').reqInt().toDouble(),
+      cancelledCount: json.field('status_count.cancelled').reqInt().toDouble(),
+      rejectedCount: json.field('status_count.rejected').reqInt().toDouble(),
+      approvedCount: json.field('status_count.approved').reqInt().toDouble(),
+      onProgressCount:
+          json.field('status_count.on_progress').reqInt().toDouble(),
+      unProcessableCount:
+          json.field('status_count.unprocessable').reqInt().toDouble(),
+      completedCount: json.field('status_count.completed').reqInt().toDouble(),
       partiallyCompletedCount:
-          json.field('status_count.partial_completed').reqDouble(),
-      closedCount: json.field('status_count.closed').reqDouble(),
+          json.field('status_count.partial_completed').reqInt().toDouble(),
+      closedCount: json.field('status_count.closed').reqInt().toDouble(),
     );
   }
 }

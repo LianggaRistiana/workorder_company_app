@@ -1,3 +1,3 @@
 class ApiParams {
-  static const period = 'period';
+  static const period = 'period_type';
 }

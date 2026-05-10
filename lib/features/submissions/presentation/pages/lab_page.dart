@@ -3,9 +3,9 @@ import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/features/dashboard/domain/entitties/donut_data_entity.dart';
 import 'package:workorder_company_app/features/dashboard/presentation/widgets/multi_donut_chart.dart';
+import 'package:workorder_company_app/features/dashboard/presentation/widgets/service_request_donut_chart.dart';
 import 'package:workorder_company_app/features/dashboard/presentation/widgets/toggleable_legend.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/field_entity.dart';
-import 'package:workorder_company_app/features/service_request/presentation/ui_mappers.dart/service_request_status_color_mapper.dart';
 import 'package:workorder_company_app/features/submissions/presentation/widgets/date_field_widget.dart';
 import 'package:workorder_company_app/features/submissions/presentation/widgets/time_field_widget.dart';
 import 'package:workorder_company_app/features/work_order/presentation/ui_mappers/work_order_status_color_mapper.dart';
@@ -63,33 +63,7 @@ class _LabPageState extends State<LabPage> {
                   ])
                 ],
               )),
-              CustomCard(
-                  child: Column(
-                children: [
-                  PropertyTitle(
-                    icon: AppIcon.serviceRequestInbox,
-                    label: "Permintaan Layanan",
-                  ),
-                  MultiDonutChart(
-                    data: [
-                      ...ServiceRequestStatus.values.map(
-                        (e) {
-                          return DonutDataEntity(
-                              label: e.displayName, value: 20, color: e.color);
-                        },
-                      )
-                    ],
-                  ),
-                  ToggleableLegend(data: [
-                    ...ServiceRequestStatus.values.map(
-                      (e) {
-                        return DonutDataEntity(
-                            label: e.displayName, value: 40, color: e.color);
-                      },
-                    )
-                  ])
-                ],
-              )),
+              ServiceRequestDonutChart(),
               CustomCard(
                   child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
