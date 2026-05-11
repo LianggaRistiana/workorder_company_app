@@ -6,23 +6,42 @@ class MultiDonutPainter extends CustomPainter {
   final List<DonutDataEntity> data;
   final double strokeWidth;
   final double animationValue;
+  final Color defaultColor;
 
   MultiDonutPainter({
     required this.data,
     required this.animationValue,
+    this.defaultColor = Colors.grey,
     this.strokeWidth = 8,
   });
 
   @override
   void paint(Canvas canvas, Size size) {
     final total = data.fold(0.0, (sum, e) => sum + e.value);
-    if (total == 0) return;
 
     final center = Offset(size.width / 2, size.height / 2);
     final radius = (size.width / 2) - strokeWidth;
     final rect = Rect.fromCircle(center: center, radius: radius);
 
     double startAngle = -pi / 2;
+
+    if (total == 0) {
+      final disabledPaint = Paint()
+        ..color = defaultColor
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = strokeWidth
+        ..strokeCap = StrokeCap.round;
+
+      canvas.drawArc(
+        rect,
+        -pi / 2,
+        2 * pi,
+        false,
+        disabledPaint,
+      );
+
+      return;
+    }
 
     for (var item in data) {
       final targetSweep = 2 * pi * (item.value / total);
@@ -33,7 +52,7 @@ class MultiDonutPainter extends CustomPainter {
         ..color = item.color
         ..style = PaintingStyle.stroke
         ..strokeWidth = strokeWidth
-        ..strokeCap = StrokeCap.round;
+        ..strokeCap = StrokeCap.square;
 
       canvas.drawArc(
         rect,
@@ -54,4 +73,3 @@ class MultiDonutPainter extends CustomPainter {
         oldDelegate.animationValue != animationValue;
   }
 }
-

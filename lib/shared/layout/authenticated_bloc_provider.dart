@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:workorder_company_app/core/authorization/feature/company_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/service_request_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/work_order_permission.dart';
 import 'package:workorder_company_app/core/authorization/util/check_permission.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features/company/presentation/bloc/internal_company_management/internal_company_get_cubit.dart';
+import 'package:workorder_company_app/features/dashboard/presentation/bloc/company_stat/company_stat_cubit.dart';
 import 'package:workorder_company_app/features/dashboard/presentation/bloc/service_request_stat/service_request_stats_cubit.dart';
 import 'package:workorder_company_app/features/dashboard/presentation/bloc/work_order_stat/work_order_stats_cubit.dart';
 import 'package:workorder_company_app/features/notification/presentation/bloc/notification_active_cubit.dart';
@@ -44,6 +46,9 @@ class AuthenticatedBlocProvider extends StatelessWidget {
         if (role.canPermission(WorkOrderPermissions.view)) ...[
           BlocProvider<WorkOrderStatsCubit>(
               create: (_) => sl<WorkOrderStatsCubit>()),
+        ],
+        if (role.canPermission(CompanyPermission.update)) ...[
+          BlocProvider<CompanyStatCubit>(create: (_) => sl<CompanyStatCubit>()),
         ]
       ],
       child: child,

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:workorder_company_app/core/authorization/feature/company_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/service_request_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/work_order_permission.dart';
 import 'package:workorder_company_app/core/authorization/rule/role_permission_rule/role_permission_helper.dart';
 import 'package:workorder_company_app/core/authorization/util/access_gate_on_widget.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
+import 'package:workorder_company_app/features/dashboard/presentation/widgets/company_donut_chart.dart';
 import 'package:workorder_company_app/features/dashboard/presentation/widgets/service_request_donut_chart.dart';
 import 'package:workorder_company_app/features/dashboard/presentation/widgets/work_order_donut_chart.dart';
 
@@ -23,6 +25,8 @@ class DashboardPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  CompanyDonutChart()
+                      .require(roleCan(CompanyPermission.update)),
                   ServiceRequestDonutChart()
                       .require(roleCan(ServiceRequestPermission.view)),
                   WorkOrderDonutChart()

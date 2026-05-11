@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:workorder_company_app/features/dashboard/domain/entitties/donut_data_entity.dart';
 import 'package:workorder_company_app/features/dashboard/presentation/widgets/multi_donut_painter.dart';
 
@@ -73,6 +73,7 @@ class _MultiDonutChartState extends State<MultiDonutChart>
                 size: Size(widget.size, widget.size),
                 painter: MultiDonutPainter(
                   data: widget.data,
+                  defaultColor: Theme.of(context).colorScheme.primaryContainer,
                   animationValue: _animation.value,
                 ),
               ),
