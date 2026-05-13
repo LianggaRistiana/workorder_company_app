@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
+// import 'package:workorder_company_app/core/services/deep_links/deep_links_controller.dart';
+// import 'package:workorder_company_app/core/services/deep_links/deep_links_service.dart';
 import 'package:workorder_company_app/core/services/messenger/app_messanger.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +37,9 @@ void main() {
     final authRepo = di.sl<AuthRepository>();
     await authRepo.getCurrentUser();
 
+    // NOTE : unComment this if there is feature deep_links for global
+    // await di.sl<DeepLinkService>().init();
+
     runApp(const MyApp());
   }, (error, stackTrace) {
     debugPrint('Uncaught async error: $error');
@@ -51,12 +56,22 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final FcmListener _listener = di.sl<FcmListener>();
-  ThemeMode themeMode = ThemeMode.light;
+  // final DeepLinkCoordinator _deepLinkCoordinator = di.sl<DeepLinkCoordinator>();
 
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => _listener.init());
+    Future.microtask(() {
+      _listener.init();
+      // _deepLinkCoordinator.start();
+    });
+  }
+
+  @override
+  void dispose() {
+    // _deepLinkCoordinator.dispose();
+
+    super.dispose();
   }
 
   @override

@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:workorder_company_app/core/services/cache/cache_injection.dart';
+// import 'package:workorder_company_app/core/services/deep_links/deep_links_injection.dart';
 import 'package:workorder_company_app/core/services/network/api_client.dart';
 import 'package:workorder_company_app/core/services/storage/token_storage.dart';
 import 'package:workorder_company_app/features/auth/auth_injection.dart';
@@ -26,6 +27,7 @@ Future<void> init() async {
   /// Core
   sl.registerLazySingleton<TokenStorage>(() => TokenStorage());
   sl.registerLazySingleton<ApiClient>(() => DioApiClient(tokenStorage: sl()));
+  // await initDeepLinkFeature();
   await initSubmissionsFeature();
 
   /// General Feature

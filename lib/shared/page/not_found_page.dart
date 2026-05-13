@@ -30,7 +30,11 @@ class NotFoundPage extends StatelessWidget {
             const SizedBox(height: 8),
             FilledButton.icon(
               onPressed: () {
-                context.pop();
+                if (context.canPop()) {
+                  context.pop();
+                } else {
+                  context.go('/');
+                }
               },
               icon: const Icon(Icons.arrow_back),
               label: Text("Kembali"),
