@@ -180,8 +180,9 @@ class _InviteEmployeeViewState extends State<_InviteEmployeeView> {
                 index,
                 invite.copyWith(
                   role: val,
-                  position:
-                      val != UserRole.staffCompany ? null : invite.position,
+                  // TODO : TEST THIS LATER
+                  // position:
+                  //     val != UserRole.staffCompany ? null : invite.position,
                 ),
               );
             },

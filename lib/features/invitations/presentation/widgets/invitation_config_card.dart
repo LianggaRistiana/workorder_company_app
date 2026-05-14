@@ -66,47 +66,47 @@ class _InvitationConfigCardState extends State<InvitationConfigCard> {
               }
             }),
         const SizedBox(height: 12),
-        if (widget.role == UserRole.staffCompany)
-          PositionsSelectorContainer(
-            selectedPositions:
-                widget.position != null ? [widget.position!] : [],
-            onAdd: widget.onPositionChanged,
-            buttonBuilder: (context, onPressed, isLoading) {
-              if (widget.position != null) {
-                return ClickableCustomCard(
-                  margin: EdgeInsets.all(0),
-                  onTap: onPressed,
-                  child: Row(
-                    children: [
-                      const IconBox(
-                        icon: Icons.badge_outlined,
-                        paddingSize: 8,
-                        iconSize: 20,
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          widget.position!.name,
-                          style: Theme.of(context).textTheme.titleSmall,
-                        ),
-                      )
-                    ],
-                  ),
-                );
-              }
-
-              return DashedButton(
-                title: "Pilih Departemen",
+        // TODO : Test this later
+        // if (widget.role == UserRole.staffCompany)
+        PositionsSelectorContainer(
+          selectedPositions: widget.position != null ? [widget.position!] : [],
+          onAdd: widget.onPositionChanged,
+          buttonBuilder: (context, onPressed, isLoading) {
+            if (widget.position != null) {
+              return ClickableCustomCard(
+                margin: EdgeInsets.all(0),
                 onTap: onPressed,
-                borderColor: Theme.of(context).disabledColor,
-                color: Theme.of(context).colorScheme.primary,
-                icon: Icons.add,
-                height: 60,
-                borderRadius: 12,
-                isLoading: isLoading,
+                child: Row(
+                  children: [
+                    const IconBox(
+                      icon: Icons.badge_outlined,
+                      paddingSize: 8,
+                      iconSize: 20,
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        widget.position!.name,
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
+                    )
+                  ],
+                ),
               );
-            },
-          ),
+            }
+
+            return DashedButton(
+              title: "Pilih Departemen",
+              onTap: onPressed,
+              borderColor: Theme.of(context).disabledColor,
+              color: Theme.of(context).colorScheme.primary,
+              icon: Icons.add,
+              height: 60,
+              borderRadius: 12,
+              isLoading: isLoading,
+            );
+          },
+        ),
         const SizedBox(height: 12),
         IconButton.filled(
           onPressed: widget.onRemove,
