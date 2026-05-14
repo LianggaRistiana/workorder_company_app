@@ -27,9 +27,9 @@ class ServiceDetailPage extends StatelessWidget {
   final String serviceId;
   const ServiceDetailPage({super.key, required this.serviceId});
 
-  Future<void> _onRefresh(BuildContext context) async {
-    context.read<ServiceDetailCubit>().getServiceDetail(serviceId);
-  }
+  // Future<void> _onRefresh(BuildContext context) async {
+  //   context.read<ServiceDetailCubit>().getServiceDetail(serviceId);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -43,20 +43,16 @@ class ServiceDetailPage extends StatelessWidget {
         ),
       ],
       child: _ServiceDetailView(
-        () {
-          _onRefresh(context);
-        },
+        serviceId: serviceId,
       ),
     );
   }
 }
 
 class _ServiceDetailView extends StatelessWidget {
-  final VoidCallback? onRefresh;
+  final String serviceId;
 
-  const _ServiceDetailView(
-    this.onRefresh,
-  );
+  const _ServiceDetailView({required this.serviceId});
 
   @override
   Widget build(BuildContext context) {
@@ -72,9 +68,10 @@ class _ServiceDetailView extends StatelessWidget {
           case ServiceDetailStatus.error:
             return Scaffold(
               body: ErrorBody(
-                errorMessage: state.errorMessage,
-                onRetry: onRefresh,
-              ),
+                  errorMessage: state.errorMessage,
+                  onRetry: () => context
+                      .read<ServiceDetailCubit>()
+                      .getServiceDetail(serviceId)),
             );
 
           case ServiceDetailStatus.loading:

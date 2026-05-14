@@ -89,6 +89,10 @@ class ServiceEditorCoordinator extends ChangeNotifier {
     _update(_draft.updateWorkOrderForm(index, form));
   }
 
+  void updateShowReportToRequester(int index, bool value) {
+    _update(_draft.updateShowReportToRequester(index, value));
+  }
+
   void removeWorkOrder(int index) {
     _update(_draft.removeWorkOrder(index));
   }

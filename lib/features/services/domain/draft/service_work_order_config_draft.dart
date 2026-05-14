@@ -79,6 +79,7 @@ class ServiceWorkOrderConfigDraft extends Equatable {
     Object? departmentOnDuty = _noChange,
     WorkOrderAprrovalAccess? workOrderApprovalAccess,
     WorkReportApprovalAccess? workReportApprovalAccess,
+    bool? showReportToRequester,
   }) {
     return ServiceWorkOrderConfigDraft(
       workOrderForm: workOrderForm ?? this.workOrderForm,
@@ -93,6 +94,8 @@ class ServiceWorkOrderConfigDraft extends Equatable {
           workOrderApprovalAccess ?? this.workOrderApprovalAccess,
       workReportApprovalAccess:
           workReportApprovalAccess ?? this.workReportApprovalAccess,
+      showReportToRequester:
+          showReportToRequester ?? this.showReportToRequester,
     );
   }
 

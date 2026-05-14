@@ -190,6 +190,12 @@ class ServiceDraft extends Equatable {
     return updateWorkOrder(index, updated);
   }
 
+  ServiceDraft updateShowReportToRequester(int index, bool value) {
+    final updated = [...workOrders];
+    updated[index] = updated[index].copyWith(showReportToRequester: value);
+    return copyWith(workOrders: updated);
+  }
+
   /// =========================
   /// FIELD UPDATE BY INDEX
   /// =========================

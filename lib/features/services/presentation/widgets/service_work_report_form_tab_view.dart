@@ -15,6 +15,7 @@ class ServiceWorkReportFormTabView extends StatelessWidget {
       onApprovalChange;
 
   final void Function(int index, FormEntity? form) onFormUpdate;
+  final void Function(int index, bool value) onShowReportToRequesterChange;
 
   const ServiceWorkReportFormTabView({
     super.key,
@@ -22,6 +23,7 @@ class ServiceWorkReportFormTabView extends StatelessWidget {
     required this.workOrders,
     required this.onApprovalChange,
     required this.onFormUpdate,
+    required this.onShowReportToRequesterChange,
   });
 
   @override
@@ -42,6 +44,8 @@ class ServiceWorkReportFormTabView extends StatelessWidget {
             draft: draft,
             onApprovalChange: (value) => onApprovalChange(index, value),
             onFormUpdate: (form) => onFormUpdate(index, form),
+            onShowReportToRequesterChange: (value) =>
+                onShowReportToRequesterChange(index, value),
           );
         },
       ),

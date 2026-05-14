@@ -6,6 +6,7 @@ import 'package:workorder_company_app/features/services/domain/draft/service_wor
 import 'package:workorder_company_app/features/services/presentation/widgets/desider_approval_lock.dart';
 import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
+import 'package:workorder_company_app/shared/widgets/custom_switch_tile.dart';
 import 'package:workorder_company_app/shared/widgets/dashed_button.dart';
 import 'package:workorder_company_app/shared/widgets/enum_selector.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
@@ -16,6 +17,7 @@ class WorkReportConfigItem extends StatelessWidget {
   final ServiceWorkOrderConfigDraft draft;
   final ValueChanged<WorkReportApprovalAccess> onApprovalChange;
   final ValueChanged<FormEntity?> onFormUpdate;
+  final ValueChanged<bool> onShowReportToRequesterChange;
 
   const WorkReportConfigItem({
     super.key,
@@ -23,6 +25,7 @@ class WorkReportConfigItem extends StatelessWidget {
     required this.draft,
     required this.onApprovalChange,
     required this.onFormUpdate,
+    required this.onShowReportToRequesterChange,
   });
 
   @override
@@ -103,6 +106,12 @@ class WorkReportConfigItem extends StatelessWidget {
               );
             },
           ),
+          const SizedBox(height: 16),
+          CustomSwitchTile(
+              title: "Laporan Pemohon",
+              description: "Tampilkan laporan kepada pemohon",
+              value: draft.showReportToRequester,
+              onChanged: onShowReportToRequesterChange)
         ],
       ),
     );

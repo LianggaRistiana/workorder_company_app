@@ -243,6 +243,8 @@ class _ServiceEditorViewState extends State<ServiceEditorView>
                 workOrders: draft.workOrders,
                 onApprovalChange: _coordinator.updateWorkReportApproval,
                 onFormUpdate: _coordinator.updateReportForm,
+                onShowReportToRequesterChange:
+                    _coordinator.updateShowReportToRequester,
               ),
             ],
           ),
