@@ -42,4 +42,7 @@ class ServiceEntity extends Equatable implements BaseServiceEntity {
         workOrderDraftingType,
         workOrdersConfig,
       ];
+
+  @override
+  bool get stringify => true;
 }

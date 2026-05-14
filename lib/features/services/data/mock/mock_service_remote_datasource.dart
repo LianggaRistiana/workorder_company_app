@@ -1,6 +1,7 @@
 import 'package:workorder_company_app/core/constants/app_enums/service_enum.dart';
 import 'package:workorder_company_app/core/error/error.dart';
 import 'package:workorder_company_app/core/model/mock_factory.dart';
+import 'package:workorder_company_app/core/services/logger/app_logger.dart';
 import 'package:workorder_company_app/core/types/future_api.dart';
 import 'package:workorder_company_app/features/services/data/datasources/internal_services_management_remote_datasource.dart';
 import 'package:workorder_company_app/features/services/data/mock/service_mock_factory.dart';
@@ -14,6 +15,8 @@ class MockServiceRemoteDatasource
 
   @override
   ApiFuture<ServiceModel> createService(ServiceModel service) async {
+    appLogger.i(service);
+
     final isAuto = service.workOrderDraftingType == WorkOrderDraftingType.auto;
 
     final isManual =
@@ -94,6 +97,8 @@ class MockServiceRemoteDatasource
 
   @override
   ApiFuture<ServiceModel> updateService(ServiceModel service) async {
+    appLogger.i(service);
+
     final isAuto = service.workOrderDraftingType == WorkOrderDraftingType.auto;
 
     final isManual =

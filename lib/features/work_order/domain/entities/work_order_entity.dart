@@ -21,7 +21,7 @@ class WorkOrderEntity extends Equatable {
   final List<UserEntity> assignedStaffs;
   final UserEntity? staffPic;
   final WorkOrderStatus status;
-  final FilledFormWithHistoryEntity workOrderForm;
+  final FilledFormWithHistoryEntity? workOrderForm;
   final bool hasIssue;
   final String? issueNote;
   final WorkOrderStatusDateEntity statusDate;
@@ -41,7 +41,7 @@ class WorkOrderEntity extends Equatable {
     required this.status,
     required this.assignedStaffs,
     this.staffPic,
-    required this.workOrderForm,
+    this.workOrderForm,
     required this.hasIssue,
     this.issueNote,
     required this.statusDate,

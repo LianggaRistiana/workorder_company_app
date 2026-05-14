@@ -16,7 +16,9 @@ import 'package:workorder_company_app/features/work_order/presentation/widgets/w
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/adaptive_split_column.dart';
 import 'package:workorder_company_app/shared/widgets/button_with_loading_state.dart';
+import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
 
+// TODO : Test this
 class WorkOrderFillFormPage extends StatefulWidget {
   final WorkOrderEntity workOrder;
 
@@ -27,17 +29,46 @@ class WorkOrderFillFormPage extends StatefulWidget {
 }
 
 class _WorkOrderFillFormPageState extends State<WorkOrderFillFormPage> {
-  late final FormRendererCoordinator coordinator;
+  late final FormRendererCoordinator? coordinator;
 
   @override
   void initState() {
     super.initState();
-    coordinator = FormRendererCoordinator.filledForm(
-        widget.workOrder.workOrderForm.currentFilledForm);
+
+    final form = widget.workOrder.workOrderForm;
+
+    if (form != null) {
+      coordinator = FormRendererCoordinator.filledForm(
+        form.currentFilledForm,
+      );
+    } else {
+      coordinator = null;
+
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          context.showError(
+            "Form perintah kerja tidak tersedia",
+          );
+
+          context.pop();
+        }
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (coordinator == null) {
+      return Scaffold(
+        appBar: AppBar(),
+        body: Center(
+          child: EmptyStateWidget(
+            text: "Form perintah kerja tidak tersedia",
+          ),
+        ),
+      );
+    }
+
     return BlocProvider(
       create: (context) => sl<FillWorkOrderCubit>(),
       child: BlocConsumer<FillWorkOrderCubit, FillWorkOrderState>(
@@ -74,13 +105,21 @@ class _WorkOrderFillFormPageState extends State<WorkOrderFillFormPage> {
   }
 
   List<Widget> _formFill() {
+    final coordinator = this.coordinator;
+    if (coordinator == null) return [];
+
     return [
-      FormRenderer(coordinator: coordinator), // FIXME : add Form Widget for validation here
+      FormRenderer(
+          coordinator:
+              coordinator), // FIXME : add Form Widget for validation here
       const SizedBox(height: AppSpacing.md),
     ];
   }
 
   Widget _buildSubmitButton(BuildContext context, bool isLoading) {
+    final coordinator = this.coordinator;
+    if (coordinator == null) return SizedBox.shrink();
+
     return ButtonWithLoadingState(
       onPressed: () {
         context.read<FillWorkOrderCubit>().submitSubmission(

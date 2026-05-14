@@ -49,8 +49,11 @@ class WorkOrderModel extends WorkOrderEntity {
       staffPic: json.field('staffPIC').optModel(UserModel.fromJson),
       assignedStaffs:
           json.field('assignedStaff').reqListModel(UserModel.fromJson),
-      workOrderForm: FilledFormWithHistoryModel.fromJson(
-          json['workOrderForm'], json['submissions']),
+      // TODO : Test This
+      workOrderForm: json['workOrderForm'] == null
+          ? null
+          : FilledFormWithHistoryModel.fromJson(
+              json['workOrderForm'], json['submissions']),
       hasIssue: json.field('has_issue').reqBool(),
       statusDate: WorkOrderStatusDateModel.fromJson(json),
       issueNote: json.field('issue_note').optString(),
