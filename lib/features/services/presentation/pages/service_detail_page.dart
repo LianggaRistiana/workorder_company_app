@@ -19,9 +19,11 @@ import 'package:workorder_company_app/features/services/presentation/widgets/ser
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
+import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/error_body.dart';
 import 'package:workorder_company_app/shared/widgets/header_of_page.dart';
 import 'package:workorder_company_app/shared/widgets/loading_state_inline.dart';
+import 'package:workorder_company_app/shared/widgets/property_display.dart';
 
 class ServiceDetailPage extends StatelessWidget {
   final String serviceId;
@@ -176,6 +178,12 @@ class _ServiceDetailView extends StatelessWidget {
                                       title: "Ketahui jenis akses layanan",
                                       child: ServiceAccessTypeTips(),
                                     ),
+                                    CustomCard(
+                                        child: PropertyTile(
+                                            label: "Mode Penyusunan Work Order",
+                                            icon: AppIcon.config,
+                                            value: service.workOrderDraftingType
+                                                .displayName))
                                   ],
                                 ),
                               ),

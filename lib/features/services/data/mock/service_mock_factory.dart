@@ -124,6 +124,7 @@ class WorkOrderConfigMockFactory extends MockFactory {
       "workReportApprovalAccessType": wrMockAppAcc.toSnakeCase(),
       "minStaff": minStaff,
       "maxStaff": maxStaff,
+      "showReportToRequester": faker.randomGenerator.boolean(),
     };
   }
 

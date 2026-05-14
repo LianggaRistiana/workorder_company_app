@@ -69,4 +69,6 @@ class AppIcon {
   static const IconData date = LucideIcons.calendar;
   static const IconData file = LucideIcons.file;
   static const IconData text = LucideIcons.caseSensitive;
+  static const IconData config = LucideIcons.fileCog;
+  static const IconData viewable = LucideIcons.eye;
 }

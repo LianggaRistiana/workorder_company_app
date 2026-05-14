@@ -75,8 +75,14 @@ class ServiceWorkOrderItemView extends StatelessWidget {
                         PropertyItem.text(
                             icon: Icons.admin_panel_settings,
                             label: "Hak Persetujuan Laporan Kerja",
-                            value:
-                                config.workReportApprovalAccessType.displayName)
+                            value: config
+                                .workReportApprovalAccessType.displayName),
+                        PropertyItem.text(
+                            icon: AppIcon.viewable,
+                            label: "Perlihatkan Laporan ke pemohon",
+                            value: config.showReportToRequester
+                                ? "Ya, Perlihatkan"
+                                : "Tidak")
                       ])
                     ]),
               ));
