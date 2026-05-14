@@ -62,7 +62,7 @@ class ServiceMockFactory extends MockFactory<ServiceModel> {
       "isActive": faker.randomGenerator.boolean(),
       "serviceRequestConfig": ServiceRequestConfigMockFactory().createJson(),
       "workOrdersConfig": generatedFields,
-      "drafting_work_order_type": draftingType.toSnakeCase()
+      "draftingWorkOrderType": draftingType.toSnakeCase()
     };
   }
 
