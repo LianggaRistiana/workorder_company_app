@@ -7,6 +7,7 @@ import 'package:workorder_company_app/features/dashboard/domain/entitties/donut_
 import 'package:workorder_company_app/features/dashboard/presentation/bloc/company_stat/company_stat_cubit.dart';
 import 'package:workorder_company_app/features/dashboard/presentation/bloc/company_stat/company_stat_state.dart';
 import 'package:workorder_company_app/features/dashboard/presentation/widgets/multi_level_donut_chart.dart';
+import 'package:workorder_company_app/features/dashboard/presentation/widgets/toggleable_legend.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
 import 'package:workorder_company_app/shared/widgets/information_block.dart';
@@ -22,6 +23,7 @@ class CompanyDonutChart extends StatefulWidget {
 
 class _CompanyDonutChartState extends State<CompanyDonutChart> {
   List<List<DonutDataEntity>> levels = [];
+  List<DonutDataEntity> data = [];
 
   @override
   void initState() {
@@ -82,8 +84,37 @@ class _CompanyDonutChartState extends State<CompanyDonutChart> {
       } else {
         levels = [];
       }
+
+      if (stats != null) {
+        data = [
+          DonutDataEntity(
+            value: stats.employeesStat.managersCount.toDouble(),
+            label: "Manager",
+            color: Colors.purpleAccent,
+          ),
+          DonutDataEntity(
+            value: stats.employeesStat.staffsCount.toDouble(),
+            label: "Pegawai",
+            color: Colors.deepPurpleAccent,
+          ),
+          DonutDataEntity(
+            value: stats.servicesStat.active.toDouble(),
+            label: "Layanan Aktif",
+            color: Colors.blueAccent.shade700,
+          ),
+          DonutDataEntity(
+            value: stats.formsStat.active.toDouble(),
+            label: "Formulir",
+            color: Colors.blueAccent.shade100,
+          ),
+        ];
+      } else {
+        data = [];
+      }
+
       return CustomCard(
           child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -120,7 +151,7 @@ class _CompanyDonutChartState extends State<CompanyDonutChart> {
             const SizedBox(height: AppSpacing.md),
             InformationBlock.error("Terjadi Kesalahan Saat Mengambil Data")
           ],
-          // ToggleableLegend(data: data)
+          ToggleableLegend(data: data)
         ],
       ));
     });

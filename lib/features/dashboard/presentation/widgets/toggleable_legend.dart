@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:workorder_company_app/features/dashboard/domain/entitties/donut_data_entity.dart';
+import 'package:workorder_company_app/shared/utils/format_value.dart';
 
 class ToggleableLegend extends StatefulWidget {
   final List<DonutDataEntity> data;
@@ -79,6 +80,13 @@ class _ToggleableLegendState extends State<ToggleableLegend> {
                             item.label,
                             style: textTheme,
                             overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          formatValue(item.value),
+                          style: textTheme?.copyWith(
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ],
