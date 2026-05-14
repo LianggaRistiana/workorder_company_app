@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/authorization/util/access_gate_on_widget.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/helps/presentation/widgets/help_button.dart';
 import 'package:workorder_company_app/features/helps/presentation/widgets/service_type_tips.dart';
+import 'package:workorder_company_app/features/services/domain/authorizer/service_authorizer.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/action/service_action_cubit.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/action/service_action_state.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/detail/service_detail_cubit.dart';
@@ -99,7 +101,7 @@ class _ServiceDetailView extends StatelessWidget {
                       } // OPTIMIZE : Replace data after edit
                     },
                     icon: const Icon(AppIcon.edit, size: 18),
-                  ),
+                  ).require(ServiceAuthorizer(service: service).editRule),
                 ],
               ),
               bottomNavigationBar: Padding(
