@@ -13,6 +13,7 @@ class ServiceWorkOrderConfigDraft extends Equatable {
   final PositionEntity? departmentOnDuty;
   final WorkOrderAprrovalAccess workOrderApprovalAccess;
   final WorkReportApprovalAccess workReportApprovalAccess;
+  final bool showReportToRequester;
 
   const ServiceWorkOrderConfigDraft({
     this.workOrderForm,
@@ -22,6 +23,7 @@ class ServiceWorkOrderConfigDraft extends Equatable {
     this.departmentOnDuty,
     this.workOrderApprovalAccess = WorkOrderAprrovalAccess.staffPic,
     this.workReportApprovalAccess = WorkReportApprovalAccess.manager,
+    this.showReportToRequester = false,
   });
 
   /// =========================
@@ -157,6 +159,7 @@ extension WorkOrderDraftMapper on ServiceWorkOrderConfigDraft {
       workReportApprovalAccessType: _mapWRApproval(draftingType),
       minStaff: minStaff!,
       maxStaff: maxStaff!,
+      showReportToRequester: showReportToRequester,
     );
   }
 

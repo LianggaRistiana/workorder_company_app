@@ -11,6 +11,7 @@ class WorkOrderConfigEntity extends Equatable {
   final WorkReportApprovalAccess workReportApprovalAccessType;
   final int minStaff;
   final int maxStaff;
+  final bool showReportToRequester;
 
   const WorkOrderConfigEntity({
     this.workOrderForm,
@@ -20,6 +21,7 @@ class WorkOrderConfigEntity extends Equatable {
     required this.workReportApprovalAccessType,
     required this.minStaff,
     required this.maxStaff,
+    required this.showReportToRequester,
   });
 
   @override
@@ -31,5 +33,6 @@ class WorkOrderConfigEntity extends Equatable {
         workReportApprovalAccessType,
         minStaff,
         maxStaff,
+        showReportToRequester,
       ];
 }

@@ -83,6 +83,7 @@ class ServiceModel extends ServiceEntity {
       "description": description,
       "accessType": accessType.toSnakeCase(),
       "isActive": isActive,
+      "draftingWorkOrderType": workOrderDraftingType.toSnakeCase(),
       "serviceRequestConfig":
           (serviceRequestConfig as ServiceRequestConfigModel).toJson(),
       "workOrdersConfig": workOrdersConfig

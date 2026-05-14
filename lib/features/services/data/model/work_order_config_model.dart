@@ -13,6 +13,7 @@ class WorkOrderConfigModel extends WorkOrderConfigEntity {
     required super.workReportApprovalAccessType,
     required super.minStaff,
     required super.maxStaff,
+    required super.showReportToRequester,
   });
 
   factory WorkOrderConfigModel.fromJson(Map<String, dynamic> json) {
@@ -29,6 +30,7 @@ class WorkOrderConfigModel extends WorkOrderConfigEntity {
           .reqEnum(WorkReportApprovalAccess.fromString),
       minStaff: json.field("minStaff").reqInt(),
       maxStaff: json.field("maxStaff").reqInt(),
+      showReportToRequester: json.field("showReportToRequester").reqBool(),
     );
   }
 
@@ -49,6 +51,7 @@ class WorkOrderConfigModel extends WorkOrderConfigEntity {
           .reqEnum(WorkReportApprovalAccess.fromString),
       minStaff: json.field("minStaff").reqInt(),
       maxStaff: json.field("maxStaff").reqInt(),
+      showReportToRequester: json.field("showReportToRequester").reqBool(),
     );
   }
 
@@ -61,6 +64,7 @@ class WorkOrderConfigModel extends WorkOrderConfigEntity {
       workReportApprovalAccessType: entity.workReportApprovalAccessType,
       minStaff: entity.minStaff,
       maxStaff: entity.maxStaff,
+      showReportToRequester: entity.showReportToRequester,
     );
   }
 
@@ -74,6 +78,7 @@ class WorkOrderConfigModel extends WorkOrderConfigEntity {
           workReportApprovalAccessType.toSnakeCase(),
       "minStaff": minStaff,
       "maxStaff": maxStaff,
+      "showReportToRequester": showReportToRequester,
     };
   }
 }
