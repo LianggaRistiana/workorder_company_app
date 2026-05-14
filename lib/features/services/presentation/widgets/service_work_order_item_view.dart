@@ -19,6 +19,8 @@ class ServiceWorkOrderItemView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final workOrderForm = config.workOrderForm;
+
     return ClickableCustomCard(
         onTap: () {
           showAppBottomSheet(context,
@@ -48,12 +50,13 @@ class ServiceWorkOrderItemView extends StatelessWidget {
                       ]),
                       const Divider(),
                       PropertyDisplay(showDivider: false, properties: [
-                        PropertyItem.widget(
-                            label: "Formulir Perintah Kerja",
-                            icon: AppIcon.workOrder,
-                            child: ClickableFormCard(
-                                formShowType: formShowType,
-                                form: config.workOrderForm)),
+                        if (workOrderForm != null)
+                          PropertyItem.widget(
+                              label: "Formulir Perintah Kerja",
+                              icon: AppIcon.workOrder,
+                              child: ClickableFormCard(
+                                  formShowType: formShowType,
+                                  form: workOrderForm)),
                         PropertyItem.text(
                             icon: Icons.admin_panel_settings,
                             label: "Hak Persetujuan Perintah Kerja",
@@ -79,11 +82,12 @@ class ServiceWorkOrderItemView extends StatelessWidget {
               ));
         },
         child: PropertyDisplay(properties: [
-          PropertyItem.text(
-            label: "Formulir Perintah Kerja",
-            icon: AppIcon.workOrder,
-            value: config.workOrderForm.title,
-          ),
+          if (workOrderForm != null)
+            PropertyItem.text(
+              label: "Formulir Perintah Kerja",
+              icon: AppIcon.workOrder,
+              value: workOrderForm.title,
+            ),
           PropertyItem.text(
             label: "Formulir Laporan",
             icon: AppIcon.workReport,

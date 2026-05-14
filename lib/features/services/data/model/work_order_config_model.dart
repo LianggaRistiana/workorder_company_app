@@ -35,7 +35,7 @@ class WorkOrderConfigModel extends WorkOrderConfigEntity {
   factory WorkOrderConfigModel.fromJsonTemplate(Map<String, dynamic> json) {
     return WorkOrderConfigModel(
       workOrderForm:
-          json.field("workOrderForm").reqModel(FormModel.fromJsonTemplate),
+          json.field("workOrderForm").optModel(FormModel.fromJsonTemplate),
       workReportForm:
           json.field("workReportForm").reqModel(FormModel.fromJsonTemplate),
       positionOnDuty: json
@@ -66,9 +66,9 @@ class WorkOrderConfigModel extends WorkOrderConfigEntity {
 
   Map<String, dynamic> toJson() {
     return {
-      "workOrderFormId": workOrderForm.id,
+      "workOrderFormId": workOrderForm?.id,
       "workReportFormId": workReportForm.id,
-      "positionId": positionOnDuty.id,
+      "positionId": positionOnDuty.id, // HACK : POTENTIALLY NULL
       "workOrderApprovalAccessType": workOrderAprrovalAccessType.toSnakeCase(),
       "workReportApprovalAccessType":
           workReportApprovalAccessType.toSnakeCase(),

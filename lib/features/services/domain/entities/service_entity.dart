@@ -16,12 +16,14 @@ class ServiceEntity extends Equatable implements BaseServiceEntity {
   @override
   final bool isActive;
 
+  final WorkOrderDraftingType workOrderDraftingType;
   final ServiceRequestConfigEntity serviceRequestConfig;
   final List<WorkOrderConfigEntity> workOrdersConfig;
 
   const ServiceEntity({
     required this.id,
     required this.title,
+    required this.workOrderDraftingType,
     this.description,
     required this.accessType,
     required this.isActive,
@@ -37,6 +39,7 @@ class ServiceEntity extends Equatable implements BaseServiceEntity {
         accessType,
         isActive,
         serviceRequestConfig,
+        workOrderDraftingType,
         workOrdersConfig,
       ];
 }

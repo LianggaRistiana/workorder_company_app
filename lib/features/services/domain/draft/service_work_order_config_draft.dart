@@ -6,7 +6,7 @@ import 'package:workorder_company_app/features/positions/domain/entities/positio
 import 'package:workorder_company_app/features/services/domain/entities/work_order_config_entity.dart';
 
 class ServiceWorkOrderConfigDraft extends Equatable {
-  final FormEntity workOrderForm;
+  final FormEntity? workOrderForm;
   final FormEntity? reportForm;
   final int? minStaff;
   final int? maxStaff;
@@ -15,7 +15,7 @@ class ServiceWorkOrderConfigDraft extends Equatable {
   final WorkReportApprovalAccess workReportApprovalAccess;
 
   const ServiceWorkOrderConfigDraft({
-    required this.workOrderForm,
+    this.workOrderForm,
     this.reportForm,
     this.minStaff,
     this.maxStaff,
@@ -28,11 +28,26 @@ class ServiceWorkOrderConfigDraft extends Equatable {
   /// FACTORY
   /// =========================
 
-  factory ServiceWorkOrderConfigDraft.initial({
+  factory ServiceWorkOrderConfigDraft.manualDrafting({
     required FormEntity workOrderForm,
   }) {
     return ServiceWorkOrderConfigDraft(
       workOrderForm: workOrderForm,
+    );
+  }
+
+  factory ServiceWorkOrderConfigDraft.autoDrafting() {
+    return const ServiceWorkOrderConfigDraft(
+      workOrderApprovalAccess: WorkOrderAprrovalAccess.auto,
+      workReportApprovalAccess: WorkReportApprovalAccess.auto,
+    );
+  }
+
+  ServiceWorkOrderConfigDraft withPosition(
+    PositionEntity position,
+  ) {
+    return copyWith(
+      departmentOnDuty: position,
     );
   }
 
@@ -112,7 +127,7 @@ class ServiceWorkOrderConfigDraft extends Equatable {
 const _noChange = Object();
 
 extension WorkOrderDraftMapper on ServiceWorkOrderConfigDraft {
-  WorkOrderConfigEntity toEntity() {
+  WorkOrderConfigEntity toEntity(WorkOrderDraftingType draftingType) {
     if (reportForm == null) {
       throw ValidationException("Work report form wajib dipilih");
     }
@@ -135,13 +150,43 @@ extension WorkOrderDraftMapper on ServiceWorkOrderConfigDraft {
     }
 
     return WorkOrderConfigEntity(
-      workOrderForm: workOrderForm,
+      workOrderForm: _mapWorkOrderForm(draftingType),
       workReportForm: reportForm!,
       positionOnDuty: departmentOnDuty!,
-      workOrderAprrovalAccessType: workOrderApprovalAccess,
-      workReportApprovalAccessType: workReportApprovalAccess,
+      workOrderAprrovalAccessType: _mapWOApproval(draftingType),
+      workReportApprovalAccessType: _mapWRApproval(draftingType),
       minStaff: minStaff!,
       maxStaff: maxStaff!,
     );
+  }
+
+  WorkOrderAprrovalAccess _mapWOApproval(
+    WorkOrderDraftingType draftingType,
+  ) {
+    if (draftingType == WorkOrderDraftingType.auto) {
+      return WorkOrderAprrovalAccess.auto;
+    }
+
+    return workOrderApprovalAccess;
+  }
+
+  WorkReportApprovalAccess _mapWRApproval(
+    WorkOrderDraftingType draftingType,
+  ) {
+    if (draftingType == WorkOrderDraftingType.auto) {
+      return WorkReportApprovalAccess.auto;
+    }
+
+    return workReportApprovalAccess;
+  }
+
+  FormEntity? _mapWorkOrderForm(
+    WorkOrderDraftingType draftingType,
+  ) {
+    if (draftingType == WorkOrderDraftingType.auto) {
+      return null;
+    }
+
+    return workOrderForm;
   }
 }

@@ -59,6 +59,35 @@ enum WorkOrderAprrovalAccess {
   }
 }
 
+enum WorkOrderDraftingType {
+  manual,
+  auto;
+
+  static WorkOrderDraftingType fromString(String value) {
+    switch (value) {
+      case 'manual':
+        return WorkOrderDraftingType.manual;
+      case 'auto':
+        return WorkOrderDraftingType.auto;
+      default:
+        throw ParsingException('Unknown WorkOrderDraftingType: $value');
+    }
+  }
+
+  String get displayName {
+    switch (this) {
+      case WorkOrderDraftingType.manual:
+        return 'Manual';
+      case WorkOrderDraftingType.auto:
+        return 'Otomatis';
+    }
+  }
+
+  String toSnakeCase() {
+    return name.toSnakeCase();
+  }
+}
+
 enum WorkReportApprovalAccess {
   auto,
   manager;

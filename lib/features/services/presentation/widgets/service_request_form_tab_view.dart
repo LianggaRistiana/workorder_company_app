@@ -3,6 +3,7 @@ import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
 import 'package:workorder_company_app/features/forms/presentation/widgets/forms_selector_container.dart';
+import 'package:workorder_company_app/features/services/presentation/widgets/desider_approval_lock.dart';
 import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_switch_tile.dart';
@@ -11,6 +12,7 @@ import 'package:workorder_company_app/shared/widgets/enum_selector.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
 
 class ServiceRequestFormTabView extends StatelessWidget {
+  final WorkOrderDraftingType draftingType;
   final ServiceRequestApprovalAccess approvalAccess;
   final ValueChanged<ServiceRequestApprovalAccess> onApprovalAccessChanged;
 
@@ -25,6 +27,7 @@ class ServiceRequestFormTabView extends StatelessWidget {
 
   const ServiceRequestFormTabView({
     super.key,
+    required this.draftingType,
     required this.approvalAccess,
     required this.onApprovalAccessChanged,
     required this.intakeForm,
@@ -44,16 +47,20 @@ class ServiceRequestFormTabView extends StatelessWidget {
         children: [
           /// Approval Access
           CustomCard(
-            child: EnumSelector<ServiceRequestApprovalAccess>(
-              title: "Akses Persetujuan",
-              isMultiSelect: false,
-              values: ServiceRequestApprovalAccess.values,
-              selectedValues: [approvalAccess],
-              onChanged: (value) {
-                if (value.isNotEmpty) {
-                  onApprovalAccessChanged(value.first);
-                }
-              },
+            child: ConditionalApprovalSection(
+              type: draftingType,
+              child: EnumSelector<ServiceRequestApprovalAccess>(
+                title: "Akses Persetujuan",
+                isMultiSelect: false,
+                labelBuilder: (val) => val.displayName,
+                values: ServiceRequestApprovalAccess.values,
+                selectedValues: [approvalAccess],
+                onChanged: (value) {
+                  if (value.isNotEmpty) {
+                    onApprovalAccessChanged(value.first);
+                  }
+                },
+              ),
             ),
           ),
 

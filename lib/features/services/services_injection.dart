@@ -1,6 +1,7 @@
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features/services/data/datasources/internal_services_management_remote_datasource.dart';
 import 'package:workorder_company_app/features/services/data/datasources/public_services_remote_datasource.dart';
+import 'package:workorder_company_app/features/services/data/mock/mock_service_remote_datasource.dart';
 import 'package:workorder_company_app/features/services/data/repositories/services_repository_impl.dart';
 import 'package:workorder_company_app/features/services/domain/repositories/services_repository.dart';
 import 'package:workorder_company_app/features/services/domain/usecases/internal_create_service_usecase.dart';
@@ -18,7 +19,8 @@ import 'package:workorder_company_app/features/services/presentation/bloc/update
 
 Future<void> initServicesFeature() async {
   sl.registerLazySingleton<InternalServicesManagementRemoteDatasource>(
-      () => InternalServicesManagementRemoteDatasourceImpl(sl()));
+      () => MockServiceRemoteDatasource());
+  // () => InternalServicesManagementRemoteDatasourceImpl(sl()));
 
   sl.registerLazySingleton<PublicServicesRemoteDatasource>(
       () => PublicServicesRemoteDatasourceImpl(sl()));

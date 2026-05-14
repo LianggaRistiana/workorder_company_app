@@ -15,6 +15,7 @@ class ServiceModel extends ServiceEntity {
     required super.isActive,
     required super.serviceRequestConfig,
     required super.workOrdersConfig,
+    required super.workOrderDraftingType,
   });
 
   factory ServiceModel.fromJson(Map<String, dynamic> json) {
@@ -28,6 +29,9 @@ class ServiceModel extends ServiceEntity {
       serviceRequestConfig: json
           .field("serviceRequestConfig")
           .reqModel(ServiceRequestConfigModel.fromJson),
+      workOrderDraftingType: json
+          .field("drafting_work_order_type")
+          .reqEnum(WorkOrderDraftingType.fromString),
       workOrdersConfig: json
               .field("workOrdersConfig")
               .optListModel(WorkOrderConfigModel.fromJson) ??
@@ -46,6 +50,9 @@ class ServiceModel extends ServiceEntity {
       serviceRequestConfig: json
           .field("serviceRequestConfig")
           .reqModel(ServiceRequestConfigModel.fromJsonTemplate),
+      workOrderDraftingType: json
+          .field("drafting_work_order_type")
+          .reqEnum(WorkOrderDraftingType.fromString),
       workOrdersConfig: json
               .field("workOrdersConfig")
               .optListModel(WorkOrderConfigModel.fromJsonTemplate) ??
@@ -60,6 +67,7 @@ class ServiceModel extends ServiceEntity {
       description: entity.description,
       accessType: entity.accessType,
       isActive: entity.isActive,
+      workOrderDraftingType: entity.workOrderDraftingType,
       serviceRequestConfig:
           ServiceRequestConfigModel.fromEntity(entity.serviceRequestConfig),
       workOrdersConfig: entity.workOrdersConfig
@@ -91,7 +99,8 @@ class ServiceModel extends ServiceEntity {
         title: title,
         description: description,
         accessType: accessType,
-        isActive: isActive);
+        isActive: isActive,
+        workOrderDraftingType: workOrderDraftingType);
   }
 
   ServiceSummaryEntity toSummaryEntity() {

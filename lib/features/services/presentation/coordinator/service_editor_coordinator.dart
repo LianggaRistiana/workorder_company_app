@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/utils/condition_evaluator.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
+import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
 import 'package:workorder_company_app/features/services/domain/draft/service_draft.dart';
 
 class ServiceEditorCoordinator extends ChangeNotifier {
@@ -10,6 +11,8 @@ class ServiceEditorCoordinator extends ChangeNotifier {
   ServiceEditorCoordinator(ServiceDraft initial) : _draft = initial;
 
   ServiceDraft get draft => _draft;
+
+  bool get isManualDrafting => draft.isManualDrafting;
 
   void _update(ServiceDraft newDraft) {
     _draft = newDraft;
@@ -52,12 +55,38 @@ class ServiceEditorCoordinator extends ChangeNotifier {
     _update(_draft.copyWith(reviewForm: form));
   }
 
+  void updateDraftingType(WorkOrderDraftingType value) {
+    _update(_draft.updateDraftingType(value));
+  }
+
   // ========================
   // WORK ORDER
   // ========================
 
-  void addWorkOrder(FormEntity form) {
-    _update(_draft.addWorkOrder(form));
+  void addWorkOrder(FormEntity? form) {
+    if (_draft.isManualDrafting) {
+      if (form == null) {
+        return;
+      }
+      _update(_draft.addManualWorkOrder(form));
+    } else if (_draft.isAutoDrafting) {
+      _update(_draft.addAutoWorkOrder());
+    }
+  }
+
+  void addWorkOrderWithPosition(FormEntity? form, PositionEntity position) {
+    if (_draft.isManualDrafting) {
+      if (form == null) {
+        return;
+      }
+      _update(_draft.addManualWorkOrderWithPosition(form, position));
+    } else if (_draft.isAutoDrafting) {
+      _update(_draft.addAutoWorkOrderWithPosition(position));
+    }
+  }
+
+  void updateWorkOrderForm(int index, FormEntity form) {
+    _update(_draft.updateWorkOrderForm(index, form));
   }
 
   void removeWorkOrder(int index) {
@@ -132,6 +161,7 @@ class ServiceEditorCoordinator extends ChangeNotifier {
       () => _draft.hasAtLeastOneWorkOrder,
       () => _draft.allWorkOrderHasDepartment,
       () => _draft.allWorkOrderHasValidStaff,
+      () => _draft.allWorkOrderHasValidForm,
     ]);
   }
 

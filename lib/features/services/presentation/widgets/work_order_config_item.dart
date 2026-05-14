@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/utils/validators.dart';
+import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
+import 'package:workorder_company_app/features/forms/presentation/widgets/forms_selector_container.dart';
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
 import 'package:workorder_company_app/features/positions/presentation/widget/positions_selector_container.dart';
 import 'package:workorder_company_app/features/services/domain/draft/service_work_order_config_draft.dart';
+import 'package:workorder_company_app/features/services/presentation/widgets/desider_approval_lock.dart';
 import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
@@ -13,8 +16,13 @@ import 'package:workorder_company_app/shared/widgets/icon_box.dart';
 import 'package:workorder_company_app/shared/widgets/item_tile_lined.dart';
 
 class WorkOrderConfigItem extends StatefulWidget {
+  final WorkOrderDraftingType draftingType;
+
   final ServiceWorkOrderConfigDraft draft;
+  final void Function(FormEntity value) onWorkOrderFormChanged;
+
   final ValueChanged<PositionEntity> onDepartmentUpdate;
+
   final ValueChanged<int?> onMinChange;
   final ValueChanged<int?> onMaxChange;
   final ValueChanged<WorkOrderAprrovalAccess> onApprovalChange;
@@ -22,6 +30,8 @@ class WorkOrderConfigItem extends StatefulWidget {
 
   const WorkOrderConfigItem({
     super.key,
+    required this.draftingType,
+    required this.onWorkOrderFormChanged,
     required this.draft,
     required this.onDepartmentUpdate,
     required this.onMinChange,
@@ -79,6 +89,10 @@ class _WorkOrderConfigItemState extends State<WorkOrderConfigItem> {
   @override
   Widget build(BuildContext context) {
     final draft = widget.draft;
+    final workOrderForm = draft.workOrderForm;
+    final isManualDrafting =
+        widget.draftingType == WorkOrderDraftingType.manual;
+
     return CustomCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,15 +103,34 @@ class _WorkOrderConfigItemState extends State<WorkOrderConfigItem> {
                 icon: Icons.assignment_turned_in_outlined,
               ),
               const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  draft.workOrderForm.title,
-                  // TodoText.title("form", loremCount: 100),
-                  style: Theme.of(context).textTheme.titleMedium,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+              if (workOrderForm != null && isManualDrafting) ...[
+                Expanded(
+                  child: Text(
+                    workOrderForm.title,
+                    style: Theme.of(context).textTheme.titleMedium,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
-              ),
+              ] else if (workOrderForm == null && isManualDrafting) ...[
+                FormsSelectorContainer(
+                  selectedForms: [],
+                  onAdd: widget.onWorkOrderFormChanged,
+                  buttonBuilder: (context, onPressed, isLoading) => Expanded(
+                    child: DashedButton(
+                      title: "Pilih Formulir Perintah Kerja",
+                      onTap: onPressed,
+                      borderColor: Theme.of(context).disabledColor,
+                      color: Theme.of(context).colorScheme.primary,
+                      icon: Icons.add,
+                      borderRadius: 16,
+                      isLoading: isLoading,
+                    ),
+                  ),
+                )
+              ] else ...[
+                Spacer()
+              ],
               if (widget.onRemove != null)
                 IconButton.filled(
                   onPressed: widget.onRemove,
@@ -115,17 +148,38 @@ class _WorkOrderConfigItemState extends State<WorkOrderConfigItem> {
           const SizedBox(height: 16),
 
           /// Approval Access
-          EnumSelector(
-            title: "Akses Persetujuan",
-            isMultiSelect: false,
-            values: WorkOrderAprrovalAccess.values,
-            selectedValues: [draft.workOrderApprovalAccess],
-            onChanged: (values) {
-              if (values.isNotEmpty) {
-                widget.onApprovalChange(values.first);
-              }
-            },
+          ConditionalApprovalSection(
+            type: widget.draftingType,
+            child: EnumSelector(
+              title: "Akses Persetujuan",
+              isMultiSelect: false,
+              labelBuilder: (val) => val.displayName,
+              values: WorkOrderAprrovalAccess.values,
+              selectedValues: [draft.workOrderApprovalAccess],
+              onChanged: (values) {
+                if (values.isNotEmpty) {
+                  widget.onApprovalChange(values.first);
+                }
+              },
+            ),
           ),
+          // if (isManualDrafting) ...[
+          //   EnumSelector(
+          //     title: "Akses Persetujuan",
+          //     isMultiSelect: false,
+          //     values: WorkOrderAprrovalAccess.values,
+          //     selectedValues: [draft.workOrderApprovalAccess],
+          //     onChanged: (values) {
+          //       if (values.isNotEmpty) {
+          //         widget.onApprovalChange(values.first);
+          //       }
+          //     },
+          //   ),
+          // ] else ...[
+          //   SectionTitle("Akses Persetujuan"),
+          //   CustomCard(
+          //       child: PropertyTitle(icon: AppIcon.lock, label: "Otomatis")),
+          // ],
 
           const SizedBox(height: 20),
 

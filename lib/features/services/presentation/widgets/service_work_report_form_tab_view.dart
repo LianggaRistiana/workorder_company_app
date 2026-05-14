@@ -8,16 +8,17 @@ import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/information_block.dart';
 
 class ServiceWorkReportFormTabView extends StatelessWidget {
+  final WorkOrderDraftingType draftingType;
   final List<ServiceWorkOrderConfigDraft> workOrders;
 
   final void Function(int index, WorkReportApprovalAccess value)
       onApprovalChange;
 
-  final void Function(int index, FormEntity? form)
-      onFormUpdate;
+  final void Function(int index, FormEntity? form) onFormUpdate;
 
   const ServiceWorkReportFormTabView({
     super.key,
+    required this.draftingType,
     required this.workOrders,
     required this.onApprovalChange,
     required this.onFormUpdate,
@@ -37,11 +38,10 @@ class ServiceWorkReportFormTabView extends StatelessWidget {
 
           return WorkReportConfigItem(
             key: ValueKey(index),
+            draftingType: draftingType,
             draft: draft,
-            onApprovalChange: (value) =>
-                onApprovalChange(index, value),
-            onFormUpdate: (form) =>
-                onFormUpdate(index, form),
+            onApprovalChange: (value) => onApprovalChange(index, value),
+            onFormUpdate: (form) => onFormUpdate(index, form),
           );
         },
       ),

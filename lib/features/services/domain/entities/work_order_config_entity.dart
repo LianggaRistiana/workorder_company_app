@@ -4,7 +4,7 @@ import 'package:workorder_company_app/features/forms/domain/entities/form_entity
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
 
 class WorkOrderConfigEntity extends Equatable {
-  final FormEntity workOrderForm;
+  final FormEntity? workOrderForm;
   final FormEntity workReportForm;
   final PositionEntity positionOnDuty;
   final WorkOrderAprrovalAccess workOrderAprrovalAccessType;
@@ -13,7 +13,7 @@ class WorkOrderConfigEntity extends Equatable {
   final int maxStaff;
 
   const WorkOrderConfigEntity({
-    required this.workOrderForm,
+    this.workOrderForm,
     required this.workReportForm,
     required this.positionOnDuty,
     required this.workOrderAprrovalAccessType,

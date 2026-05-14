@@ -10,6 +10,7 @@ import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 import 'package:workorder_company_app/shared/widgets/enum_selector.dart';
 import 'package:workorder_company_app/shared/widgets/horizontal_switch.dart';
+
 class ServiceConfigFormTabView extends StatelessWidget {
   final bool isActive;
   final bool isUpdate;
@@ -21,6 +22,9 @@ class ServiceConfigFormTabView extends StatelessWidget {
   final ServiceAccessType accessType;
   final ValueChanged<ServiceAccessType> onAccessTypeChanged;
 
+  final WorkOrderDraftingType draftingType;
+  final ValueChanged<WorkOrderDraftingType> onDraftingTypeChanged;
+
   const ServiceConfigFormTabView({
     super.key,
     required this.isUpdate,
@@ -30,6 +34,8 @@ class ServiceConfigFormTabView extends StatelessWidget {
     required this.descriptionController,
     required this.accessType,
     required this.onAccessTypeChanged,
+    required this.draftingType,
+    required this.onDraftingTypeChanged,
   });
 
   @override
@@ -40,45 +46,38 @@ class ServiceConfigFormTabView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (!isUpdate)
-          HorizontalSwitch(
-            leadingIcon: AppIcon.activeState,
-            title: "Layanan Aktif",
-            description: "Layanan aktif akan langsung bisa digunakan",
-            value: isActive,
-            onChanged: onActiveChanged,
-          ),
-
+            HorizontalSwitch(
+              leadingIcon: AppIcon.activeState,
+              title: "Layanan Aktif",
+              description: "Layanan aktif akan langsung bisa digunakan",
+              value: isActive,
+              onChanged: onActiveChanged,
+            ),
           CustomCard(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomInputField(
-                  controller: titleController, 
+                  controller: titleController,
                   prefixIcon: Icon(AppIcon.service),
                   label: "Nama Layanan",
-                  validator: (value) =>
-                      ValidatorUtils.required(
-                        value,
-                        fieldName: "Nama Layanan",
-                      ),
+                  validator: (value) => ValidatorUtils.required(
+                    value,
+                    fieldName: "Nama Layanan",
+                  ),
                 ),
-
                 const SizedBox(height: 12),
-
                 CustomInputField(
                   controller: descriptionController,
                   prefixIcon: Icon(AppIcon.desc),
                   label: "Deskripsi",
                   maxLines: 3,
-                  validator: (value) =>
-                      ValidatorUtils.required(
-                        value,
-                        fieldName: "Deskripsi",
-                      ),
+                  validator: (value) => ValidatorUtils.required(
+                    value,
+                    fieldName: "Deskripsi",
+                  ),
                 ),
-
                 const SizedBox(height: 12),
-
                 EnumSelector<ServiceAccessType>(
                   title: "Tipe Akses",
                   labelBuilder: (e) => e.displayName,
@@ -94,11 +93,24 @@ class ServiceConfigFormTabView extends StatelessWidget {
               ],
             ),
           ),
-
           HelpButton(
             title: "Ketahui jenis akses layanan",
             child: ServiceAccessTypeTips(),
           ),
+          CustomCard(
+            child: EnumSelector<WorkOrderDraftingType>(
+              title: "Tipe Penyusunan Perintah Kerja",
+              labelBuilder: (e) => e.displayName,
+              values: WorkOrderDraftingType.values,
+              selectedValues: [draftingType],
+              isMultiSelect: false,
+              onChanged: (value) {
+                if (value.isNotEmpty) {
+                  onDraftingTypeChanged(value.first);
+                }
+              },
+            ),
+          )
         ],
       ),
     );

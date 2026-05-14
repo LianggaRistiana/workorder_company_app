@@ -206,11 +206,14 @@ class _ServiceEditorViewState extends State<ServiceEditorView>
                   titleController: _controllers.title,
                   descriptionController: _controllers.description,
                   accessType: draft.accessType,
+                  draftingType: draft.workOrderDraftingType,
                   onActiveChanged: _coordinator.updateIsActive,
                   onAccessTypeChanged: _coordinator.updateAccessType,
+                  onDraftingTypeChanged: _coordinator.updateDraftingType,
                 ),
               ),
               ServiceRequestFormTabView(
+                draftingType: draft.workOrderDraftingType,
                 approvalAccess: draft.requestApprovalAccess,
                 intakeForm: draft.intakeForm,
                 reviewForm: draft.reviewForm,
@@ -224,7 +227,9 @@ class _ServiceEditorViewState extends State<ServiceEditorView>
               Form(
                 key: _workOrderFormKey,
                 child: ServiceWorkOrderFormTabView(
+                  draftingType: draft.workOrderDraftingType,
                   workOrders: draft.workOrders,
+                  onWorkOrderFormChanged: _coordinator.updateWorkOrderForm,
                   onAdd: _coordinator.addWorkOrder,
                   onRemove: _coordinator.removeWorkOrder,
                   onDepartmentUpdate: _coordinator.updateDepartment,
@@ -234,6 +239,7 @@ class _ServiceEditorViewState extends State<ServiceEditorView>
                 ),
               ),
               ServiceWorkReportFormTabView(
+                draftingType: draft.workOrderDraftingType,
                 workOrders: draft.workOrders,
                 onApprovalChange: _coordinator.updateWorkReportApproval,
                 onFormUpdate: _coordinator.updateReportForm,

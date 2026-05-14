@@ -3,6 +3,7 @@ import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
 import 'package:workorder_company_app/features/forms/presentation/widgets/forms_selector_container.dart';
 import 'package:workorder_company_app/features/services/domain/draft/service_work_order_config_draft.dart';
+import 'package:workorder_company_app/features/services/presentation/widgets/desider_approval_lock.dart';
 import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/dashed_button.dart';
@@ -10,12 +11,15 @@ import 'package:workorder_company_app/shared/widgets/enum_selector.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
 
 class WorkReportConfigItem extends StatelessWidget {
+  final WorkOrderDraftingType draftingType;
+
   final ServiceWorkOrderConfigDraft draft;
   final ValueChanged<WorkReportApprovalAccess> onApprovalChange;
   final ValueChanged<FormEntity?> onFormUpdate;
 
   const WorkReportConfigItem({
     super.key,
+    required this.draftingType,
     required this.draft,
     required this.onApprovalChange,
     required this.onFormUpdate,
@@ -23,6 +27,8 @@ class WorkReportConfigItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final workOrderForm = draft.workOrderForm;
+    final isManual = draftingType == WorkOrderDraftingType.manual;
     return CustomCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,25 +37,30 @@ class WorkReportConfigItem extends StatelessWidget {
             children: [
               const IconBox.small(icon: Icons.assignment_turned_in_outlined),
               const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  draft.workOrderForm.title,
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-              )
+              if (workOrderForm != null && isManual)
+                Expanded(
+                  child: Text(
+                    workOrderForm.title,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                )
             ],
           ),
           const SizedBox(height: 12),
-          EnumSelector<WorkReportApprovalAccess>(
-            isMultiSelect: false,
-            title: "Akses Persetujuan laporan",
-            values: WorkReportApprovalAccess.values,
-            selectedValues: [draft.workReportApprovalAccess],
-            onChanged: (value) {
-              if (value.isNotEmpty) {
-                onApprovalChange(value.first);
-              }
-            },
+          ConditionalApprovalSection(
+            type: draftingType,
+            child: EnumSelector<WorkReportApprovalAccess>(
+              isMultiSelect: false,
+              title: "Akses Persetujuan laporan",
+              labelBuilder: (val) => val.displayName,
+              values: WorkReportApprovalAccess.values,
+              selectedValues: [draft.workReportApprovalAccess],
+              onChanged: (value) {
+                if (value.isNotEmpty) {
+                  onApprovalChange(value.first);
+                }
+              },
+            ),
           ),
           const SizedBox(height: 16),
           Text(

@@ -18,6 +18,7 @@ class ServiceDraft extends Equatable {
   final FormEntity? intakeForm;
   final FormEntity? reviewForm;
 
+  final WorkOrderDraftingType workOrderDraftingType;
   final List<ServiceWorkOrderConfigDraft> workOrders;
   final bool reviewNeed;
 
@@ -32,6 +33,7 @@ class ServiceDraft extends Equatable {
     required this.reviewForm,
     required this.workOrders,
     required this.reviewNeed,
+    required this.workOrderDraftingType,
   });
 
   factory ServiceDraft.initial() {
@@ -44,6 +46,7 @@ class ServiceDraft extends Equatable {
       requestApprovalAccess: ServiceRequestApprovalAccess.manager,
       intakeForm: null,
       reviewForm: null,
+      workOrderDraftingType: WorkOrderDraftingType.manual,
       workOrders: [],
       reviewNeed: true,
     );
@@ -60,6 +63,7 @@ class ServiceDraft extends Equatable {
           entity.serviceRequestConfig.serviceRequestApprovalAccessType,
       intakeForm: entity.serviceRequestConfig.intakeForm,
       reviewForm: entity.serviceRequestConfig.reviewForm,
+      workOrderDraftingType: entity.workOrderDraftingType,
       workOrders: entity.workOrdersConfig
           .map((e) => ServiceWorkOrderConfigDraft.fromEntity(e))
           .toList(),
@@ -77,6 +81,7 @@ class ServiceDraft extends Equatable {
     FormEntity? reviewForm,
     List<ServiceWorkOrderConfigDraft>? workOrders,
     bool? reviewNeed,
+    WorkOrderDraftingType? workOrderDraftingType,
   }) {
     return ServiceDraft(
       id: id,
@@ -90,6 +95,8 @@ class ServiceDraft extends Equatable {
       reviewForm: reviewForm ?? this.reviewForm,
       workOrders: workOrders ?? this.workOrders,
       reviewNeed: reviewNeed ?? this.reviewNeed,
+      workOrderDraftingType:
+          workOrderDraftingType ?? this.workOrderDraftingType,
     );
   }
 
@@ -97,11 +104,48 @@ class ServiceDraft extends Equatable {
   /// WORK ORDER OPERATIONS
   /// =========================
 
-  ServiceDraft addWorkOrder(FormEntity workOrderForm) {
+  ServiceDraft addManualWorkOrder(
+    FormEntity workOrderForm,
+  ) {
+    return _addWorkOrder(
+      ServiceWorkOrderConfigDraft.manualDrafting(
+        workOrderForm: workOrderForm,
+      ),
+    );
+  }
+
+  ServiceDraft addAutoWorkOrder() {
+    return _addWorkOrder(
+      ServiceWorkOrderConfigDraft.autoDrafting(),
+    );
+  }
+
+  ServiceDraft addManualWorkOrderWithPosition(
+    FormEntity workOrderForm,
+    PositionEntity position,
+  ) {
+    return _addWorkOrder(
+      ServiceWorkOrderConfigDraft.manualDrafting(
+        workOrderForm: workOrderForm,
+      ).withPosition(position),
+    );
+  }
+
+  ServiceDraft addAutoWorkOrderWithPosition(
+    PositionEntity position,
+  ) {
+    return _addWorkOrder(
+      ServiceWorkOrderConfigDraft.autoDrafting().withPosition(position),
+    );
+  }
+
+  ServiceDraft _addWorkOrder(
+    ServiceWorkOrderConfigDraft draft,
+  ) {
     return copyWith(
       workOrders: [
         ...workOrders,
-        ServiceWorkOrderConfigDraft.initial(workOrderForm: workOrderForm)
+        draft,
       ],
     );
   }
@@ -111,6 +155,26 @@ class ServiceDraft extends Equatable {
     return copyWith(workOrders: updated);
   }
 
+  ServiceDraft removeWorkOrderWithNullForm() {
+    final updated = [...workOrders]
+      ..removeWhere((element) => element.workOrderForm == null);
+    return copyWith(workOrders: updated);
+  }
+
+  ServiceDraft updateDraftingType(
+    WorkOrderDraftingType value,
+  ) {
+    ServiceDraft updatedDraft = copyWith();
+
+    // if (value == WorkOrderDraftingType.manual) {
+    //   updatedDraft = updatedDraft.removeWorkOrderWithNullForm();
+    // }
+
+    return updatedDraft.copyWith(
+      workOrderDraftingType: value,
+    );
+  }
+
   ServiceDraft updateWorkOrder(
     int index,
     ServiceWorkOrderConfigDraft updatedDraft,
@@ -118,6 +182,12 @@ class ServiceDraft extends Equatable {
     final updated = [...workOrders];
     updated[index] = updatedDraft;
     return copyWith(workOrders: updated);
+  }
+
+  ServiceDraft updateWorkOrderForm(int index, FormEntity form) {
+    final target = workOrders[index];
+    final updated = target.copyWith(workOrderForm: form);
+    return updateWorkOrder(index, updated);
   }
 
   /// =========================
@@ -191,10 +261,25 @@ class ServiceDraft extends Equatable {
 
   bool get allWorkOrderHasValidStaff => workOrders.every((e) => e.isStaffValid);
 
-
+  bool get allWorkOrderHasValidForm {
+    if (isManualDrafting) {
+      return isAllWorkOrderNotNull();
+    }
+    return true;
+  }
 
   bool get isBasicInfoValid =>
       title.trim().isNotEmpty && description.trim().isNotEmpty;
+
+  bool get isManualDrafting =>
+      workOrderDraftingType == WorkOrderDraftingType.manual;
+
+  bool get isAutoDrafting =>
+      workOrderDraftingType == WorkOrderDraftingType.auto;
+
+  bool isAllWorkOrderNotNull() {
+    return workOrders.every((element) => element.workOrderForm != null);
+  }
 
   @override
   List<Object?> get props => [
@@ -204,6 +289,7 @@ class ServiceDraft extends Equatable {
         description,
         accessType,
         requestApprovalAccess,
+        workOrderDraftingType,
         intakeForm,
         reviewForm,
         workOrders,
@@ -229,19 +315,28 @@ extension ServiceDraftMapper on ServiceDraft {
       throw ValidationException("Minimal 1 work order");
     }
 
+    if (isManualDrafting && !isAllWorkOrderNotNull()) {
+      throw ValidationException(
+          "Layanan dengan mode penyusunan perintah kerja manual wajib memiliki form perintah kerja");
+    }
+
     return ServiceEntity(
       id: id,
       title: title.trim(),
       description: description.trim(),
       accessType: accessType,
       isActive: isActive,
+      workOrderDraftingType: workOrderDraftingType,
       serviceRequestConfig: ServiceRequestConfigEntity(
         intakeForm: intakeForm!,
         reviewForm: reviewForm!,
-        serviceRequestApprovalAccessType: requestApprovalAccess,
+        serviceRequestApprovalAccessType: isAutoDrafting
+            ? ServiceRequestApprovalAccess.auto
+            : requestApprovalAccess,
         reviewNeed: reviewNeed,
       ),
-      workOrdersConfig: workOrders.map((e) => e.toEntity()).toList(),
+      workOrdersConfig:
+          workOrders.map((e) => e.toEntity(workOrderDraftingType)).toList(),
     );
   }
 }
