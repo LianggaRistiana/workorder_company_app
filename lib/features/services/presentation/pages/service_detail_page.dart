@@ -67,6 +67,7 @@ class _ServiceDetailView extends StatelessWidget {
           case ServiceDetailStatus.initial:
           case ServiceDetailStatus.error:
             return Scaffold(
+              appBar: AppBar(),
               body: ErrorBody(
                   errorMessage: state.errorMessage,
                   onRetry: () => context
