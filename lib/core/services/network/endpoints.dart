@@ -112,4 +112,7 @@ class Endpoints {
   static const String serviceRequestStat = '/dashboard/service-request';
   static const String workOrderStat = '/dashboard/work-order';
   static const String companyStat = '/dashboard/company';
+
+  // System Integration
+  static const String systemIntegration = 'company/integration-config';
 }
