@@ -10,6 +10,7 @@ class WorkReportModel extends WorkReportEntity {
     required super.id,
     required super.workOrderId,
     required super.workReportForm,
+    required super.showReportToRequester,
     required super.approvalAccess,
     required super.status,
     super.approvedBy,
@@ -20,6 +21,7 @@ class WorkReportModel extends WorkReportEntity {
     return WorkReportModel(
       id: json.field('_id').reqString(),
       workOrderId: json.field('workOrderId').reqString(),
+      showReportToRequester: json.field('showReportToRequester').reqBool(),
       workReportForm: FilledFormWithHistoryModel.fromJson(
           json['reportFormDetail'], json['submissions']),
       approvalAccess: json

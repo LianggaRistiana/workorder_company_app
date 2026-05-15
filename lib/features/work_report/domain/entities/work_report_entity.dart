@@ -10,6 +10,7 @@ class WorkReportEntity extends Equatable {
   final FilledFormWithHistoryEntity workReportForm;
   final WorkReportApprovalAccess approvalAccess;
   final WorkReportStatus status;
+  final bool showReportToRequester;
   final UserEntity? approvedBy;
   final WorkReportStatusDateEntity statusDate;
 
@@ -17,6 +18,7 @@ class WorkReportEntity extends Equatable {
     required this.id,
     required this.workOrderId,
     required this.workReportForm,
+    required this.showReportToRequester,
     required this.approvalAccess,
     required this.status,
     this.approvedBy,
@@ -28,6 +30,7 @@ class WorkReportEntity extends Equatable {
         id,
         workOrderId,
         workReportForm,
+        showReportToRequester,
         approvalAccess,
         status,
         approvedBy,

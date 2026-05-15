@@ -20,6 +20,7 @@ import 'package:workorder_company_app/features/work_report/presentation/widgets/
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/widgets/adaptive_split_column.dart';
 import 'package:workorder_company_app/features/submissions/presentation/widgets/filled_form_view.dart';
+import 'package:workorder_company_app/shared/widgets/information_block.dart';
 import 'package:workorder_company_app/shared/widgets/loading_state_inline.dart';
 
 class WorkReportPage extends StatelessWidget {
@@ -101,6 +102,9 @@ class _WorkReportBody extends StatelessWidget {
       return [
         WorkReportPropertyView(report: workReport),
         const SizedBox(height: AppSpacing.md),
+        if (workReport.showReportToRequester) ...[
+          InformationBlock.info("Laporan ini akan ditampilkan ke pemohon")
+        ],
         FilledFormView(
           filledForm: workReport.workReportForm.currentFilledForm,
         ),
