@@ -6,6 +6,7 @@ import 'package:workorder_company_app/core/types/future_either.dart';
 import 'package:workorder_company_app/core/utils/either_helper.dart';
 import 'package:workorder_company_app/core/utils/safe_call.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
+import 'package:workorder_company_app/features/forms/domain/entities/work_reports_filled_form_entity.dart';
 import 'package:workorder_company_app/features/service_request/data/datasources/requester_service_request_remote_datasource.dart';
 import 'package:workorder_company_app/features/service_request/domain/entities/service_request_entity.dart';
 import 'package:workorder_company_app/features/service_request/domain/repositories/requester_service_request_repository.dart';
@@ -150,5 +151,14 @@ class RequesterServiceRequestRepositoryImpl
   @override
   void clearCache() {
     _cache.clear();
+  }
+
+  @override
+  FutureEither<WorkReportsFilledFormEntity> getServiceRequestReport(String id) {
+    return safeCall(() async {
+      final payload =
+          await _requesterServiceRequestDatasource.getServiceRequestReport(id);
+      return payload.data;
+    });
   }
 }

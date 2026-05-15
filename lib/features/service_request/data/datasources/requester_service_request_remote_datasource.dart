@@ -4,6 +4,7 @@ import 'package:workorder_company_app/core/services/network/endpoints.dart';
 import 'package:workorder_company_app/core/types/future_api.dart';
 import 'package:workorder_company_app/core/utils/safe_mapper.dart';
 import 'package:workorder_company_app/features/forms/data/model/form_model.dart';
+import 'package:workorder_company_app/features/forms/data/model/work_reports_filled_form_model.dart';
 import 'package:workorder_company_app/features/service_request/data/model/requester_service_request_model.dart';
 import 'package:workorder_company_app/features/submissions/data/model/submissions_model.dart';
 import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
@@ -19,6 +20,7 @@ abstract class RequesterServiceRequestRemoteDatasource {
       String serviceRequestId, SubmissionsModel submission);
   ApiFuture<RequesterServiceRequestModel> submitIntakeForm(
       String serviceId, SubmissionsModel submission);
+  ApiFuture<WorkReportsFilledFormModel> getServiceRequestReport(String id);
 }
 
 class RequesterServiceRequestRemoteDatasourceImpl
@@ -119,6 +121,17 @@ class RequesterServiceRequestRemoteDatasourceImpl
     return ApiResponse.fromJson(
       response,
       (json) => FormModel.fromJson(json),
+    );
+  }
+
+  @override
+  ApiFuture<WorkReportsFilledFormModel> getServiceRequestReport(
+      String id) async {
+    final response =
+        await _apiClient.get(Endpoints.serviceRequestReport.fillId(id));
+    return ApiResponse.fromJson(
+      response,
+      (json) => WorkReportsFilledFormModel.fromJson(json),
     );
   }
 }

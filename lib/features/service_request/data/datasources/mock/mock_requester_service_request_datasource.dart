@@ -11,6 +11,7 @@ import 'package:workorder_company_app/features/forms/data/model/field_model.dart
 import 'package:workorder_company_app/features/forms/data/model/filled_form_model.dart';
 import 'package:workorder_company_app/features/forms/data/model/form_model.dart';
 import 'package:workorder_company_app/features/forms/data/model/option_model.dart';
+import 'package:workorder_company_app/features/forms/data/model/work_reports_filled_form_model.dart';
 import 'package:workorder_company_app/features/service_request/data/datasources/requester_service_request_remote_datasource.dart';
 import 'package:workorder_company_app/features/service_request/data/model/requester_service_request_model.dart';
 import 'package:workorder_company_app/features/service_request/data/model/service_request_status_date_model.dart';
@@ -391,5 +392,11 @@ class MockRequesterServiceRequestDatasource
       message: "Success cancel request",
       data: updated,
     );
+  }
+
+  @override
+  ApiFuture<WorkReportsFilledFormModel> getServiceRequestReport(String id) {
+    // TODO: implement getServiceRequestReport
+    throw UnimplementedError();
   }
 }

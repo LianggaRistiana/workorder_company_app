@@ -42,6 +42,7 @@ class Endpoints {
       "/public/services/:id/intake-form";
   static const String serviceRequestIntakeInternal =
       "/services/:id/intake-form";
+  static const String serviceRequestReport = "/service-requests/:id/report";
 
   // Work Order
   static const String workorders = "/workorders";
