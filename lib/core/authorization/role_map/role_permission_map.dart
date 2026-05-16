@@ -103,6 +103,7 @@ extension UserRolePermissions on UserRole {
           ...InvitationPermission.sender,
 
           // Service Domain
+          // TODO : Check this changes
           ...FormPermission.all,
           ...ServicePermission.all,
 
@@ -120,10 +121,11 @@ extension UserRolePermissions on UserRole {
           // Human Resouce Domain
           PositionsPermission.view,
           EmployeePermission.view,
+          ...InvitationPermission.sender, // TODO : Check this
 
           // Service Domain
-          FormPermission.view,
-          ServicePermission.view,
+          ...FormPermission.all,
+          ...ServicePermission.all,
 
           // Work Order Domain
           ...ServiceRequestPermission.provider,
@@ -139,12 +141,13 @@ extension UserRolePermissions on UserRole {
           PositionsPermission.view,
           EmployeePermission.view,
 
-          // Service Domain
+          // Service Domains
           FormPermission.view,
           ServicePermission.view,
 
           // Work Order Domain
-          ...ServiceRequestPermission.requester,
+          ...ServiceRequestPermission
+              .requester, // HACK : Potentially move to manager level
           ...WorkOrderPermissions.worker,
           ...WorkReportPermissions.worker
         };
