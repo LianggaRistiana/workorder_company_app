@@ -20,16 +20,30 @@ class ManagerContent extends StatelessWidget {
           title: "Buat Perintah Kerja Baru",
           description:
               "Buat perintah kerja baru khusus untuk internal perusahaan",
-          onTap: () {},
+          onTap: () {
+            context.go(AppRoutes.workOrders);
+          },
         ),
         const SizedBox(height: 8),
         SectionTitle(
-          "Menu Operasional",
+          "Menu",
           style: Theme.of(context).textTheme.titleLarge,
         ),
         const SizedBox(height: 12),
         MenuGrid(
           items: [
+            MenuItem(
+                icon: AppIcon.form,
+                label: "Konfigurasi Formulir",
+                onTap: () {
+                  context.push(AppRoutes.forms);
+                }),
+            MenuItem(
+                icon: AppIcon.service,
+                label: "Konfigurasi Layanan",
+                onTap: () {
+                  context.push(AppRoutes.services);
+                }),
             MenuItem(
                 icon: AppIcon.serviceRequestInbox,
                 label: "Permintaan Layanan",
@@ -47,24 +61,6 @@ class ManagerContent extends StatelessWidget {
                 label: "Pegawai",
                 onTap: () {
                   context.push(AppRoutes.employee);
-                }),
-            MenuItem(
-                icon: AppIcon.membership,
-                label: "Pelanggan Perusahaan",
-                onTap: () {}),
-            MenuItem(
-                icon: AppIcon.history,
-                label: "Riwayat Permintaan",
-                onTap: () {}),
-            MenuItem(
-                icon: AppIcon.history,
-                label: "Riwayat Workorder",
-                onTap: () {}),
-            MenuItem(
-                icon: AppIcon.help,
-                label: "Bantuan",
-                onTap: () {
-                  context.push(AppRoutes.notFound);
                 }),
           ],
         ),

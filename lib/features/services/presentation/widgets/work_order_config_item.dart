@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:workorder_company_app/core/authorization/rule/position_permission_rule/position_permission_helper.dart';
+import 'package:workorder_company_app/core/authorization/util/access_gate_on_widget.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/utils/validators.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
@@ -163,23 +165,6 @@ class _WorkOrderConfigItemState extends State<WorkOrderConfigItem> {
               },
             ),
           ),
-          // if (isManualDrafting) ...[
-          //   EnumSelector(
-          //     title: "Akses Persetujuan",
-          //     isMultiSelect: false,
-          //     values: WorkOrderAprrovalAccess.values,
-          //     selectedValues: [draft.workOrderApprovalAccess],
-          //     onChanged: (values) {
-          //       if (values.isNotEmpty) {
-          //         widget.onApprovalChange(values.first);
-          //       }
-          //     },
-          //   ),
-          // ] else ...[
-          //   SectionTitle("Akses Persetujuan"),
-          //   CustomCard(
-          //       child: PropertyTitle(icon: AppIcon.lock, label: "Otomatis")),
-          // ],
 
           const SizedBox(height: 20),
 
@@ -221,7 +206,18 @@ class _WorkOrderConfigItemState extends State<WorkOrderConfigItem> {
                 isLoading: isLoading,
               );
             },
-          ),
+          ).require(hasNoPosition(),
+              fallback: draft.departmentOnDuty != null
+                  ? ItemTileLined(
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Text(
+                          draft.departmentOnDuty!.name,
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
+                      ),
+                    )
+                  : null),
 
           const SizedBox(height: 20),
 
