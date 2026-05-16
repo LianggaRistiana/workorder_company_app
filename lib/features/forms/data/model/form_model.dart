@@ -3,6 +3,7 @@ import 'package:workorder_company_app/core/services/generator/random_string.dart
 import 'package:workorder_company_app/core/utils/safe_parse.dart';
 import 'package:workorder_company_app/features/forms/data/model/field_model.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
+import 'package:workorder_company_app/features/positions/data/models/position_model.dart';
 
 class FormModel extends FormEntity {
   const FormModel({
@@ -10,6 +11,7 @@ class FormModel extends FormEntity {
     required super.title,
     required super.formType,
     required super.description,
+    super.position,
     super.fields = const [],
   });
 
@@ -18,6 +20,7 @@ class FormModel extends FormEntity {
       id: json.field('_id').reqString(),
       title: json.field('title').reqString(),
       formType: json.field('formType').reqEnum(FormType.fromString),
+      position: json.field('"position"').optModel(PositionModel.fromJson),
       description: json["description"]?.toString() ?? "",
       fields: (json["fields"] as List<dynamic>?)
               ?.map((e) => FieldModel.fromJson(e))
@@ -31,6 +34,7 @@ class FormModel extends FormEntity {
       id: RandomString.generate(),
       title: json.field('title').reqString(),
       formType: json.field('formType').reqEnum(FormType.fromString),
+      position: json.field('"position"').optModel(PositionModel.fromJson),
       description: json["description"]?.toString() ?? "",
       fields: (json["fields"] as List<dynamic>?)
               ?.map((e) => FieldModel.fromJson(e))
@@ -54,6 +58,7 @@ class FormModel extends FormEntity {
       id: entity.id,
       title: entity.title,
       description: entity.description,
+      position: entity.position,
       formType: entity.formType,
       fields: entity.fields?.map((e) => FieldModel.fromEntity(e)).toList(),
     );
