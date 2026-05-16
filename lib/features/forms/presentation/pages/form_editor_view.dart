@@ -152,6 +152,12 @@ class _FormEditorViewState extends State<FormEditorView>
     widget.onSubmit(_coordinator.draft);
   }
 
+  // HACK : Redundant Tab Controllers
+  // The Scaffold is wrapped in a DefaultTabController(length: 4),
+  // but the TabBarView explicitly receives controller: _tabController.
+  // Impact: DefaultTabController is entirely unused and redundant.
+  // It adds unnecessary widget nesting.
+  // Fix: Remove the DefaultTabController wrapper entirely and just return the Scaffold.
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(

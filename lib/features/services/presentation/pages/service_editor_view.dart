@@ -136,6 +136,12 @@ class _ServiceEditorViewState extends State<ServiceEditorView>
   Widget build(BuildContext context) {
     final draft = _coordinator.draft;
 
+    // HACK : Redundant Tab Controllers
+    // The Scaffold is wrapped in a DefaultTabController(length: 4),
+    // but the TabBarView explicitly receives controller: _tabController.
+    // Impact: DefaultTabController is entirely unused and redundant.
+    // It adds unnecessary widget nesting.
+    // Fix: Remove the DefaultTabController wrapper entirely and just return the Scaffold.
     return DefaultTabController(
       length: 4,
       child: Scaffold(
