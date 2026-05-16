@@ -19,7 +19,7 @@ class ServiceAuthorizer {
         _ManagerDepartementScopeRule(service),
       ]);
 
-  AuthorizationRule get editChecingDataRule => rules([
+  AuthorizationRule get editCheckingDataRule => rules([
         roleCan(ServicePermission.update),
         _ManagerDepartementScopeRule(service),
         _AutoDraftingConfigRule(service),
