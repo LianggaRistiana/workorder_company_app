@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/features/system_integration/presentation/pages/account_pairing_page.dart';
+import 'package:workorder_company_app/features/system_integration/presentation/pages/system_integration_config_page.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 
 final systemIntegrationRouter = [
@@ -13,4 +14,9 @@ final systemIntegrationRouter = [
       );
     },
   ),
+  GoRoute(
+      path: AppRoutes.systemIntegrationConfig,
+      builder: (_, __) {
+        return const SystemIntegrationConfigPage();
+      })
 ];

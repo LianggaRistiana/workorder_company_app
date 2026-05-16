@@ -15,8 +15,14 @@ class SystemIntegrationConfigState {
   final ProviderIntegrationDataEntity? providerIntegrationData;
   final String? errorMessage;
 
+  bool get isLoaded => status == SystemIntegrationConfigStateStatus.loaded;
+  bool get isLoading => status == SystemIntegrationConfigStateStatus.loading;
+
   bool get isUpdateLoading =>
       status == SystemIntegrationConfigStateStatus.updateLoading;
+  bool get isUpdateSuccess =>
+      status == SystemIntegrationConfigStateStatus.updateSuccess;
+
   bool get hasAnyError =>
       status == SystemIntegrationConfigStateStatus.loadError ||
       status == SystemIntegrationConfigStateStatus.updateError;

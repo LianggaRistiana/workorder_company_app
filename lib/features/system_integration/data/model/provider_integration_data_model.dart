@@ -6,6 +6,7 @@ class ProviderIntegrationDataModel extends ProviderIntegrationDataEntity {
     required super.externalLoginUrl,
     required super.externalVerifyUrl,
     required super.secretKey,
+    required super.externalCheckStatusMembershipsUrl,
     required super.isIntegrationActive,
   });
 
@@ -14,7 +15,9 @@ class ProviderIntegrationDataModel extends ProviderIntegrationDataEntity {
       externalLoginUrl: json.field("external_login_url").reqString(),
       externalVerifyUrl: json.field("external_verify_url").reqString(),
       secretKey: json.field("secret_key").reqString(),
-      isIntegrationActive: json.field("secret_key").reqBool(),
+      externalCheckStatusMembershipsUrl:
+          json.field("external_check_status_memberships_url").reqString(),
+      isIntegrationActive: json.field("is_integration_active").reqBool(),
     );
   }
 
@@ -25,6 +28,8 @@ class ProviderIntegrationDataModel extends ProviderIntegrationDataEntity {
       externalLoginUrl: providerIntegrationData.externalLoginUrl,
       externalVerifyUrl: providerIntegrationData.externalVerifyUrl,
       secretKey: providerIntegrationData.secretKey,
+      externalCheckStatusMembershipsUrl:
+          providerIntegrationData.externalCheckStatusMembershipsUrl,
       isIntegrationActive: providerIntegrationData.isIntegrationActive,
     );
   }
@@ -33,6 +38,7 @@ class ProviderIntegrationDataModel extends ProviderIntegrationDataEntity {
     return {
       "external_login_url": externalLoginUrl,
       "external_verify_url": externalVerifyUrl,
+      "external_check_status_memberships_url": externalCheckStatusMembershipsUrl,
       "secret_key": secretKey,
       "is_integration_active": isIntegrationActive,
     };

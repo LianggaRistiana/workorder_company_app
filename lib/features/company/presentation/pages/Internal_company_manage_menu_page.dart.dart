@@ -116,9 +116,9 @@ class _InternalCompanyManageMenuPageState
               }),
           MenuItem(
               icon: AppIcon.flowBusiness,
-              label: "Konfigurasi Flow bisnis",
+              label: "Integrasi Sistem",
               onTap: () {
-                context.push(AppRoutes.companyFlowConfig);
+                context.push(AppRoutes.systemIntegrationConfig);
               }),
           MenuItem(
               icon: AppIcon.help,

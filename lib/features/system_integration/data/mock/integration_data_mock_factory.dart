@@ -9,6 +9,7 @@ class IntegrationDataMockFactory
     return {
       "external_login_url": faker.internet.httpsUrl(),
       "external_verify_url": faker.internet.httpsUrl(),
+      "external_check_status_memberships_url": faker.internet.httpsUrl(),
       "secret_key": faker.guid.guid(),
       "is_integration_active": faker.randomGenerator.boolean(),
     };

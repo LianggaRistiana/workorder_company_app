@@ -1,6 +1,7 @@
 import 'package:app_links/app_links.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features/system_integration/data/datasources/provider_integration_remote_datasource.dart';
+import 'package:workorder_company_app/features/system_integration/data/mock/mock_provider_integration_remote_datasource.dart';
 import 'package:workorder_company_app/features/system_integration/data/repositories/provider_integration_repository_impl.dart';
 import 'package:workorder_company_app/features/system_integration/domain/repositories/provider_integration_repository.dart';
 import 'package:workorder_company_app/features/system_integration/domain/usecases/get_provider_integration_usecase.dart';
@@ -10,7 +11,8 @@ import 'package:workorder_company_app/features/system_integration/presentation/b
 
 Future<void> initSystemIntegrationFeature() async {
   sl.registerLazySingleton<ProviderIntegrationRemoteDatasource>(
-    () => ProviderIntegrationRemoteDatasourceImpl(sl()),
+    () => MockProviderIntegrationRemoteDatasource(),
+    // () => ProviderIntegrationRemoteDatasourceImpl(sl()),
   );
 
   sl.registerLazySingleton<ProviderIntegrationRepository>(

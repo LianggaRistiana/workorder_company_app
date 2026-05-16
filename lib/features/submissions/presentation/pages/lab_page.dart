@@ -40,6 +40,10 @@ class _LabPageState extends State<LabPage> {
                     }
                   },
                   child: Text("Open Google")),
+              FilledButton(
+                  onPressed: () =>
+                      context.push(AppRoutes.systemIntegrationConfig),
+                  child: Text("System Integrate Config")),
             ],
           ),
         ),

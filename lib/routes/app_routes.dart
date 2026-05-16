@@ -92,6 +92,7 @@ class AppRoutes {
 
   // System Integration
   static const pairAccount = '/pair-account/:id';
+  static const systemIntegrationConfig = '/company/system-integration';
 
   // TODO : Remove this later, route for lab features
   static const String lab = '/lab-feature';
