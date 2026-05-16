@@ -72,4 +72,6 @@ class AppIcon {
   static const IconData text = LucideIcons.caseSensitive;
   static const IconData config = LucideIcons.fileCog;
   static const IconData viewable = LucideIcons.eye;
+  static const IconData connect = LucideIcons.link;
+  static const IconData detach = LucideIcons.unlink;
 }

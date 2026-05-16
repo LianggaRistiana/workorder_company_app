@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:workorder_company_app/features/company/domain/entities/company_entity.dart';
+import 'package:workorder_company_app/features/system_integration/domain/entities/external_user_entity.dart';
+import 'package:workorder_company_app/features/system_integration/presentation/widgets/paired_account_view.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
 
@@ -24,10 +27,31 @@ class _LabPageState extends State<LabPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              PairedAccountView(
+                  companyId: "companyId",
+                  isPaired: false,
+                  onConnect: () => context
+                      .push(AppRoutes.pairAccount.fillId("asdasdasdasd")),
+                  externalUser: ExternalUserEntity(
+                      id: "id",
+                      externalEmail: "externalEmail",
+                      externalName: "externalName",
+                      company: CompanyEntity(
+                          id: "id",
+                          name: "name",
+                          isActive: true,
+                          isFaqActive: true),
+                      pairedAt: DateTime.now()),
+                  onDetach: () {}),
+              const SizedBox(height: 20),
               FilledButton(
                   onPressed: () => context
                       .push(AppRoutes.pairAccount.fillId("asdasdasdasd")),
                   child: Text("Pairing account")),
+              FilledButton(
+                  onPressed: () => context
+                      .push(AppRoutes.pairAccount.fillId("asdasdasdasd")),
+                  child: Text("Pairing account Company Home UI")),
               FilledButton(
                   onPressed: () async {
                     final uri = Uri.parse("https://google.com");

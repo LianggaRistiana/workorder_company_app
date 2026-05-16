@@ -36,7 +36,7 @@ class _AccountPairingView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Account Pairing")),
+      appBar: AppBar(title: const Text("Menghubungkan Akun")),
       body: BlocConsumer<AccountPairingBloc, AccountPairingState>(
         listener: (context, state) async {
           if (state is AccountPairingWaitingRedirect) {
@@ -50,6 +50,7 @@ class _AccountPairingView extends StatelessWidget {
             }
           } else if (state is AccountPairingFailure) {
             context.showError(state.message);
+            context.pop();
           } else if (state is AccountPairingSuccess) {
             context.showSuccess(state.message);
             context.pop();
