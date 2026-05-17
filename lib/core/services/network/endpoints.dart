@@ -115,4 +115,9 @@ class Endpoints {
 
   // System Integration
   static const String systemIntegration = 'company/integration-config';
+  static const String startPairing = '/customer-pairing/start';
+  static const String completePairing = '/customer-pairing/complete';
+  static const String accountPairing = '/customer-pairing/company/:id';
+  static const String detachAccountPairing = '/customer-pairing/:id';
+  static const String allAccountPairing = '/customer-pairing';
 }

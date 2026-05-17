@@ -3,5 +3,5 @@ import 'package:workorder_company_app/features/company/domain/entities/company_e
 
 abstract class PublicCompaniesRepository {
   FutureEitherList<CompanyEntity> getCompanies();
-  FutureEither<CompanyEntity> getCompanyById(String id);
+  FutureEitherWithMeta<CompanyEntity> getCompanyById(String id);
 }

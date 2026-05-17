@@ -7,7 +7,7 @@ import 'package:workorder_company_app/core/utils/safe_mapper.dart';
 import 'package:workorder_company_app/features/company/data/models/company_model.dart';
 
 abstract class PublicCompaniesRemoteDatasource {
-  ApiFuture<CompanyModel> getCompanyById(String id);
+  ApiFutureWithMeta<CompanyModel> getCompanyById(String id);
   ApiFutureList<CompanyModel> getCompanies();
 }
 
@@ -31,10 +31,10 @@ class PublicCompaniesRemoteDatasourceImpl
   }
 
   @override
-  ApiFuture<CompanyModel> getCompanyById(String id) async {
+  ApiFutureWithMeta<CompanyModel> getCompanyById(String id) async {
     final response = await _apiClient.get(Endpoints.publicCompanies.byId(id));
 
-    return ApiResponse.fromJson(
+    return ApiResponseWithMeta.fromJson(
       response,
       (data) => CompanyModel.fromJson(data),
     );

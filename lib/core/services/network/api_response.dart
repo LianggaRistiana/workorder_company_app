@@ -111,4 +111,24 @@ extension ApiResponseMapper<T> on ApiResponseWithMeta<T> {
       meta: metaMap,
     );
   }
+
+  Result<T> toResultSingleMeta<M extends ResultMeta>({
+    required M Function(Map<String, dynamic>) metaFactory,
+  }) {
+    if (data == null) {
+      throw NetworkException("Data is null");
+    }
+
+    final metaMap = <Type, ResultMeta>{};
+
+    if (meta != null) {
+      final metaObj = metaFactory(meta!);
+      metaMap[M] = metaObj;
+    }
+
+    return Result<T>(
+      data: data as T,
+      meta: metaMap,
+    );
+  }
 }

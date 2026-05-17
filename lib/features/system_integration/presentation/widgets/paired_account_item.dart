@@ -23,13 +23,16 @@ class PairedAccountItem extends StatelessWidget {
 
     return ClickableCustomCard(
       borderRadius: BorderRadius.all(Radius.circular(AppRadius.large)),
-      onTap: () {
-        showConfirmDialog(
+      onTap: () async {
+        final result = await showConfirmDialog(
             icon: AppIcon.detach,
             context: context,
             title: "Putuskan Koneksi",
             message:
                 "Anda yakin ingin melepaskan koneksi akun anda di perusahaa ${externalUser.company.name}");
+        if (result == true) {
+          onDetach();
+        }
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

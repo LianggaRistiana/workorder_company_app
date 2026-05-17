@@ -9,12 +9,18 @@ import 'package:workorder_company_app/features/company/presentation/bloc/public_
 import 'package:workorder_company_app/features/company/presentation/bloc/public_company_services.dart/public_company_services_cubit.dart';
 import 'package:workorder_company_app/features/company/presentation/widgets/public_services_list.dart';
 import 'package:workorder_company_app/features/memberships/presentation/widgets/subcription_chip.dart';
+import 'package:workorder_company_app/features/system_integration/domain/entities/external_user_entity.dart';
+import 'package:workorder_company_app/features/system_integration/presentation/bloc/customer/account_action/account_action_cubit.dart';
+import 'package:workorder_company_app/features/system_integration/presentation/bloc/customer/account_action/account_action_state.dart';
+import 'package:workorder_company_app/features/system_integration/presentation/widgets/paired_account_view.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
+import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/error_body.dart';
 import 'package:workorder_company_app/shared/widgets/header_of_page.dart';
+import 'package:workorder_company_app/shared/widgets/loading_state_inline.dart';
 import 'package:workorder_company_app/shared/widgets/property_display.dart';
 
 class PublicCompanyDetailPage extends StatelessWidget {
@@ -32,6 +38,9 @@ class PublicCompanyDetailPage extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => sl<PublicCompanyServicesCubit>(),
+        ),
+        BlocProvider(
+          create: (_) => sl<AccountActionCubit>(),
         ),
       ],
       child: _View(companyId),
@@ -54,6 +63,11 @@ class _View extends StatelessWidget {
         if (state.status == PublicCompaniesListStatus.loaded &&
             state.company != null) {
           context.read<PublicCompanyServicesCubit>().getServices(companyId);
+          if (state.meta?.isIntegrationActive == true) {
+            context
+                .read<AccountActionCubit>()
+                .getAccountPairingStatus(companyId);
+          }
         }
       },
       builder: (context, state) {
@@ -94,6 +108,7 @@ class _View extends StatelessWidget {
             });
       case PublicCompaniesListStatus.loaded:
         final company = state.company;
+        final meta = state.meta;
         if (company == null) {
           return ErrorBody(errorMessage: "Perusahaan tidak ditemukan");
         }
@@ -111,15 +126,17 @@ class _View extends StatelessWidget {
               children: [
                 HeaderOfPage(title: company.name, icon: AppIcon.company),
                 const SizedBox(height: 8),
-                if (company.address.isNotEmpty ||
-                    company.description.isNotEmpty)
-                  CustomCard(
-                      child: PropertyDisplay(properties: [
+                // if (company.address.isNotEmpty ||
+                //     company.description.isNotEmpty)
+                CustomCard(
+                    child: PropertyDisplay(properties: [
+                  if (company.address.isNotEmpty)
                     PropertyItem.text(
                       label: "Alamat",
                       icon: Icons.location_on_outlined,
                       value: company.address.isEmpty ? "-" : company.address,
                     ),
+                  if (company.description.isNotEmpty)
                     PropertyItem.text(
                       label: "Deskripsi",
                       icon: AppIcon.desc,
@@ -127,13 +144,16 @@ class _View extends StatelessWidget {
                           ? "-"
                           : company.description,
                     ),
-
-                    // FIXME[API REQUIRED] : meta data when hit detail company is needed. dont forget to hide this UI when there is meta retrived
+                  if (meta != null)
                     PropertyItem.widget(
                         icon: AppIcon.membership,
                         label: "Status Keanggotaan",
-                        child: SubscriptionChip(isMember: true))
-                  ])),
+                        child: SubscriptionChip(isMember: meta.isSubcribbed)),
+                  if (meta != null && meta.isIntegrationActive)
+                    PropertyItem.widget(
+                        label: "Koneksi Akun",
+                        child: _buildAccountPairingButton(companyId)),
+                ])),
                 PropertyTitle(label: "Daftar Layanan", icon: AppIcon.service),
                 const SizedBox(height: 8),
                 PublicServicesList()
@@ -142,5 +162,36 @@ class _View extends StatelessWidget {
           ),
         );
     }
+  }
+
+  Widget _buildAccountPairingButton(String companyId) {
+    // TODO : Add listener to detach state
+    return BlocBuilder<AccountActionCubit, AccountActionState>(
+        builder: (context, state) {
+      if (state.status == AccountActionStateStatus.loading ||
+          state.status == AccountActionStateStatus.detachLoading) {
+        return LoadingStateInline();
+      }
+      return PairedAccountView(
+        companyId: companyId,
+        isPaired: state.externalAccount != null,
+        onConnect: () async {
+          final result = await context.push<ExternalUserEntity?>(
+              AppRoutes.pairAccount.fillId(companyId));
+
+          if (!context.mounted) return;
+          if (result != null) {
+            context.read<AccountActionCubit>().replaceExternalAccount(result);
+          }
+        },
+        onDetach: () {
+          final account = state.externalAccount;
+          if (account == null) return;
+
+          context.read<AccountActionCubit>().detachAccount(account.id);
+        },
+        externalUser: state.externalAccount,
+      );
+    });
   }
 }

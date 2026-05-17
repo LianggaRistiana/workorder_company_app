@@ -1,8 +1,10 @@
+import 'package:workorder_company_app/core/services/network/api_response.dart';
 import 'package:workorder_company_app/core/types/future_either.dart';
 import 'package:workorder_company_app/core/utils/safe_call.dart';
 import 'package:workorder_company_app/features/company/data/datasources/public_companies_remote_datasource.dart';
 import 'package:workorder_company_app/features/company/domain/entities/company_entity.dart';
 import 'package:workorder_company_app/features/company/domain/repositories/public_companies_repository.dart';
+import 'package:workorder_company_app/features/company/domain/meta/public_company_meta.dart';
 
 class PublicCompaniesRepositoryImpl implements PublicCompaniesRepository {
   final PublicCompaniesRemoteDatasource _companyRemoteDatasource;
@@ -18,10 +20,13 @@ class PublicCompaniesRepositoryImpl implements PublicCompaniesRepository {
   }
 
   @override
-  FutureEither<CompanyEntity> getCompanyById(String id) {
+  FutureEitherWithMeta<CompanyEntity> getCompanyById(String id) {
     return safeCall(() async {
       final payload = await _companyRemoteDatasource.getCompanyById(id);
-      return payload.data;
+
+      return payload.toResultSingleMeta(
+        metaFactory: PublicCompanyMeta.fromJson,
+      );
     });
-  } // TODO[API REQUIRED] : add meta to this endpoint. isSubcribbed needed
+  }
 }

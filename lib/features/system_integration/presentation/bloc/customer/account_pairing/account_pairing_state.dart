@@ -1,3 +1,5 @@
+import 'package:workorder_company_app/features/system_integration/domain/entities/external_user_entity.dart';
+
 abstract class AccountPairingState {
   const AccountPairingState();
 }
@@ -24,9 +26,11 @@ class AccountPairingWaitingCompletion extends AccountPairingState {
 }
 
 class AccountPairingSuccess extends AccountPairingState {
+  final ExternalUserEntity account;
+
   final String message;
 
-  const AccountPairingSuccess({required this.message});
+  const AccountPairingSuccess({required this.account, required this.message});
 }
 
 class AccountPairingFailure extends AccountPairingState {
