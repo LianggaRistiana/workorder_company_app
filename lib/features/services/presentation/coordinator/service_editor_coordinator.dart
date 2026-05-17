@@ -63,7 +63,15 @@ class ServiceEditorCoordinator extends ChangeNotifier {
   // WORK ORDER
   // ========================
 
-  void addWorkOrder(FormEntity? form) {
+  void addWorkOrder(FormEntity? form, PositionEntity? position) {
+    if (position == null) {
+      _addWorkOrderGeneral(form);
+    } else {
+      _addWorkOrderWithPosition(form, position);
+    }
+  }
+
+  void _addWorkOrderGeneral(FormEntity? form) {
     if (_draft.isManualDrafting) {
       if (form == null) {
         return;
@@ -74,7 +82,7 @@ class ServiceEditorCoordinator extends ChangeNotifier {
     }
   }
 
-  void addWorkOrderWithPosition(FormEntity? form, PositionEntity position) {
+  void _addWorkOrderWithPosition(FormEntity? form, PositionEntity position) {
     if (_draft.isManualDrafting) {
       if (form == null) {
         return;

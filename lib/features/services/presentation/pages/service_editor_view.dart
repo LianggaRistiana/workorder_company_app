@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
+import 'package:workorder_company_app/features/positions/domain/usecase/get_manager_scoped_positions_usecase.dart';
 import 'package:workorder_company_app/features/services/domain/draft/service_draft.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
 import 'package:workorder_company_app/features/services/presentation/controller/service_config_controllers.dart';
@@ -45,6 +47,7 @@ class _ServiceEditorViewState extends State<ServiceEditorView>
 
   final _configFormKey = GlobalKey<FormState>();
   final _workOrderFormKey = GlobalKey<FormState>();
+  final _positionManagerScoped = sl<GetManagerScopedPositionUsecase>()();
 
   @override
   void initState() {
@@ -236,7 +239,8 @@ class _ServiceEditorViewState extends State<ServiceEditorView>
                   draftingType: draft.workOrderDraftingType,
                   workOrders: draft.workOrders,
                   onWorkOrderFormChanged: _coordinator.updateWorkOrderForm,
-                  onAdd: _coordinator.addWorkOrder,
+                  onAdd: (form) =>
+                      _coordinator.addWorkOrder(form, _positionManagerScoped),
                   onRemove: _coordinator.removeWorkOrder,
                   onDepartmentUpdate: _coordinator.updateDepartment,
                   onMinChange: _coordinator.updateMinStaff,

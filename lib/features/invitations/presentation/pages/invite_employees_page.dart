@@ -3,12 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
+import 'package:workorder_company_app/core/services/generator/random_string.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/invitations/domain/entities/invitation_draft_entity.dart';
 import 'package:workorder_company_app/features/invitations/presentation/bloc/invite/invite_employees_cubit.dart';
 import 'package:workorder_company_app/features/invitations/presentation/bloc/invite/invite_employees_state.dart';
 import 'package:workorder_company_app/features/invitations/presentation/widgets/invitation_config_card.dart';
+import 'package:workorder_company_app/features/positions/domain/usecase/get_manager_scoped_positions_usecase.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/list/positions_list_bloc.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/list/positions_list_event.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
@@ -64,6 +66,7 @@ class _InviteEmployeeView extends StatefulWidget {
 
 class _InviteEmployeeViewState extends State<_InviteEmployeeView> {
   final List<InvitationDraftEntity> _invites = [];
+  final _managerPositionScoped = sl<GetManagerScopedPositionUsecase>();
 
   @override
   void initState() {
@@ -76,10 +79,10 @@ class _InviteEmployeeViewState extends State<_InviteEmployeeView> {
       _invites.insert(
         0,
         InvitationDraftEntity(
-          id: DateTime.now().millisecondsSinceEpoch.toString(),
+          id: RandomString.generate(),
           email: '',
           role: UserRole.staffCompany,
-          position: null,
+          position: _managerPositionScoped(),
         ),
       );
     });

@@ -3,6 +3,7 @@ import 'package:workorder_company_app/features/positions/data/datasources/positi
 import 'package:workorder_company_app/features/positions/data/repositories/positions_repositories_impl.dart';
 import 'package:workorder_company_app/features/positions/domain/repositories/positions_repository.dart';
 import 'package:workorder_company_app/features/positions/domain/usecase/create_position_usecase.dart';
+import 'package:workorder_company_app/features/positions/domain/usecase/get_manager_scoped_positions_usecase.dart';
 import 'package:workorder_company_app/features/positions/domain/usecase/get_position_byid_usecase.dart';
 import 'package:workorder_company_app/features/positions/domain/usecase/get_positions_usecase.dart';
 import 'package:workorder_company_app/features/positions/domain/usecase/update_position_usecase.dart';
@@ -18,6 +19,8 @@ Future<void> initPositionsFeature() async {
   sl.registerLazySingleton<PositionsRepository>(
       () => PositionsRepositoryImpl(sl()));
 
+  sl.registerLazySingleton<GetManagerScopedPositionUsecase>(
+      () => GetManagerScopedPositionUsecase(sl()));
   sl.registerLazySingleton<GetPositionsUsecase>(
       () => GetPositionsUsecase(sl()));
   sl.registerLazySingleton<GetPositionByidUsecase>(
