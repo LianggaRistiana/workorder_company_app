@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/authorization/rule/position_permission_rule/position_permission_helper.dart';
+import 'package:workorder_company_app/core/authorization/util/access_gate_on_widget.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:workorder_company_app/features/auth/presentation/widgets/current_user_chip.dart';
@@ -10,6 +12,7 @@ import 'package:workorder_company_app/features/home/presentation/widget/owner_co
 import 'package:workorder_company_app/features/home/presentation/widget/staff_content.dart';
 import 'package:workorder_company_app/features/home/presentation/widget/staff_unassigned_content.dart';
 import 'package:workorder_company_app/features/notification/presentation/widgets/notification_button.dart';
+import 'package:workorder_company_app/features/positions/presentation/widget/position_user_chip.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/orientation_helper.dart';
 import 'package:workorder_company_app/shared/widgets/adaptive_wrapper.dart';
@@ -124,7 +127,13 @@ class _Homepage extends State<Homepage> {
                 ),
               ),
             ),
-          )
+          ),
+          Positioned(
+            top: 85,
+            left: 16,
+            right: 16,
+            child: PositionUserChip(),
+          ).require(hasPosition()),
         ],
       ),
     );
