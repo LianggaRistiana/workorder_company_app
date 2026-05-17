@@ -41,10 +41,10 @@ class OwnerContent extends StatelessWidget {
                   context.push(AppRoutes.positions);
                 }),
             MenuItem(
-                icon: AppIcon.help,
-                label: "Bantuan",
+                icon: AppIcon.qna,
+                label: "Konfigurasi Tanya Jawab",
                 onTap: () {
-                  context.push(AppRoutes.forbidden);
+                  context.push(AppRoutes.companyFaqConfig);
                 }),
           ],
         ),
