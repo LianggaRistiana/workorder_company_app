@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/authorization/util/access_gate_on_widget.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
+import 'package:workorder_company_app/features/forms/domain/authorizer/form_authorizer.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/detail/form_detail_cubit.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/detail/form_detail_state.dart';
@@ -50,23 +52,23 @@ class _FormDetailViewState extends State<_FormDetailView> {
   Widget build(BuildContext context) {
     return BlocBuilder<FormDetailCubit, FormDetailState>(
       builder: (context, state) {
+        final form = state.form;
         return Scaffold(
           appBar: AppBar(
             centerTitle: true,
             actions: [
-              if (state.form != null)
+              if (form != null)
                 IconButton(
                   onPressed: () async {
-                    final result = await context.push<FormEntity>(
-                        AppRoutes.formsUpdate,
-                        extra: state.form);
+                    final result = await context
+                        .push<FormEntity>(AppRoutes.formsUpdate, extra: form);
                     if (!context.mounted) return;
                     if (result != null) {
                       context.read<FormDetailCubit>().replace(result);
                     }
                   },
                   icon: const Icon(AppIcon.edit, size: 18),
-                ),
+                ).require(FormAuthorizer(form: form).updateFormRule),
             ],
           ),
           body: SafeArea(
