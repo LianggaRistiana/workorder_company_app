@@ -1,8 +1,9 @@
+import 'package:equatable/equatable.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/field_entity.dart';
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
 
-class FormEntity {
+class FormEntity extends Equatable {
   final String id;
   final String title;
   final String description;
@@ -18,4 +19,14 @@ class FormEntity {
     this.position,
     this.fields,
   });
+
+  @override
+  List<Object?> get props => [
+        id,
+        title,
+        description,
+        position,
+        formType,
+        fields,
+      ];
 }

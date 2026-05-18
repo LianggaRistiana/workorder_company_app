@@ -1,11 +1,11 @@
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/services/generator/random_string.dart';
+import 'package:workorder_company_app/core/services/logger/app_logger.dart';
 import 'package:workorder_company_app/core/utils/safe_parse.dart';
 import 'package:workorder_company_app/features/forms/data/model/field_model.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
 import 'package:workorder_company_app/features/positions/data/models/position_model.dart';
 
-// TODO : Test
 class FormModel extends FormEntity {
   const FormModel({
     required super.id,
@@ -17,11 +17,12 @@ class FormModel extends FormEntity {
   });
 
   factory FormModel.fromJson(Map<String, dynamic> json) {
+    appLogger.i("${json.field('"position"').optModel(PositionModel.fromJson)}");
     return FormModel(
       id: json.field('_id').reqString(),
       title: json.field('title').reqString(),
       formType: json.field('formType').reqEnum(FormType.fromString),
-      position: json.field('"position"').optModel(PositionModel.fromJson),
+      position: json.field('position').optModel(PositionModel.fromJson),
       description: json["description"]?.toString() ?? "",
       fields: (json["fields"] as List<dynamic>?)
               ?.map((e) => FieldModel.fromJson(e))
