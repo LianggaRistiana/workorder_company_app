@@ -18,4 +18,6 @@ class AppConfig {
   static String get baseApiUrl => baseApiUrls[appFlavor]!;
   static const int receivedTimeout = 10;
   static const int connectTimeout = 10;
+
+  static const websiteUrl = 'https://work-order-service.vercel.app/';
 }

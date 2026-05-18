@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons/lucide_icons.dart';
+import 'package:url_launcher/url_launcher_string.dart';
+import 'package:workorder_company_app/core/constants/app_config.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/notification/presentation/widgets/notification_toggle.dart';
+import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
 import 'package:workorder_company_app/shared/widgets/horizontal_switch.dart';
-import 'package:workorder_company_app/shared/widgets/app_bottom_sheet.dart';
 
 class ProfileMenuSection extends StatelessWidget {
   const ProfileMenuSection({super.key});
@@ -24,35 +27,22 @@ class ProfileMenuSection extends StatelessWidget {
         HorizontalButton(
           margin: EdgeInsets.only(bottom: AppSpacing.xs),
           title: "Coba versi website",
-          leadingIcon: Icons.public,
+          leadingIcon: LucideIcons.globe2,
           description: "Versi website disarankan untuk penggunaan desktop",
-          onTap: () {
-            showAppBottomSheet(
-              context,
-              content: const SizedBox(
-                height: 200,
-                child: Center(
-                  child: Text("Fitur ini belum tersedia"),
-                ),
-              ),
-            );
-          },
-        ),
-        HorizontalButton(
-          margin: EdgeInsets.only(bottom: AppSpacing.xs),
-          title: "Bantuan",
-          leadingIcon: Icons.help_outline,
-          description:
-              "Cari bantuan Anda di sini mengenai cara menggunakan aplikasi",
-          onTap: () {
-            showAppBottomSheet(
-              context,
-              content: const SizedBox(
-                height: 200,
-                child: Center(
-                  child: Text("Fitur ini belum tersedia"),
-                ),
-              ),
+          onTap: () async {
+            final canLaunch = await canLaunchUrlString(AppConfig.websiteUrl);
+
+            if (!canLaunch) {
+              if (!context.mounted) return;
+
+              context.showError(
+                "Tidak dapat membuka halaman web",
+              );
+            }
+
+            await launchUrlString(
+              AppConfig.websiteUrl,
+              mode: LaunchMode.externalApplication,
             );
           },
         ),

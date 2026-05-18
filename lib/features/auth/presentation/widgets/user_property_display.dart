@@ -46,9 +46,7 @@ class _RoleChip extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
       ),
       child: Text(
-        user.position != null
-            ? '${user.role.displayName} | ${user.position!.name}'
-            : user.role.displayName,
+        user.role.displayName,
         style: TextStyle(
           color: colorScheme.primary,
           fontSize: 12,
