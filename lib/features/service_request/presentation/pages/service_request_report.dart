@@ -52,35 +52,38 @@ class ServiceRequestReport extends StatelessWidget {
                   child: Text("Muat ulang"))
             ]);
           }
-          return Column(children: [
-            SectionTitle("Laporan"),
-            CustomList(
-                items: state.reports.filledForms,
-                itemBuilder: (item, _) {
-                  return ClickableCustomCard(
-                    child: ItemTileLined(child: Text(item.form.title)),
-                    onTap: () {
-                      showAppBottomSheet(
-                        context,
-                        content: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              PropertyTitle(
-                                icon: AppIcon.workReport,
-                                label: "Laporan",
+          return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                SectionTitle("Laporan"),
+                CustomList(
+                    items: state.reports.filledForms,
+                    itemBuilder: (item, _) {
+                      return ClickableCustomCard(
+                        child: ItemTileLined(child: Text(item.form.title)),
+                        onTap: () {
+                          showAppBottomSheet(
+                            context,
+                            content: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  PropertyTitle(
+                                    icon: AppIcon.workReport,
+                                    label: "Laporan",
+                                  ),
+                                  const SizedBox(
+                                    height: AppSpacing.sm,
+                                  ),
+                                  FilledFormView(filledForm: item),
+                                ],
                               ),
-                              const SizedBox(
-                                height: AppSpacing.sm,
-                              ),
-                              FilledFormView(filledForm: item),
-                            ],
-                          ),
-                        ),
+                            ),
+                          );
+                        },
                       );
-                    },
-                  );
-                })
-          ]);
+                    })
+              ]);
         }));
   }
 }

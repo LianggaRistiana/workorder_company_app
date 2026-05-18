@@ -10,19 +10,21 @@ class WorkReportsFilledFormModel extends WorkReportsFilledFormEntity {
   });
 
   factory WorkReportsFilledFormModel.fromJson(Map<String, dynamic> json) {
-    final forms = json.field("workReports").reqListModel(FormModel.fromJson);
+    final forms =
+        json.field("workReportForms").reqListModel(FormModel.fromJson);
 
-    final submissions =
-        json.field("submissions").reqListModel(SubmissionsModel.fromJson)
-          ..sort((a, b) {
-            final aDate = a.createdAt;
-            final bDate = b.createdAt;
-            return bDate.compareTo(aDate);
-          });
+    final submissions = json
+        .field("workOrderSubmissions")
+        .optListModel(SubmissionsModel.fromJson) // FIXME : fix this responses
+      ?..sort((a, b) {
+        final aDate = a.createdAt;
+        final bDate = b.createdAt;
+        return bDate.compareTo(aDate);
+      });
 
     final filledForms = forms.map((form) {
       final submission = submissions
-          .where(
+          ?.where(
             (element) => element.formId == form.id,
           )
           .firstOrNull;
