@@ -306,7 +306,7 @@ class LoggingInterceptor extends Interceptor {
     if (errorData != null) {
       appLogger.e("⛔ $errorData");
     } else {
-      appLogger.e("⛔ ${err.message}");
+      appLogger.e("⛔ ${err.message}, ${err.type}, ${err.error}");
     }
     super.onError(err, handler);
   }

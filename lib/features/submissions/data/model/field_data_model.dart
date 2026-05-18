@@ -14,10 +14,12 @@ class FieldDataModel extends FieldDataEntity {
   }
 
   Map<String, dynamic> toJson() {
+    final value = this.value;
+
     return {
-      'order' : int.tryParse(order),
+      'order': int.tryParse(order),
       // 'order': order,
-      'value': value,
+      'value': value is DateTime ? value.toIso8601String() : value,
     };
   }
 }

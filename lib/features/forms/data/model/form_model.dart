@@ -1,6 +1,5 @@
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/services/generator/random_string.dart';
-import 'package:workorder_company_app/core/services/logger/app_logger.dart';
 import 'package:workorder_company_app/core/utils/safe_parse.dart';
 import 'package:workorder_company_app/features/forms/data/model/field_model.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
@@ -17,7 +16,6 @@ class FormModel extends FormEntity {
   });
 
   factory FormModel.fromJson(Map<String, dynamic> json) {
-    appLogger.i("${json.field('"position"').optModel(PositionModel.fromJson)}");
     return FormModel(
       id: json.field('_id').reqString(),
       title: json.field('title').reqString(),

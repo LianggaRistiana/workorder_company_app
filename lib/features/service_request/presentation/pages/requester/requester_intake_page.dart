@@ -29,6 +29,7 @@ class RequesterIntakePage extends StatefulWidget {
 }
 
 class _RequesterIntakePageState extends State<RequesterIntakePage> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   FormRendererCoordinator? coordinator;
 
   @override
@@ -92,11 +93,15 @@ class _RequesterIntakePageState extends State<RequesterIntakePage> {
                     ],
                     if (state.status == RequesterGetIntakeFormStatus.loaded &&
                         coordinator != null) ...[
-                      FormRenderer(
-                        coordinator: coordinator!,
-                      ), // FIXME : add Form Widget for validation here
+                      Form(
+                        key: _formKey,
+                        child: FormRenderer(
+                          coordinator: coordinator!,
+                        ),
+                      ), // TODO : Test For giving Form here
                       const SizedBox(height: 16),
                       _SubmitButton(
+                        formKey: _formKey,
                         draft: coordinator!.draft,
                         serviceId: widget.baseService.id,
                       ).hideOnSmallScreen(),
@@ -115,6 +120,7 @@ class _RequesterIntakePageState extends State<RequesterIntakePage> {
                   if (state.status == RequesterGetIntakeFormStatus.loaded &&
                       coordinator != null) {
                     return _SubmitButton(
+                      formKey: _formKey,
                       draft: coordinator!.draft,
                       serviceId: widget.baseService.id,
                     ).hideOnLargeScreen();
@@ -131,10 +137,13 @@ class _RequesterIntakePageState extends State<RequesterIntakePage> {
 }
 
 class _SubmitButton extends StatelessWidget {
+  final GlobalKey<FormState> formKey;
+
   final SubmissionDraft draft;
   final String serviceId;
 
   const _SubmitButton({
+    required this.formKey,
     required this.draft,
     required this.serviceId,
   });
@@ -153,6 +162,7 @@ class _SubmitButton extends StatelessWidget {
           isLoading: state.status == RequesterSubmitIntakeFormStatus.loading,
           onPressed: () {
             FocusScope.of(context).unfocus();
+            if (!formKey.currentState!.validate()) return;
 
             context
                 .read<RequesterSubmitIntakeFormCubit>()
