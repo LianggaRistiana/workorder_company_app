@@ -95,7 +95,9 @@ class _ServiceEditorViewState extends State<ServiceEditorView>
     FocusScope.of(context).unfocus();
     final current = _tabController.index;
 
-    _configFormKey.currentState?.validate();
+    final configResult = _configFormKey.currentState?.validate();
+    if (current == 0 && configResult != true) return;
+
     _workOrderFormKey.currentState?.validate();
 
     if (_coordinator.canGoNext(current)) {

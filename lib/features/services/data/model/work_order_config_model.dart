@@ -18,7 +18,7 @@ class WorkOrderConfigModel extends WorkOrderConfigEntity {
 
   factory WorkOrderConfigModel.fromJson(Map<String, dynamic> json) {
     return WorkOrderConfigModel(
-      workOrderForm: json.field("workOrderForm").reqModel(FormModel.fromJson),
+      workOrderForm: json.field("workOrderForm").optModel(FormModel.fromJson),
       workReportForm: json.field("workReportForm").reqModel(FormModel.fromJson),
       positionOnDuty:
           json.field("positionsOnDuty").reqModel(PositionModel.fromJson),
