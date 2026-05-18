@@ -34,15 +34,15 @@ enum UserRole {
   String get displayName {
     switch (this) {
       case UserRole.ownerCompany:
-        return 'Owner';
+        return 'Pemilik Perusahaan';
       case UserRole.managerCompany:
         return 'Manager';
       case UserRole.staffCompany:
-        return 'Staff';
+        return 'Pegawai';
       case UserRole.staffUnassigned:
-        return 'Unassigned Staff';
+        return 'Calon pegawai';
       case UserRole.client:
-        return 'Client';
+        return 'Kustomer';
     }
   }
 

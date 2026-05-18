@@ -31,7 +31,7 @@ enum FormType {
   String get displayName {
     switch (this) {
       case FormType.workOrder:
-        return 'Perinta Kerja';
+        return 'Perintah Kerja';
       case FormType.review:
         return 'Ulasan';
       case FormType.report:

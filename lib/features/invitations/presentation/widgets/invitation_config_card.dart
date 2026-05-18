@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:workorder_company_app/core/authorization/util/access_gate_on_widget.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
+import 'package:workorder_company_app/core/theme/app_icon.dart';
+import 'package:workorder_company_app/core/theme/app_spacing.dart';
+import 'package:workorder_company_app/features/invitations/domain/authorizer/sender_invite_authorizer.dart';
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
 import 'package:workorder_company_app/features/positions/presentation/widget/positions_selector_container.dart';
 import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
@@ -8,6 +12,8 @@ import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 import 'package:workorder_company_app/shared/widgets/dashed_button.dart';
 import 'package:workorder_company_app/shared/widgets/enum_selector.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
+import 'package:workorder_company_app/shared/widgets/information_block.dart';
+import 'package:workorder_company_app/shared/widgets/item_tile_lined.dart';
 
 class InvitationConfigCard extends StatefulWidget {
   final String email;
@@ -64,10 +70,29 @@ class _InvitationConfigCardState extends State<InvitationConfigCard> {
               } else {
                 return;
               }
-            }),
+            }).require(
+          SenderInviteAuthorizer().managerInvitationRule,
+          fallback: ItemTileLined(
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: AppSpacing.sm),
+              child: Text(
+                "Sebagai ${widget.role.displayName}",
+                style: Theme.of(context).textTheme.titleSmall,
+              ),
+            ),
+          ),
+        ),
         const SizedBox(height: 12),
-        // TODO : Test this later
-        // if (widget.role == UserRole.staffCompany)
+        if (widget.role == UserRole.managerCompany &&
+            widget.position == null) ...[
+          InformationBlock.info(
+              "Undangan manager tanpa departemen akan menjadi manager general"),
+          const SizedBox(height: 12),
+        ] else if (widget.role == UserRole.managerCompany &&
+            widget.position != null) ...[
+          InformationBlock.info("akun ini diundang sebagai manager departemen"),
+          const SizedBox(height: 12),
+        ],
         PositionsSelectorContainer(
           selectedPositions: widget.position != null ? [widget.position!] : [],
           onAdd: widget.onPositionChanged,
@@ -79,7 +104,7 @@ class _InvitationConfigCardState extends State<InvitationConfigCard> {
                 child: Row(
                   children: [
                     const IconBox(
-                      icon: Icons.badge_outlined,
+                      icon: AppIcon.department,
                       paddingSize: 8,
                       iconSize: 20,
                     ),
@@ -106,7 +131,28 @@ class _InvitationConfigCardState extends State<InvitationConfigCard> {
               isLoading: isLoading,
             );
           },
-        ),
+        ).require(SenderInviteAuthorizer().configPositionRule,
+            fallback: widget.position != null
+                ? CustomCard(
+                    margin: EdgeInsets.all(0),
+                    child: Row(
+                      children: [
+                        const IconBox(
+                          icon: AppIcon.department,
+                          paddingSize: 8,
+                          iconSize: 20,
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Text(
+                            widget.position!.name,
+                            style: Theme.of(context).textTheme.titleSmall,
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                : null),
         const SizedBox(height: 12),
         IconButton.filled(
           onPressed: widget.onRemove,
