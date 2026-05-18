@@ -60,7 +60,7 @@ Failure _mapExceptionToFailure(dynamic error) {
   }
 
   if (error is NetworkException) {
-    return NetworkFailure(message: "Tidak ada koneksi internet");
+    return NetworkFailure(message: "Koneksi bermasalah");
   }
 
   if (error is ParsingException) {

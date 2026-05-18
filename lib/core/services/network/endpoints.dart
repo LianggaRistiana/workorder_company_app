@@ -114,7 +114,7 @@ class Endpoints {
   static const String companyStat = '/dashboard/company';
 
   // System Integration
-  static const String systemIntegration = 'company/integration-config';
+  static const String systemIntegration = '/company/integration-config';
   static const String startPairing = '/customer-pairing/start';
   static const String completePairing = '/customer-pairing/complete';
   static const String accountPairing = '/customer-pairing/company/:id';

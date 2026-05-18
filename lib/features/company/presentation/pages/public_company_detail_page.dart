@@ -20,8 +20,9 @@ import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/error_body.dart';
 import 'package:workorder_company_app/shared/widgets/header_of_page.dart';
-import 'package:workorder_company_app/shared/widgets/loading_state_inline.dart';
 import 'package:workorder_company_app/shared/widgets/property_display.dart';
+import 'package:workorder_company_app/shared/widgets/shimmer_placeholder.dart';
+import 'package:workorder_company_app/shared/widgets/smart_shimmer.dart';
 
 class PublicCompanyDetailPage extends StatelessWidget {
   final String companyId;
@@ -170,7 +171,13 @@ class _View extends StatelessWidget {
         builder: (context, state) {
       if (state.status == AccountActionStateStatus.loading ||
           state.status == AccountActionStateStatus.detachLoading) {
-        return LoadingStateInline();
+        return SmartShimmer(
+          key: const ValueKey('loading'),
+          placeholders: [
+            ShimmerPlaceholder(
+                height: 60, width: double.infinity, borderRadius: 50),
+          ],
+        );
       }
       return PairedAccountView(
         companyId: companyId,

@@ -29,7 +29,7 @@ class PairedAccountItem extends StatelessWidget {
             context: context,
             title: "Putuskan Koneksi",
             message:
-                "Anda yakin ingin melepaskan koneksi akun anda di perusahaa ${externalUser.company.name}");
+                "Anda yakin ingin melepaskan koneksi akun anda di perusahaan ${externalUser.company.name}");
         if (result == true) {
           onDetach();
         }

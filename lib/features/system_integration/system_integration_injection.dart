@@ -2,7 +2,6 @@ import 'package:app_links/app_links.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features/system_integration/data/datasources/customer_account_integration_remote_datasource.dart';
 import 'package:workorder_company_app/features/system_integration/data/datasources/provider_integration_remote_datasource.dart';
-import 'package:workorder_company_app/features/system_integration/data/mock/mock_provider_integration_remote_datasource.dart';
 import 'package:workorder_company_app/features/system_integration/data/repositories/customer_account_integration_repository_impl.dart';
 import 'package:workorder_company_app/features/system_integration/data/repositories/provider_integration_repository_impl.dart';
 import 'package:workorder_company_app/features/system_integration/domain/repositories/customer_account_integration_repository.dart';
@@ -19,8 +18,7 @@ import 'package:workorder_company_app/features/system_integration/presentation/b
 
 Future<void> initSystemIntegrationFeature() async {
   sl.registerLazySingleton<ProviderIntegrationRemoteDatasource>(
-    () => MockProviderIntegrationRemoteDatasource(),
-    // () => ProviderIntegrationRemoteDatasourceImpl(sl()),
+    () => ProviderIntegrationRemoteDatasourceImpl(sl()),
   );
 
   sl.registerLazySingleton<CustomerAccountIntegrationRemoteDatasource>(
