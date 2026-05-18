@@ -85,6 +85,7 @@ class WorkOrderDetailPage extends StatelessWidget {
         workOrder: workOrder,
         capabilities: state.workOrderCapabilities,
         siblings: state.workOrderSiblings,
+        workReportMeta: state.workReportMeta,
       );
     }
 

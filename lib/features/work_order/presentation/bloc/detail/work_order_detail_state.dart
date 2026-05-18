@@ -20,6 +20,7 @@ class WorkOrderDetailState extends Equatable {
       result?.getMeta<WorkOrderSiblings>();
   WorkOrderCapabilities? get workOrderCapabilities =>
       result?.getMeta<WorkOrderCapabilities>();
+  WorkReportMeta? get workReportMeta => result?.getMeta<WorkReportMeta>();
 
   const WorkOrderDetailState({
     required this.status,

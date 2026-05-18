@@ -103,7 +103,8 @@ class _WorkReportBody extends StatelessWidget {
         WorkReportPropertyView(report: workReport),
         const SizedBox(height: AppSpacing.md),
         if (workReport.showReportToRequester) ...[
-          InformationBlock.info("Laporan ini akan ditampilkan ke pemohon")
+          InformationBlock.info("Laporan ini akan ditampilkan ke pemohon"),
+          const SizedBox(height: AppSpacing.sm),
         ],
         FilledFormView(
           filledForm: workReport.workReportForm.currentFilledForm,

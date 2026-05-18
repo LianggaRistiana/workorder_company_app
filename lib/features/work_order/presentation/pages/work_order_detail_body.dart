@@ -29,9 +29,15 @@ class WorkOrderDetailBody extends StatelessWidget {
   final WorkOrderEntity workOrder;
   final WorkOrderCapabilities? capabilities;
   final WorkOrderSiblings? siblings;
+  final WorkReportMeta? workReportMeta;
 
-  const WorkOrderDetailBody(
-      {super.key, required this.workOrder, this.capabilities, this.siblings});
+  const WorkOrderDetailBody({
+    super.key,
+    required this.workOrder,
+    this.capabilities,
+    this.siblings,
+    this.workReportMeta,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +59,10 @@ class WorkOrderDetailBody extends StatelessWidget {
     return [
       WorkOrderPropertyView.fullView(workOrder: workOrder),
       if (workOrder.status.isReportable) ...[
+        if (workReportMeta?.isReportNeedReview == true) ...[
+          InformationBlock.info("Laporan perintah kerja ini siap di review"),
+          const SizedBox(height: AppSpacing.sm),
+        ],
         HorizontalButton(
           title: "Laporan Kerja",
           leadingIcon: AppIcon.workReport,
@@ -65,7 +75,7 @@ class WorkOrderDetailBody extends StatelessWidget {
             );
           },
         ),
-      ], // TODO [API REQUIRED] : Work Report need Review meta data
+      ],
       Row(
         children: [
           SectionTitle(
@@ -141,37 +151,38 @@ class WorkOrderDetailBody extends StatelessWidget {
 
   List<Widget> _rightChildren(BuildContext context) {
     final filledForm = workOrder.workOrderForm?.currentFilledForm;
-    if (filledForm == null) return [];
 
     return [
-      SectionTitle(
-        "Intruksi Perintah Kerja",
-      ),
-      FilledFormView(
-        filledForm: filledForm,
-      ),
-      Row(
-        children: [
-          const Spacer(),
-          TextButton.icon(
-              iconAlignment: IconAlignment.end,
-              icon: Icon(AppIcon.next),
-              onPressed: () async {
-                final result = await context.push<Result<WorkOrderEntity>?>(
-                    AppRoutes.workOrdersSubmission,
-                    extra: workOrder);
+      if (filledForm != null) ...[
+        SectionTitle(
+          "Intruksi Perintah Kerja",
+        ),
+        FilledFormView(
+          filledForm: filledForm,
+        ),
+        Row(
+          children: [
+            const Spacer(),
+            TextButton.icon(
+                iconAlignment: IconAlignment.end,
+                icon: Icon(AppIcon.next),
+                onPressed: () async {
+                  final result = await context.push<Result<WorkOrderEntity>?>(
+                      AppRoutes.workOrdersSubmission,
+                      extra: workOrder);
 
-                if (result == null) return;
-                if (!context.mounted) return;
+                  if (result == null) return;
+                  if (!context.mounted) return;
 
-                context.read<WorkOrderDetailCubit>().updateResult(result);
-              },
-              label: Text("Edit Instruksi Kerja"))
-        ],
-      ).require(
-          WorkOrderAuthorizer(workOrder: workOrder, capabilities: capabilities)
-              .fillWorkOrder),
-      const SizedBox(height: AppSpacing.lg),
+                  context.read<WorkOrderDetailCubit>().updateResult(result);
+                },
+                label: Text("Edit Instruksi Kerja"))
+          ],
+        ).require(WorkOrderAuthorizer(
+                workOrder: workOrder, capabilities: capabilities)
+            .fillWorkOrder),
+        const SizedBox(height: AppSpacing.lg),
+      ],
       CancelWorkOrderButton(
         workOrder: workOrder,
         capabilities: capabilities,

@@ -53,7 +53,7 @@ class SubscriptionChip extends StatelessWidget {
                   ],
                 )
               : null,
-          color: isMember ? null : Colors.grey[300],
+          color: isMember ? null : Theme.of(context).disabledColor,
           boxShadow: isMember
               ? [
                   BoxShadow(

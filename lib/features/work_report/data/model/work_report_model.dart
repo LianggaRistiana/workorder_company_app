@@ -21,7 +21,7 @@ class WorkReportModel extends WorkReportEntity {
     return WorkReportModel(
       id: json.field('_id').reqString(),
       workOrderId: json.field('workOrderId').reqString(),
-      showReportToRequester: json.field('showReportToRequester').reqBool(),
+      showReportToRequester: json.field('showReportToRequester').optBool() ?? true, // FIXME : BE SHOULD FIX
       workReportForm: FilledFormWithHistoryModel.fromJson(
           json['reportFormDetail'], json['submissions']),
       approvalAccess: json
