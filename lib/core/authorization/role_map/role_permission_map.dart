@@ -9,6 +9,7 @@ import 'package:workorder_company_app/core/authorization/feature/public_companie
 import 'package:workorder_company_app/core/authorization/feature/quick_config_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/service_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/service_request_permission.dart';
+import 'package:workorder_company_app/core/authorization/feature/system_integration_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/work_report_permission.dart';
 import 'package:workorder_company_app/core/authorization/model/app_permission.dart';
 import 'package:workorder_company_app/core/authorization/feature/work_order_permission.dart';
@@ -96,6 +97,7 @@ extension UserRolePermissions on UserRole {
           ...MembershipsPermission.provider,
           ...FaqConfigPermission.all,
           ...QuickConfigPermission.all,
+          ...SystemIntegrationPermission.config,
 
           // Human Resource Domain
           ...PositionsPermission.all,
@@ -159,6 +161,9 @@ extension UserRolePermissions on UserRole {
 
           // Work Order Domain
           ...ServiceRequestPermission.requester,
+
+          // Account
+          ...SystemIntegrationPermission.pairing,
         };
       case UserRole.staffUnassigned:
         return {

@@ -9,11 +9,13 @@ import 'package:workorder_company_app/features/system_integration/domain/reposit
 import 'package:workorder_company_app/features/system_integration/domain/usecases/complete_pairing_usecase.dart';
 import 'package:workorder_company_app/features/system_integration/domain/usecases/detach_account_usecase.dart';
 import 'package:workorder_company_app/features/system_integration/domain/usecases/get_account_pairing_usecase.dart';
+import 'package:workorder_company_app/features/system_integration/domain/usecases/get_all_paired_account_usecase.dart';
 import 'package:workorder_company_app/features/system_integration/domain/usecases/get_provider_integration_usecase.dart';
 import 'package:workorder_company_app/features/system_integration/domain/usecases/start_pairing_usecase.dart';
 import 'package:workorder_company_app/features/system_integration/domain/usecases/update_provider_integration_usecase.dart';
 import 'package:workorder_company_app/features/system_integration/presentation/bloc/customer/account_action/account_action_cubit.dart';
 import 'package:workorder_company_app/features/system_integration/presentation/bloc/customer/account_pairing/account_pairing_bloc.dart';
+import 'package:workorder_company_app/features/system_integration/presentation/bloc/customer/accounts/external_accounts_cubit.dart';
 import 'package:workorder_company_app/features/system_integration/presentation/bloc/system_integration_config.dart/system_integration_config_cubit.dart';
 
 Future<void> initSystemIntegrationFeature() async {
@@ -61,6 +63,12 @@ Future<void> initSystemIntegrationFeature() async {
     ),
   );
 
+  sl.registerLazySingleton<GetAllPairedAccountUsecase>(
+    () => GetAllPairedAccountUsecase(
+      sl<CustomerAccountIntegrationRepository>(),
+    ),
+  );
+
   sl.registerLazySingleton<DetachAccountUsecase>(
     () => DetachAccountUsecase(
       sl<CustomerAccountIntegrationRepository>(),
@@ -83,6 +91,13 @@ Future<void> initSystemIntegrationFeature() async {
   sl.registerFactory<AccountActionCubit>(
     () => AccountActionCubit(
       sl<GetAccountPairingUsecase>(),
+      sl<DetachAccountUsecase>(),
+    ),
+  );
+
+  sl.registerFactory<ExternalAccountsCubit>(
+    () => ExternalAccountsCubit(
+      sl<GetAllPairedAccountUsecase>(),
       sl<DetachAccountUsecase>(),
     ),
   );

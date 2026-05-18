@@ -17,5 +17,7 @@ enum AppFeature {
   memberships,
   claimCodeMembership,
   faqConfig,
-  quickConfig
+  quickConfig,
+  systemIntegration,
+  pairingAccount
 }

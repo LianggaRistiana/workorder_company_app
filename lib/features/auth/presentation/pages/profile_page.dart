@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/core/authorization/feature/company_permission.dart';
+import 'package:workorder_company_app/core/authorization/feature/system_integration_permission.dart';
 import 'package:workorder_company_app/core/authorization/rule/role_permission_rule/role_permission_helper.dart';
 import 'package:workorder_company_app/core/authorization/util/access_gate_on_widget.dart';
 import 'package:workorder_company_app/core/authorization/util/check_permission.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 import 'package:workorder_company_app/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:workorder_company_app/features/auth/presentation/widgets/paired_account_list.dart';
 import 'package:workorder_company_app/features/auth/presentation/widgets/profile_card_user.dart';
 import 'package:workorder_company_app/features/auth/presentation/widgets/profile_logout_button.dart';
 import 'package:workorder_company_app/features/auth/presentation/widgets/profile_menu_section.dart';
@@ -76,6 +78,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ).require(roleCan(CompanyPermission.view)),
       ProfileUserCard(user: user),
       UserPropertyDisplay(user: user),
+      PairedAccountList().require(roleCan(SystemIntegrationPermission.view))
     ];
   }
 
