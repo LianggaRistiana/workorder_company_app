@@ -18,6 +18,7 @@ class WorkReportAuthorizer {
 
   AuthorizationRule get approveWorkReport => rules([
         roleCan(WorkReportPermissions.approve),
+        _ManagerDepartementScopeRule(workOrder),
         _StatusValidation(
           currentStatus: workReport.status,
           expectedStatus: {
@@ -29,6 +30,7 @@ class WorkReportAuthorizer {
 
   AuthorizationRule get rejectWorkReport => rules([
         roleCan(WorkReportPermissions.reject),
+        _ManagerDepartementScopeRule(workOrder),
         _StatusValidation(
           currentStatus: workReport.status,
           expectedStatus: {
@@ -60,6 +62,32 @@ class WorkReportAuthorizer {
         ),
         _CheckPic(workOrder)
       ]);
+}
+
+class _ManagerDepartementScopeRule extends AuthorizationRule {
+  final WorkOrderEntity workOrder;
+
+  _ManagerDepartementScopeRule(this.workOrder);
+
+  @override
+  AuthorizationResult evaluate(UserEntity user) {
+    final position = user.position;
+
+    if (position != null) {
+      final positionId = position.id;
+
+      if (!hasDepartmentAccess(positionId)) {
+        return AuthorizationResult.denied(
+          "Manajer Departemen ${position.name} tidak punya akses untuk aksi ini",
+        );
+      }
+    }
+    return AuthorizationResult.allowed();
+  }
+
+  bool hasDepartmentAccess(String positionId) {
+    return workOrder.positionOnDuty.id == positionId;
+  }
 }
 
 class _StatusValidation extends AuthorizationRule {

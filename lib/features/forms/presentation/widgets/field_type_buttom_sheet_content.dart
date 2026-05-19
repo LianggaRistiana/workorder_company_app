@@ -24,7 +24,7 @@ class FieldTypeBottomSheetContent extends StatelessWidget {
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 16),
-            ...FieldType.values.map((type) {
+            ...FieldType.availableType.map((type) {
               final isSelected = type == selectedType;
 
               return ListTile(

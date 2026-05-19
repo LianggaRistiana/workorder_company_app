@@ -58,6 +58,17 @@ enum FieldType {
   // phone,
   email;
 
+  static const availableType = {
+    FieldType.text,
+    FieldType.textarea,
+    FieldType.number,
+    FieldType.date,
+    FieldType.multiSelect,
+    FieldType.singleSelect,
+    FieldType.image,
+    FieldType.email,
+  };
+
   static FieldType fromString(String value) {
     switch (value) {
       case 'text':

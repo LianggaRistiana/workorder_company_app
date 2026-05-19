@@ -20,18 +20,21 @@ class WorkOrderAuthorizer {
   AuthorizationRule get sendWorkOrder => rules([
         roleCan(WorkOrderPermissions.send),
         _Ownership(workOrder),
-        _StatusValidation(workOrder.status, WorkOrderStatus.drafted)
+        _ManagerDepartementScopeRule(workOrder),
+        _StatusValidation(workOrder.status, WorkOrderStatus.drafted),
       ]);
 
   AuthorizationRule get fillWorkOrder => rules([
         roleCan(WorkOrderPermissions.fill),
         _Ownership(workOrder),
-        _StatusValidation(workOrder.status, WorkOrderStatus.drafted)
+        _ManagerDepartementScopeRule(workOrder),
+        _StatusValidation(workOrder.status, WorkOrderStatus.drafted),
       ]);
 
   AuthorizationRule get recreateWorkOrder => rules([
         roleCan(WorkOrderPermissions.create),
         _Ownership(workOrder),
+        _ManagerDepartementScopeRule(workOrder),
         _StatusValidation(workOrder.status, WorkOrderStatus.rejected),
         _WorkOrderCapabilityRule(
             capabilities: capabilities, checker: (c) => c.canRecreate)
@@ -39,6 +42,7 @@ class WorkOrderAuthorizer {
 
   AuthorizationRule get approveWorkOrder => rules([
         roleCan(WorkOrderPermissions.approve),
+        _ManagerDepartementScopeRule(workOrder),
         _StatusValidation(workOrder.status, WorkOrderStatus.sent),
         _OnlyStaffPicToReview(workOrder),
         _ApprovalRequiresManual(workOrder.approvalAccess)
@@ -46,6 +50,7 @@ class WorkOrderAuthorizer {
 
   AuthorizationRule get rejectWorkOrder => rules([
         roleCan(WorkOrderPermissions.reject),
+        _ManagerDepartementScopeRule(workOrder),
         _StatusValidation(workOrder.status, WorkOrderStatus.sent),
         _OnlyStaffPicToReview(workOrder),
         _ApprovalRequiresManual(workOrder.approvalAccess)
@@ -53,6 +58,7 @@ class WorkOrderAuthorizer {
 
   AuthorizationRule get startWorkOrder => rules([
         roleCan(WorkOrderPermissions.start),
+        _ManagerDepartementScopeRule(workOrder),
         _StatusValidation(workOrder.status, WorkOrderStatus.approved),
         _StaffPicOrEveryone(workOrder),
         _WorkOrderCapabilityRule(
@@ -62,6 +68,7 @@ class WorkOrderAuthorizer {
   AuthorizationRule get cancelWorkOrder => rules([
         roleCan(WorkOrderPermissions.cancel),
         _Ownership(workOrder),
+        _ManagerDepartementScopeRule(workOrder),
         _ValidCancelStatus(workOrder.status),
         _WorkOrderCapabilityRule(
             capabilities: capabilities, checker: (c) => c.canCancel)
@@ -69,6 +76,7 @@ class WorkOrderAuthorizer {
 
   AuthorizationRule get completeWorkOrder => rules([
         roleCan(WorkOrderPermissions.complete),
+        _ManagerDepartementScopeRule(workOrder),
         _StatusValidation(workOrder.status, WorkOrderStatus.onProgress),
         _Ownership(workOrder),
         _WorkOrderCapabilityRule(
@@ -77,6 +85,7 @@ class WorkOrderAuthorizer {
 
   AuthorizationRule get failWorkOrder => rules([
         roleCan(WorkOrderPermissions.fail),
+        _ManagerDepartementScopeRule(workOrder),
         _StatusValidation(workOrder.status, WorkOrderStatus.onProgress),
         _Ownership(workOrder),
         _WorkOrderCapabilityRule(
@@ -106,6 +115,32 @@ class _Ownership extends AuthorizationRule {
     return const AuthorizationResult.denied(
       "Hanya Pembuat Perintah Kerja yang dapat melakukan aksi ini",
     );
+  }
+}
+
+class _ManagerDepartementScopeRule extends AuthorizationRule {
+  final WorkOrderEntity workOrder;
+
+  _ManagerDepartementScopeRule(this.workOrder);
+
+  @override
+  AuthorizationResult evaluate(UserEntity user) {
+    final position = user.position;
+
+    if (position != null) {
+      final positionId = position.id;
+
+      if (!hasDepartmentAccess(positionId)) {
+        return AuthorizationResult.denied(
+          "Manajer Departemen ${position.name} tidak punya akses untuk aksi ini",
+        );
+      }
+    }
+    return AuthorizationResult.allowed();
+  }
+
+  bool hasDepartmentAccess(String positionId) {
+    return workOrder.positionOnDuty.id == positionId;
   }
 }
 
