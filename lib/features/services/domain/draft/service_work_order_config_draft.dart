@@ -64,6 +64,7 @@ class ServiceWorkOrderConfigDraft extends Equatable {
       departmentOnDuty: entity.positionOnDuty,
       workOrderApprovalAccess: entity.workOrderAprrovalAccessType,
       workReportApprovalAccess: entity.workReportApprovalAccessType,
+      showReportToRequester: entity.showReportToRequester,
     );
   }
 
@@ -125,6 +126,7 @@ class ServiceWorkOrderConfigDraft extends Equatable {
         departmentOnDuty,
         workOrderApprovalAccess,
         workReportApprovalAccess,
+        showReportToRequester
       ];
 }
 
