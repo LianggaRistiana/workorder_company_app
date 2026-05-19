@@ -13,7 +13,7 @@ import 'package:workorder_company_app/features/positions/presentation/bloc/detai
 import 'package:workorder_company_app/features/positions/presentation/bloc/detail/position_detail_state.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
-import 'package:workorder_company_app/shared/widgets/active_status_chip.dart';
+// import 'package:workorder_company_app/shared/widgets/active_status_chip.dart';
 import 'package:workorder_company_app/shared/widgets/adaptive_split_column.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
@@ -125,12 +125,14 @@ class _DetailContent extends StatelessWidget {
                     value: position.description ?? "-",
                     icon: AppIcon.desc,
                   ),
-                  PropertyItem.widget(
-                      label: "Status Aktif",
-                      icon: AppIcon.activeState,
-                      child: ActiveStatusChip(
-                        isActive: position.isActive,
-                      )),
+                  // HACK : Temp hide isActive in Position Feature
+                  // PropertyItem.widget(
+                  //   label: "Status Aktif",
+                  //   icon: AppIcon.activeState,
+                  //   child: ActiveStatusChip(
+                  //     isActive: position.isActive,
+                  //   ),
+                  // ),
                 ],
               )),
 

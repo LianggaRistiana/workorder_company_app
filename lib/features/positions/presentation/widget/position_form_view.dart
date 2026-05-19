@@ -11,7 +11,7 @@ import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/adaptive_split_column.dart';
 import 'package:workorder_company_app/shared/widgets/button_with_loading_state.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
-import 'package:workorder_company_app/shared/widgets/custom_switch_tile.dart';
+// import 'package:workorder_company_app/shared/widgets/custom_switch_tile.dart';
 
 class PositionFormView extends StatefulWidget {
   final ValidationFailure? validation;
@@ -167,18 +167,19 @@ class _PositionFormViewState extends State<PositionFormView> {
         maxLines: 3,
         prefixIcon: const Icon(AppIcon.desc),
       ),
-      const SizedBox(height: 20),
-      CustomSwitchTile(
-        title: 'Status Aktif',
-        description: 'Jika nonaktif, Departemen tidak dapat digunakan',
-        leadingIcon: AppIcon.activeState,
-        value: _isActive,
-        onChanged: (val) {
-          setState(() {
-            _isActive = val;
-          });
-        },
-      ),
+      // HACK : Temp hide isActive in Position Feature
+      // const SizedBox(height: 20),
+      // CustomSwitchTile(
+      //   title: 'Status Aktif',
+      //   description: 'Jika nonaktif, Departemen tidak dapat digunakan',
+      //   leadingIcon: AppIcon.activeState,
+      //   value: _isActive,
+      //   onChanged: (val) {
+      //     setState(() {
+      //       _isActive = val;
+      //     });
+      //   },
+      // ),
       const SizedBox(height: AppSpacing.md),
     ];
   }
