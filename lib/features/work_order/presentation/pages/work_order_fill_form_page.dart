@@ -113,7 +113,7 @@ class _WorkOrderFillFormPageState extends State<WorkOrderFillFormPage> {
       Form(
         key: _formKey,
         child: FormRenderer(coordinator: coordinator),
-      ), // FIXME : add Form Widget for validation here
+      ),
       const SizedBox(height: AppSpacing.md),
     ];
   }
@@ -122,23 +122,26 @@ class _WorkOrderFillFormPageState extends State<WorkOrderFillFormPage> {
     final coordinator = this.coordinator;
     if (coordinator == null) return SizedBox.shrink();
 
-    return ButtonWithLoadingState(
-      onPressed: () {
-        FocusScope.of(context).unfocus();
-        if (!_formKey.currentState!.validate()) return;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+      child: ButtonWithLoadingState(
+        onPressed: () {
+          FocusScope.of(context).unfocus();
+          if (!_formKey.currentState!.validate()) return;
 
-        context.read<FillWorkOrderCubit>().submitSubmission(
-              widget.workOrder,
-              coordinator.draft,
-            );
-      },
-      isLoading: isLoading,
-      icon: AppIcon.submit,
-      progress: context.watch<FileUploadProgressCubit>().state.totalProgress,
-      loadingLabel:
-          context.watch<FileUploadProgressCubit>().state.buttonMessage ??
-              "Menyimpan...",
-      label: "Simpan",
+          context.read<FillWorkOrderCubit>().submitSubmission(
+                widget.workOrder,
+                coordinator.draft,
+              );
+        },
+        isLoading: isLoading,
+        icon: AppIcon.submit,
+        progress: context.watch<FileUploadProgressCubit>().state.totalProgress,
+        loadingLabel:
+            context.watch<FileUploadProgressCubit>().state.buttonMessage ??
+                "Menyimpan...",
+        label: "Simpan",
+      ),
     );
   }
 }

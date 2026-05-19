@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/authorization/rule/position_permission_rule/position_permission_helper.dart';
+import 'package:workorder_company_app/core/authorization/util/access_gate_on_widget.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/widgets/menu_grid.dart';
@@ -33,6 +35,12 @@ class ManagerContent extends StatelessWidget {
                 onTap: () {
                   context.push(AppRoutes.services);
                 }),
+            MenuItem(
+                icon: AppIcon.department,
+                label: "Departemen",
+                onTap: () {
+                  context.push(AppRoutes.positions);
+                }).require(hasNoPosition()),
           ],
         ),
         const SizedBox(height: 12),

@@ -17,6 +17,7 @@ import 'package:workorder_company_app/features/company/presentation/bloc/interna
 import 'package:workorder_company_app/features/company/presentation/widgets/internal_company_card.dart';
 import 'package:workorder_company_app/shared/widgets/adaptive_split_column.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
+import 'package:workorder_company_app/shared/widgets/section_title.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -84,6 +85,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   List<Widget> _menuSettings() {
     return [
+      SectionTitle("Pengaturan"),
       const ProfileMenuSection(),
       const SizedBox(height: AppSpacing.md),
       const ProfileLogoutButton(),

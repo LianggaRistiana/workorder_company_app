@@ -308,6 +308,53 @@ class _OptionAnswer extends StatelessWidget {
   }
 }
 
+// class _ImageAnswer extends StatelessWidget {
+//   final String? path;
+
+//   const _ImageAnswer({
+//     required this.path,
+//   });
+
+//   @override
+//   Widget build(BuildContext context) {
+//     final theme = Theme.of(context);
+
+//     return ClipRRect(
+//       borderRadius: BorderRadius.circular(12),
+//       child: AspectRatio(
+//         aspectRatio: 1,
+//         child: path == null || path!.isEmpty
+//             ? Center(
+//                 child: Icon(
+//                   Icons.broken_image_rounded,
+//                   color: theme.disabledColor,
+//                 ),
+//               )
+//             : Image.network(
+//                 path!,
+//                 fit: BoxFit.cover,
+//                 loadingBuilder: (
+//                   context,
+//                   child,
+//                   loadingProgress,
+//                 ) {
+//                   if (loadingProgress == null) {
+//                     return child;
+//                   }
+
+//                   return const SmartShimmer();
+//                 },
+//                 errorBuilder: (_, __, ___) {
+//                   return const Center(
+//                     child: Icon(Icons.broken_image),
+//                   );
+//                 },
+//               ),
+//       ),
+//     );
+//   }
+
+// TODO : Test This Image Field Viewer
 class _ImageAnswer extends StatelessWidget {
   final String? path;
 
@@ -315,41 +362,112 @@ class _ImageAnswer extends StatelessWidget {
     required this.path,
   });
 
+  void _showFullscreenImage(BuildContext context) {
+    if (path == null || path!.isEmpty) return;
+
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) {
+          return Scaffold(
+            backgroundColor: Theme.of(context).colorScheme.surface,
+            body: SafeArea(
+              child: Stack(
+                children: [
+                  Center(
+                    child: InteractiveViewer(
+                      minScale: 0.8,
+                      maxScale: 5,
+                      child: Image.network(
+                        path!,
+                        fit: BoxFit.contain,
+                        loadingBuilder: (
+                          context,
+                          child,
+                          loadingProgress,
+                        ) {
+                          if (loadingProgress == null) {
+                            return child;
+                          }
+
+                          return const SmartShimmer();
+                        },
+                        errorBuilder: (_, __, ___) {
+                          return const Center(
+                            child: Icon(
+                              Icons.broken_image,
+                              color: Colors.white,
+                              size: 48,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+
+                  /// Close button
+                  Positioned(
+                    top: MediaQuery.of(context).padding.top + 12,
+                    right: 12,
+                    child: IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: Icon(
+                        Icons.close,
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(12),
-      child: AspectRatio(
-        aspectRatio: 1,
-        child: path == null || path!.isEmpty
-            ? Center(
-                child: Icon(
-                  Icons.broken_image_rounded,
-                  color: theme.disabledColor,
-                ),
-              )
-            : Image.network(
-                path!,
-                fit: BoxFit.cover,
-                loadingBuilder: (
-                  context,
-                  child,
-                  loadingProgress,
-                ) {
-                  if (loadingProgress == null) {
-                    return child;
-                  }
+    final isInvalid = path == null || path!.isEmpty;
 
-                  return const SmartShimmer();
-                },
-                errorBuilder: (_, __, ___) {
-                  return const Center(
-                    child: Icon(Icons.broken_image),
-                  );
-                },
-              ),
+    return GestureDetector(
+      onTap: isInvalid ? null : () => _showFullscreenImage(context),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: AspectRatio(
+          aspectRatio: 1,
+          child: isInvalid
+              ? Center(
+                  child: Icon(
+                    Icons.broken_image_rounded,
+                    color: theme.disabledColor,
+                  ),
+                )
+              : Hero(
+                  tag: path!,
+                  child: Image.network(
+                    path!,
+                    fit: BoxFit.cover,
+                    loadingBuilder: (
+                      context,
+                      child,
+                      loadingProgress,
+                    ) {
+                      if (loadingProgress == null) {
+                        return child;
+                      }
+
+                      return const SmartShimmer();
+                    },
+                    errorBuilder: (_, __, ___) {
+                      return const Center(
+                        child: Icon(Icons.broken_image),
+                      );
+                    },
+                  ),
+                ),
+        ),
       ),
     );
   }
