@@ -41,16 +41,19 @@ class ServiceRequestReport extends StatelessWidget {
               ],
             );
           } else if (state.isError) {
-            return Column(children: [
-              SectionTitle("Laporan"),
-              InformationBlock.error(
-                  state.errorMessage ?? "Gagal mendapatkan laporan"),
-              TextButton(
-                  onPressed: () => context
-                      .read<GetServiceRequestReportCubit>()
-                      .getReport(serviceRequestId),
-                  child: Text("Muat ulang"))
-            ]);
+            return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  SectionTitle("Laporan"),
+                  InformationBlock.error(
+                      state.errorMessage ?? "Gagal mendapatkan laporan"),
+                  TextButton(
+                      onPressed: () => context
+                          .read<GetServiceRequestReportCubit>()
+                          .getReport(serviceRequestId),
+                      child: Text("Muat ulang"))
+                ]);
           }
           return Column(
               crossAxisAlignment: CrossAxisAlignment.start,

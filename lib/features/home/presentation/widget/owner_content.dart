@@ -87,8 +87,18 @@ class OwnerContent extends StatelessWidget {
           leadingIcon: AppIcon.more,
           title: "Menu lainnya",
           description:
-              "Pengaturan umum seperti nama, alamat perusahaan dan lain sebagainya",
+              "Integrasi sistem, konfigurasi FaQ, dan lainnya",
           onTap: () => context.go(AppRoutes.companyManageMenu),
+        ),
+        HorizontalButton(
+          key: const Key("horizontal-button-dashboard"),
+          margin: EdgeInsets.all(0),
+          leadingIcon: AppIcon.dashboard,
+          title: "Dashboard",
+          description: "Lihat statistik perusahaan",
+          onTap: () {
+            context.push(AppRoutes.dashboard);
+          },
         ),
       ],
     );

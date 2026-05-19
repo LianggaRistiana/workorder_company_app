@@ -9,7 +9,6 @@ import 'package:workorder_company_app/features/company/presentation/widgets/inte
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/widgets/adaptive_split_column.dart';
 import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
-import 'package:workorder_company_app/shared/widgets/app_bottom_sheet.dart';
 import 'package:workorder_company_app/shared/widgets/menu_grid.dart';
 import 'package:workorder_company_app/shared/widgets/menu_item.dart';
 import 'package:workorder_company_app/shared/widgets/section_title.dart';
@@ -79,6 +78,12 @@ class _InternalCompanyManageMenuPageState
         key: const Key("menu-grid-config"),
         items: [
           MenuItem(
+              icon: AppIcon.info,
+              label: "Informasi Perusahaan",
+              onTap: () {
+                context.push(AppRoutes.company);
+              }),
+          MenuItem(
               icon: AppIcon.form,
               label: "Formulir",
               onTap: () {
@@ -96,12 +101,7 @@ class _InternalCompanyManageMenuPageState
               onTap: () {
                 context.push(AppRoutes.positions);
               }),
-          MenuItem(
-              icon: AppIcon.info,
-              label: "Informasi Perusahaan",
-              onTap: () {
-                context.push(AppRoutes.company);
-              }),
+
           MenuItem(
               icon: AppIcon.memberCode,
               label: "Kode Unik Langganan",
@@ -120,18 +120,18 @@ class _InternalCompanyManageMenuPageState
               onTap: () {
                 context.push(AppRoutes.systemIntegrationConfig);
               }),
-          MenuItem(
-              icon: AppIcon.help,
-              label: "Bantuan",
-              onTap: () {
-                showAppBottomSheet(context,
-                    content: SizedBox(
-                      height: 200,
-                      child: Center(
-                        child: Text("Fitur ini belum tersedia"),
-                      ),
-                    ));
-              }),
+          // MenuItem(
+          //     icon: AppIcon.help,
+          //     label: "Bantuan",
+          //     onTap: () {
+          //       showAppBottomSheet(context,
+          //           content: SizedBox(
+          //             height: 200,
+          //             child: Center(
+          //               child: Text("Fitur ini belum tersedia"),
+          //             ),
+          //           ));
+          //     }),
         ],
       ),
       const SizedBox(height: 16),
@@ -188,12 +188,12 @@ class _InternalCompanyManageMenuPageState
               onTap: () {
                 context.push(AppRoutes.memberships);
               }),
-          MenuItem(
-              icon: AppIcon.qna,
-              label: "Chat bantuan",
-              onTap: () {
-                context.push(AppRoutes.chatBot);
-              }),
+          // MenuItem(
+          //     icon: AppIcon.qna,
+          //     label: "Chat bantuan",
+          //     onTap: () {
+          //       context.push(AppRoutes.chatBot);
+          //     }),
         ],
       ),
     ];

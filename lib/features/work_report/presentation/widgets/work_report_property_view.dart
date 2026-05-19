@@ -17,12 +17,12 @@ class WorkReportPropertyView extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomCard(
       child: PropertyDisplay(properties: [
-        if (report.approvedBy != null)
-          PropertyItem.text(
-            icon: AppIcon.user,
-            label: "Disetujui oleh",
-            value: report.approvedBy!.name,
-          ),
+        // if (report.approvedBy != null)
+        PropertyItem.text(
+          icon: AppIcon.user,
+          label: "Disetujui oleh",
+          value: report.approvedBy?.name ?? "Otomatis oleh Sistem",
+        ),
         PropertyItem.widget(
           icon: AppIcon.step,
           label: "Status",

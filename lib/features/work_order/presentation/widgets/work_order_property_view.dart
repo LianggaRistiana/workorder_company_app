@@ -47,9 +47,14 @@ class _FullView extends StatelessWidget {
           value: workOrder.service.title,
         ),
         PropertyItem.text(
+          icon: AppIcon.department,
+          label: "Departemen",
+          value: workOrder.positionOnDuty.name,
+        ),
+        PropertyItem.text(
             icon: AppIcon.user,
             label: "Dibuat oleh",
-            value: workOrder.createdBy?.name ?? 'Sistem'),
+            value: workOrder.createdBy?.name ?? 'Otomatis oleh Sistem'),
         if (workOrder.staffPic != null)
           PropertyItem.widget(
               icon: AppIcon.pic,

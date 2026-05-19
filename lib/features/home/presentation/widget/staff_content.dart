@@ -55,12 +55,12 @@ class StaffContent extends StatelessWidget {
             //       context.push(AppRoutes.services,
             //           extra: NextStepMode.createServiceRequest);
             //     }),
-            MenuItem(
-                icon: AppIcon.employee,
-                label: "Rekan Kerja",
-                onTap: () {
-                  context.push(AppRoutes.employee);
-                }),
+            // MenuItem(
+            //     icon: AppIcon.employee,
+            //     label: "Rekan Kerja",
+            //     onTap: () {
+            //       context.push(AppRoutes.employee);
+            //     }),
             MenuItem(
                 icon: AppIcon.serviceRequestSend,
                 label: "Permintaan Layanan",
@@ -73,11 +73,6 @@ class StaffContent extends StatelessWidget {
                 onTap: () {
                   context.go(AppRoutes.workOrders);
                 }),
-            MenuItem(
-                icon: AppIcon.workOrder,
-                label: "Riwayat Workorder",
-                onTap: () {}),
-            MenuItem(icon: AppIcon.help, label: "Bantuan", onTap: () {}),
           ],
         ),
       ],

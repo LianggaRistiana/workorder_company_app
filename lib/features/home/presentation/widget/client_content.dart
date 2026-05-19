@@ -32,27 +32,31 @@ class ClientContent extends StatelessWidget {
         MenuGrid(
           items: [
             MenuItem(
+                icon: AppIcon.dashboard,
+                label: "Dashboard",
+                onTap: () => context.push(AppRoutes.dashboard)),
+            MenuItem(
                 icon: AppIcon.serviceRequestSend,
                 label: "Permintaan Layanan Saya",
                 onTap: () => context.push(AppRoutes.serviceRequestSent)),
+            // MenuItem(
+            //     icon: AppIcon.company,
+            //     label: "Perusahaan langganan",
+            //     onTap: () {}),
             MenuItem(
-                icon: AppIcon.company,
-                label: "Perusahaan langganan",
-                onTap: () {}),
-            MenuItem(
-                icon: AppIcon.membership,
-                label: "Aktifkan Keanggotaan",
+                icon: AppIcon.memberCode,
+                label: "Klaim Kode Keanggotaan",
                 onTap: () => context.push(AppRoutes.membershipsClaim)),
-            MenuItem(
-                icon: AppIcon.history,
-                label: "Riwayat Permintaan",
-                onTap: () {}),
-            MenuItem(
-                icon: Icons.help_outline_outlined,
-                label: "Bantuan",
-                onTap: () {
-                  context.push(AppRoutes.lab);
-                }),
+            // MenuItem(
+            //     icon: AppIcon.history,
+            //     label: "Riwayat Permintaan",
+            //     onTap: () {}),
+            // MenuItem(
+            //     icon: Icons.help_outline_outlined,
+            //     label: "Bantuan",
+            //     onTap: () {
+            //       context.push(AppRoutes.lab);
+            //     }),
           ],
         ),
       ],

@@ -80,15 +80,11 @@ class PositionsStatEntity extends Equatable {
 }
 
 class EmployeesStatEntity extends Equatable {
-  final int active;
-  final int inActive;
   final int total;
   final int managersCount;
   final int staffsCount;
 
   const EmployeesStatEntity({
-    required this.active,
-    required this.inActive,
     required this.total,
     required this.managersCount,
     required this.staffsCount,
@@ -96,8 +92,6 @@ class EmployeesStatEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-        active,
-        inActive,
         total,
         managersCount,
         staffsCount,

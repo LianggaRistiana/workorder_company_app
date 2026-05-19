@@ -77,8 +77,6 @@ class PositionsStatModel extends PositionsStatEntity {
 
 class EmployeesStatModel extends EmployeesStatEntity {
   const EmployeesStatModel({
-    required super.active,
-    required super.inActive,
     required super.total,
     required super.managersCount,
     required super.staffsCount,
@@ -86,8 +84,6 @@ class EmployeesStatModel extends EmployeesStatEntity {
 
   factory EmployeesStatModel.fromJson(Map<String, dynamic> json) {
     return EmployeesStatModel(
-      active: json.field("active").reqInt(),
-      inActive: json.field("inActive").reqInt(),
       total: json.field("total").reqInt(),
       managersCount: json.field("managers_count").reqInt(),
       staffsCount: json.field("staffs_count").reqInt(),
