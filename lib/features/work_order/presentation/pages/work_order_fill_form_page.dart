@@ -30,6 +30,7 @@ class WorkOrderFillFormPage extends StatefulWidget {
 
 class _WorkOrderFillFormPageState extends State<WorkOrderFillFormPage> {
   late final FormRendererCoordinator? coordinator;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -109,9 +110,10 @@ class _WorkOrderFillFormPageState extends State<WorkOrderFillFormPage> {
     if (coordinator == null) return [];
 
     return [
-      FormRenderer(
-          coordinator:
-              coordinator), // FIXME : add Form Widget for validation here
+      Form(
+        key: _formKey,
+        child: FormRenderer(coordinator: coordinator),
+      ), // FIXME : add Form Widget for validation here
       const SizedBox(height: AppSpacing.md),
     ];
   }
@@ -122,6 +124,9 @@ class _WorkOrderFillFormPageState extends State<WorkOrderFillFormPage> {
 
     return ButtonWithLoadingState(
       onPressed: () {
+        FocusScope.of(context).unfocus();
+        if (!_formKey.currentState!.validate()) return;
+
         context.read<FillWorkOrderCubit>().submitSubmission(
               widget.workOrder,
               coordinator.draft,
