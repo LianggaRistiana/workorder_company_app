@@ -61,10 +61,11 @@ class CompanyFaqConfigPage extends StatelessWidget {
             }),
             BlocListener<ToggleActiveFaqCubit, ToggleActiveFaqState>(
                 listener: (context, state) {
-              if (state.errorMessage != null) {
+              if (state.errorMessage?.isNotEmpty == true) {
                 context.showError(state.errorMessage ??
                     "Terjadi kesalahan saat mengubah status faq");
-              } else if (state.updatedCompany != null) {
+              }
+              if (state.updatedCompany != null) {
                 context.showSuccess("Berhasil mengubah status faq");
                 context.read<InternalGetCompanyCubit>().replaceCompany(
                       state.updatedCompany!,

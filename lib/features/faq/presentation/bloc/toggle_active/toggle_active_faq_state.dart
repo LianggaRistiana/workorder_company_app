@@ -16,5 +16,6 @@ class ToggleActiveFaqState extends Equatable {
   List<Object?> get props => [
         isActive,
         errorMessage,
+        updatedCompany,
       ];
 }

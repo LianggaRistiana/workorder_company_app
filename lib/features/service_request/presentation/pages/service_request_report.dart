@@ -62,6 +62,8 @@ class ServiceRequestReport extends StatelessWidget {
                 SectionTitle("Laporan"),
                 CustomList(
                     items: state.reports.filledForms,
+                    emptyWidget: InformationBlock.empty(
+                        "Layanan ini tidak memiliki laporan untuk pemohon"),
                     itemBuilder: (item, _) {
                       return ClickableCustomCard(
                         child: ItemTileLined(child: Text(item.form.title)),

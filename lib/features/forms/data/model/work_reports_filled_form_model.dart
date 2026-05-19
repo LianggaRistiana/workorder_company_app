@@ -14,7 +14,7 @@ class WorkReportsFilledFormModel extends WorkReportsFilledFormEntity {
         json.field("workReportForms").reqListModel(FormModel.fromJson);
 
     final submissions = json
-        .field("workOrderSubmissions")
+        .field("submissions")
         .optListModel(SubmissionsModel.fromJson) // FIXME : fix this responses
       ?..sort((a, b) {
         final aDate = a.createdAt;
