@@ -1,5 +1,8 @@
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/result/result.dart';
+import 'package:workorder_company_app/core/utils/safe_parse.dart';
+import 'package:workorder_company_app/features/positions/data/models/position_model.dart';
+import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
 
 class WorkOrderSiblings extends ResultMeta {
   final List<WorkOrderSibling> siblings;
@@ -27,11 +30,13 @@ class WorkOrderSibling extends ResultMeta {
   final String id;
   final String code;
   final WorkOrderStatus status;
+  final PositionEntity position;
 
   const WorkOrderSibling({
     required this.id,
     required this.code,
     required this.status,
+    required this.position,
   });
 
   factory WorkOrderSibling.fromJson(Map<String, dynamic> json) {
@@ -39,6 +44,7 @@ class WorkOrderSibling extends ResultMeta {
       id: json['_id'] ?? '',
       code: json['code'] ?? '',
       status: WorkOrderStatus.fromString(json['status']),
+      position: json.field("position").reqModel(PositionModel.fromJson),
     );
   }
 }

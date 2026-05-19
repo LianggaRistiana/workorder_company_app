@@ -67,11 +67,22 @@ class FabWorkOrderSibling extends StatelessWidget {
                         width: 8,
                       ),
                       Expanded(
-                          child: Text(
-                        item.code,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: Theme.of(context).textTheme.titleSmall,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            item.code,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: Theme.of(context).textTheme.titleSmall,
+                          ),
+                          Text(
+                            "Departemen ${item.position.name}",
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: Theme.of(context).textTheme.bodySmall,
+                          )
+                        ],
                       )),
                       if (item.id == currentWorkOrderId)
                         Icon(

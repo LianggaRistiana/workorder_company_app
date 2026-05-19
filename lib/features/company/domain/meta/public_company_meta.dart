@@ -11,7 +11,7 @@ class PublicCompanyMeta extends ResultMeta {
 
   factory PublicCompanyMeta.fromJson(Map<String, dynamic> json) {
     return PublicCompanyMeta(
-      isSubcribbed: json['isSubcribbed'] ?? false,
+      isSubcribbed: json['isSubscribed'] ?? false,
       isIntegrationActive: json['isIntegrationActive'] ?? false,
     );
   }
