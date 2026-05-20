@@ -14,8 +14,15 @@ class AppConfig {
     'staging': 'https://workorder-team.vercel.app/',
     'production.railway': 'https://workorder-portal-production-4d0a.up.railway.app',
   };
+  static const Map<String, String> serverCodeNames = {
+    'development': 'Local',
+    'production.railway': 'Primary-Server',
+    'production.render': 'Backup-Server',
+  };
 
   static String get baseApiUrl => baseApiUrls[appFlavor]!;
+  static String get serverCodeName => serverCodeNames[appFlavor]!;
+  
   static const int receivedTimeout = 10;
   static const int connectTimeout = 10;
 

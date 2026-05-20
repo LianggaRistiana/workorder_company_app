@@ -20,7 +20,7 @@ class AboutAppSection extends StatelessWidget {
         Divider(),
         const SizedBox(height: AppSpacing.sm),
         Text(
-          "Server Code Name\n${AppConfig.appFlavor}",
+          "Server Code Name\n${AppConfig.serverCodeName}",
           style: Theme.of(context).textTheme.labelSmall,
         ),
         const SizedBox(height: AppSpacing.sm),
