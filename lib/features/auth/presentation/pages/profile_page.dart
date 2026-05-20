@@ -8,6 +8,7 @@ import 'package:workorder_company_app/core/authorization/util/check_permission.d
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 import 'package:workorder_company_app/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:workorder_company_app/features/auth/presentation/pages/about_app_section.dart';
 import 'package:workorder_company_app/features/auth/presentation/widgets/paired_account_list.dart';
 import 'package:workorder_company_app/features/auth/presentation/widgets/profile_card_user.dart';
 import 'package:workorder_company_app/features/auth/presentation/widgets/profile_logout_button.dart';
@@ -85,11 +86,12 @@ class _ProfilePageState extends State<ProfilePage> {
 
   List<Widget> _menuSettings() {
     return [
-      SectionTitle("Pengaturan"),
+      const SectionTitle("Pengaturan"),
       const ProfileMenuSection(),
       const SizedBox(height: AppSpacing.md),
       const ProfileLogoutButton(),
-      const SizedBox(height: AppSpacing.lg),
+      const SizedBox(height: AppSpacing.xl),
+      const AboutAppSection()
     ];
   }
 }
