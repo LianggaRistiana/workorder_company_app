@@ -24,7 +24,7 @@ class AuthGuard {
       if (isPublic) return null;
 
       // selain itu → paksa ke login
-      return AppRoutes.login;
+      return AppRoutes.onBoarding;
     }
 
     // 2️⃣ Kalau sudah login tapi buka login/register lagi

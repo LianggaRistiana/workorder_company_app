@@ -94,6 +94,9 @@ class AppRoutes {
   static const pairAccount = '/pair-account/:id';
   static const systemIntegrationConfig = '/company/system-integration';
 
+  // On Boarding Page
+  static const onBoarding = '/onboarding';
+
   // TODO : Remove this later, route for lab features
   static const String lab = '/lab-feature';
 }

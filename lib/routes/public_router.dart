@@ -4,6 +4,7 @@ import 'package:workorder_company_app/features/auth/presentation/pages/login_pag
 import 'package:workorder_company_app/features/auth/presentation/pages/register_common_page.dart';
 import 'package:workorder_company_app/features/auth/presentation/pages/register_company_page.dart';
 import 'package:workorder_company_app/features/auth/presentation/pages/register_page.dart';
+import 'package:workorder_company_app/features/on_boarding/presentation/pages/onboarding_page.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/page/forbidden_page.dart';
 import 'package:workorder_company_app/shared/page/not_found_page.dart';
@@ -12,6 +13,10 @@ final publicRouter = [
   GoRoute(
     path: AppRoutes.login,
     builder: (_, __) => const LoginPage(),
+  ),
+  GoRoute(
+    path: AppRoutes.onBoarding,
+    builder: (_, __) => const OnboardingPage(),
   ),
   GoRoute(
     path: AppRoutes.register,

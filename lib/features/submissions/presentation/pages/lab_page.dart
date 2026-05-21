@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:workorder_company_app/features/company/domain/entities/company_entity.dart';
+import 'package:workorder_company_app/features/on_boarding/presentation/widgets/particle.dart';
 import 'package:workorder_company_app/features/system_integration/domain/entities/external_user_entity.dart';
 import 'package:workorder_company_app/features/system_integration/presentation/widgets/paired_account_view.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
@@ -21,56 +22,88 @@ class _LabPageState extends State<LabPage> {
       appBar: AppBar(
         title: const Text("Lab Page"),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(20),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              PairedAccountView(
-                  companyId: "companyId",
-                  isPaired: false,
-                  onConnect: () => context
-                      .push(AppRoutes.pairAccount.fillId("asdasdasdasd")),
-                  externalUser: ExternalUserEntity(
-                      id: "id",
-                      externalEmail: "externalEmail",
-                      externalName: "externalName",
-                      company: CompanyEntity(
-                          id: "id",
-                          name: "name",
-                          isActive: true,
-                          isFaqActive: true),
-                      pairedAt: DateTime.now()),
-                  onDetach: () {}),
-              const SizedBox(height: 20),
-              FilledButton(
-                  onPressed: () => context
-                      .push(AppRoutes.pairAccount.fillId("asdasdasdasd")),
-                  child: Text("Pairing account")),
-              FilledButton(
-                  onPressed: () => context
-                      .push(AppRoutes.pairAccount.fillId("asdasdasdasd")),
-                  child: Text("Pairing account Company Home UI")),
-              FilledButton(
-                  onPressed: () async {
-                    final uri = Uri.parse("https://google.com");
-
-                    if (await canLaunchUrl(uri)) {
-                      await launchUrl(
-                        uri,
-                        mode: LaunchMode.externalApplication,
-                      );
-                    }
-                  },
-                  child: Text("Open Google")),
-              FilledButton(
-                  onPressed: () =>
-                      context.push(AppRoutes.systemIntegrationConfig),
-                  child: Text("System Integrate Config")),
-            ],
+      body: Stack(
+        children: [
+          const Positioned.fill(
+            child: ParticleBackground(),
           ),
-        ),
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: Padding(
+              padding: EdgeInsets.all(20),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    PairedAccountView(
+                        companyId: "companyId",
+                        isPaired: false,
+                        onConnect: () => context
+                            .push(AppRoutes.pairAccount.fillId("asdasdasdasd")),
+                        externalUser: ExternalUserEntity(
+                            id: "id",
+                            externalEmail: "externalEmail",
+                            externalName: "externalName",
+                            company: CompanyEntity(
+                                id: "id",
+                                name: "name",
+                                isActive: true,
+                                isFaqActive: true),
+                            pairedAt: DateTime.now()),
+                        onDetach: () {}),
+                    const SizedBox(height: 20),
+                    FilledButton(
+                        onPressed: () => context
+                            .push(AppRoutes.pairAccount.fillId("asdasdasdasd")),
+                        child: Text("Pairing account")),
+                    FilledButton(
+                        onPressed: () => context
+                            .push(AppRoutes.pairAccount.fillId("asdasdasdasd")),
+                        child: Text("Pairing account Company Home UI")),
+                    FilledButton(
+                        onPressed: () async {
+                          final uri = Uri.parse("https://google.com");
+
+                          if (await canLaunchUrl(uri)) {
+                            await launchUrl(
+                              uri,
+                              mode: LaunchMode.externalApplication,
+                            );
+                          }
+                        },
+                        child: Text("Open Google")),
+                    FilledButton(
+                        onPressed: () =>
+                            context.push(AppRoutes.systemIntegrationConfig),
+                        child: Text("System Integrate Config")),
+                    FilledButton(
+                        onPressed: () => context.push(AppRoutes.onBoarding),
+                        child: Text("On Boarding Page")),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          // Positioned(
+          //   child: Padding(
+          //     padding: const EdgeInsets.all(20),
+          //     child: GlassCard(
+          //       child: AnimatedTypingSubtitle(
+          //         title: "Workorder App",
+          //         subtitles: [
+          //           "Konfigurasi Layanan Dinamis",
+          //           "Monitoring teknisi",
+          //           "Fitur FaQ dengan AI Powered",
+          //           "Integrasi sistem eksternal",
+          //         ],
+          //       ),
+          //     ),
+          //   ),
+          // )
+        ],
       ),
     );
   }
