@@ -8,12 +8,12 @@ import 'package:workorder_company_app/features/forms/presentation/widgets/forms_
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
 import 'package:workorder_company_app/features/positions/presentation/widget/positions_selector_container.dart';
 import 'package:workorder_company_app/features/services/domain/draft/service_work_order_config_draft.dart';
-import 'package:workorder_company_app/features/services/presentation/widgets/desider_approval_lock.dart';
+// import 'package:workorder_company_app/features/services/presentation/widgets/desider_approval_lock.dart';
 import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 import 'package:workorder_company_app/shared/widgets/dashed_button.dart';
-import 'package:workorder_company_app/shared/widgets/enum_selector.dart';
+// import 'package:workorder_company_app/shared/widgets/enum_selector.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
 import 'package:workorder_company_app/shared/widgets/item_tile_lined.dart';
 
@@ -147,24 +147,25 @@ class _WorkOrderConfigItemState extends State<WorkOrderConfigItem> {
             ],
           ),
 
-          const SizedBox(height: 16),
 
           /// Approval Access
-          ConditionalApprovalSection(
-            type: widget.draftingType,
-            child: EnumSelector(
-              title: "Akses Persetujuan",
-              isMultiSelect: false,
-              labelBuilder: (val) => val.displayName,
-              values: WorkOrderAprrovalAccess.values,
-              selectedValues: [draft.workOrderApprovalAccess],
-              onChanged: (values) {
-                if (values.isNotEmpty) {
-                  widget.onApprovalChange(values.first);
-                }
-              },
-            ),
-          ),
+          // NOTE : Since staff PIC in WorkOrder has been removed, Approval Work order is doesnt needed anymore
+          // const SizedBox(height: 8),
+          // ConditionalApprovalSection(
+          //   type: widget.draftingType,
+          //   child: EnumSelector(
+          //     title: "Akses Persetujuan",
+          //     isMultiSelect: false,
+          //     labelBuilder: (val) => val.displayName,
+          //     values: WorkOrderAprrovalAccess.values,
+          //     selectedValues: [draft.workOrderApprovalAccess],
+          //     onChanged: (values) {
+          //       if (values.isNotEmpty) {
+          //         widget.onApprovalChange(values.first);
+          //       }
+          //     },
+          //   ),
+          // ),
 
           const SizedBox(height: 20),
 

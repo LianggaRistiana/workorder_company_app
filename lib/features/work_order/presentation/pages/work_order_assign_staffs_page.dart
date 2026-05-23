@@ -19,7 +19,6 @@ import 'package:workorder_company_app/features/work_order/presentation/widgets/w
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/adaptive_split_column.dart';
 import 'package:workorder_company_app/shared/widgets/button_with_loading_state.dart';
-import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/dashed_button.dart';
@@ -128,26 +127,27 @@ class _WorkOrderAssignStaffsPageState extends State<WorkOrderAssignStaffsPage> {
   List<Widget> _staffPicArea() {
     return [
       WorkOrderPropertyView.shortView(workOrder: widget.workOrder),
-      SectionTitle("Penanggung Jawab"),
-      EmployeesSelectorContainer(
-          selectedEmployees: staffPic != null ? [staffPic!] : [],
-          onAdd: onAddStaffPic,
-          buttonBuilder: (context, onPressed, isLoading) => staffPic == null
-              ? DashedButton(
-                  icon: AppIcon.add,
-                  onTap: onPressed,
-                  borderColor: Theme.of(context).disabledColor,
-                  color: Theme.of(context).colorScheme.primary,
-                  isLoading: isLoading,
-                  title: "Pilih Penanggung Jawab",
-                )
-              : ClickableCustomCard(
-                  onTap: onPressed,
-                  child: StaffItemEditor(
-                    staff: staffPic!,
-                    isPic: true,
-                  ),
-                )),
+      // NOTE : Since staff PIC in WorkOrder has been removed, Approval Work order is doesnt needed anymore
+      // SectionTitle("Penanggung Jawab"),
+      // EmployeesSelectorContainer(
+      //     selectedEmployees: staffPic != null ? [staffPic!] : [],
+      //     onAdd: onAddStaffPic,
+      //     buttonBuilder: (context, onPressed, isLoading) => staffPic == null
+      //         ? DashedButton(
+      //             icon: AppIcon.add,
+      //             onTap: onPressed,
+      //             borderColor: Theme.of(context).disabledColor,
+      //             color: Theme.of(context).colorScheme.primary,
+      //             isLoading: isLoading,
+      //             title: "Pilih Penanggung Jawab",
+      //           )
+      //         : ClickableCustomCard(
+      //             onTap: onPressed,
+      //             child: StaffItemEditor(
+      //               staff: staffPic!,
+      //               isPic: true,
+      //             ),
+      //           )),
       const SizedBox(height: AppSpacing.lg),
     ];
   }

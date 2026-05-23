@@ -55,17 +55,18 @@ class _FullView extends StatelessWidget {
             icon: AppIcon.user,
             label: "Dibuat oleh",
             value: workOrder.createdBy?.name ?? 'Otomatis oleh Sistem'),
-        if (workOrder.staffPic != null)
-          PropertyItem.widget(
-              icon: AppIcon.pic,
-              label: "Penanggung Jawab",
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(workOrder.staffPic!.name,
-                        style: Theme.of(context).textTheme.titleSmall),
-                    Text(workOrder.staffPic!.email)
-                  ])),
+        // NOTE : Since staff PIC in WorkOrder has been removed, Approval Work order is doesnt needed anymore
+        // if (workOrder.staffPic != null)
+        //   PropertyItem.widget(
+        //       icon: AppIcon.pic,
+        //       label: "Penanggung Jawab",
+        //       child: Column(
+        //           crossAxisAlignment: CrossAxisAlignment.start,
+        //           children: [
+        //             Text(workOrder.staffPic!.name,
+        //                 style: Theme.of(context).textTheme.titleSmall),
+        //             Text(workOrder.staffPic!.email)
+        //           ])),
         PropertyItem.widget(
           icon: AppIcon.step,
           label: "Status",

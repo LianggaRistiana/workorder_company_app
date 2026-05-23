@@ -57,11 +57,12 @@ class ServiceWorkOrderItemView extends StatelessWidget {
                               child: ClickableFormCard(
                                   formShowType: formShowType,
                                   form: workOrderForm)),
-                        PropertyItem.text(
-                            icon: Icons.admin_panel_settings,
-                            label: "Hak Persetujuan Perintah Kerja",
-                            value:
-                                config.workOrderAprrovalAccessType.displayName)
+                        // NOTE : Since staff PIC in WorkOrder has been removed, Approval Work order is doesnt needed anymore
+                        // PropertyItem.text(
+                        //     icon: Icons.admin_panel_settings,
+                        //     label: "Hak Persetujuan Perintah Kerja",
+                        //     value:
+                        //         config.workOrderAprrovalAccessType.displayName)
                       ]),
                       const Divider(),
                       PropertyDisplay(showDivider: false, properties: [
