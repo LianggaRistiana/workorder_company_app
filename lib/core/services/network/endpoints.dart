@@ -120,4 +120,8 @@ class Endpoints {
   static const String accountPairing = '/customer-pairing/company/:id';
   static const String detachAccountPairing = '/customer-pairing/:id';
   static const String allAccountPairing = '/customer-pairing';
+
+  // Service Price
+  static const String servicePrice = '/service-price';
+  static const String servicePriceDetail = '/service-price/:id';
 }
