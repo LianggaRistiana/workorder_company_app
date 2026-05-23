@@ -21,7 +21,7 @@ class WorkOrderParams extends Equatable {
 
   factory WorkOrderParams.initialParams() {
     return WorkOrderParams(
-      status: WorkOrderStatusFlowStateX.cancellableStatesList,
+      status: WorkOrderStatusFlowStateX.initialParamsList,
     );
   }
 

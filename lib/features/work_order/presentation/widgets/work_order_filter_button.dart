@@ -83,7 +83,7 @@ class WorkOrderFilterButton extends StatelessWidget {
                           ],
                           SectionTitle("Pilih Status Perintah Kerja"),
                           WorkOrderStatusSelector(
-                            values: WorkOrderStatus.values,
+                            values: WorkOrderStatus.availableStatus,
                             selectedValues: state.filter.status ?? [],
                             onChanged: (selected) {
                               context.read<WorkOrdersListBloc>().add(

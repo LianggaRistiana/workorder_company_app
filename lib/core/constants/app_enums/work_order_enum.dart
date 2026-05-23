@@ -10,11 +10,12 @@ enum WorkOrderStatus {
   completed,
   failed;
 
+  // NOTE : Since all work order is auto approved, approveed WO counted as sent
   static WorkOrderStatus fromString(String value) {
     return switch (value) {
       'drafted' => WorkOrderStatus.drafted,
       'sent' => WorkOrderStatus.sent,
-      'approved' => WorkOrderStatus.approved,
+      'approved' => WorkOrderStatus.sent,
       'rejected' => WorkOrderStatus.rejected,
       'on_progress' => WorkOrderStatus.onProgress,
       'completed' => WorkOrderStatus.completed,
@@ -23,6 +24,17 @@ enum WorkOrderStatus {
       _ => throw Exception('Unknown WorkOrderStatus: $value'),
     };
   }
+
+  static const availableStatus = [
+    WorkOrderStatus.drafted,
+    WorkOrderStatus.sent,
+    // WorkOrderStatus.approved,
+    // WorkOrderStatus.rejected,
+    WorkOrderStatus.onProgress,
+    WorkOrderStatus.cancelled,
+    WorkOrderStatus.completed,
+    WorkOrderStatus.failed
+  ];
 }
 
 extension WorkOrderStatusFlowStateX on WorkOrderStatus {
@@ -37,6 +49,12 @@ extension WorkOrderStatusFlowStateX on WorkOrderStatus {
     WorkOrderStatus.approved,
     WorkOrderStatus.sent,
     WorkOrderStatus.rejected,
+  };
+
+  static const initialParams = {
+    WorkOrderStatus.drafted,
+    WorkOrderStatus.onProgress,
+    WorkOrderStatus.sent,
   };
 
   static const reportableStates = {
@@ -81,6 +99,8 @@ extension WorkOrderStatusFlowStateX on WorkOrderStatus {
 
   static List<WorkOrderStatus> get reviewedStatesList =>
       reviewedStates.toList();
+
+  static List<WorkOrderStatus> get initialParamsList => initialParams.toList();
 }
 
 extension WorkOrderStatusX on WorkOrderStatus {

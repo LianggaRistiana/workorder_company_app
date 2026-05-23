@@ -29,7 +29,8 @@ class _WorkOrderStepCardState extends State<WorkOrderStatusStepCard> {
     const defaultFlow = [
       WorkOrderStatus.drafted,
       WorkOrderStatus.sent,
-      WorkOrderStatus.approved,
+      // NOTE : Since all work order is auto approved, approveed WO is not needed anymore
+      // WorkOrderStatus.approved,
       WorkOrderStatus.onProgress,
       WorkOrderStatus.completed,
     ];
