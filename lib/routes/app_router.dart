@@ -3,6 +3,7 @@ import 'package:workorder_company_app/core/services/logger/app_logger.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/routes/common_router.dart';
 import 'package:workorder_company_app/routes/feature_routes.dart/faq_router.dart';
+import 'package:workorder_company_app/routes/feature_routes.dart/service_price_router.dart';
 import 'package:workorder_company_app/routes/feature_routes.dart/system_integration_router.dart';
 import 'package:workorder_company_app/routes/feature_routes.dart/template_config_router.dart';
 import 'package:workorder_company_app/routes/public_router.dart';
@@ -42,6 +43,7 @@ final GoRouter appRouter = GoRouter(
           ...employeesRouter,
           ...formsRouter,
           ...serviceRouter,
+          ...servicePriceRouter,
           ...invitationsRouter,
           ...membershipsRouter,
           ...publicCompaniesRouter,

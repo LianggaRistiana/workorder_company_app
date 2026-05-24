@@ -97,6 +97,8 @@ class AppRoutes {
   // On Boarding Page
   static const onBoarding = '/onboarding';
 
+  static const servicePrice = '/service-price';
+
   // TODO : Remove this later, route for lab features
   static const String lab = '/lab-feature';
 }

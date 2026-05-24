@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:workorder_company_app/features/service_price/domain/entities/service_price_entity.dart';
 
-enum ServicePriceStatus { initial, loading, success, error }
+enum ServicePriceStatus { initial, loading, loaded, success, error }
 
 class ServicePriceState extends Equatable {
   final List<ServicePriceEntity> servicePrices;
@@ -22,22 +22,29 @@ class ServicePriceState extends Equatable {
   });
 
   ServicePriceState copyWith({
-    List<ServicePriceEntity>? servicePrices,
-    ServicePriceStatus? status,
-    String? errorMessage,
-    bool? isAction,
-    bool? isActionSuccess,
-    String? actionErrorMessage,
-  }) {
-    return ServicePriceState(
-      servicePrices: servicePrices ?? this.servicePrices,
-      status: status ?? this.status,
-      errorMessage: errorMessage,
-      isAction: isAction ?? this.isAction,
-      isActionSuccess: isActionSuccess ?? this.isActionSuccess,
-      actionErrorMessage: actionErrorMessage,
-    );
-  }
+  List<ServicePriceEntity>? servicePrices,
+  ServicePriceStatus? status,
+  String? Function()? errorMessage,
+  bool? isAction,
+  bool? isActionSuccess,
+  String? Function()? actionErrorMessage,
+}) {
+  return ServicePriceState(
+    servicePrices: servicePrices ?? this.servicePrices,
+    status: status ?? this.status,
+    errorMessage:
+        errorMessage != null
+            ? errorMessage()
+            : this.errorMessage,
+    isAction: isAction ?? this.isAction,
+    isActionSuccess:
+        isActionSuccess ?? this.isActionSuccess,
+    actionErrorMessage:
+        actionErrorMessage != null
+            ? actionErrorMessage()
+            : this.actionErrorMessage,
+  );
+}
 
   @override
   List<Object?> get props => [

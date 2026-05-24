@@ -20,6 +20,7 @@ import 'package:workorder_company_app/features/system_integration/system_integra
 import 'package:workorder_company_app/features/template_config/template_config_injection.dart';
 import 'package:workorder_company_app/features/work_order/work_order_injection.dart';
 import 'package:workorder_company_app/features/work_report/work_report_injection.dart';
+import 'package:workorder_company_app/features/service_price/service_price_injection.dart';
 
 /// Service Locator
 final sl = GetIt.instance;
@@ -50,6 +51,7 @@ Future<void> init() async {
   /// Service Feature
   await initFormsFeature();
   await initServicesFeature();
+  await initServicePricesFeature();
 
   /// Work Order Trilogy Feature
   await initServiceRequestFeature();

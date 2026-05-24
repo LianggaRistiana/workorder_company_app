@@ -1,6 +1,6 @@
 import 'package:workorder_company_app/core/utils/safe_parse.dart';
 import 'package:workorder_company_app/features/service_price/domain/entities/service_price_entity.dart';
-import 'package:workorder_company_app/features/services/data/model/service_model.dart';
+import 'package:workorder_company_app/features/services/data/model/service_summary_model.dart';
 
 class ServicePriceModel extends ServicePriceEntity {
   const ServicePriceModel({
@@ -12,7 +12,7 @@ class ServicePriceModel extends ServicePriceEntity {
   factory ServicePriceModel.fromJson(Map<String, dynamic> json) {
     return ServicePriceModel(
       id: json.field("_id").reqString(),
-      service: json.field("service").reqModel(ServiceModel.fromJson),
+      service: json.field("service").reqModel(ServiceSummaryModel.fromJson),
       price: json.field("price").reqInt(),
     );
   }

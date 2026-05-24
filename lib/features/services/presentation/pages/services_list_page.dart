@@ -113,6 +113,9 @@ class _ServicesListView extends StatelessWidget {
                       case ServiceListNextAction.createWorkOrder:
                         showWorkOrderCreateConfirmDialog(context, item);
                         break;
+                      case ServiceListNextAction.selectService:
+                        context.pop(item);
+                        break;
                     }
                   },
                 ));

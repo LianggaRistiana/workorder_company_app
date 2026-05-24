@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
-import 'package:workorder_company_app/features/services/domain/entities/service_entity.dart';
+import 'package:workorder_company_app/features/services/domain/entities/service_summary_entity.dart';
 
 class ServicePriceEntity extends Equatable {
   final String id;
-  final ServiceEntity service;
+  final ServiceSummaryEntity service;
   final int price;
 
   const ServicePriceEntity({

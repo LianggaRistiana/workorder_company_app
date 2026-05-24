@@ -164,5 +164,6 @@ enum FormShowType {
 enum ServiceListNextAction {
   serviceDetail,
   createServiceRequest,
+  selectService,
   createWorkOrder;
 }

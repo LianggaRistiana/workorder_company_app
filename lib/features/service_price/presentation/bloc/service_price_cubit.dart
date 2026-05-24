@@ -5,6 +5,7 @@ import 'package:workorder_company_app/features/service_price/domain/usecases/del
 import 'package:workorder_company_app/features/service_price/domain/usecases/get_service_prices_usecase.dart';
 import 'package:workorder_company_app/features/service_price/domain/usecases/update_service_price_usecase.dart';
 import 'package:workorder_company_app/features/service_price/presentation/bloc/service_price_state.dart';
+import 'package:workorder_company_app/features/services/domain/entities/service_summary_entity.dart';
 
 class ServicePriceCubit extends Cubit<ServicePriceState> {
   final GetServicePricesUsecase _getServicePricesUsecase;
@@ -26,6 +27,7 @@ class ServicePriceCubit extends Cubit<ServicePriceState> {
   Future<void> getServicePrices() async {
     emit(state.copyWith(
       status: ServicePriceStatus.loading,
+      errorMessage: () => null,
     ));
 
     final result = await _getServicePricesUsecase();
@@ -33,19 +35,28 @@ class ServicePriceCubit extends Cubit<ServicePriceState> {
     result.fold(
       (failure) => emit(state.copyWith(
         status: ServicePriceStatus.error,
-        errorMessage: failure.message,
+        errorMessage: () => failure.message,
+        actionErrorMessage: () => null,
       )),
       (prices) => emit(state.copyWith(
-        status: ServicePriceStatus.success,
+        status: ServicePriceStatus.loaded,
         servicePrices: prices,
       )),
     );
   }
 
-  Future<void> addServicePrice(ServicePriceEntity data) async {
+  Future<void> addServicePrice(ServiceSummaryEntity service, int price) async {
+    final data = ServicePriceEntity(
+      id: '',
+      service: service,
+      price: price,
+    );
+
     emit(state.copyWith(
       isAction: true,
       isActionSuccess: false,
+      actionErrorMessage: () => null,
+      errorMessage: () => null,
     ));
 
     final result = await _addServicePriceUsecase(data);
@@ -54,7 +65,7 @@ class ServicePriceCubit extends Cubit<ServicePriceState> {
       (failure) => emit(state.copyWith(
         isAction: false,
         isActionSuccess: false,
-        actionErrorMessage: failure.message,
+        actionErrorMessage: () => failure.message,
       )),
       (newPrice) {
         final updatedList = List<ServicePriceEntity>.from(state.servicePrices)
@@ -68,11 +79,20 @@ class ServicePriceCubit extends Cubit<ServicePriceState> {
     );
   }
 
-  Future<void> updateServicePrice(ServicePriceEntity data) async {
+  Future<void> updateServicePrice(
+      String priceId, ServiceSummaryEntity service, int price) async {
     emit(state.copyWith(
       isAction: true,
       isActionSuccess: false,
+      actionErrorMessage: () => null,
+      errorMessage: () => null,
     ));
+
+    final data = ServicePriceEntity(
+      id: priceId,
+      service: service,
+      price: price,
+    );
 
     final result = await _updateServicePriceUsecase(data);
 
@@ -80,7 +100,7 @@ class ServicePriceCubit extends Cubit<ServicePriceState> {
       (failure) => emit(state.copyWith(
         isAction: false,
         isActionSuccess: false,
-        actionErrorMessage: failure.message,
+        actionErrorMessage: () => failure.message,
       )),
       (updatedPrice) {
         final updatedList = state.servicePrices.map((item) {
@@ -100,6 +120,8 @@ class ServicePriceCubit extends Cubit<ServicePriceState> {
     emit(state.copyWith(
       isAction: true,
       isActionSuccess: false,
+      actionErrorMessage: () => null,
+      errorMessage: () => null,
     ));
 
     final result = await _deleteServicePriceUsecase(id);
@@ -108,7 +130,7 @@ class ServicePriceCubit extends Cubit<ServicePriceState> {
       (failure) => emit(state.copyWith(
         isAction: false,
         isActionSuccess: false,
-        actionErrorMessage: failure.message,
+        actionErrorMessage: () => failure.message,
       )),
       (deletedPrice) {
         final updatedList =

@@ -53,8 +53,9 @@ class ServicePriceRemoteDatasourceImpl implements ServicePriceRemoteDatasource {
   @override
   ApiFuture<ServicePriceModel> updateServicePrice(
       ServicePriceModel model) async {
-    final response =
-        await _apiClient.put(Endpoints.servicePrice, data: model.toJson());
+    final response = await _apiClient.put(
+        Endpoints.servicePriceDetail.fillId(model.id),
+        data: model.toJson());
     return ApiResponse.fromJson(
       response,
       (json) => ServicePriceModel.fromJson(json),

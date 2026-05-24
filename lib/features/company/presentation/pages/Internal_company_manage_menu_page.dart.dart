@@ -96,6 +96,12 @@ class _InternalCompanyManageMenuPageState
                 context.push(AppRoutes.services);
               }),
           MenuItem(
+              icon: AppIcon.servicePrice,
+              label: "Harga Layanan",
+              onTap: () {
+                context.push(AppRoutes.servicePrice);
+              }),
+          MenuItem(
               icon: AppIcon.department,
               label: "Departemen",
               onTap: () {
