@@ -13,6 +13,9 @@ class ServiceSummaryEntity extends Equatable implements BaseServiceEntity {
   final ServiceAccessType accessType;
   @override
   final bool isActive;
+  @override
+  final int? price;
+
 
   const ServiceSummaryEntity({
     required this.id,
@@ -20,6 +23,7 @@ class ServiceSummaryEntity extends Equatable implements BaseServiceEntity {
     required this.description,
     required this.accessType,
     required this.isActive,
+    this.price,
   });
 
   @override

@@ -15,6 +15,7 @@ import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/error_body.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
 import 'package:workorder_company_app/shared/widgets/information_block.dart';
+import 'package:workorder_company_app/features/service_price/presentation/widgets/service_price_tag.dart';
 
 class PublicServicesList extends StatelessWidget {
   const PublicServicesList({super.key});
@@ -68,62 +69,72 @@ class PublicServicesItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final price = service.price;
+
     return ClickableCustomCard(
         onTap: () {
           context.push(AppRoutes.serviceRequestCreate, extra: service);
         },
-        child: Row(children: [
-          Stack(
-            children: [
-              IconBox(icon: AppIcon.service),
-              if (service.accessType == ServiceAccessType.memberOnly) ...[
-                const SizedBox(height: 8),
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: Container(
-                    padding: const EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      gradient: const LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.center,
-                        colors: [
-                          Color(0xFFFFEB97),
-                          Color.fromARGB(255, 150, 124, 10),
-                        ],
+        child: Column(
+          children: [
+            Row(children: [
+              Stack(
+                children: [
+                  IconBox(icon: AppIcon.service),
+                  if (service.accessType == ServiceAccessType.memberOnly) ...[
+                    const SizedBox(height: 8),
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: Container(
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          gradient: const LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.center,
+                            colors: [
+                              Color(0xFFFFEB97),
+                              Color.fromARGB(255, 150, 124, 10),
+                            ],
+                          ),
+                        ),
+                        child: Icon(
+                          AppIcon.membership,
+                          size: 18,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                    child: Icon(
-                      AppIcon.membership,
-                      size: 18,
-                      color: Colors.white,
-                    ),
-                  ),
-                )
-              ]
-            ],
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-              child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                service.title,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.titleMedium,
+                    )
+                  ]
+                ],
               ),
-              const SizedBox(height: 4),
-              if (service.description != null)
-                Text(
-                  service.description!,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-            ],
-          ))
-        ]));
+              const SizedBox(width: 12),
+              Expanded(
+                  child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    service.title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 4),
+                  if (service.description != null)
+                    Text(
+                      service.description!,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                ],
+              ))
+            ]),
+            if (price != null) ...[
+              const SizedBox(height: 8),
+              ServicePriceTag(price: price)
+            ]
+          ],
+        ));
   }
 }

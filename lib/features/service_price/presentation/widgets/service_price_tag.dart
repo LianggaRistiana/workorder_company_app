@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 
 class ServicePriceTag extends StatelessWidget {
@@ -23,7 +22,7 @@ class ServicePriceTag extends StatelessWidget {
         ),
         const SizedBox(width: 8),
         Expanded(
-          child: Text("Rp$price",
+          child: Text(price > 0 ? "Rp$price" : "Harga belum ditentukan",
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(

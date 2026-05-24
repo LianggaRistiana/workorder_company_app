@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
+import 'package:workorder_company_app/features/service_price/presentation/widgets/service_price_tag.dart';
 import 'package:workorder_company_app/features/services/domain/entities/service_summary_entity.dart';
 import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
@@ -38,57 +39,66 @@ class ServiceSummaryItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final price = service.price;
     return ClickableCustomCard(
       margin: const EdgeInsets.symmetric(
         horizontal: AppSpacing.md,
         vertical: AppSpacing.xs,
       ),
       onTap: onTap,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
+      child: Column(
         children: [
-          Stack(children: [
-            IconBox(isDisabled: !service.isActive, icon: AppIcon.service),
-            if (!isPublic) ...[
-              const SizedBox(height: 8),
-              Positioned(
-                bottom: 0,
-                right: 0,
-                child: CircleAvatar(
-                  radius: 12,
-                  backgroundColor: !service.isActive
-                      ? Theme.of(context).disabledColor
-                      : _accessColor(service.accessType),
-                  child: Icon(
-                    _accessIcon(service.accessType),
-                    size: 18,
-                    color: Colors.white,
-                  ),
-                ),
-              )
-            ]
-          ]),
-          const SizedBox(width: 12),
-          Expanded(
-              child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                service.title,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              const SizedBox(height: 4),
-              if (service.description != null)
-                Text(
-                  service.description!,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
+              Stack(children: [
+                IconBox(isDisabled: !service.isActive, icon: AppIcon.service),
+                if (!isPublic) ...[
+                  const SizedBox(height: 8),
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: CircleAvatar(
+                      radius: 12,
+                      backgroundColor: !service.isActive
+                          ? Theme.of(context).disabledColor
+                          : _accessColor(service.accessType),
+                      child: Icon(
+                        _accessIcon(service.accessType),
+                        size: 18,
+                        color: Colors.white,
+                      ),
+                    ),
+                  )
+                ]
+              ]),
+              const SizedBox(width: 12),
+              Expanded(
+                  child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    service.title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 4),
+                  if (service.description != null)
+                    Text(
+                      service.description!,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                ],
+              ))
             ],
-          ))
+          ),
+          if (price != null) ...[
+            const SizedBox(height: 8),
+            ServicePriceTag(price: price)
+          ]
         ],
       ),
     );

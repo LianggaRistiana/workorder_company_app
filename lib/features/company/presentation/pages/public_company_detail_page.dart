@@ -157,7 +157,8 @@ class _View extends StatelessWidget {
                 ])),
                 PropertyTitle(label: "Daftar Layanan", icon: AppIcon.service),
                 const SizedBox(height: 8),
-                PublicServicesList()
+                PublicServicesList(),
+                const SizedBox(height: 100),
               ],
             ),
           ),
@@ -189,6 +190,7 @@ class _View extends StatelessWidget {
           if (!context.mounted) return;
           if (result != null) {
             context.read<AccountActionCubit>().replaceExternalAccount(result);
+            // FIXME : REFETCH WHEN DETACH ACCOUNT OR REPLACE ACCOUNT
           }
         },
         onDetach: () {

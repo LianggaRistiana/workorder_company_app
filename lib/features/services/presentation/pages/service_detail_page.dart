@@ -173,7 +173,8 @@ class _ServiceDetailView extends StatelessWidget {
                                 ),
                                 child: Column(
                                   children: [
-                                    ServiceConfigView(service: service),
+                                    ServiceConfigView(
+                                        showPrice: true, service: service),
                                     HelpButton(
                                       title: "Ketahui jenis akses layanan",
                                       child: ServiceAccessTypeTips(),

@@ -16,6 +16,7 @@ class ServiceModel extends ServiceEntity {
     required super.serviceRequestConfig,
     required super.workOrdersConfig,
     required super.workOrderDraftingType,
+    super.price,
   });
 
   factory ServiceModel.fromJson(Map<String, dynamic> json) {
@@ -36,6 +37,7 @@ class ServiceModel extends ServiceEntity {
               .field("workOrdersConfig")
               .optListModel(WorkOrderConfigModel.fromJson) ??
           [],
+      price: json.field("price").optInt(),
     );
   }
 
@@ -57,6 +59,7 @@ class ServiceModel extends ServiceEntity {
               .field("workOrdersConfig")
               .optListModel(WorkOrderConfigModel.fromJsonTemplate) ??
           [],
+      price: json.field("price").optInt(),
     );
   }
 
@@ -73,6 +76,7 @@ class ServiceModel extends ServiceEntity {
       workOrdersConfig: entity.workOrdersConfig
           .map((e) => WorkOrderConfigModel.fromEntity(e))
           .toList(),
+      price: entity.price,
     );
   }
 
@@ -92,17 +96,18 @@ class ServiceModel extends ServiceEntity {
     };
   }
 
-  ServiceEntity toEntity() {
-    return ServiceEntity(
-        serviceRequestConfig: serviceRequestConfig,
-        workOrdersConfig: workOrdersConfig,
-        id: id,
-        title: title,
-        description: description,
-        accessType: accessType,
-        isActive: isActive,
-        workOrderDraftingType: workOrderDraftingType);
-  }
+  // ServiceEntity toEntity() {
+  //   return ServiceEntity(
+  //       serviceRequestConfig: serviceRequestConfig,
+  //       workOrdersConfig: workOrdersConfig,
+  //       id: id,
+  //       title: title,
+  //       description: description,
+  //       accessType: accessType,
+  //       isActive: isActive,
+  //       price: price,
+  //       workOrderDraftingType: workOrderDraftingType);
+  // }
 
   ServiceSummaryEntity toSummaryEntity() {
     return ServiceSummaryEntity(
@@ -110,6 +115,7 @@ class ServiceModel extends ServiceEntity {
         title: title,
         description: description,
         accessType: accessType,
+        price: price,
         isActive: isActive);
   }
 }

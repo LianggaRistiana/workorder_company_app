@@ -6,4 +6,5 @@ abstract class BaseServiceEntity {
   String? get description;
   ServiceAccessType get accessType;
   bool get isActive;
+  int? get price;
 }

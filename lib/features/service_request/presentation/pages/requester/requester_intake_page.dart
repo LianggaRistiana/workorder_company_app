@@ -82,7 +82,8 @@ class _RequesterIntakePageState extends State<RequesterIntakePage> {
               builder: (context, state) {
                 return AdaptiveSplitColumn(
                   leftChildren: [
-                    ServiceSummaryPropertyView(service: widget.baseService),
+                    ServiceSummaryPropertyView(
+                      service: widget.baseService),
                     const SizedBox(height: 16),
                   ],
                   rightChildren: [

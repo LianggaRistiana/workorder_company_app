@@ -15,6 +15,8 @@ class ServiceEntity extends Equatable implements BaseServiceEntity {
   final ServiceAccessType accessType;
   @override
   final bool isActive;
+  @override
+  final int? price;
 
   final WorkOrderDraftingType workOrderDraftingType;
   final ServiceRequestConfigEntity serviceRequestConfig;
@@ -29,6 +31,7 @@ class ServiceEntity extends Equatable implements BaseServiceEntity {
     required this.isActive,
     required this.serviceRequestConfig,
     required this.workOrdersConfig,
+    this.price,
   });
 
   @override
@@ -41,6 +44,7 @@ class ServiceEntity extends Equatable implements BaseServiceEntity {
         serviceRequestConfig,
         workOrderDraftingType,
         workOrdersConfig,
+        price,
       ];
 
   @override

@@ -4,12 +4,14 @@ import 'package:workorder_company_app/features/services/domain/entities/service_
 import 'package:workorder_company_app/features/services/domain/entities/service_summary_entity.dart';
 
 class ServiceSummaryModel extends ServiceSummaryEntity {
-  const ServiceSummaryModel(
-      {required super.id,
-      required super.title,
-      super.description,
-      required super.accessType,
-      required super.isActive});
+  const ServiceSummaryModel({
+    required super.id,
+    required super.title,
+    super.description,
+    required super.accessType,
+    required super.isActive,
+    super.price,
+  });
 
   factory ServiceSummaryModel.fromJson(Map<String, dynamic> json) {
     return ServiceSummaryModel(
@@ -21,6 +23,7 @@ class ServiceSummaryModel extends ServiceSummaryEntity {
       accessType:
           ServiceAccessType.fromString(safeParse<String>(json, "accessType")),
       isActive: safeParse<bool>(json, "isActive"),
+      price: json.field("price").optInt(),
     );
   }
 
@@ -31,6 +34,7 @@ class ServiceSummaryModel extends ServiceSummaryEntity {
       description: description,
       accessType: accessType,
       isActive: isActive,
+      price: price,
     );
   }
 
@@ -41,6 +45,7 @@ class ServiceSummaryModel extends ServiceSummaryEntity {
       description: entity.description,
       accessType: entity.accessType,
       isActive: entity.isActive,
+      price: entity.price,
     );
   }
 }
