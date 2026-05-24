@@ -167,7 +167,7 @@ class _View extends StatelessWidget {
   }
 
   Widget _buildAccountPairingButton(String companyId) {
-    // TODO : Add listener to detach state
+    // FIXME : Add listener to detach state
     return BlocBuilder<AccountActionCubit, AccountActionState>(
         builder: (context, state) {
       if (state.status == AccountActionStateStatus.loading ||
