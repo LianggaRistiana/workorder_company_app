@@ -7,3 +7,5 @@ export 'package:workorder_company_app/core/constants/app_enums/user_enum.dart';
 export 'package:workorder_company_app/core/constants/app_enums/invitation_enum.dart';
 export 'package:workorder_company_app/core/constants/app_enums/faq_enum.dart';
 export 'package:workorder_company_app/core/constants/app_enums/params_enum.dart';
+export 'package:workorder_company_app/core/constants/app_enums/system_integration_enum.dart';
+

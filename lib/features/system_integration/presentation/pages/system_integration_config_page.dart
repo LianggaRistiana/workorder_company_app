@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
+import 'package:workorder_company_app/features/system_integration/domain/entities/provider_integration_data_entity.dart';
 import 'package:workorder_company_app/features/system_integration/presentation/bloc/system_integration_config.dart/system_integration_config_cubit.dart';
 import 'package:workorder_company_app/features/system_integration/presentation/bloc/system_integration_config.dart/system_integration_config_state.dart';
 import 'package:workorder_company_app/features/system_integration/presentation/controller/system_integration_config_controllers.dart';
+import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 import 'package:workorder_company_app/shared/widgets/button_with_loading_state.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 import 'package:workorder_company_app/shared/widgets/custom_switch_tile.dart';
+import 'package:workorder_company_app/shared/widgets/dashed_button.dart';
 import 'package:workorder_company_app/shared/widgets/header_of_page.dart';
 import 'package:workorder_company_app/shared/widgets/information_block.dart';
 
@@ -43,6 +48,8 @@ class _SystemIntegrationConfigPageState
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return BlocProvider(
       create: (context) =>
           sl<SystemIntegrationConfigCubit>()..loadProviderIntegrationData(),
@@ -73,30 +80,40 @@ class _SystemIntegrationConfigPageState
                   padding:
                       const EdgeInsets.symmetric(horizontal: AppSpacing.md),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       HeaderOfPage(
-                          title: 'Konfigurasi Integrasi sistem',
-                          icon: AppIcon.systemIntegration),
-                      Text(
-                          "Hubungkan sistem internal perusahaan anda dengan platform kami agar pelanggan dapat mengaitkan akun mereka dan memperoleh akses ke layanan khusus pelanggan secara otomatis."),
+                        title: 'Konfigurasi Integrasi Sistem',
+                        icon: AppIcon.systemIntegration,
+                      ),
+
+                      const SizedBox(height: AppSpacing.sm),
+
+                      const Text(
+                        "Hubungkan sistem internal perusahaan anda dengan platform kami agar pelanggan dapat mengaitkan akun mereka dan memperoleh akses ke layanan khusus pelanggan secara otomatis.",
+                      ),
+
                       const SizedBox(height: AppSpacing.md),
                       const Divider(),
                       const SizedBox(height: AppSpacing.md),
+
+                      /// LOADING STATE
                       if (state.isLoading)
-                        Container(
-                            padding: const EdgeInsets.symmetric(vertical: 120),
-                            child: AppLoading())
-                      else ...[
-                        ..._buildFormView(),
-                        const SizedBox(height: AppSpacing.md),
-                        InformationBlock.info(
-                            "Pastikan URL dan secret key yang dimasukkan valid dan dapat diakses oleh sistem kami untuk memastikan proses integrasi berjalan dengan aman dan lancar.")
-                      ],
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 120),
+                          child: Center(child: AppLoading()),
+                        )
+                      else
+                        _buildIntegrationContent(theme, data),
+
                       const SizedBox(height: AppSpacing.md),
                       const Divider(),
+
                       TextButton(
-                          onPressed: () {},
-                          child: Text("Dokumentasi Pengembang")),
+                        onPressed: () {},
+                        child: const Text("Dokumentasi Pengembang"),
+                      ),
+
                       const SizedBox(height: AppSpacing.md),
                     ],
                   ),
@@ -135,22 +152,99 @@ class _SystemIntegrationConfigPageState
     );
   }
 
+  Widget _buildIntegrationContent(
+      ThemeData theme, ProviderIntegrationDataEntity? data) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        /// SWITCH
+        ValueListenableBuilder<bool>(
+          valueListenable: _controllers.isIntegrationActive,
+          builder: (context, isActive, _) {
+            return CustomSwitchTile(
+              title: "Integrasi Sistem",
+              description:
+                  "Saat diaktifkan, kustomer anda dapat menghubungkan akun mereka ke akun di sistem anda",
+              value: isActive,
+              onChanged: (value) {
+                _controllers.isIntegrationActive.value = value;
+              },
+            );
+          },
+        ),
+
+        const SizedBox(height: AppSpacing.md),
+
+        /// SEGMENTED BUTTON
+        ValueListenableBuilder<IntegrationType>(
+          valueListenable: _controllers.integrationType,
+          builder: (context, value, _) {
+            return SegmentedButton<IntegrationType>(
+              segments: IntegrationType.values.map((type) {
+                return ButtonSegment(
+                  value: type,
+                  label: Text(type.displayName()),
+                );
+              }).toList(),
+              selected: {value},
+              onSelectionChanged: (newSelection) {
+                _controllers.integrationType.value = newSelection.first;
+              },
+            );
+          },
+        ),
+
+        const SizedBox(height: AppSpacing.md),
+
+        /// CONDITIONAL CONTENT (IMPORTANT FIX)
+        ValueListenableBuilder<IntegrationType>(
+          valueListenable: _controllers.integrationType,
+          builder: (context, type, _) {
+            if (type == IntegrationType.externalSystem) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ..._buildFormView(),
+                  const SizedBox(height: AppSpacing.md),
+                  InformationBlock.info(
+                    "Pastikan URL dan secret key yang dimasukkan valid dan dapat diakses oleh sistem kami untuk memastikan proses integrasi berjalan dengan aman dan lancar.",
+                  ),
+                ],
+              );
+            }
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                DashedButton(
+                  icon: AppIcon.memberCode,
+                  height: 120,
+                  title: "Konfigurasi kode langganan",
+                  borderColor: theme.colorScheme.primary,
+                  color: theme.colorScheme.primary,
+                  onTap: () {
+                    if (data == null || _controllers.isDirty(data)) {
+                      context.showError("Simpan data terlebih dahulu");
+                      return;
+                    }
+                    context.pop();
+                    context.push(AppRoutes.membershipsCodes);
+                  },
+                ),
+                const SizedBox(height: AppSpacing.sm),
+                InformationBlock.info(
+                  "Konfigurasi kode langganan anda melalui halaman diatas",
+                ),
+              ],
+            );
+          },
+        ),
+      ],
+    );
+  }
+
   List<Widget> _buildFormView() {
     return [
-      ValueListenableBuilder<bool>(
-        valueListenable: _controllers.isIntegrationActive,
-        builder: (context, isActive, child) {
-          return CustomSwitchTile(
-            title: "Integrasi Sistem",
-            description:
-                "Saat diaktifkan, kustomer anda dapat menghubungkan akun mereka ke akun di sistem anda",
-            value: isActive,
-            onChanged: (value) {
-              _controllers.isIntegrationActive.value = value;
-            },
-          );
-        },
-      ),
       const SizedBox(height: AppSpacing.md),
       CustomInputField(
         label: "Eksternal Login Url",

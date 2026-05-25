@@ -1,24 +1,28 @@
+import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/utils/safe_parse.dart';
 import 'package:workorder_company_app/features/system_integration/domain/entities/provider_integration_data_entity.dart';
 
 class ProviderIntegrationDataModel extends ProviderIntegrationDataEntity {
-  const ProviderIntegrationDataModel({
-    required super.externalLoginUrl,
-    required super.externalVerifyUrl,
-    required super.secretKey,
-    required super.externalCheckStatusMembershipsUrl,
-    required super.isIntegrationActive,
-  });
+  const ProviderIntegrationDataModel(
+      {required super.externalLoginUrl,
+      required super.externalVerifyUrl,
+      required super.secretKey,
+      required super.externalCheckStatusMembershipsUrl,
+      required super.isIntegrationActive,
+      super.integrationType});
 
   factory ProviderIntegrationDataModel.fromJson(Map<String, dynamic> json) {
     return ProviderIntegrationDataModel(
-      externalLoginUrl: json.field("external_login_url").optString() ?? "",
-      externalVerifyUrl: json.field("external_verify_url").optString() ?? "",
-      secretKey: json.field("secret_key").optString() ?? "",
-      externalCheckStatusMembershipsUrl:
-          json.field("external_check_status_url").optString() ?? "",
-      isIntegrationActive: json.field("is_integration_active").reqBool(),
-    );
+        externalLoginUrl: json.field("external_login_url").optString() ?? "",
+        externalVerifyUrl: json.field("external_verify_url").optString() ?? "",
+        secretKey: json.field("secret_key").optString() ?? "",
+        externalCheckStatusMembershipsUrl:
+            json.field("external_check_status_url").optString() ?? "",
+        isIntegrationActive: json.field("is_integration_active").reqBool(),
+        integrationType: json
+                .field("integration_type")
+                .optEnum<IntegrationType>(IntegrationType.fromString) ??
+            IntegrationType.externalSystem);
   }
 
   factory ProviderIntegrationDataModel.fromEntity(
@@ -31,6 +35,7 @@ class ProviderIntegrationDataModel extends ProviderIntegrationDataEntity {
       externalCheckStatusMembershipsUrl:
           providerIntegrationData.externalCheckStatusMembershipsUrl,
       isIntegrationActive: providerIntegrationData.isIntegrationActive,
+      integrationType: providerIntegrationData.integrationType,
     );
   }
 
@@ -38,10 +43,10 @@ class ProviderIntegrationDataModel extends ProviderIntegrationDataEntity {
     return {
       "external_login_url": externalLoginUrl,
       "external_verify_url": externalVerifyUrl,
-      "external_check_status_url":
-          externalCheckStatusMembershipsUrl,
+      "external_check_status_url": externalCheckStatusMembershipsUrl,
       "secret_key": secretKey,
       "is_integration_active": isIntegrationActive,
+      "integration_type": integrationType.toSnakeCase(),
     };
   }
 }

@@ -55,6 +55,7 @@ class AppRoutes {
   // Membership
   static const memberships = '/memberships';
   static const membershipsCodes = '/memberships/codes';
+  static const uploadMemberCode = '/memberships/codes/upload';
   static const membershipsClaim = '/memberships/claim';
 
   // Work Order

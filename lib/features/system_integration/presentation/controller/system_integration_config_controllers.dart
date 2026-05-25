@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/features/system_integration/domain/entities/provider_integration_data_entity.dart';
 
 class SystemIntegrationConfigControllers {
@@ -7,6 +8,7 @@ class SystemIntegrationConfigControllers {
   final TextEditingController externalCheckStatusMembershipsUrl;
   final TextEditingController secretKey;
   final ValueNotifier<bool> isIntegrationActive;
+  final ValueNotifier<IntegrationType> integrationType;
 
   SystemIntegrationConfigControllers({
     required this.externalLoginUrl,
@@ -14,6 +16,7 @@ class SystemIntegrationConfigControllers {
     required this.externalCheckStatusMembershipsUrl,
     required this.secretKey,
     required this.isIntegrationActive,
+    required this.integrationType,
   });
 
   factory SystemIntegrationConfigControllers.create() {
@@ -23,6 +26,7 @@ class SystemIntegrationConfigControllers {
       externalVerifyUrl: TextEditingController(),
       secretKey: TextEditingController(),
       isIntegrationActive: ValueNotifier(false),
+      integrationType: ValueNotifier(IntegrationType.externalSystem),
     );
   }
 
@@ -33,6 +37,7 @@ class SystemIntegrationConfigControllers {
         data.externalCheckStatusMembershipsUrl;
     secretKey.text = data.secretKey;
     isIntegrationActive.value = data.isIntegrationActive;
+    integrationType.value = data.integrationType;
   }
 
   bool isDirty(ProviderIntegrationDataEntity data) {
@@ -41,7 +46,8 @@ class SystemIntegrationConfigControllers {
         secretKey.text != data.secretKey ||
         externalCheckStatusMembershipsUrl.text !=
             data.externalCheckStatusMembershipsUrl ||
-        isIntegrationActive.value != data.isIntegrationActive;
+        isIntegrationActive.value != data.isIntegrationActive ||
+        integrationType.value != data.integrationType;
   }
 
   ProviderIntegrationDataEntity get buildData => ProviderIntegrationDataEntity(
@@ -51,6 +57,7 @@ class SystemIntegrationConfigControllers {
         externalVerifyUrl: externalVerifyUrl.text,
         secretKey: secretKey.text,
         isIntegrationActive: isIntegrationActive.value,
+        integrationType: integrationType.value,
       );
 
   void dispose() {
@@ -59,5 +66,6 @@ class SystemIntegrationConfigControllers {
     externalCheckStatusMembershipsUrl.dispose();
     secretKey.dispose();
     isIntegrationActive.dispose();
+    integrationType.dispose();
   }
 }
