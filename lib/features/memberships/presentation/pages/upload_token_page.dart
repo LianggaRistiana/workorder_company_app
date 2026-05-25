@@ -2,7 +2,13 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
+import 'package:workorder_company_app/features/memberships/presentation/bloc/upload_csv/upload_membership_csv_cubit.dart';
+import 'package:workorder_company_app/features/memberships/presentation/bloc/upload_csv/upload_membership_csv_state.dart';
+import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/dashed_button.dart';
 import 'package:workorder_company_app/shared/widgets/information_block.dart';
 
@@ -16,7 +22,6 @@ class UploadTokenPage extends StatefulWidget {
 class _UploadTokenPageState extends State<UploadTokenPage> {
   File? _selectedFile;
   String? _fileName;
-  bool _isLoading = false;
 
   Future<void> _pickCsvFile() async {
     final result = await FilePicker.pickFiles(
@@ -36,39 +41,9 @@ class _UploadTokenPageState extends State<UploadTokenPage> {
     });
   }
 
-  Future<void> _uploadFile() async {
+  void _uploadFile(BuildContext context) {
     if (_selectedFile == null) return;
-
-    setState(() {
-      _isLoading = true;
-    });
-
-    try {
-      // TODO: replace dengan API kamu
-      await Future.delayed(const Duration(seconds: 2));
-
-      if (!mounted) return;
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("File berhasil diupload"),
-        ),
-      );
-    } catch (e) {
-      if (!mounted) return;
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Upload gagal: $e"),
-        ),
-      );
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    }
+    context.read<UploadMembershipCsvCubit>().upload(_selectedFile!.path);
   }
 
   void _removeFile() {
@@ -82,78 +57,97 @@ class _UploadTokenPageState extends State<UploadTokenPage> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Upload File CSV'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            InformationBlock.info(
-                "Pastikan file CSV valid dengan mengikuti format berikut:"),
-            CsvSchemaInfo(),
+    return BlocProvider(
+      create: (_) => sl<UploadMembershipCsvCubit>(),
+      child: BlocConsumer<UploadMembershipCsvCubit, UploadMembershipCsvState>(
+        listener: (context, state) {
+          if (state.status == UploadMembershipCsvStatus.success) {
+            context.showSuccess("Berkas berhasil diunggah");
+            context.pop(state.membershipCodes);
+          } else if (state.status == UploadMembershipCsvStatus.failure) {
+            context.showError(
+                state.errorMessage ?? "Terjadi kesalahan saat meunggah berkas");
+          }
+        },
+        builder: (context, state) {
+          final isLoading = state.status == UploadMembershipCsvStatus.loading;
 
-            const SizedBox(height: 20),
-
-            /// PICK FILE BUTTON
-            DashedButton(
-              icon: AppIcon.file,
-              height: 120,
-              title: _fileName ?? "Upload File CSV",
-              borderColor: theme.colorScheme.primary,
-              color: theme.colorScheme.primary,
-              onTap: _pickCsvFile,
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Upload File CSV'),
             ),
+            body: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  InformationBlock.info(
+                      "Pastikan file CSV valid dengan mengikuti format berikut:"),
+                  CsvSchemaInfo(),
 
-            const SizedBox(height: 16),
+                  const SizedBox(height: 20),
 
-            /// FILE INFO CARD
-            if (_selectedFile != null)
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  border: Border.all(color: theme.dividerColor),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Row(
-                  children: [
-                    const Icon(Icons.description),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        _fileName ?? "-",
-                        overflow: TextOverflow.ellipsis,
+                  /// PICK FILE BUTTON
+                  DashedButton(
+                    icon: AppIcon.file,
+                    height: 120,
+                    title: _fileName ?? "Upload File CSV",
+                    borderColor: theme.colorScheme.primary,
+                    color: theme.colorScheme.primary,
+                    onTap: isLoading ? null : _pickCsvFile,
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  /// FILE INFO CARD
+                  if (_selectedFile != null)
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: theme.dividerColor),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.description),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              _fileName ?? "-",
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: isLoading ? null : _removeFile,
+                            icon: const Icon(Icons.close),
+                          )
+                        ],
                       ),
                     ),
-                    IconButton(
-                      onPressed: _removeFile,
-                      icon: const Icon(Icons.close),
-                    )
-                  ],
-                ),
-              ),
 
-            const Spacer(),
+                  const Spacer(),
 
-            /// UPLOAD BUTTON
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed:
-                    _selectedFile == null || _isLoading ? null : _uploadFile,
-                child: _isLoading
-                    ? const SizedBox(
-                        height: 18,
-                        width: 18,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : const Text("Upload"),
+                  /// UPLOAD BUTTON
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: _selectedFile == null || isLoading
+                          ? null
+                          : () => _uploadFile(context),
+                      child: isLoading
+                          ? const SizedBox(
+                              height: 18,
+                              width: 18,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : const Text("Upload"),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
