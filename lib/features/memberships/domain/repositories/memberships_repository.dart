@@ -11,6 +11,6 @@ abstract class MembershipsRepository {
     String token,
     String companyId,
   );
-  FutureEither<MembershipCodeEntity> deleteMembership(String id);
+  FutureEither<MembershipCodeEntity> deleteMemberShipCode(String id);
   FutureEitherList<MemberEntity> getMembers();
 }

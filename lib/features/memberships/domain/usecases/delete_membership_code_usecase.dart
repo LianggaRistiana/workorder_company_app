@@ -8,6 +8,6 @@ class DeleteMembershipCodeUsecase {
   DeleteMembershipCodeUsecase(this._repository);
 
   FutureEither<MembershipCodeEntity> call(String id) async {
-    return await _repository.deleteMembership(id);
+    return await _repository.deleteMemberShipCode(id);
   }
 }

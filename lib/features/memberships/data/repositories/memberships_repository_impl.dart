@@ -22,9 +22,9 @@ class MembershipsRepositoryImpl extends MembershipsRepository {
   }
 
   @override
-  FutureEither<MembershipCodeEntity> deleteMembership(String id) {
+  FutureEither<MembershipCodeEntity> deleteMemberShipCode(String id) {
     return safeCall(() async {
-      final response = await _remoteDatasource.deleteMembership(id);
+      final response = await _remoteDatasource.deleteMemberShipCode(id);
       return response.data;
     });
   }

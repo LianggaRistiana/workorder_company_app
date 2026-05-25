@@ -14,7 +14,7 @@ abstract class MembershipsRemoteDatasource {
   ApiFutureList<MemberModel> getMembers();
   ApiFutureList<MembershipCodeModel> uploadMembershipCsvFile(String filePath);
   ApiFuture<ExternalUserModel> claimMembership(String token, String companyId);
-  ApiFuture<MembershipCodeModel> deleteMembership(String id);
+  ApiFuture<MembershipCodeModel> deleteMemberShipCode(String id);
 }
 
 class MembershipsRemoteDatasourceImpl implements MembershipsRemoteDatasource {
@@ -38,9 +38,9 @@ class MembershipsRemoteDatasourceImpl implements MembershipsRemoteDatasource {
   }
 
   @override
-  ApiFuture<MembershipCodeModel> deleteMembership(String id) async {
+  ApiFuture<MembershipCodeModel> deleteMemberShipCode(String id) async {
     final response =
-        await _apiClient.delete(Endpoints.deleteMembership.fillId(id));
+        await _apiClient.delete(Endpoints.membershipCodes.fillId(id));
     return ApiResponse<MembershipCodeModel>.fromJson(
       response,
       (data) => MembershipCodeModel.fromJson(data),
