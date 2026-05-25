@@ -1,36 +1,26 @@
 import 'package:equatable/equatable.dart';
-import 'package:workorder_company_app/features/auth/domain/entities/user_summary_entity.dart';
 
 class MembershipCodeEntity extends Equatable {
   final String id;
-  final String code;
-  final bool isClaimed;
-  final UserSummaryEntity? claimedBy;
+  final String token;
+  final String externalCustomerEmail;
+  final String externalCustomerName;
   final DateTime? claimedAt;
-  final DateTime createdAt;
-  final DateTime? updatedAt;
-  final DateTime? deletedAt;
 
   const MembershipCodeEntity({
     required this.id,
-    required this.code,
-    required this.isClaimed,
-    this.claimedBy,
+    required this.token,
     this.claimedAt,
-    required this.createdAt,
-    this.updatedAt,
-    this.deletedAt,
+    required this.externalCustomerEmail,
+    required this.externalCustomerName,
   });
 
   @override
   List<Object?> get props => [
         id,
-        code,
-        isClaimed,
-        claimedBy,
+        token,
         claimedAt,
-        createdAt,
-        updatedAt,
-        deletedAt,
+        externalCustomerEmail,
+        externalCustomerName,
       ];
 }

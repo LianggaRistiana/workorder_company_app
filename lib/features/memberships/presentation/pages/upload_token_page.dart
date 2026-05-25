@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/shared/widgets/dashed_button.dart';
+import 'package:workorder_company_app/shared/widgets/information_block.dart';
 
 class UploadTokenPage extends StatefulWidget {
   const UploadTokenPage({super.key});
@@ -90,9 +91,9 @@ class _UploadTokenPageState extends State<UploadTokenPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "Upload file CSV yang berisi token atau data yang akan diproses oleh sistem.",
-            ),
+            InformationBlock.info(
+                "Pastikan file CSV valid dengan mengikuti format berikut:"),
+            CsvSchemaInfo(),
 
             const SizedBox(height: 20),
 
@@ -154,6 +155,109 @@ class _UploadTokenPageState extends State<UploadTokenPage> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class CsvSchemaInfo extends StatelessWidget {
+  const CsvSchemaInfo({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    final schema = const [
+      ("external_customer_email", "EMAIL"),
+      ("external_customer_name", "STRING"),
+      ("token", "STRING"),
+    ];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 12),
+
+        /// TABLE STYLE
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: theme.dividerColor),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Column(
+            children: [
+              /// HEADER
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 10,
+                  horizontal: 12,
+                ),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primaryContainer,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(8),
+                    topRight: Radius.circular(8),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: Text("Field",
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ))),
+                    SizedBox(width: 12),
+                    Expanded(
+                        child: Text("type",
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ))),
+                  ],
+                ),
+              ),
+
+              /// ROWS
+              ...schema.map((item) {
+                return Container(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 10,
+                    horizontal: 12,
+                  ),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      top: BorderSide(color: theme.dividerColor),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          item.$1,
+                          style: const TextStyle(
+                            fontFamily: "monospace",
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(item.$2),
+                      ),
+                    ],
+                  ),
+                );
+              }),
+            ],
+          ),
+        ),
+
+        const SizedBox(height: 12),
+
+        Text(
+          "Header CSV harus sesuai persis (case-sensitive)",
+          style: theme.textTheme.bodySmall?.copyWith(
+            color: theme.colorScheme.error,
+          ),
+        ),
+      ],
     );
   }
 }

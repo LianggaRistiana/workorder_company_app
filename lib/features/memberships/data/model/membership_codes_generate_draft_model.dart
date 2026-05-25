@@ -1,6 +1,6 @@
 import 'package:workorder_company_app/features/memberships/domain/entitties/membership_codes_generate_draft_entity.dart';
 
-
+@Deprecated("we're no longer use this feature")
 class MembershipCodesGenerateDraftModel
     extends MembershipCodesGenerateDraftEntity {
   const MembershipCodesGenerateDraftModel({

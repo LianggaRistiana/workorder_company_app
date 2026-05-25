@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-
+@Deprecated("we're no longer use this feature")
 class MembershipCodesGenerateDraftEntity extends Equatable {
   final int amount;
   final String prefix;

@@ -1,20 +1,19 @@
+import 'package:dio/dio.dart';
 import 'package:workorder_company_app/core/services/network/api_client.dart';
 import 'package:workorder_company_app/core/services/network/api_response.dart';
 import 'package:workorder_company_app/core/services/network/endpoints.dart';
 import 'package:workorder_company_app/core/types/future_api.dart';
 import 'package:workorder_company_app/core/utils/safe_mapper.dart';
-import 'package:workorder_company_app/features/company/data/models/company_model.dart';
 import 'package:workorder_company_app/features/memberships/data/model/member_model.dart';
 import 'package:workorder_company_app/features/memberships/data/model/membership_code_model.dart';
-import 'package:workorder_company_app/features/memberships/data/model/membership_codes_generate_draft_model.dart';
+import 'package:workorder_company_app/features/system_integration/data/model/external_user_model.dart';
 import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
 
 abstract class MembershipsRemoteDatasource {
   ApiFutureList<MembershipCodeModel> getMembershipCodes();
   ApiFutureList<MemberModel> getMembers();
-  ApiFutureList<MembershipCodeModel> generateMembershipCodes(
-      MembershipCodesGenerateDraftModel draft);
-  ApiFuture<CompanyModel> claimMembership(String code);
+  ApiFutureList<MembershipCodeModel> uploadMembershipCsvFile(String filePath);
+  ApiFuture<ExternalUserModel> claimMembership(String token, String companyId);
   ApiFuture<MembershipCodeModel> deleteMembership(String id);
 }
 
@@ -24,12 +23,17 @@ class MembershipsRemoteDatasourceImpl implements MembershipsRemoteDatasource {
   MembershipsRemoteDatasourceImpl(this._apiClient);
 
   @override
-  ApiFuture<CompanyModel> claimMembership(String code) async {
-    final response =
-        await _apiClient.post(Endpoints.claimMembership, data: {"code": code});
-    return ApiResponse<CompanyModel>.fromJson(
+  ApiFuture<ExternalUserModel> claimMembership(
+    String token,
+    String companyId,
+  ) async {
+    final response = await _apiClient.post(Endpoints.claimMembership, data: {
+      "code": token,
+      "companyId": companyId,
+    });
+    return ApiResponse<ExternalUserModel>.fromJson(
       response,
-      (data) => CompanyModel.fromJson(data["company"]),
+      (data) => ExternalUserModel.fromJson(data),
     );
   }
 
@@ -44,20 +48,6 @@ class MembershipsRemoteDatasourceImpl implements MembershipsRemoteDatasource {
   }
 
   @override
-  ApiFutureList<MembershipCodeModel> generateMembershipCodes(
-      MembershipCodesGenerateDraftModel draft) async {
-    final response = await _apiClient.post(Endpoints.generateMembershipCode,
-        data: draft.toJson());
-    return ApiResponse.fromJson(
-      response,
-      (data) => SafeMapper.mapList(
-        data,
-        (json) => MembershipCodeModel.fromJson(json),
-      ),
-    );
-  }
-
-  @override
   ApiFutureList<MembershipCodeModel> getMembershipCodes() async {
     final response = await _apiClient.get(Endpoints.membershipCodes);
     return ApiResponse.fromJson(
@@ -68,7 +58,7 @@ class MembershipsRemoteDatasourceImpl implements MembershipsRemoteDatasource {
       ),
     );
   }
-  
+
   @override
   ApiFutureList<MemberModel> getMembers() async {
     final response = await _apiClient.get(Endpoints.memberships);
@@ -79,5 +69,22 @@ class MembershipsRemoteDatasourceImpl implements MembershipsRemoteDatasource {
         (json) => MemberModel.fromJson(json),
       ),
     );
+  }
+
+  @override
+  ApiFutureList<MembershipCodeModel> uploadMembershipCsvFile(
+      String filePath) async {
+    final formData = FormData.fromMap({
+      "file": await MultipartFile.fromFile(filePath),
+    });
+
+    final response = await _apiClient.postFormData(Endpoints.membershipCodes,
+        data: formData);
+    return ApiResponse.fromJson(
+        response,
+        (response) => SafeMapper.mapList(
+              response,
+              (json) => MembershipCodeModel.fromJson(json),
+            ));
   }
 }

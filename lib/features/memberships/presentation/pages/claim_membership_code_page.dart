@@ -6,6 +6,7 @@ import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/custom_input_field.dart';
 import 'package:workorder_company_app/features/memberships/presentation/bloc/claim/claim_membership_code_cubit.dart';
 
+@Deprecated("we're no longer use this feature")
 class ClaimMembershipCodePage extends StatelessWidget {
   const ClaimMembershipCodePage({super.key});
 
@@ -45,7 +46,9 @@ class _ClaimMembershipCodeViewState extends State<_ClaimMembershipCodeView> {
   void _submit() {
     if (!_formKey.currentState!.validate()) return;
 
-    context.read<ClaimMembershipCodeCubit>().claim(_codeController.text.trim());
+    context
+        .read<ClaimMembershipCodeCubit>()
+        .claim(_codeController.text.trim(), "dummy-id");
   }
 
   @override

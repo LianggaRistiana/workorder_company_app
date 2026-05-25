@@ -8,10 +8,16 @@ class ClaimMembershipCodeCubit extends Cubit<ClaimMembershipCodeState> {
   ClaimMembershipCodeCubit(this._claimMembershipCode)
       : super(const ClaimMembershipCodeState());
 
-  Future<void> claim(String code) async {
+  Future<void> claim(
+    String code,
+    String companyId,
+  ) async {
     emit(state.copyWith(status: ClaimMembershipCodeStatus.loading));
 
-    final result = await _claimMembershipCode(code);
+    final result = await _claimMembershipCode(
+      code,
+      companyId,
+    );
 
     result.fold(
       (failure) => emit(state.copyWith(

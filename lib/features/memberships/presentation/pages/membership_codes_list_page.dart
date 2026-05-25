@@ -6,7 +6,6 @@ import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/features/memberships/presentation/bloc/code_list/membership_code_list_bloc.dart';
 import 'package:workorder_company_app/features/memberships/presentation/bloc/code_list/membership_code_list_event.dart';
 import 'package:workorder_company_app/features/memberships/presentation/bloc/code_list/membership_code_list_state.dart';
-import 'package:workorder_company_app/features/memberships/presentation/bloc/generate_code/generate_membership_code_cubit.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
@@ -26,9 +25,9 @@ class MembershipCodesListPage extends StatelessWidget {
           create: (_) => sl<MembershipCodeListBloc>()
             ..add(GetMembershipCodeListRequested()),
         ),
-        BlocProvider<GenerateMembershipCodeCubit>(
-          create: (_) => sl<GenerateMembershipCodeCubit>(),
-        ),
+        // BlocProvider<GenerateMembershipCodeCubit>(
+        //   create: (_) => sl<GenerateMembershipCodeCubit>(),
+        // ),
       ],
       child: const _MembershipCodesListView(),
     );
@@ -74,7 +73,7 @@ class _MembershipCodesListView extends StatelessWidget {
         ),
         itemBuilder: (item) => Padding(
           padding: const EdgeInsets.all(8.0),
-          child: ItemTileLined(child: Text(item.code)),
+          child: ItemTileLined(child: Text(item.token)),
         ),
       );
     });
