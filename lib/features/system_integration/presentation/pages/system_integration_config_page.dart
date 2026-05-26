@@ -103,6 +103,8 @@ class _SystemIntegrationConfigPageState
                           padding: EdgeInsets.symmetric(vertical: 120),
                           child: Center(child: AppLoading()),
                         )
+                      else if (state.providerIntegrationData == null)
+                        InformationBlock.error("Gagal mendaptkan data")
                       else
                         _buildIntegrationContent(theme, data),
 
@@ -119,34 +121,35 @@ class _SystemIntegrationConfigPageState
                   ),
                 ),
               )),
-              bottomNavigationBar: state.isLoading
-                  ? null
-                  : SafeArea(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: AppSpacing.md),
-                        child: ButtonWithLoadingState(
-                          icon: AppIcon.submit,
-                          onPressed: () {
-                            if (data == null) {
-                              context.showError("Data tidak ditemukan");
-                              return;
-                            }
-                            if (!_controllers.isDirty(data)) {
-                              context.showWarning("Data belum berubah");
-                              return;
-                            }
-                            context
-                                .read<SystemIntegrationConfigCubit>()
-                                .updateProviderIntegrationData(
-                                  _controllers.buildData,
-                                );
-                          },
-                          isLoading: state.isUpdateLoading,
-                          label: "Simpan data",
-                        ),
-                      ),
-                    ));
+              bottomNavigationBar:
+                  state.isLoading || state.providerIntegrationData == null
+                      ? null
+                      : SafeArea(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: AppSpacing.md),
+                            child: ButtonWithLoadingState(
+                              icon: AppIcon.submit,
+                              onPressed: () {
+                                if (data == null) {
+                                  context.showError("Gagal mendapatkan data");
+                                  return;
+                                }
+                                if (!_controllers.isDirty(data)) {
+                                  context.showWarning("Data belum berubah");
+                                  return;
+                                }
+                                context
+                                    .read<SystemIntegrationConfigCubit>()
+                                    .updateProviderIntegrationData(
+                                      _controllers.buildData,
+                                    );
+                              },
+                              isLoading: state.isUpdateLoading,
+                              label: "Simpan data",
+                            ),
+                          ),
+                        ));
         },
       ),
     );

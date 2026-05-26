@@ -10,6 +10,8 @@ class MembershipCodeListBloc
   MembershipCodeListBloc(this._getMembershipCodesUsecase)
       : super(const MembershipCodeListState()) {
     on<GetMembershipCodeListRequested>(_onGetMembershipCodeListRequested);
+    on<AddMembershipCodeRequested>(_onGetMemberListRequested);
+    on<DeleteMembershipCodeRequested>(_onDeleteMembershipCodeRequested);
   }
 
   void _onGetMembershipCodeListRequested(
@@ -31,6 +33,31 @@ class MembershipCodeListBloc
           codes: codes,
         ));
       },
+    );
+  }
+
+  void _onGetMemberListRequested(
+    AddMembershipCodeRequested event,
+    Emitter<MembershipCodeListState> emit,
+  ) {
+    emit(
+      state.copyWith(
+        codes: [
+          ...state.codes,
+          ...event.codes,
+        ],
+      ),
+    );
+  }
+
+  void _onDeleteMembershipCodeRequested(
+    DeleteMembershipCodeRequested event,
+    Emitter<MembershipCodeListState> emit,
+  ) {
+    emit(
+      state.copyWith(
+        codes: state.codes.where((element) => element.id != event.id).toList(),
+      ),
     );
   }
 }

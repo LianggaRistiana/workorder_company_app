@@ -88,14 +88,15 @@ class _UploadTokenPageState extends State<UploadTokenPage> {
                   const SizedBox(height: 20),
 
                   /// PICK FILE BUTTON
-                  DashedButton(
-                    icon: AppIcon.file,
-                    height: 120,
-                    title: _fileName ?? "Upload File CSV",
-                    borderColor: theme.colorScheme.primary,
-                    color: theme.colorScheme.primary,
-                    onTap: isLoading ? null : _pickCsvFile,
-                  ),
+                  if (_selectedFile == null)
+                    DashedButton(
+                      icon: AppIcon.file,
+                      height: 120,
+                      title: _fileName ?? "Upload File CSV",
+                      borderColor: theme.colorScheme.primary,
+                      color: theme.colorScheme.primary,
+                      onTap: isLoading ? null : _pickCsvFile,
+                    ),
 
                   const SizedBox(height: 16),
 
@@ -161,8 +162,8 @@ class CsvSchemaInfo extends StatelessWidget {
     final theme = Theme.of(context);
 
     final schema = const [
-      ("external_customer_email", "EMAIL"),
-      ("external_customer_name", "STRING"),
+      ("email", "EMAIL"),
+      ("name", "STRING"),
       ("token", "STRING"),
     ];
 

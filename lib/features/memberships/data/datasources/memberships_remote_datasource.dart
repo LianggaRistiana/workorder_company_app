@@ -2,12 +2,12 @@ import 'package:dio/dio.dart';
 import 'package:workorder_company_app/core/services/network/api_client.dart';
 import 'package:workorder_company_app/core/services/network/api_response.dart';
 import 'package:workorder_company_app/core/services/network/endpoints.dart';
+import 'package:workorder_company_app/core/services/network/path_helper.dart';
 import 'package:workorder_company_app/core/types/future_api.dart';
 import 'package:workorder_company_app/core/utils/safe_mapper.dart';
 import 'package:workorder_company_app/features/memberships/data/model/member_model.dart';
 import 'package:workorder_company_app/features/memberships/data/model/membership_code_model.dart';
 import 'package:workorder_company_app/features/system_integration/data/model/external_user_model.dart';
-import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
 
 abstract class MembershipsRemoteDatasource {
   ApiFutureList<MembershipCodeModel> getMembershipCodes();
@@ -40,7 +40,7 @@ class MembershipsRemoteDatasourceImpl implements MembershipsRemoteDatasource {
   @override
   ApiFuture<MembershipCodeModel> deleteMemberShipCode(String id) async {
     final response =
-        await _apiClient.delete(Endpoints.membershipCodes.fillId(id));
+        await _apiClient.delete(Endpoints.membershipCodes.byId(id));
     return ApiResponse<MembershipCodeModel>.fromJson(
       response,
       (data) => MembershipCodeModel.fromJson(data),

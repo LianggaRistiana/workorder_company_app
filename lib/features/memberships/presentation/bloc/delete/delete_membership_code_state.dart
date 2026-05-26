@@ -7,22 +7,26 @@ class DeleteMembershipCodeState extends Equatable {
   final DeleteMembershipCodeStatus status;
   final String? errorMessage;
   final MembershipCodeEntity? deletedCode;
+  final MembershipCodeEntity? deletingCode;
 
   const DeleteMembershipCodeState({
     this.status = DeleteMembershipCodeStatus.initial,
     this.errorMessage,
+    this.deletingCode,
     this.deletedCode,
   });
 
   DeleteMembershipCodeState copyWith({
     DeleteMembershipCodeStatus? status,
     String? errorMessage,
-    MembershipCodeEntity? deletedCode,
+    MembershipCodeEntity? Function()? deletedCode,
+    MembershipCodeEntity? Function()? deletingCode,
   }) {
     return DeleteMembershipCodeState(
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
-      deletedCode: deletedCode ?? this.deletedCode,
+      deletingCode: deletingCode != null ? deletingCode() : this.deletingCode,
+      deletedCode: deletedCode != null ? deletedCode() : this.deletedCode,
     );
   }
 
@@ -31,5 +35,6 @@ class DeleteMembershipCodeState extends Equatable {
         status,
         errorMessage,
         deletedCode,
+        deletingCode,
       ];
 }
