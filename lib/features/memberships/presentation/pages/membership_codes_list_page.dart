@@ -73,6 +73,7 @@ class _MembershipCodesListView extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            _TokenInfo(token: item, onTap: null),
             SizedBox(
               width: double.infinity,
               child: FilledButton.icon(
@@ -281,11 +282,15 @@ class _TokenInfo extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(token.externalCustomerName,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.titleSmall),
                     const SizedBox(
                       height: 4,
                     ),
                     Text(token.externalCustomerEmail,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.labelSmall?.copyWith(
                               fontStyle: FontStyle.italic,
                             )),
