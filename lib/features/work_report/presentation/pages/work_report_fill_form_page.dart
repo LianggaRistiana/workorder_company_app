@@ -31,6 +31,7 @@ class WorkReportFillFormPage extends StatefulWidget {
 
 class _WorkReportFillFormPageState extends State<WorkReportFillFormPage> {
   late final FormRendererCoordinator coordinator;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -78,9 +79,10 @@ class _WorkReportFillFormPageState extends State<WorkReportFillFormPage> {
               ]
             ],
             rightChildren: [
-              FormRenderer(
-                  coordinator:
-                      coordinator), // FIXME : add Form Widget for validation here
+              Form(
+                key: _formKey,
+                child: FormRenderer(coordinator: coordinator),
+              ), // Test : Form key for validation here
               const SizedBox(height: AppSpacing.md),
             ],
           ),
@@ -92,6 +94,9 @@ class _WorkReportFillFormPageState extends State<WorkReportFillFormPage> {
   Widget _buildSubmitbutton(BuildContext context, bool isLoading) {
     return ButtonWithLoadingState(
       onPressed: () {
+        FocusScope.of(context).unfocus();
+        if (!_formKey.currentState!.validate()) return;
+
         context
             .read<SubmitWorkReportSubmissionCubit>()
             .submitWorkReportSubmission(
