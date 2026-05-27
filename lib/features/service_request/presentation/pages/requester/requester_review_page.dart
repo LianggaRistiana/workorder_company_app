@@ -25,6 +25,7 @@ class RequesterReviewPage extends StatefulWidget {
 
 class _RequesterReviewPageState extends State<RequesterReviewPage> {
   late final FormRendererCoordinator coordinator;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -39,6 +40,24 @@ class _RequesterReviewPageState extends State<RequesterReviewPage> {
     } else {
       coordinator = FormRendererCoordinator.form(form);
     }
+  }
+
+  Widget _buildSubmitButton(BuildContext context, bool isLoading) {
+    return ButtonWithLoadingState(
+        icon: AppIcon.send,
+        progress: context.watch<FileUploadProgressCubit>().state.totalProgress,
+        loadingLabel:
+            context.watch<FileUploadProgressCubit>().state.buttonMessage ??
+                "Menyimpan...",
+        onPressed: () {
+          FocusScope.of(context).unfocus();
+          if (!_formKey.currentState!.validate()) return;
+          context
+              .read<RequesterSubmitReviewFormCubit>()
+              .submitReviewForm(widget.request.id, coordinator.draft);
+        },
+        isLoading: isLoading,
+        label: "Kirim");
   }
 
   @override
@@ -70,9 +89,12 @@ class _RequesterReviewPageState extends State<RequesterReviewPage> {
               const SizedBox(height: 16),
             ], rightChildren: [
               if (widget.request.reviewForm?.form != null) ...[
-                FormRenderer(
-                  coordinator: coordinator,
-                ), // FIXME : add Form Widget for validation here
+                Form(
+                  key: _formKey,
+                  child: FormRenderer(
+                    coordinator: coordinator,
+                  ),
+                ), // TODO : Test For key Form here
                 const SizedBox(height: 16),
                 _buildSubmitButton(context,
                         state.status == RequesterSubmitReviewFormStatus.loading)
@@ -86,21 +108,5 @@ class _RequesterReviewPageState extends State<RequesterReviewPage> {
         ),
       ),
     );
-  }
-
-  Widget _buildSubmitButton(BuildContext context, bool isLoading) {
-    return ButtonWithLoadingState(
-        icon: AppIcon.send,
-        progress: context.watch<FileUploadProgressCubit>().state.totalProgress,
-        loadingLabel:
-            context.watch<FileUploadProgressCubit>().state.buttonMessage ??
-                "Menyimpan...",
-        onPressed: () {
-          context
-              .read<RequesterSubmitReviewFormCubit>()
-              .submitReviewForm(widget.request.id, coordinator.draft);
-        },
-        isLoading: isLoading,
-        label: "Kirim");
   }
 }
