@@ -11,6 +11,7 @@ import 'package:workorder_company_app/features/system_integration/presentation/b
 import 'package:workorder_company_app/features/system_integration/presentation/bloc/system_integration_config.dart/system_integration_config_state.dart';
 import 'package:workorder_company_app/features/system_integration/presentation/controller/system_integration_config_controllers.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/utils/confirm_dialog.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 import 'package:workorder_company_app/shared/widgets/button_with_loading_state.dart';
@@ -121,35 +122,59 @@ class _SystemIntegrationConfigPageState
                   ),
                 ),
               )),
-              bottomNavigationBar:
-                  state.isLoading || state.providerIntegrationData == null
-                      ? null
-                      : SafeArea(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: AppSpacing.md),
-                            child: ButtonWithLoadingState(
-                              icon: AppIcon.submit,
-                              onPressed: () {
-                                if (data == null) {
-                                  context.showError("Gagal mendapatkan data");
-                                  return;
-                                }
-                                if (!_controllers.isDirty(data)) {
-                                  context.showWarning("Data belum berubah");
-                                  return;
-                                }
-                                context
-                                    .read<SystemIntegrationConfigCubit>()
-                                    .updateProviderIntegrationData(
-                                      _controllers.buildData,
-                                    );
-                              },
-                              isLoading: state.isUpdateLoading,
-                              label: "Simpan data",
-                            ),
-                          ),
-                        ));
+              bottomNavigationBar: state.isLoading ||
+                      state.providerIntegrationData == null
+                  ? null
+                  : SafeArea(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: AppSpacing.md),
+                        child: ButtonWithLoadingState(
+                          icon: AppIcon.submit,
+                          onPressed: () async {
+                            if (data == null) {
+                              context.showError("Gagal mendapatkan data");
+                              return;
+                            }
+
+                            if (!_controllers.isDirty(data)) {
+                              context.showWarning("Data belum berubah");
+                              return;
+                            }
+
+                            final cubit =
+                                context.read<SystemIntegrationConfigCubit>();
+
+                            if (_controllers
+                                .isTypeChange(data.integrationType)) {
+                              final result = await showConfirmDialog(
+                                type: ConfirmDialogType.warning,
+                                context: context,
+                                title: "Peringatan",
+                                message:
+                                    "Mengganti tipe integrasi akan menghapus semua pelanggan lama anda, ${_controllers.integrationType.value == IntegrationType.claimCode ? "dan konfigurasi kode langganan anda." : "yang sudah terhubung ke sistem anda."} Apakah anda yakin?",
+                              );
+
+                              if (!context.mounted) {
+                                return;
+                              }
+
+                              if (result == true) {
+                                await cubit.updateProviderIntegrationData(
+                                  _controllers.buildData,
+                                );
+                              }
+                            } else {
+                              await cubit.updateProviderIntegrationData(
+                                _controllers.buildData,
+                              );
+                            }
+                          },
+                          isLoading: state.isUpdateLoading,
+                          label: "Simpan data",
+                        ),
+                      ),
+                    ));
         },
       ),
     );

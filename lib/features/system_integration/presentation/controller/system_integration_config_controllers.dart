@@ -60,6 +60,10 @@ class SystemIntegrationConfigControllers {
         integrationType: integrationType.value,
       );
 
+  bool isTypeChange(IntegrationType type) {
+    return integrationType.value != type;
+  }
+
   void dispose() {
     externalLoginUrl.dispose();
     externalVerifyUrl.dispose();
