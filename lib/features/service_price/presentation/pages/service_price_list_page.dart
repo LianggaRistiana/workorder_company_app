@@ -31,6 +31,28 @@ class ServicePriceListPage extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                IconBox.small(
+                    isDisabled: !item.service.isActive, icon: AppIcon.service),
+                const SizedBox(width: 12),
+                Expanded(
+                    child: Text(
+                  item.service.title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ))
+              ],
+            ),
+            const SizedBox(height: 12),
+            ServicePriceTag(price: item.price),
+            const Divider(
+              thickness: 0.4,
+              height: 20,
+            ),
             SizedBox(
               width: double.infinity,
               child: FilledButton.icon(
