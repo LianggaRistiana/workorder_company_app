@@ -1,4 +1,5 @@
 import 'package:faker/faker.dart';
+import 'package:workorder_company_app/core/constants/app_enums/system_integration_enum.dart';
 import 'package:workorder_company_app/core/error/error.dart';
 import 'package:workorder_company_app/core/model/mock_factory.dart';
 import 'package:workorder_company_app/core/types/future_api.dart';
@@ -55,6 +56,7 @@ class MockMembershipsRemoteDatasource implements MembershipsRemoteDatasource {
     return MockApiResponse.success(
       ExternalUserModel(
         id: faker.guid.guid(),
+        integrationType: IntegrationType.claimCode,
         company: CompanyModel(
             id: "id", name: "name", isActive: true, isFaqActive: true),
         externalEmail: faker.internet.email(),

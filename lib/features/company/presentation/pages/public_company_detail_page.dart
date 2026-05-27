@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workorder_company_app/core/constants/app_enums/system_integration_enum.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
@@ -8,14 +9,15 @@ import 'package:workorder_company_app/features/company/presentation/bloc/public_
 import 'package:workorder_company_app/features/company/presentation/bloc/public_company_detail/public_company_detail_state.dart';
 import 'package:workorder_company_app/features/company/presentation/bloc/public_company_services.dart/public_company_services_cubit.dart';
 import 'package:workorder_company_app/features/company/presentation/widgets/public_services_list.dart';
+import 'package:workorder_company_app/features/memberships/presentation/bloc/claim/claim_membership_code_cubit.dart';
+import 'package:workorder_company_app/features/memberships/presentation/widgets/claim_token_widget.dart';
 import 'package:workorder_company_app/features/memberships/presentation/widgets/subcription_chip.dart';
-import 'package:workorder_company_app/features/system_integration/domain/entities/external_user_entity.dart';
 import 'package:workorder_company_app/features/system_integration/presentation/bloc/customer/account_action/account_action_cubit.dart';
 import 'package:workorder_company_app/features/system_integration/presentation/bloc/customer/account_action/account_action_state.dart';
-import 'package:workorder_company_app/features/system_integration/presentation/widgets/paired_account_view.dart';
+import 'package:workorder_company_app/features/system_integration/presentation/widgets/paired_account_item.dart';
+import 'package:workorder_company_app/features/system_integration/presentation/widgets/pairing_account_button.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
-import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/error_body.dart';
@@ -39,6 +41,9 @@ class PublicCompanyDetailPage extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => sl<PublicCompanyServicesCubit>(),
+        ),
+        BlocProvider(
+          create: (_) => sl<ClaimMembershipCodeCubit>(),
         ),
         BlocProvider(
           create: (_) => sl<AccountActionCubit>(),
@@ -110,6 +115,8 @@ class _View extends StatelessWidget {
       case PublicCompaniesListStatus.loaded:
         final company = state.company;
         final meta = state.meta;
+        final integrationType = meta?.integrationType;
+
         if (company == null) {
           return ErrorBody(errorMessage: "Perusahaan tidak ditemukan");
         }
@@ -127,8 +134,6 @@ class _View extends StatelessWidget {
               children: [
                 HeaderOfPage(title: company.name, icon: AppIcon.company),
                 const SizedBox(height: 8),
-                // if (company.address.isNotEmpty ||
-                //     company.description.isNotEmpty)
                 CustomCard(
                     child: PropertyDisplay(properties: [
                   if (company.address.isNotEmpty)
@@ -150,10 +155,14 @@ class _View extends StatelessWidget {
                         icon: AppIcon.membership,
                         label: "Status Keanggotaan",
                         child: SubscriptionChip(isMember: meta.isSubcribbed)),
-                  if (meta != null && meta.isIntegrationActive)
+                  if (meta != null &&
+                      meta.isIntegrationActive &&
+                      integrationType != null) ...[
                     PropertyItem.widget(
                         label: "Koneksi Akun",
-                        child: _buildAccountPairingButton(companyId)),
+                        child:
+                            _buildAccountExternalInformation(integrationType)),
+                  ]
                 ])),
                 PropertyTitle(label: "Daftar Layanan", icon: AppIcon.service),
                 const SizedBox(height: 8),
@@ -166,41 +175,63 @@ class _View extends StatelessWidget {
     }
   }
 
-  Widget _buildAccountPairingButton(String companyId) {
-    // FIXME : Add listener to detach state
-    return BlocBuilder<AccountActionCubit, AccountActionState>(
-        builder: (context, state) {
-      if (state.status == AccountActionStateStatus.loading ||
-          state.status == AccountActionStateStatus.detachLoading) {
-        return SmartShimmer(
-          key: const ValueKey('loading'),
-          placeholders: [
-            ShimmerPlaceholder(
-                height: 60, width: double.infinity, borderRadius: 50),
-          ],
-        );
-      }
-      return PairedAccountView(
+  Widget _buildAccountExternalInformation(IntegrationType integrationType) {
+    return BlocConsumer<AccountActionCubit, AccountActionState>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        final isLoading = state.isLoading || state.isDetachLoading;
+        final externalAccount = state.externalAccount;
+
+        if (state.externalAccount == null) {
+          return switch (integrationType) {
+            IntegrationType.claimCode =>
+              _buildTokenMemberClaim(context, companyId),
+            IntegrationType.externalSystem =>
+              _buildAccountPairingButton(context, companyId),
+          };
+        }
+
+        if (externalAccount != null) {
+          PairedAccountItem(
+            externalUser: externalAccount,
+            isLoading: isLoading,
+            onDetach: () {
+              final account = state.externalAccount;
+              if (account == null) return;
+              context.read<AccountActionCubit>().detachAccount(account.id);
+            },
+          );
+        }
+
+        if (isLoading) {
+          return SmartShimmer(
+            key: const ValueKey('loading'),
+            placeholders: [
+              ShimmerPlaceholder(
+                  height: 60, width: double.infinity, borderRadius: 50),
+            ],
+          );
+        }
+
+        return const SizedBox.shrink();
+      },
+    );
+  }
+
+  Widget _buildTokenMemberClaim(BuildContext context, String companyId) {
+    return ClaimTokenWidget(
+      companyId: companyId,
+      onClaimSuccess: () {
+        context.read<PublicCompanyDetailCubit>().getCompanyDetail(companyId);
+      },
+    );
+  }
+
+  Widget _buildAccountPairingButton(BuildContext context, String companyId) {
+    return PairingAccountButton(
         companyId: companyId,
-        isPaired: state.externalAccount != null,
-        onConnect: () async {
-          final result = await context.push<ExternalUserEntity?>(
-              AppRoutes.pairAccount.fillId(companyId));
-
-          if (!context.mounted) return;
-          if (result != null) {
-            context.read<AccountActionCubit>().replaceExternalAccount(result);
-            // FIXME : REFETCH WHEN DETACH ACCOUNT OR REPLACE ACCOUNT
-          }
-        },
-        onDetach: () {
-          final account = state.externalAccount;
-          if (account == null) return;
-
-          context.read<AccountActionCubit>().detachAccount(account.id);
-        },
-        externalUser: state.externalAccount,
-      );
-    });
+        onConnect: () {
+          context.read<PublicCompanyDetailCubit>().getCompanyDetail(companyId);
+        });
   }
 }

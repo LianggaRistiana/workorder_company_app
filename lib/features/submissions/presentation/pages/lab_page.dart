@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:workorder_company_app/core/constants/app_enums/system_integration_enum.dart';
 import 'package:workorder_company_app/features/company/domain/entities/company_entity.dart';
 import 'package:workorder_company_app/features/on_boarding/presentation/widgets/particle.dart';
 import 'package:workorder_company_app/features/system_integration/domain/entities/external_user_entity.dart';
@@ -44,6 +45,7 @@ class _LabPageState extends State<LabPage> {
                         onConnect: () => context
                             .push(AppRoutes.pairAccount.fillId("asdasdasdasd")),
                         externalUser: ExternalUserEntity(
+                            integrationType: IntegrationType.externalSystem,
                             id: "id",
                             externalEmail: "externalEmail",
                             externalName: "externalName",

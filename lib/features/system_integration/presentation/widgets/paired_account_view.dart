@@ -7,6 +7,7 @@ import 'package:workorder_company_app/shared/widgets/dashed_button.dart';
 import 'package:workorder_company_app/shared/widgets/information_block.dart';
 
 /// Use context.push((AppRoutes.pairAccount.fillId(companyId))) to connect
+@Deprecated("Avoid to use this piece of trash")
 class PairedAccountView extends StatelessWidget {
   final bool isPaired;
   final String companyId;
