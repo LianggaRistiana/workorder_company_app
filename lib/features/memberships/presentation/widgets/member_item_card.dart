@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_radius.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
@@ -25,9 +26,7 @@ class MemberItemCard extends StatelessWidget {
                 children: [
                   UserChip(user: member.client),
                   const SizedBox(height: AppSpacing.lg),
-                  PropertyTitle(
-                      icon: AppIcon.connect,
-                      label: "Informasi Kustomer (External)"),
+                  PropertyTitle(label: "Informasi Kustomer (External)"),
                   const SizedBox(height: AppSpacing.sm),
                   CustomCard(
                     child: PropertyDisplay(properties: [
@@ -39,6 +38,12 @@ class MemberItemCard extends StatelessWidget {
                         label: "External Email",
                         value: member.externalUser.externalEmail,
                       ),
+                      PropertyItem.widget(
+                          label: "Terhubung melalui",
+                          child: member.externalUser.integrationType ==
+                                  IntegrationType.claimCode
+                              ? const _ViaCode()
+                              : const _ViaExternalSystem()),
                       PropertyItem.text(
                         label: "Terhubung pada",
                         value: DateFormat('d MMM yyyy', 'id_ID')
@@ -64,6 +69,66 @@ class MemberItemCard extends StatelessWidget {
               style: Theme.of(context).textTheme.labelSmall),
         ],
       ),
+    );
+  }
+}
+
+class _ViaCode extends StatelessWidget {
+  const _ViaCode();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.primaryContainer,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Row(mainAxisSize: MainAxisSize.min, children: [
+        Icon(
+          AppIcon.memberCode,
+          color: Theme.of(context).colorScheme.primary,
+          size: 12,
+        ),
+        const SizedBox(width: 10),
+        Text(
+          "Via Kode Anggota",
+          style: Theme.of(context).textTheme.labelSmall!.copyWith(
+              color: Theme.of(context).colorScheme.primary,
+              fontWeight: FontWeight.bold,
+              fontFamily: "Monospace"),
+        )
+      ]),
+    );
+  }
+}
+
+class _ViaExternalSystem extends StatelessWidget {
+  const _ViaExternalSystem();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.primaryContainer,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Row(mainAxisSize: MainAxisSize.min, children: [
+        Icon(
+          AppIcon.connect,
+          color: Theme.of(context).colorScheme.primary,
+          size: 12,
+        ),
+        const SizedBox(width: 10),
+        Text(
+          "Via Eksternal System",
+          style: Theme.of(context).textTheme.labelSmall!.copyWith(
+              color: Theme.of(context).colorScheme.primary,
+              fontWeight: FontWeight.bold,
+              fontFamily: "Monospace"),
+        )
+      ]),
     );
   }
 }

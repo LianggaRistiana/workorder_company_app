@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/features/memberships/domain/entitties/membership_code_entity.dart';
@@ -298,7 +299,48 @@ class _TokenInfo extends StatelessWidget {
                 ),
               )
             ]),
+            if (token.claimedAt != null)
+              Align(
+                  alignment: Alignment.centerRight,
+                  child: _ClaimedTokenDate(date: token.claimedAt!))
+            else
+              const SizedBox.shrink(),
           ],
         ));
+  }
+}
+
+class _ClaimedTokenDate extends StatelessWidget {
+  final DateTime date;
+
+  const _ClaimedTokenDate({
+    required this.date,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(top: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.primaryContainer,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(mainAxisSize: MainAxisSize.min, children: [
+        Icon(
+          AppIcon.approve,
+          color: Theme.of(context).colorScheme.primary,
+          size: 12,
+        ),
+        const SizedBox(width: 10),
+        Text(
+          "Diklaim pada ${DateFormat('d MMM yyyy', 'id_ID').format(date.toLocal())}",
+          style: Theme.of(context).textTheme.labelSmall!.copyWith(
+              color: Theme.of(context).colorScheme.primary,
+              fontWeight: FontWeight.bold,
+              fontFamily: "Monospace"),
+        )
+      ]),
+    );
   }
 }
