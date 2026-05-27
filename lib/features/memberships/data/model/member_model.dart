@@ -12,7 +12,7 @@ class MemberModel extends MemberEntity {
   factory MemberModel.fromJson(Map<String, dynamic> json) {
     return MemberModel(
       externalUser:
-          json.field("external_account").reqModel(ExternalUserModel.fromJson),
+          json.field("externalAccount").reqModel(ExternalUserModel.fromJson),
       client: UserModel.fromJson(json['user']),
     );
   }

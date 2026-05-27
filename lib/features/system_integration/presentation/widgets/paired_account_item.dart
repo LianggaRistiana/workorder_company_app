@@ -38,7 +38,9 @@ class PairedAccountItem extends StatelessWidget {
     return ClickableCustomCard(
       borderRadius: BorderRadius.all(Radius.circular(AppRadius.large)),
       onTap: () async {
-        if (externalUser.integrationType != IntegrationType.externalSystem) return;
+        if (externalUser.integrationType != IntegrationType.externalSystem) {
+          return;
+        }
         final result = await showConfirmDialog(
             icon: AppIcon.detach,
             context: context,
@@ -54,7 +56,11 @@ class PairedAccountItem extends StatelessWidget {
         children: [
           Row(
             children: [
-              IconBox.small(icon: AppIcon.connect),
+              IconBox.small(
+                icon: externalUser.integrationType == IntegrationType.claimCode
+                    ? AppIcon.memberCode
+                    : AppIcon.connect,
+              ),
               const SizedBox(width: 10),
               Expanded(
                 child: Column(

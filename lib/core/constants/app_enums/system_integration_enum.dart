@@ -7,6 +7,7 @@ enum IntegrationType {
       case 'external_system':
         return IntegrationType.externalSystem;
       case 'claim_token':
+      case 'claim_code':
         return IntegrationType.claimCode;
       default:
         throw Exception('Invalid IntegrationType: $value');
@@ -16,9 +17,9 @@ enum IntegrationType {
   String displayName() {
     switch (this) {
       case IntegrationType.externalSystem:
-        return 'sistem eksternal';
+        return 'Sistem Eksternal';
       case IntegrationType.claimCode:
-        return 'kode klaim';
+        return 'Kode Klaim';
     }
   }
 

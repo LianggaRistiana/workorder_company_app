@@ -177,10 +177,27 @@ class _View extends StatelessWidget {
 
   Widget _buildAccountExternalInformation(IntegrationType integrationType) {
     return BlocConsumer<AccountActionCubit, AccountActionState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state.status == AccountActionStateStatus.detachError) {
+          context.showError(state.errorMessage ?? "Terjadi kesalahan");
+        }
+        if (AccountActionStateStatus.detachSuccess == state.status) {
+          context.read<PublicCompanyDetailCubit>().getCompanyDetail(companyId);
+        }
+      },
       builder: (context, state) {
         final isLoading = state.isLoading || state.isDetachLoading;
         final externalAccount = state.externalAccount;
+
+        if (isLoading) {
+          return SmartShimmer(
+            key: const ValueKey('loading'),
+            placeholders: [
+              ShimmerPlaceholder(
+                  height: 60, width: double.infinity, borderRadius: 50),
+            ],
+          );
+        }
 
         if (state.externalAccount == null) {
           return switch (integrationType) {
@@ -192,7 +209,7 @@ class _View extends StatelessWidget {
         }
 
         if (externalAccount != null) {
-          PairedAccountItem(
+          return PairedAccountItem(
             externalUser: externalAccount,
             isLoading: isLoading,
             onDetach: () {
@@ -200,16 +217,6 @@ class _View extends StatelessWidget {
               if (account == null) return;
               context.read<AccountActionCubit>().detachAccount(account.id);
             },
-          );
-        }
-
-        if (isLoading) {
-          return SmartShimmer(
-            key: const ValueKey('loading'),
-            placeholders: [
-              ShimmerPlaceholder(
-                  height: 60, width: double.infinity, borderRadius: 50),
-            ],
           );
         }
 

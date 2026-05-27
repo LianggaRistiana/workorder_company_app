@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:workorder_company_app/core/constants/app_enums/system_integration_enum.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/features/system_integration/domain/entities/external_user_entity.dart';
@@ -99,6 +100,7 @@ class _Accounts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isViaCode = externalUser.integrationType == IntegrationType.claimCode;
 
     if (isDetaching) {
       return SmartShimmer();
@@ -106,7 +108,8 @@ class _Accounts extends StatelessWidget {
 
     return InkWell(
       onTap: () async {
-        if (onDetach == null) {
+        if (onDetach == null ||
+            externalUser.integrationType == IntegrationType.claimCode) {
           return;
         }
 
@@ -123,7 +126,7 @@ class _Accounts extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
@@ -147,6 +150,10 @@ class _Accounts extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 4),
+            if (isViaCode)
+              Align(alignment: Alignment.centerLeft, child: const _ViaCode())
+            else
+              const SizedBox.shrink(),
             Align(
                 alignment: Alignment.centerRight,
                 child: Text(
@@ -156,6 +163,36 @@ class _Accounts extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _ViaCode extends StatelessWidget {
+  const _ViaCode();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.primaryContainer,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Row(mainAxisSize: MainAxisSize.min, children: [
+        Icon(
+          AppIcon.memberCode,
+          color: Theme.of(context).colorScheme.primary,
+          size: 12,
+        ),
+        const SizedBox(width: 10),
+        Text(
+          "Via Kode Anggota",
+          style: Theme.of(context).textTheme.labelSmall!.copyWith(
+              color: Theme.of(context).colorScheme.primary,
+              fontWeight: FontWeight.bold,
+              fontFamily: "Monospace"),
+        )
+      ]),
     );
   }
 }

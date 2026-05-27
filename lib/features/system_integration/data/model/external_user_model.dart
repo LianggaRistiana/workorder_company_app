@@ -17,11 +17,11 @@ class ExternalUserModel extends ExternalUserEntity {
     return ExternalUserModel(
       id: json.field("_id").reqString(),
       integrationType:
-          json.field("integration_type").reqEnum(IntegrationType.fromString),
-      externalEmail: json.field("external_customer_email").reqString(),
-      externalName: json.field("external_customer_name").reqString(),
+          json.field("integrationType").reqEnum(IntegrationType.fromString),
+      externalEmail: json.field("externalCustomerEmail").reqString(),
+      externalName: json.field("externalCustomerName").reqString(),
       company: json.field("company").reqModel(CompanyModel.fromJson),
-      pairedAt: json.field("paired_at").reqDate(),
+      pairedAt: json.field("pairedAt").reqDate(),
     );
   }
 }
