@@ -117,6 +117,7 @@ class _WorkOrderConfigItemState extends State<WorkOrderConfigItem> {
               ] else if (workOrderForm == null && isManualDrafting) ...[
                 FormsSelectorContainer(
                   selectedForms: [],
+                  formTypeScoped: FormType.workOrder,
                   onAdd: widget.onWorkOrderFormChanged,
                   buttonBuilder: (context, onPressed, isLoading) => Expanded(
                     child: DashedButton(
@@ -146,7 +147,6 @@ class _WorkOrderConfigItemState extends State<WorkOrderConfigItem> {
                 ),
             ],
           ),
-
 
           /// Approval Access
           // NOTE : Since staff PIC in WorkOrder has been removed, Approval Work order is doesnt needed anymore

@@ -75,6 +75,7 @@ class ServiceRequestFormTabView extends StatelessWidget {
 
           _FormSelectorSection(
             form: intakeForm,
+            formtype: FormType.intake,
             onTap: onIntakeFormChanged,
           ),
 
@@ -89,6 +90,7 @@ class ServiceRequestFormTabView extends StatelessWidget {
 
           _FormSelectorSection(
             form: reviewForm,
+            formtype: FormType.review,
             onTap: onReviewFormChanged,
           ),
           const SizedBox(height: 8),
@@ -106,16 +108,19 @@ class ServiceRequestFormTabView extends StatelessWidget {
 
 class _FormSelectorSection extends StatelessWidget {
   final FormEntity? form;
+  final FormType formtype;
   final ValueChanged<FormEntity?> onTap;
 
   const _FormSelectorSection({
     required this.form,
+    required this.formtype,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return FormsSelectorContainer(
+      formTypeScoped: formtype,
       selectedForms: form != null ? [form!] : [],
       onAdd: onTap,
       buttonBuilder: (context, onPressed, isLoading) {

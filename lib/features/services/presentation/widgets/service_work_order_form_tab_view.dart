@@ -72,6 +72,7 @@ class ServiceWorkOrderFormTabView extends StatelessWidget {
           FormsSelectorContainer(
             selectedForms: [],
             onAdd: onAdd,
+            formTypeScoped: FormType.workOrder,
             buttonBuilder: (context, onPressed, isLoading) => DashedButton(
               title: "Tambah Perintah Kerja",
               onTap: draftingType == WorkOrderDraftingType.auto

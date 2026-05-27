@@ -72,6 +72,7 @@ class WorkReportConfigItem extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           FormsSelectorContainer(
+            formTypeScoped: FormType.report,
             selectedForms: draft.reportForm != null ? [draft.reportForm!] : [],
             onAdd: onFormUpdate,
             buttonBuilder: (context, onPressed, isLoading) {
