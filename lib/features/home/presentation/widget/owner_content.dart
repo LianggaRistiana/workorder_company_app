@@ -74,12 +74,6 @@ class OwnerContent extends StatelessWidget {
                 onTap: () {
                   context.push(AppRoutes.employee);
                 }),
-            MenuItem(
-                icon: AppIcon.help, // FIXME : REMOVE THIS LATER
-                label: "Bantuan",
-                onTap: () {
-                  context.push(AppRoutes.lab);
-                }),
           ],
         ),
         const SizedBox(height: 24),
