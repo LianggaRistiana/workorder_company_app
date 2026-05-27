@@ -26,12 +26,11 @@ class ServiceRequestDonutChart extends StatefulWidget {
 
 class _ServiceRequestDonutChartState extends State<ServiceRequestDonutChart> {
   List<DonutDataEntity> data = [];
-  PeriodType periodType = PeriodType.currentDay; // FIXME : Sync with cubit
 
   @override
   void initState() {
     super.initState();
-    sl<ServiceRequestStatsCubit>().fetch(periodType: periodType);
+    sl<ServiceRequestStatsCubit>().fetch();
   }
 
   void _onPeriodChanged(
@@ -39,7 +38,6 @@ class _ServiceRequestDonutChartState extends State<ServiceRequestDonutChart> {
   ) {
     if (periodType == null) return;
     setState(() {
-      this.periodType = periodType;
       sl<ServiceRequestStatsCubit>().fetch(periodType: periodType);
     });
   }
@@ -94,7 +92,7 @@ class _ServiceRequestDonutChartState extends State<ServiceRequestDonutChart> {
               ),
               DropdownButtonHideUnderline(
                 child: DropdownButton<PeriodType>(
-                  value: periodType,
+                  value: state.periodType,
                   borderRadius: BorderRadius.circular(12),
                   icon: const Icon(Icons.keyboard_arrow_down_rounded),
                   items: PeriodType.values.map((period) {

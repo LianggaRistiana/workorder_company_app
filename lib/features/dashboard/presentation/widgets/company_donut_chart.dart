@@ -47,13 +47,25 @@ class _CompanyDonutChartState extends State<CompanyDonutChart> {
           [
             DonutDataEntity(
               value: stats.employeesStat.managersCount.toDouble(),
-              label: "Aktif",
+              label: "Manager",
               color: Colors.purpleAccent,
             ),
             DonutDataEntity(
               value: stats.employeesStat.staffsCount.toDouble(),
-              label: "Tidak Aktif",
+              label: "Pegawai",
+              color: inActiveColor,
+            ),
+          ],
+          [
+            DonutDataEntity(
+              value: stats.employeesStat.staffsCount.toDouble(),
+              label: "Pegawai",
               color: Colors.deepPurpleAccent,
+            ),
+            DonutDataEntity(
+              value: stats.employeesStat.managersCount.toDouble(),
+              label: "Manager",
+              color: inActiveColor,
             ),
           ],
           [
@@ -68,18 +80,6 @@ class _CompanyDonutChartState extends State<CompanyDonutChart> {
               color: inActiveColor,
             ),
           ],
-          [
-            DonutDataEntity(
-              value: stats.formsStat.active.toDouble(),
-              label: "Aktif",
-              color: Colors.blueAccent.shade100,
-            ),
-            DonutDataEntity(
-              value: stats.formsStat.inActive.toDouble(),
-              label: "Tidak Aktif",
-              color: inActiveColor,
-            ),
-          ]
         ];
       } else {
         levels = [];

@@ -40,7 +40,7 @@ class WorkOrderStatsEntity extends Equatable {
   double countByStatus(WorkOrderStatus status) {
     return switch (status) {
       WorkOrderStatus.drafted => draftedCount,
-      WorkOrderStatus.sent => sentCount,
+      WorkOrderStatus.sent => sentCount + approvedCount,
       WorkOrderStatus.cancelled => cancelledCount,
       WorkOrderStatus.rejected => rejectedCount,
       WorkOrderStatus.approved => approvedCount,

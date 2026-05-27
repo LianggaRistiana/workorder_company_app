@@ -42,7 +42,7 @@ class _WorkOrderDonutChartState extends State<WorkOrderDonutChart> {
 
       if (stats != null) {
         data = [
-          ...WorkOrderStatus.values.map(
+          ...WorkOrderStatus.availableStatus.map(
             (e) {
               return DonutDataEntity(
                   label: e.displayName,
