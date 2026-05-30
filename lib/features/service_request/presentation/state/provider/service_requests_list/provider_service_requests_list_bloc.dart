@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/features/service_request/domain/usecases/provider/provider_get_service_requests_usecase.dart';
 import 'package:workorder_company_app/features/service_request/presentation/state/provider/service_requests_list/provider_service_requests_list_event.dart';
@@ -18,6 +19,7 @@ class ProviderServiceRequestsListBloc extends Bloc<
   }) : super(const ProviderServiceRequestsListState()) {
     on<GetProviderServiceRequestsRequested>(
         _onGetProviderServiceRequestsRequested);
+    on<SetServiceRequestFilter>(_onSetFilter);
     _subscription = providerRepoStream.listen((_) {
       add(GetProviderServiceRequestsRequested());
     });
@@ -43,6 +45,15 @@ class ProviderServiceRequestsListBloc extends Bloc<
         requests: requests,
       )),
     );
+  }
+
+  Future<void> _onSetFilter(
+    SetServiceRequestFilter event,
+    Emitter<ProviderServiceRequestsListState> emit,
+  ) async {
+    debugPrint("${state.filter.activeFilterCount.toString()} ${state.filter.toString()}" );
+    emit(state.copyWith(filter: event.params));
+    debugPrint("${state.filter.activeFilterCount.toString()} ${state.filter.toString()}" );
   }
 
   @override

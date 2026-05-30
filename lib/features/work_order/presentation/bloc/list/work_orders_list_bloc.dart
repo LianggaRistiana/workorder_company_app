@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/features/work_order/domain/usecases/get_work_orders_usecase.dart';
 import 'package:workorder_company_app/features/work_order/presentation/bloc/list/work_orders_list_event.dart';
@@ -53,9 +52,7 @@ class WorkOrdersListBloc
     SetWorkOrderFilter event,
     Emitter<WorkOrdersListState> emit,
   ) async {
-    debugPrint(event.params.toString());
     emit(state.copyWith(filter: event.params));
-    debugPrint(state.filter.toString());
   }
 
   @override

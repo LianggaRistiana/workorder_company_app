@@ -7,6 +7,7 @@ import 'package:workorder_company_app/features/service_request/domain/entities/s
 import 'package:workorder_company_app/features/service_request/presentation/state/provider/service_requests_list/provider_service_requests_list_bloc.dart';
 import 'package:workorder_company_app/features/service_request/presentation/state/provider/service_requests_list/provider_service_requests_list_event.dart';
 import 'package:workorder_company_app/features/service_request/presentation/state/provider/service_requests_list/provider_service_requests_list_state.dart';
+import 'package:workorder_company_app/features/service_request/presentation/widgets/provider_service_request_filter_button.dart';
 import 'package:workorder_company_app/features/service_request/presentation/widgets/service_request_item.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
@@ -28,7 +29,7 @@ class ProviderServiceRequestListPage extends StatelessWidget {
               "Terjadi kesalahan saat memuat daftar permintaan layanan");
         }
       }, builder: (context, state) {
-        final items = state.requests;
+        final items = state.filteredRequests;
 
         return ListPageScaffold<ProviderServiceRequestEntity>(
           title: 'Daftar Permintaan Layanan',
@@ -38,6 +39,12 @@ class ProviderServiceRequestListPage extends StatelessWidget {
                   GetProviderServiceRequestsRequested(forceRefresh: true),
                 );
           },
+          header: Row(
+            children: [
+              Spacer(),
+              ProviderServiceRequestFilterButton(),
+            ],
+          ),
           items: items,
           itemBuilder: (item) {
             return ServiceRequestItem(
