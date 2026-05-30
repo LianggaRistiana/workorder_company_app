@@ -13,6 +13,7 @@ import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
 import 'package:workorder_company_app/shared/widgets/list_page_scafold.dart';
+import 'package:workorder_company_app/shared/widgets/search_bar.dart';
 
 class ProviderServiceRequestListPage extends StatelessWidget {
   const ProviderServiceRequestListPage({super.key});
@@ -41,7 +42,22 @@ class ProviderServiceRequestListPage extends StatelessWidget {
           },
           header: Row(
             children: [
-              Spacer(),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8.0, top: 4),
+                  child: AppSearchBar(
+                    featureName: "permintaan layanan",
+                    onChanged: (value) {
+                      context.read<ProviderServiceRequestsListBloc>().add(
+                            SetServiceRequestFilter(
+                              state.filter.copyWith(search: value),
+                            ),
+                          );
+                    },
+                    initialValue: state.filter.search,
+                  ),
+                ),
+              ),
               ProviderServiceRequestFilterButton(),
             ],
           ),
