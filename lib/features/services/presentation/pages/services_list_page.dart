@@ -10,6 +10,7 @@ import 'package:workorder_company_app/features/helps/presentation/widgets/fab_he
 import 'package:workorder_company_app/features/services/presentation/bloc/list/services_list_bloc.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/list/services_list_event.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/list/services_list_state.dart';
+import 'package:workorder_company_app/features/services/presentation/widgets/service_filter_button.dart';
 import 'package:workorder_company_app/features/services/presentation/widgets/service_summary_item.dart';
 import 'package:workorder_company_app/features/work_order/presentation/helper/work_order_create_pop_up.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
@@ -18,6 +19,7 @@ import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
 import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
 import 'package:workorder_company_app/shared/widgets/information_block.dart';
 import 'package:workorder_company_app/shared/widgets/list_page_scafold.dart';
+import 'package:workorder_company_app/shared/widgets/search_bar.dart';
 
 class ServicesListPage extends StatelessWidget {
   final ServiceListNextAction nextStepMode;
@@ -59,7 +61,7 @@ class _ServicesListView extends StatelessWidget {
       builder: (context, state) {
         final isLoading = state.status == ServicesListStatus.loading;
         final errorMessage = state.errorMessage;
-        final services = state.services;
+        final services = state.filteredServices;
 
         return ListPageScaffold(
             title: "Layanan",
@@ -70,6 +72,28 @@ class _ServicesListView extends StatelessWidget {
             onRefresh: () => _onRefresh(context),
             emptyWidget: EmptyStateWidget(
               text: "Tidak ada layanan",
+            ),
+            header: Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.only(left: 8.0, top: 4, bottom: 4),
+                    child: AppSearchBar(
+                      featureName: "layanan",
+                      onChanged: (value) {
+                        context.read<ServicesListBloc>().add(
+                              SetServiceFilterRequested(
+                                state.filter.copyWith(search: value),
+                              ),
+                            );
+                      },
+                      initialValue: state.filter.search,
+                    ),
+                  ),
+                ),
+                ServiceFilterButton(),
+              ],
             ),
             floatingActionButton: Column(
               mainAxisAlignment: MainAxisAlignment.end,

@@ -64,7 +64,7 @@ class FormsListPage extends StatelessWidget {
                         padding:
                             const EdgeInsets.only(left: 8.0, top: 4, bottom: 4),
                         child: AppSearchBar(
-                          featureName: "perintah kerja",
+                          featureName: "formulir",
                           onChanged: (value) {
                             context.read<FormsListBloc>().add(
                                   SetFormFilter(

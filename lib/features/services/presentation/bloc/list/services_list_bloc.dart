@@ -19,6 +19,8 @@ class ServicesListBloc extends Bloc<ServicesListEvent, ServicesListState> {
           services: [],
         )) {
     on<GetServicesRequested>(_onGetServicesRequested);
+    on<SetServiceFilterRequested>(_setFilter);
+
     _subscription = serviceChangedStream.listen((_) {
       add(GetServicesRequested(forceRefresh: false));
     });
@@ -44,6 +46,11 @@ class ServicesListBloc extends Bloc<ServicesListEvent, ServicesListState> {
         services: services,
       )),
     );
+  }
+
+  Future<void> _setFilter(
+      SetServiceFilterRequested event, Emitter<ServicesListState> emit) async {
+    emit(state.copyWith(filter: event.filter));
   }
 
   @override
