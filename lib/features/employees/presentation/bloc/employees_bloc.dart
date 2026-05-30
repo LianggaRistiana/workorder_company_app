@@ -13,6 +13,7 @@ class EmployeesBloc extends Bloc<EmployeesEvent, EmployeesState> {
   EmployeesBloc({required this.getEmployeesUsecase})
       : super(const EmployeesState()) {
     on<GetEmployeesRequested>(_onGetEmployeesRequested);
+    on<SetEmployeeSearch>(_onSetEmployeeSearch);
   }
 
   Future<void> _onGetEmployeesRequested(
@@ -46,5 +47,16 @@ class EmployeesBloc extends Bloc<EmployeesEvent, EmployeesState> {
         ));
       },
     );
+  }
+
+  void _onSetEmployeeSearch(
+    SetEmployeeSearch event,
+    Emitter<EmployeesState> emit,
+  ) {
+    emit(state.copyWith(
+      params: state.params.copyWith(
+        search: event.search,
+      ),
+    ));
   }
 }

@@ -12,6 +12,7 @@ import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
 import 'package:workorder_company_app/shared/widgets/list_page_scafold.dart';
+import 'package:workorder_company_app/shared/widgets/search_bar.dart';
 
 class EmployeesPage extends StatelessWidget {
   const EmployeesPage({super.key});
@@ -31,13 +32,26 @@ class EmployeesPage extends StatelessWidget {
             title: "Pegawai",
             isLoading: state.isLoading,
             errorMessage: state.errorMessage,
-            items: state.employees,
+            items: state.filteredEmployees,
             loadingMessage: "Memuat pegawai...",
             onRefresh: () async {
               context
                   .read<EmployeesBloc>()
                   .add(GetEmployeesRequested(forceRefresh: true));
             },
+            header: Padding(
+              padding: const EdgeInsets.only(
+                  left: 8.0, right: 8.0, top: 4, bottom: 4),
+              child: AppSearchBar(
+                featureName: "pegawai",
+                onChanged: (value) {
+                  context.read<EmployeesBloc>().add(
+                        SetEmployeeSearch(value),
+                      );
+                },
+                initialValue: state.params.search,
+              ),
+            ),
             emptyWidget: const EmptyStateWidget(
               icon: Icons.group_off_outlined,
               text: "Tidak ada Pegawai",

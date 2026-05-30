@@ -19,3 +19,12 @@ class GetEmployeesRequested extends EmployeesEvent {
   @override
   List<Object?> get props => [params, forceRefresh];
 }
+
+class SetEmployeeSearch extends EmployeesEvent {
+  final String? search;
+
+  const SetEmployeeSearch(this.search);
+
+  @override
+  List<Object?> get props => [search];
+}
