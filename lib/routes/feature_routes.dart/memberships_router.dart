@@ -1,5 +1,5 @@
 import 'package:go_router/go_router.dart';
-import 'package:workorder_company_app/features/memberships/presentation/pages/claim_membership_code_page.dart';
+// import 'package:workorder_company_app/features/memberships/presentation/pages/claim_membership_code_page.dart';
 import 'package:workorder_company_app/features/memberships/presentation/pages/member_list_page.dart';
 import 'package:workorder_company_app/features/memberships/presentation/pages/membership_codes_list_page.dart';
 import 'package:workorder_company_app/features/memberships/presentation/pages/upload_token_page.dart';
@@ -14,7 +14,7 @@ final membershipsRouter = [
   GoRoute(
       path: AppRoutes.uploadMemberCode,
       builder: (_, __) => const UploadTokenPage()),
-  GoRoute(
-      path: AppRoutes.membershipsClaim,
-      builder: (_, __) => const ClaimMembershipCodePage()),
+  // GoRoute(
+  //     path: AppRoutes.membershipsClaim,
+  //     builder: (_, __) => const ClaimMembershipCodePage()),
 ];

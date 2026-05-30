@@ -54,7 +54,6 @@ class InviteEmployeePage extends StatelessWidget {
   }
 }
 
-// TODO : mapping error here and add form validator before submit
 class _InviteEmployeeView extends StatefulWidget {
   final InviteEmployeesState state;
 
@@ -183,7 +182,6 @@ class _InviteEmployeeViewState extends State<_InviteEmployeeView> {
                 index,
                 invite.copyWith(
                   role: val,
-                  // TODO : TEST THIS LATER
                   // position:
                   //     val != UserRole.staffCompany ? null : invite.position,
                 ),

@@ -7,7 +7,6 @@ import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:intl/intl.dart';
 import 'package:workorder_company_app/shared/widgets/smart_shimmer.dart';
 
-// TODO : Test with all type of field
 class FilledFormView extends StatelessWidget {
   final FilledFormEntity filledForm;
 
@@ -354,7 +353,6 @@ class _OptionAnswer extends StatelessWidget {
 //     );
 //   }
 
-// TODO : Test This Image Field Viewer
 class _ImageAnswer extends StatelessWidget {
   final String? path;
 

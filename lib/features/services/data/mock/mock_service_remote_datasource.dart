@@ -85,13 +85,11 @@ class MockServiceRemoteDatasource
 
   @override
   ApiFuture<ServiceModel> removeService(String serviceId) {
-    // TODO: implement removeService
     throw UnimplementedError();
   }
 
   @override
   ApiFuture<ServiceModel> toggleActive(ServiceModel service) {
-    // TODO: implement toggleActive
     throw UnimplementedError();
   }
 

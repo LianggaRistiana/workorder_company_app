@@ -24,7 +24,6 @@ import 'package:workorder_company_app/shared/widgets/information_block.dart';
 import 'package:workorder_company_app/shared/widgets/section_title.dart';
 import 'package:workorder_company_app/features/work_order/presentation/widgets/staff_quota_chip.dart';
 
-// TODO : Test this
 class WorkOrderDetailBody extends StatelessWidget {
   final WorkOrderEntity workOrder;
   final WorkOrderCapabilities? capabilities;

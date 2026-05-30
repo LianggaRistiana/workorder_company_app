@@ -27,7 +27,6 @@ class RequesterServiceRequestAuthorizer {
         _ServiceRequestOwner(request)
       ]);
 
-  // TODO : Test this new rule
   AuthorizationRule get reviewRule => rules([
         roleCan(ServiceRequestPermission.update),
         _ServiceRequestStatusRule(

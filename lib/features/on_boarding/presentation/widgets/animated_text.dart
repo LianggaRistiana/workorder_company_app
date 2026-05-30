@@ -2,8 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-class AnimatedTypingSubtitle
-    extends StatefulWidget {
+class AnimatedTypingSubtitle extends StatefulWidget {
   final String title;
 
   final List<String> subtitles;
@@ -15,12 +14,10 @@ class AnimatedTypingSubtitle
   });
 
   @override
-  State<AnimatedTypingSubtitle> createState() =>
-      _AnimatedTypingSubtitleState();
+  State<AnimatedTypingSubtitle> createState() => _AnimatedTypingSubtitleState();
 }
 
-class _AnimatedTypingSubtitleState
-    extends State<AnimatedTypingSubtitle> {
+class _AnimatedTypingSubtitleState extends State<AnimatedTypingSubtitle> {
   String displayedText = "";
 
   int subtitleIndex = 0;
@@ -46,16 +43,14 @@ class _AnimatedTypingSubtitleState
       (_) async {
         if (waiting) return;
 
-        final currentText =
-            widget.subtitles[subtitleIndex];
+        final currentText = widget.subtitles[subtitleIndex];
 
         if (!mounted) return;
 
         setState(() {
           if (!deleting) {
             if (charIndex < currentText.length) {
-              displayedText +=
-                  currentText[charIndex];
+              displayedText += currentText[charIndex];
 
               charIndex++;
             } else {
@@ -63,8 +58,7 @@ class _AnimatedTypingSubtitleState
             }
           } else {
             if (displayedText.isNotEmpty) {
-              displayedText =
-                  displayedText.substring(
+              displayedText = displayedText.substring(
                 0,
                 displayedText.length - 1,
               );
@@ -73,9 +67,7 @@ class _AnimatedTypingSubtitleState
 
               charIndex = 0;
 
-              subtitleIndex =
-                  (subtitleIndex + 1) %
-                      widget.subtitles.length;
+              subtitleIndex = (subtitleIndex + 1) % widget.subtitles.length;
             }
           }
         });
@@ -100,47 +92,37 @@ class _AnimatedTypingSubtitleState
     final theme = Theme.of(context);
 
     return Column(
-      crossAxisAlignment:
-          CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ShaderMask(
           shaderCallback: (bounds) {
             return const LinearGradient(
               colors: [
                 Color(0xFF3B82F6),
-                Color(0xFF8B5CF6),
+                Color(0xFF3B82F6),
               ],
             ).createShader(bounds);
           },
           child: Text(
             widget.title,
-            style: theme.textTheme.headlineMedium
-                ?.copyWith(
-                  color: Colors.white,
-                  fontWeight:
-                      FontWeight.bold,
-                ),
+            style: theme.textTheme.headlineMedium?.copyWith(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
-
         const SizedBox(height: 8),
-
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Flexible(
               child: Text(
                 displayedText,
-                style: theme
-                    .textTheme
-                    .titleMedium
-                    ?.copyWith(
-                      fontWeight:
-                          FontWeight.w700,
-                    ),
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
-
             const _BlinkingCursor(),
           ],
         ),
@@ -159,12 +141,10 @@ class _BlinkingCursor extends StatefulWidget {
   const _BlinkingCursor();
 
   @override
-  State<_BlinkingCursor> createState() =>
-      _BlinkingCursorState();
+  State<_BlinkingCursor> createState() => _BlinkingCursorState();
 }
 
-class _BlinkingCursorState
-    extends State<_BlinkingCursor>
+class _BlinkingCursorState extends State<_BlinkingCursor>
     with SingleTickerProviderStateMixin {
   late final AnimationController controller;
 
@@ -186,10 +166,7 @@ class _BlinkingCursorState
       opacity: controller,
       child: Text(
         "|",
-        style: Theme.of(context)
-            .textTheme
-            .titleMedium
-            ?.copyWith(
+        style: Theme.of(context).textTheme.titleMedium?.copyWith(
               color: const Color(
                 0xFF8B5CF6,
               ),

@@ -28,7 +28,7 @@ class WorkReportPropertyView extends StatelessWidget {
           label: "Status",
           child: WorkReportStatusStepCard(
             currentStatus: report.status,
-            statusDate: report.statusDate, // TODO : test this new UI
+            statusDate: report.statusDate, 
           ),
         ),
       ]),

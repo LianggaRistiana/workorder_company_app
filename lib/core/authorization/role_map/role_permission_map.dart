@@ -105,7 +105,6 @@ extension UserRolePermissions on UserRole {
           ...InvitationPermission.sender,
 
           // Service Domain
-          // TODO : Check this changes
           ...FormPermission.all,
           ...ServicePermission.all,
 
@@ -123,7 +122,7 @@ extension UserRolePermissions on UserRole {
           // Human Resouce Domain
           PositionsPermission.view,
           EmployeePermission.view,
-          ...InvitationPermission.sender, // TODO : Check this
+          ...InvitationPermission.sender, 
 
           // Service Domain
           ...FormPermission.all,
