@@ -6,7 +6,7 @@ import 'package:workorder_company_app/core/authorization/rule/role_permission_ru
 import 'package:workorder_company_app/core/authorization/util/access_gate_on_widget.dart';
 import 'package:workorder_company_app/core/constants/app_enums/service_enum.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
-import 'package:workorder_company_app/features/helps/presentation/widgets/fab_help.dart';
+// import 'package:workorder_company_app/features/helps/presentation/widgets/fab_help.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/list/services_list_bloc.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/list/services_list_event.dart';
 import 'package:workorder_company_app/features/services/presentation/bloc/list/services_list_state.dart';
@@ -17,7 +17,7 @@ import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
 import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
-import 'package:workorder_company_app/shared/widgets/information_block.dart';
+// import 'package:workorder_company_app/shared/widgets/information_block.dart';
 import 'package:workorder_company_app/shared/widgets/list_page_scafold.dart';
 import 'package:workorder_company_app/shared/widgets/search_bar.dart';
 
@@ -99,10 +99,10 @@ class _ServicesListView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                FabHelp(
-                  title: "Layanan",
-                  child: InformationBlock.warning("Under Development"),
-                ),
+                // FabHelp(
+                //   title: "Layanan",
+                //   child: InformationBlock.warning("Under Development"),
+                // ),
                 if (nextStepMode == ServiceListNextAction.serviceDetail) ...[
                   const SizedBox(height: 8),
                   FloatingActionButton.extended(
@@ -112,6 +112,8 @@ class _ServicesListView extends StatelessWidget {
                     label: const Text("Tambah Layanan"),
                     icon: const Icon(Icons.add),
                   ).require(roleCan(ServicePermission.create)),
+                ] else...[
+                  const SizedBox.shrink(),
                 ]
               ],
             ),
