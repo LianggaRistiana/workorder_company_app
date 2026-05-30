@@ -11,7 +11,7 @@ class UploadPdfDocState extends Equatable {
 
   bool get isUploading {
     final r = result;
-    return r != null && r.progress < 1 && !r.isDone;
+    return r != null && !r.isDone;
   }
 
   bool get hasError {
