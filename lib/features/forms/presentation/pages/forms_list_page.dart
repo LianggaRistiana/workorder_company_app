@@ -9,6 +9,7 @@ import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/list/forms_list_bloc.dart';
+import 'package:workorder_company_app/features/forms/presentation/widgets/form_filter_button.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
@@ -16,6 +17,7 @@ import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart'
 import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
 import 'package:workorder_company_app/shared/widgets/list_page_scafold.dart';
+import 'package:workorder_company_app/shared/widgets/search_bar.dart';
 
 class FormsListPage extends StatelessWidget {
   const FormsListPage({super.key});
@@ -41,7 +43,7 @@ class FormsListPage extends StatelessWidget {
             builder: (context, state) {
               final isLoading = state.status == FormsListStatus.loading ||
                   state.status == FormsListStatus.initial;
-              final forms = state.forms;
+              final forms = state.filteredForms;
               final errorMessage = state.status == FormsListStatus.error
                   ? state.errorMessage
                   : null;
@@ -55,6 +57,28 @@ class FormsListPage extends StatelessWidget {
                 onRefresh: () {
                   return _onRefresh(context);
                 },
+                header: Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding:
+                            const EdgeInsets.only(left: 8.0, top: 4, bottom: 4),
+                        child: AppSearchBar(
+                          featureName: "perintah kerja",
+                          onChanged: (value) {
+                            context.read<FormsListBloc>().add(
+                                  SetFormFilter(
+                                    state.filter.copyWith(search: value),
+                                  ),
+                                );
+                          },
+                          initialValue: state.filter.search,
+                        ),
+                      ),
+                    ),
+                    FormFilterButton(),
+                  ],
+                ),
                 emptyWidget: const EmptyStateWidget(
                   text: "Tidak ada formulir",
                 ),

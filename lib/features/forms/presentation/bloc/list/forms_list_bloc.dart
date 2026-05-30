@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
+import 'package:workorder_company_app/features/forms/domain/params/form_params.dart';
 import 'package:workorder_company_app/features/forms/domain/usecases/get_forms_usecase.dart';
 
 part 'forms_list_event.dart';
@@ -18,6 +19,8 @@ class FormsListBloc extends Bloc<FormsListEvent, FormsListState> {
       {required this.getFormsUsecase, required this.cacheChangedStream})
       : super(const FormsListState()) {
     on<GetFormsListRequested>(_onGetFormsListRequested);
+    on<SetFormFilter>(_setFilter);
+
     _subscription = cacheChangedStream.listen((_) {
       add(GetFormsListRequested(forceRefresh: false));
     });
@@ -45,6 +48,11 @@ class FormsListBloc extends Bloc<FormsListEvent, FormsListState> {
         ),
       ),
     );
+  }
+
+  Future<void> _setFilter(
+      SetFormFilter event, Emitter<FormsListState> emit) async {
+    emit(state.copyWith(filter: event.filter));
   }
 
   @override

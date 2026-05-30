@@ -7,3 +7,10 @@ class GetFormsListRequested extends FormsListEvent {
 
   GetFormsListRequested({this.forceRefresh = false});
 }
+
+
+class SetFormFilter extends FormsListEvent {
+  final FormParams filter;
+
+  SetFormFilter(this.filter);
+}
