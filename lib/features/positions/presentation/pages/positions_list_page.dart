@@ -17,6 +17,7 @@ import 'package:workorder_company_app/shared/widgets/clickable_custom_card.dart'
 import 'package:workorder_company_app/shared/widgets/empty_state_widget.dart';
 import 'package:workorder_company_app/shared/widgets/icon_box.dart';
 import 'package:workorder_company_app/shared/widgets/list_page_scafold.dart';
+import 'package:workorder_company_app/shared/widgets/search_bar.dart';
 
 class PositionsListPage extends StatelessWidget {
   const PositionsListPage({super.key});
@@ -45,7 +46,7 @@ class _PositionsListView extends StatelessWidget {
       builder: (context, state) {
         final isLoading = state.status == PositionsListStatus.loading;
         final errorMessage = state.errorMessage;
-        final positions = state.positions;
+        final positions = state.filteredPositions;
 
         return ListPageScaffold(
           title: "Departemen",
@@ -53,6 +54,21 @@ class _PositionsListView extends StatelessWidget {
           errorMessage: errorMessage,
           items: positions,
           loadingMessage: "Memuat Departemen...",
+          header: Padding(
+            padding:
+                const EdgeInsets.only(left: 8.0, right: 8.0, top: 4, bottom: 4),
+            child: AppSearchBar(
+              featureName: "departemen",
+              onChanged: (value) {
+                context.read<PositionsListBloc>().add(
+                      SetFilter(
+                        state.params.copyWith(search: value),
+                      ),
+                    );
+              },
+              initialValue: state.params.search,
+            ),
+          ),
           onRefresh: () async {
             context
                 .read<PositionsListBloc>()

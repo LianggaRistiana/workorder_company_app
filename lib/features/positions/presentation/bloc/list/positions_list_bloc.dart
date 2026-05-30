@@ -16,6 +16,8 @@ class PositionsListBloc extends Bloc<PositionsListEvent, PositionsListState> {
       {required this.getPositionsUseCase, required this.cacheChangedStream})
       : super(const PositionsListState()) {
     on<GetPositionsListRequested>(_onGetPositionsRequested);
+    on<SetFilter>(_onSetFilter);
+    
     _subscription = cacheChangedStream.listen((_) {
       add(GetPositionsListRequested(forceRefresh: false));
     });
@@ -41,6 +43,11 @@ class PositionsListBloc extends Bloc<PositionsListEvent, PositionsListState> {
         positions: data,
       )),
     );
+  }
+
+  Future<void> _onSetFilter(
+      SetFilter event, Emitter<PositionsListState> emit) async {
+    emit(state.copyWith(params: event.params));
   }
 
   @override

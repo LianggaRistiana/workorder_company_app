@@ -1,3 +1,5 @@
+import 'package:workorder_company_app/features/positions/params/position_params.dart';
+
 sealed class PositionsListEvent {}
 
 class GetPositionsListRequested extends PositionsListEvent {
@@ -5,7 +7,7 @@ class GetPositionsListRequested extends PositionsListEvent {
   GetPositionsListRequested({this.forceRefresh = false});
 }
 
-// class NewPositionAdded extends PositionsListEvent {
-//   final PositionEntity position;
-//   NewPositionAdded(this.position);
-// }
+class SetFilter extends PositionsListEvent {
+  final PositionParams params;
+  SetFilter(this.params);
+}
