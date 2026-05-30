@@ -26,5 +26,5 @@ class AppConfig {
   static const int receivedTimeout = 10;
   static const int connectTimeout = 10;
 
-  static const websiteUrl = 'https://work-order-service.vercel.app/';
+  static const websiteUrl = 'https://workorder-service-production.up.railway.app/';
 }

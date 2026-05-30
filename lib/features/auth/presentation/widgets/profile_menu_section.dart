@@ -6,7 +6,7 @@ import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/notification/presentation/widgets/notification_toggle.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
-import 'package:workorder_company_app/shared/widgets/horizontal_switch.dart';
+// import 'package:workorder_company_app/shared/widgets/horizontal_switch.dart';
 
 class ProfileMenuSection extends StatelessWidget {
   const ProfileMenuSection({super.key});
@@ -16,14 +16,14 @@ class ProfileMenuSection extends StatelessWidget {
     return Column(
       children: [
         const NotificationToggle(),
-        HorizontalSwitch(
-          margin: EdgeInsets.only(bottom: AppSpacing.xs),
-          title: "Petunjuk",
-          leadingIcon: Icons.info_outline,
-          description: "Tampilkan petunjuk penggunaan aplikasi Anda",
-          value: false,
-          onChanged: (_) {},
-        ),
+        // HorizontalSwitch(
+        //   margin: EdgeInsets.only(bottom: AppSpacing.xs),
+        //   title: "Petunjuk",
+        //   leadingIcon: Icons.info_outline,
+        //   description: "Tampilkan petunjuk penggunaan aplikasi Anda",
+        //   value: false,
+        //   onChanged: (_) {},
+        // ),
         HorizontalButton(
           margin: EdgeInsets.only(bottom: AppSpacing.xs),
           title: "Coba versi website",
