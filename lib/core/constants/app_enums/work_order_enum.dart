@@ -51,11 +51,11 @@ extension WorkOrderStatusFlowStateX on WorkOrderStatus {
     WorkOrderStatus.rejected,
   };
 
-  static const initialParams = {
-    WorkOrderStatus.drafted,
-    WorkOrderStatus.onProgress,
-    WorkOrderStatus.sent,
-  };
+  // static const initialParams = {
+  //   WorkOrderStatus.drafted,
+  //   WorkOrderStatus.onProgress,
+  //   WorkOrderStatus.sent,
+  // };
 
   static const reportableStates = {
     WorkOrderStatus.completed,
@@ -100,7 +100,7 @@ extension WorkOrderStatusFlowStateX on WorkOrderStatus {
   static List<WorkOrderStatus> get reviewedStatesList =>
       reviewedStates.toList();
 
-  static List<WorkOrderStatus> get initialParamsList => initialParams.toList();
+  // static List<WorkOrderStatus> get initialParamsList => initialParams.toList();
 }
 
 extension WorkOrderStatusX on WorkOrderStatus {
