@@ -112,16 +112,22 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Either<Failure, void>> logOut() async {
     try {
-      await _remoteDatasource.logout();
+      try {
+        await _remoteDatasource.logout();
+      } catch (e, st) {
+        appLogger.e("Remote logout failed: $e\n$st");
+      }
+
       await _localDatasource.clearUser();
       await _tokenStorage.clearToken();
 
-      return Right(null);
-    } on ApiException catch (e) {
-      return Left(ServerFailure(message: e.message));
+      return const Right(null);
     } catch (e, st) {
-      appLogger.e("$e\n $st");
-      return Left(CacheFailure(message: "Gagal Menghapus Data Local"));
+      appLogger.e("$e\n$st");
+
+      return Left(
+        CacheFailure(message: "Gagal Menghapus Data Local"),
+      );
     }
   }
 
