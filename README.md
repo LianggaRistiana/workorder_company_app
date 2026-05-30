@@ -1,16 +1,42 @@
 # workorder_company_app
 
-A new Flutter project.
+Flutter application for managing work orders from the **company and customer** side.
+
+For full documentation, visit [docs.lianggaristiana.site/work-order](https://docs.lianggaristiana.site/work-order)
+
+---
+
+## Features
+
+- `auth`
+- `company`
+- `dashboard`
+- `employees`
+- `faq`
+- `forms`
+- `helps`
+- `home`
+- `invitations`
+- `memberships`
+- `notification`
+- `on_boarding`
+- `positions`
+- `service_price`
+- `service_request`
+- `services`
+- `submissions`
+- `system_integration`
+- `template_config`
+- `work_order`
+- `work_report`
+
+---
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+Make sure you have Flutter installed. Then run:
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```bash
+flutter pub get
+flutter run
+```
