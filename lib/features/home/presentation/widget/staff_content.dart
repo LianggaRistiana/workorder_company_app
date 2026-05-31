@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
-import 'package:workorder_company_app/shared/widgets/menu_grid.dart';
-import 'package:workorder_company_app/shared/widgets/menu_item.dart';
+import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
+// import 'package:workorder_company_app/shared/widgets/menu_grid.dart';
+// import 'package:workorder_company_app/shared/widgets/menu_item.dart';
 import 'package:workorder_company_app/shared/widgets/section_title.dart';
 
 class StaffContent extends StatelessWidget {
@@ -45,36 +46,50 @@ class StaffContent extends StatelessWidget {
           "Menu",
           style: Theme.of(context).textTheme.titleLarge,
         ),
-        const SizedBox(height: 12),
-        MenuGrid(
-          items: [
-            // MenuItem(
-            //     icon: AppIcon.service,
-            //     label: "Layanan",
-            //     onTap: () {
-            //       context.push(AppRoutes.services,
-            //           extra: NextStepMode.createServiceRequest);
-            //     }),
-            // MenuItem(
-            //     icon: AppIcon.employee,
-            //     label: "Rekan Kerja",
-            //     onTap: () {
-            //       context.push(AppRoutes.employee);
-            //     }),
-            MenuItem(
-                icon: AppIcon.serviceRequestSend,
-                label: "Permintaan Layanan",
-                onTap: () {
-                  context.push(AppRoutes.serviceRequestSent);
-                }),
-            MenuItem(
-                icon: AppIcon.workOrder,
-                label: "Perintah Kerja",
-                onTap: () {
-                  context.go(AppRoutes.workOrders);
-                }),
-          ],
+
+        HorizontalButton(
+          leadingIcon: AppIcon.serviceRequestSend,
+          title: "Permintaan Layanan Saya",
+          description: "Permintaan layanan yang anda ajukan",
+          onTap: () => context.push(AppRoutes.serviceRequestSent),
         ),
+        HorizontalButton(
+          leadingIcon: AppIcon.workOrder,
+          title: "Perintah Kerja",
+          description: "Perintah kerja yang ditugaskan kepada anda",
+          onTap: () => context.go(AppRoutes.workOrders),
+        ),
+
+        // const SizedBox(height: 12),
+        // MenuGrid(
+        //   items: [
+        //     // MenuItem(
+        //     //     icon: AppIcon.service,
+        //     //     label: "Layanan",
+        //     //     onTap: () {
+        //     //       context.push(AppRoutes.services,
+        //     //           extra: NextStepMode.createServiceRequest);
+        //     //     }),
+        //     // MenuItem(
+        //     //     icon: AppIcon.employee,
+        //     //     label: "Rekan Kerja",
+        //     //     onTap: () {
+        //     //       context.push(AppRoutes.employee);
+        //     //     }),
+        //     MenuItem(
+        //         icon: AppIcon.serviceRequestSend,
+        //         label: "Permintaan Layanan",
+        //         onTap: () {
+        //           context.push(AppRoutes.serviceRequestSent);
+        //         }),
+        //     MenuItem(
+        //         icon: AppIcon.workOrder,
+        //         label: "Perintah Kerja",
+        //         onTap: () {
+        //           context.go(AppRoutes.workOrders);
+        //         }),
+        //   ],
+        // ),
       ],
     );
   }
