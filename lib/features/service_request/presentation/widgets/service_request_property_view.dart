@@ -32,9 +32,21 @@ class ServiceRequestPropertyView extends StatelessWidget {
                     .name,
                 icon: AppIcon.company),
           if (serviceRequest is ProviderServiceRequestEntity)
-            PropertyItem.text(
+            PropertyItem.widget(
                 label: "Diajukan oleh",
-                value: serviceRequest.requestedBy.name,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(serviceRequest.requestedBy.name,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.titleSmall),
+                    Text(serviceRequest.requestedBy.email,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.labelSmall)
+                  ],
+                ),
                 icon: AppIcon.user),
           if (serviceRequest.approvedBy != null)
             PropertyItem.text(
