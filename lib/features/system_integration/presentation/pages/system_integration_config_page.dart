@@ -208,6 +208,10 @@ class _SystemIntegrationConfigPageState
           valueListenable: _controllers.integrationType,
           builder: (context, value, _) {
             return SegmentedButton<IntegrationType>(
+              style: SegmentedButton.styleFrom(
+                selectedBackgroundColor: theme.colorScheme.primaryContainer,
+                selectedForegroundColor: theme.colorScheme.primary,
+              ),
               segments: IntegrationType.values.map((type) {
                 return ButtonSegment(
                   value: type,

@@ -17,7 +17,7 @@ class ProviderIntegrationDataModel extends ProviderIntegrationDataEntity {
         externalVerifyUrl: json.field("external_verify_url").optString() ?? "",
         secretKey: json.field("secret_key").optString() ?? "",
         externalCheckStatusMembershipsUrl:
-            json.field("external_check_status_url").optString() ?? "",
+            json.field("external_check_memberships_url").optString() ?? "",
         isIntegrationActive: json.field("is_integration_active").reqBool(),
         integrationType: json
                 .field("integration_type")
@@ -43,7 +43,7 @@ class ProviderIntegrationDataModel extends ProviderIntegrationDataEntity {
     return {
       "external_login_url": externalLoginUrl,
       "external_verify_url": externalVerifyUrl,
-      "external_check_status_url": externalCheckStatusMembershipsUrl,
+      "external_check_memberships_url": externalCheckStatusMembershipsUrl,
       "secret_key": secretKey,
       "is_integration_active": isIntegrationActive,
       "integration_type": integrationType.toSnakeCase(),
