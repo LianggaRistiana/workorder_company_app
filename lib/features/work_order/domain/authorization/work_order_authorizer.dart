@@ -59,7 +59,7 @@ class WorkOrderAuthorizer {
   AuthorizationRule get startWorkOrder => rules([
         roleCan(WorkOrderPermissions.start),
         _ManagerDepartementScopeRule(workOrder),
-        _StatusValidation(workOrder.status, WorkOrderStatus.approved),
+        _StatusValidation(workOrder.status, WorkOrderStatus.sent),
         _StaffPicOrEveryone(workOrder),
         _WorkOrderCapabilityRule(
             capabilities: capabilities, checker: (c) => c.canStart)

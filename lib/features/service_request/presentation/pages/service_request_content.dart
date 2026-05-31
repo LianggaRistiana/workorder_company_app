@@ -67,6 +67,8 @@ class ServiceRequestContent extends StatelessWidget {
         HorizontalButton(
                 margin: const EdgeInsets.only(bottom: AppSpacing.xs),
                 title: "Lihat Perintah Kerja",
+                description:
+                    "Lihat perintah kerja yang terkait dengan permintaan ini",
                 onTap: () {
                   context.push(Endpoints.workorders,
                       extra: WorkOrderParams(serviceRequest: serviceRequest));
@@ -77,6 +79,7 @@ class ServiceRequestContent extends StatelessWidget {
       if (serviceRequest.status.isReviewAvailable) ...[
         HorizontalButton(
             leadingIcon: AppIcon.review,
+            description: "Lihat ulasan yang terkait dengan permintaan ini",
             onTap: () {
               final reviewForm = serviceRequest.reviewForm;
               showAppBottomSheet(
