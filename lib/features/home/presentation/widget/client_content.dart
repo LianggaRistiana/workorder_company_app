@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
+// import 'package:workorder_company_app/features/dashboard/presentation/widgets/service_request_home_chart.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
 import 'package:workorder_company_app/shared/widgets/section_title.dart';
@@ -13,11 +14,11 @@ class ClientContent extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // ServiceRequestHomeChart(),
         SectionTitle(
           "Menu",
           style: Theme.of(context).textTheme.titleLarge,
         ),
-        const SizedBox(height: 12),
         HorizontalButton(
           leadingIcon: AppIcon.company,
           title: "Ajukan Permintaan Layanan",
