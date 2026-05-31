@@ -69,20 +69,20 @@ class WorkOrderTips extends StatelessWidget {
               "Persetujuan diperlukan apabila tipe persetujuan tidak otomatis.",
             ],
           ),
-          _statusItem(
-            context,
-            WorkOrderStatus.approved,
-            [
-              "Perintah kerja telah disetujui dan siap untuk dikerjakan.",
-            ],
-          ),
-          _statusItem(
-            context,
-            WorkOrderStatus.rejected,
-            [
-              "Perintah kerja ditolak dan dikembalikan untuk peninjauan ulang.",
-            ],
-          ),
+          // _statusItem(
+          //   context,
+          //   WorkOrderStatus.approved,
+          //   [
+          //     "Perintah kerja telah disetujui dan siap untuk dikerjakan.",
+          //   ],
+          // ),
+          // _statusItem(
+          //   context,
+          //   WorkOrderStatus.rejected,
+          //   [
+          //     "Perintah kerja ditolak dan dikembalikan untuk peninjauan ulang.",
+          //   ],
+          // ),
           _statusItem(
             context,
             WorkOrderStatus.onProgress,
