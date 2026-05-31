@@ -15,7 +15,7 @@ class StaffContent extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(height: 4),
+        // const SizedBox(height: 4),
         // Row(
         //   children: [
         //     Expanded(
@@ -41,7 +41,7 @@ class StaffContent extends StatelessWidget {
         //     ),
         //   ],
         // ),
-        const SizedBox(height: 8),
+        // const SizedBox(height: 8),
         SectionTitle(
           "Menu",
           style: Theme.of(context).textTheme.titleLarge,
@@ -59,7 +59,11 @@ class StaffContent extends StatelessWidget {
           description: "Perintah kerja yang ditugaskan kepada anda",
           onTap: () => context.go(AppRoutes.workOrders),
         ),
-
+        HorizontalButton(
+            leadingIcon: AppIcon.dashboard,
+            title: "Dashboard",
+            description: "Statistik aktifitas anda",
+            onTap: () => context.push(AppRoutes.dashboard)),
         // const SizedBox(height: 12),
         // MenuGrid(
         //   items: [
