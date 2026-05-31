@@ -1,23 +1,17 @@
 class AppConfig {
   static const String appName = "Work Order Company App";
-  static const String appVersion = "1.0.0";
-  static const String appFlavor = "production.railway";
+  static const String appFlavor = "production.v1";
 
   // network
   static const Map<String, String> baseApiUrls = {
     'development': 'http://10.0.2.2:3000',
-    'development.device': 'http://127.0.0.1:3000',
-    'development.linx': 'http://192.168.1.14:3000',
-    'development.rama': 'http://192.168.1.11:3000',
-    'development.dede': 'http://192.168.1.193:3000',
-    'development.ngrok': 'http://172.16.153.108:3000',
-    'staging': 'https://workorder-team.vercel.app/',
-    'production.railway': 'https://workorder-portal-production-4d0a.up.railway.app',
+    'production.v1': 'https://workorder-portal-production-4d0a.up.railway.app',
+    'production.v2': 'https://workorder-production.up.railway.app',
   };
   static const Map<String, String> serverCodeNames = {
     'development': 'Local',
-    'production.railway': 'Primary-Server',
-    'production.render': 'Backup-Server',
+    'production.v1': 'Primary-Server-v1',
+    'production.v2': 'Primary-Server-v2',
   };
 
   static String get baseApiUrl => baseApiUrls[appFlavor]!;
