@@ -81,7 +81,6 @@ class _WorkOrdersListPageState extends State<WorkOrdersListPage> {
             : WorkOrderParams(
                 status: [
                   WorkOrderStatus.drafted,
-                  WorkOrderStatus.approved,
                 ],
               ));
 
