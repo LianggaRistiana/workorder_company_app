@@ -46,27 +46,34 @@ class WorkReportPage extends StatelessWidget {
             builder: (context, state) {
           final workReport = state.workReport;
 
-          return SafeArea(
-              child: Scaffold(
-            appBar: AppBar(),
-            floatingActionButtonAnimator:
-                FloatingActionButtonAnimator.noAnimation,
-            floatingActionButton: workReport?.status.buildFab(
-              workOrder,
-              workReport,
-            ),
-            body: RefreshIndicator(
-              onRefresh: () async {
-                await context
-                    .read<GetWorkReportCubit>()
-                    .getWorkReport(workOrder);
-              },
-              child: _WorkReportBody(
-                workOrder: workOrder,
-                state: state,
+          return PopScope(
+            canPop: false,
+            onPopInvokedWithResult: (didPop, result) {
+              if (didPop) return;
+              context.pop(state.shouldRefreshWorkOrder);
+            },
+            child: SafeArea(
+                child: Scaffold(
+              appBar: AppBar(),
+              floatingActionButtonAnimator:
+                  FloatingActionButtonAnimator.noAnimation,
+              floatingActionButton: workReport?.status.buildFab(
+                workOrder,
+                workReport,
               ),
-            ),
-          ));
+              body: RefreshIndicator(
+                onRefresh: () async {
+                  await context
+                      .read<GetWorkReportCubit>()
+                      .getWorkReport(workOrder);
+                },
+                child: _WorkReportBody(
+                  workOrder: workOrder,
+                  state: state,
+                ),
+              ),
+            )),
+          );
         }),
       ),
     );

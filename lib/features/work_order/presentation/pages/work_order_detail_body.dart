@@ -68,12 +68,18 @@ class WorkOrderDetailBody extends StatelessWidget {
           title: "Laporan Kerja",
           leadingIcon: AppIcon.workReport,
           description: "Lihat hasil pekerjaan oleh pegawai bertugas",
-          onTap: () {
-            // OPTIMIZE : refetch if there is any update on report
-            context.push(
+          onTap: () async {
+            final result = await context.push(
               AppRoutes.workReport,
               extra: workOrder,
             );
+
+            if (!context.mounted) return;
+            if (result == true) {
+              context
+                  .read<WorkOrderDetailCubit>()
+                  .getWorkOrderDetail(workOrder.id);
+            }
           },
         ),
       ],
@@ -194,7 +200,7 @@ class WorkOrderDetailBody extends StatelessWidget {
       //       onTap: () => context.push(
       //           AppRoutes.serviceRequestDetail.fillId(serviceRequestId),
       //           extra: ServiceRequestSide.provider)),
-      // ], 
+      // ],
       CancelWorkOrderButton(
         workOrder: workOrder,
         capabilities: capabilities,

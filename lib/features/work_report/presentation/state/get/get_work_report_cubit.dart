@@ -28,6 +28,9 @@ class GetWorkReportCubit extends Cubit<GetWorkReportState> {
   }
 
   Future<void> updateResult(WorkReportEntity result) async {
-    emit(state.copyWith(workReport: result));
+    emit(state.copyWith(
+      workReport: result,
+      shouldRefreshWorkOrder: true,
+    ));
   }
 }
