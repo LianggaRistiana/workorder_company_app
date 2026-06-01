@@ -171,23 +171,23 @@ extension WorkOrderDraftMapper on ServiceWorkOrderConfigDraft {
   WorkOrderAprrovalAccess _mapWOApproval(
     WorkOrderDraftingType draftingType,
   ) {
-    if (draftingType == WorkOrderDraftingType.auto) {
-      return WorkOrderAprrovalAccess.auto;
-    }
+    // if (draftingType == WorkOrderDraftingType.auto) {
+    //   return WorkOrderAprrovalAccess.auto;
+    // }
 
-    return workOrderApprovalAccess;
+    // return workOrderApprovalAccess;
+    // NOTE : Since staff PIC in WorkOrder has been removed, Approval Work order is doesnt needed anymore
+
+    return WorkOrderAprrovalAccess.auto;
   }
 
   WorkReportApprovalAccess _mapWRApproval(
     WorkOrderDraftingType draftingType,
   ) {
-    // if (draftingType == WorkOrderDraftingType.auto) {
-    //   return WorkReportApprovalAccess.auto;
-    // }
-    // return workReportApprovalAccess;
-
-    // NOTE : Since staff PIC in WorkOrder has been removed, Approval Work order is doesnt needed anymore
-    return WorkReportApprovalAccess.auto;
+    if (draftingType == WorkOrderDraftingType.auto) {
+      return WorkReportApprovalAccess.auto;
+    }
+    return workReportApprovalAccess;
   }
 
   FormEntity? _mapWorkOrderForm(
