@@ -44,7 +44,7 @@ class WorkOrderAuthorizer {
         roleCan(WorkOrderPermissions.approve),
         _ManagerDepartementScopeRule(workOrder),
         _StatusValidation(workOrder.status, WorkOrderStatus.sent),
-        _OnlyStaffPicToReview(workOrder),
+        // _OnlyStaffPicToReview(workOrder),
         _ApprovalRequiresManual(workOrder.approvalAccess)
       ]);
 
@@ -52,7 +52,7 @@ class WorkOrderAuthorizer {
         roleCan(WorkOrderPermissions.reject),
         _ManagerDepartementScopeRule(workOrder),
         _StatusValidation(workOrder.status, WorkOrderStatus.sent),
-        _OnlyStaffPicToReview(workOrder),
+        // _OnlyStaffPicToReview(workOrder),
         _ApprovalRequiresManual(workOrder.approvalAccess)
       ]);
 
@@ -60,7 +60,7 @@ class WorkOrderAuthorizer {
         roleCan(WorkOrderPermissions.start),
         _ManagerDepartementScopeRule(workOrder),
         _StatusValidation(workOrder.status, WorkOrderStatus.sent),
-        _StaffPicOrEveryone(workOrder),
+        // _StaffPicOrEveryone(workOrder),
         _WorkOrderCapabilityRule(
             capabilities: capabilities, checker: (c) => c.canStart)
       ]);
@@ -144,57 +144,59 @@ class _ManagerDepartementScopeRule extends AuthorizationRule {
   }
 }
 
-class _OnlyStaffPicToReview extends AuthorizationRule {
-  final WorkOrderEntity workOrder;
+// class _OnlyStaffPicToReview extends AuthorizationRule {
+//   final WorkOrderEntity workOrder;
 
-  _OnlyStaffPicToReview(this.workOrder);
+//   _OnlyStaffPicToReview(this.workOrder);
 
-  @override
-  AuthorizationResult evaluate(UserEntity user) {
-    if (workOrder.approvalAccess != WorkOrderAprrovalAccess.staffPic) {
-      return const AuthorizationResult.allowed();
-    }
+//   @override
+//   AuthorizationResult evaluate(UserEntity user) {
+//     // NOTE : to prevent logic blocked if sometime there is staff pic out of nowhere
+//     return const AuthorizationResult.allowed();
+//     // if (workOrder.approvalAccess != WorkOrderAprrovalAccess.staffPic) {
+//     //   return const AuthorizationResult.allowed();
+//     // }
 
-    final staffPic = workOrder.staffPic;
+//     // final staffPic = workOrder.staffPic;
 
-    if (staffPic == null) {
-      return const AuthorizationResult.denied(
-        "Staff PIC belum ditentukan",
-      );
-    }
+//     // if (staffPic == null) {
+//     //   return const AuthorizationResult.denied(
+//     //     "Staff PIC belum ditentukan",
+//     //   );
+//     // }
 
-    if (staffPic.email == user.email) {
-      return const AuthorizationResult.allowed();
-    }
+//     // if (staffPic.email == user.email) {
+//     //   return const AuthorizationResult.allowed();
+//     // }
 
-    return const AuthorizationResult.denied(
-      "Hanya Staff PIC yang dapat melakukan aksi ini",
-    );
-  }
-}
+//     // return const AuthorizationResult.denied(
+//     //   "Hanya Staff PIC yang dapat melakukan aksi ini",
+//     // );
+//   }
+// }
 
-class _StaffPicOrEveryone extends AuthorizationRule {
-  final WorkOrderEntity workOrder;
+// class _StaffPicOrEveryone extends AuthorizationRule {
+//   final WorkOrderEntity workOrder;
 
-  _StaffPicOrEveryone(this.workOrder);
+//   _StaffPicOrEveryone(this.workOrder);
 
-  @override
-  AuthorizationResult evaluate(UserEntity user) {
-    final staffPic = workOrder.staffPic;
+//   @override
+//   AuthorizationResult evaluate(UserEntity user) {
+//     final staffPic = workOrder.staffPic;
 
-    if (staffPic == null) {
-      return const AuthorizationResult.allowed();
-    }
+//     if (staffPic == null) {
+//       return const AuthorizationResult.allowed();
+//     }
 
-    if (staffPic.email == user.email) {
-      return const AuthorizationResult.allowed();
-    }
+//     if (staffPic.email == user.email) {
+//       return const AuthorizationResult.allowed();
+//     }
 
-    return const AuthorizationResult.denied(
-      "Hanya Staff PIC yang dapat melakukan aksi ini",
-    );
-  }
-}
+//     return const AuthorizationResult.denied(
+//       "Hanya Staff PIC yang dapat melakukan aksi ini",
+//     );
+//   }
+// }
 
 class _WorkOrderCapabilityRule extends AuthorizationRule {
   final WorkOrderCapabilities? capabilities;

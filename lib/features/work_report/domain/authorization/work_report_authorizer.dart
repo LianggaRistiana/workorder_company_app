@@ -117,15 +117,16 @@ class _CheckPic extends AuthorizationRule {
 
   @override
   AuthorizationResult evaluate(UserEntity user) {
-    if (workOrder.staffPic == null) {
-      return const AuthorizationResult.allowed();
-    }
-    if (workOrder.staffPic!.email == user.email) {
-      return const AuthorizationResult.allowed();
-    }
-    return const AuthorizationResult.denied(
-      "Hanya Penanggung Jawab yang dapat melakukan aksi ini",
-    );
+    // NOTE : to prevent logic blocked if sometime there is staff pic out of nowhere
+    return const AuthorizationResult.allowed();
+    // if (workOrder.staffPic == null) {
+    // }
+    // if (workOrder.staffPic!.email == user.email) {
+    //   return const AuthorizationResult.allowed();
+    // }
+    // return const AuthorizationResult.denied(
+    //   "Hanya Penanggung Jawab yang dapat melakukan aksi ini",
+    // );
   }
 }
 
