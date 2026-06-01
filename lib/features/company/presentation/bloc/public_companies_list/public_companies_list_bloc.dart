@@ -11,26 +11,35 @@ class PublicCompaniesListBloc
     required this.getCompaniesUsecase,
   }) : super(const PublicCompaniesListState()) {
     on<GetPublicCompaniesRequested>(_onGetPublicCompaniesRequested);
+    on<SetCompaniesFilter>(_onSetCompaniesFilter);
   }
 
   Future<void> _onGetPublicCompaniesRequested(
     GetPublicCompaniesRequested event,
     Emitter<PublicCompaniesListState> emit,
   ) async {
-    emit(const PublicCompaniesListState(
+    emit(state.copyWith(
         status: PublicCompaniesListStatus.loading, errorMessage: null));
 
     final result = await getCompaniesUsecase();
 
     result.fold(
-      (failure) => emit(PublicCompaniesListState(
+      (failure) => emit(state.copyWith(
         status: PublicCompaniesListStatus.error,
         errorMessage: failure.message,
       )),
-      (companies) => emit(PublicCompaniesListState(
+      (companies) => emit(state.copyWith(
         status: PublicCompaniesListStatus.loaded,
         companies: companies,
+        errorMessage: null,
       )),
     );
+  }
+
+  Future<void> _onSetCompaniesFilter(
+    SetCompaniesFilter event,
+    Emitter<PublicCompaniesListState> emit,
+  ) async {
+    emit(state.copyWith(filter: event.filter));
   }
 }
