@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/authorization/util/access_gate_on_widget.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
-import 'package:workorder_company_app/core/constants/app_enums/work_order_enum.dart';
 import 'package:workorder_company_app/core/result/result.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_radius.dart';
@@ -16,7 +15,7 @@ import 'package:workorder_company_app/features/work_order/presentation/bloc/deta
 import 'package:workorder_company_app/features/work_order/presentation/widgets/cancel_work_order_button.dart';
 import 'package:workorder_company_app/features/work_order/presentation/widgets/work_order_property_view.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
-// import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
+import 'package:workorder_company_app/shared/utils/string_route_utils.dart';
 import 'package:workorder_company_app/shared/widgets/adaptive_split_column.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
@@ -157,7 +156,7 @@ class WorkOrderDetailBody extends StatelessWidget {
   }
 
   List<Widget> _rightChildren(BuildContext context) {
-    // final serviceRequestId = workOrder.serviceRequestId;
+    final serviceRequestId = workOrder.serviceRequestId;
     final filledForm = workOrder.workOrderForm?.currentFilledForm;
 
     return [
@@ -191,16 +190,16 @@ class WorkOrderDetailBody extends StatelessWidget {
             .fillWorkOrder),
         const SizedBox(height: AppSpacing.lg),
       ],
-      // if (serviceRequestId != null) ...[
-      //   HorizontalButton(
-      //       leadingIcon: AppIcon.serviceRequestInbox,
-      //       title: "Lihat Permintaan Layanan",
-      //       description:
-      //           "Lihat permintaan layanan yang terkait dengan perintah kerja ini",
-      //       onTap: () => context.push(
-      //           AppRoutes.serviceRequestDetail.fillId(serviceRequestId),
-      //           extra: ServiceRequestSide.provider)),
-      // ],
+      if (serviceRequestId != null) ...[
+        HorizontalButton(
+            leadingIcon: AppIcon.serviceRequestInbox,
+            title: "Lihat Permintaan Layanan",
+            description:
+                "Lihat permintaan layanan yang terkait dengan perintah kerja ini",
+            onTap: () => context.push(
+                AppRoutes.serviceRequestDetail.fillId(serviceRequestId),
+                extra: ServiceRequestSide.provider)),
+      ],
       CancelWorkOrderButton(
         workOrder: workOrder,
         capabilities: capabilities,
