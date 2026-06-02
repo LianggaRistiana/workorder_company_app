@@ -295,7 +295,7 @@ class LoggingInterceptor extends Interceptor {
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
     appLogger.i(
-        "✅ ${response.statusCode} ${response.requestOptions.uri} \nPayload:\n${_prettyPrintJson(response.data)}");
+        "✅ ${response.statusCode} ${response.requestOptions.uri} \nPayload:\n${response.data}");
     // _prettyPrintJson(response.data);
     super.onResponse(response, handler);
   }
