@@ -53,7 +53,7 @@ class ServiceModel extends ServiceEntity {
           .field("serviceRequestConfig")
           .reqModel(ServiceRequestConfigModel.fromJsonTemplate),
       workOrderDraftingType: json
-          .field("drafting_work_order_type")
+          .field("draftingWorkOrderType")
           .reqEnum(WorkOrderDraftingType.fromString),
       workOrdersConfig: json
               .field("workOrdersConfig")
