@@ -2,7 +2,7 @@ name: workorder_company_app
 description: "A new Flutter project."
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
-version: 1.2.1+5
+version: 1.2.2+6
 
 environment:
   sdk: ^3.6.0
@@ -40,7 +40,6 @@ dependencies:
   app_links: ^6.4.1
   url_launcher: ^6.3.2
   package_info_plus: ^8.0.0
-
 
 dev_dependencies:
   flutter_test:

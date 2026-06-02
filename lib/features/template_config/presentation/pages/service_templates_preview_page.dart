@@ -15,7 +15,9 @@ import 'package:workorder_company_app/features/template_config/presentation/bloc
 import 'package:workorder_company_app/features/template_config/presentation/widgets/position_required_view.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
+import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/header_of_page.dart';
+import 'package:workorder_company_app/shared/widgets/property_display.dart';
 
 class ServiceTemplatesPreviewPage extends StatelessWidget {
   final String servicePreviewId;
@@ -84,6 +86,13 @@ class ServiceTemplatesPreviewPage extends StatelessWidget {
                                     title: "Ketahui jenis akses layanan",
                                     child: ServiceAccessTypeTips(),
                                   ),
+                                  CustomCard(
+                                      child: PropertyTile(
+                                          label:
+                                              "Mode Penyusunan Perintah Kerja",
+                                          icon: AppIcon.config,
+                                          value: service.workOrderDraftingType
+                                              .displayName)),
                                   if (positions != null)
                                     PositionRequiredView(positions: positions)
                                 ],

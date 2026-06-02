@@ -181,7 +181,8 @@ class _ServiceDetailView extends StatelessWidget {
                                     ),
                                     CustomCard(
                                         child: PropertyTile(
-                                            label: "Mode Penyusunan Work Order",
+                                            label:
+                                                "Mode Penyusunan Perintah Kerja",
                                             icon: AppIcon.config,
                                             value: service.workOrderDraftingType
                                                 .displayName))
