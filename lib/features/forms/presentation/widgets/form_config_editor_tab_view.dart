@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
+import 'package:workorder_company_app/core/utils/validators.dart';
 import 'package:workorder_company_app/features/helps/presentation/widgets/form_type_tips.dart';
 import 'package:workorder_company_app/features/helps/presentation/widgets/help_button.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
@@ -38,12 +39,10 @@ class FormConfigEditorTabView extends StatelessWidget {
                     prefixIcon: Icon(AppIcon.form),
                     label: "Judul Formulir",
                     controller: titleController,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Judul wajib diisi';
-                      }
-                      return null;
-                    },
+                    validator: (value) => ValidatorUtils.required(
+                      value,
+                      fieldName: "Judul",
+                    ),
                   ),
                   const SizedBox(height: 18),
                   CustomInputField(
@@ -51,12 +50,10 @@ class FormConfigEditorTabView extends StatelessWidget {
                     prefixIcon: Icon(AppIcon.desc),
                     controller: descController,
                     maxLines: 3,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Deskripsi wajib diisi';
-                      }
-                      return null;
-                    },
+                    validator: (value) => ValidatorUtils.required(
+                      value,
+                      fieldName: "Deskripsi",
+                    ),
                   ),
                   const SizedBox(height: 18),
                   EnumSelector<FormType>(

@@ -165,7 +165,10 @@ class ServiceEditorCoordinator extends ChangeNotifier {
   }
 
   bool _validateRequest() {
-    return _draft.intakeForm != null;
+    return allOf([
+      () => _draft.intakeForm != null,
+      () => _draft.reviewForm != null,
+    ]);
   }
 
   bool _validateWorkOrder() {
