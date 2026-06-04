@@ -48,33 +48,54 @@ class ServiceRequestProviderAction extends StatelessWidget {
             if (state.status == ProviderActionServiceRequestStatus.loading)
               const LoadingStateInline()
             else ...[
-              IconButton.filled(
-                style: ButtonStyle(
-                  backgroundColor: WidgetStatePropertyAll(
-                    Theme.of(context).colorScheme.errorContainer,
-                  ),
-                  foregroundColor: WidgetStatePropertyAll(
-                    Theme.of(context).colorScheme.error,
-                  ),
-                ),
+              FloatingActionButton.small(
+                heroTag: null,
+                backgroundColor: Theme.of(context).colorScheme.errorContainer,
                 onPressed: () {
                   context
                       .read<ProviderActionServiceRequestCubit>()
                       .rejectServiceRequest(request);
                 },
-                icon: Icon(AppIcon.reject,
+                child: Icon(AppIcon.reject,
                     color: Theme.of(context).colorScheme.error),
               ),
-              const SizedBox(width: AppSpacing.md),
-              FilledButton.icon(
+              // IconButton.filled(
+              //   style: ButtonStyle(
+              //     backgroundColor: WidgetStatePropertyAll(
+              //       Theme.of(context).colorScheme.errorContainer,
+              //     ),
+              //     foregroundColor: WidgetStatePropertyAll(
+              //       Theme.of(context).colorScheme.error,
+              //     ),
+              //   ),
+              //   onPressed: () {
+              //     context
+              //         .read<ProviderActionServiceRequestCubit>()
+              //         .rejectServiceRequest(request);
+              //   },
+              //   icon: Icon(AppIcon.reject,
+              //       color: Theme.of(context).colorScheme.error),
+              // ),
+              const SizedBox(width: AppSpacing.sm),
+              FloatingActionButton.extended(
+                heroTag: null,
                 onPressed: () {
                   context
                       .read<ProviderActionServiceRequestCubit>()
                       .approveServiceRequest(request);
                 },
-                label: Text("Terima Permintaan"),
-                icon: Icon(AppIcon.approve),
-              ),
+                icon: const Icon(AppIcon.approve),
+                label: const Text("Terima Permintaan"),
+              )
+              // FilledButton.icon(
+              //   onPressed: () {
+              //     context
+              //         .read<ProviderActionServiceRequestCubit>()
+              //         .approveServiceRequest(request);
+              //   },
+              //   label: Text("Terima Permintaan"),
+              //   icon: Icon(AppIcon.approve),
+              // ),
             ]
           ],
         ),

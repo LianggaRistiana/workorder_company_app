@@ -60,7 +60,7 @@ class EmployeesPage extends StatelessWidget {
               onPressed: () {
                 context.push(AppRoutes.employeeInvite);
               },
-              label: const Text('Tambah Karyawan'),
+              label: const Text('Tambah Pegawai'),
               icon: const Icon(Icons.person_add_alt_1),
             ).require(roleCan(InvitationPermission.create)),
             itemBuilder: (item) {

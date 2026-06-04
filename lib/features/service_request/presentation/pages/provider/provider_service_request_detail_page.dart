@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/core/authorization/util/access_gate_on_widget.dart';
 import 'package:workorder_company_app/core/constants/app_enums/notification_enum.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
-import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/notification/presentation/bloc/notification_log_cubit.dart';
 import 'package:workorder_company_app/features/service_request/domain/authorization/provider_service_request_authorizer.dart';
 import 'package:workorder_company_app/features/service_request/presentation/pages/service_request_content.dart';
@@ -41,13 +40,10 @@ class ProviderServiceRequestDetailPage extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(),
-          bottomNavigationBar: serviceRequest != null
-              ? Padding(
-                  padding: const EdgeInsets.all(
-                    AppSpacing.md,
-                  ),
-                  child: ServiceRequestProviderAction(request: serviceRequest),
-                ).require(
+          floatingActionButtonAnimator:
+              FloatingActionButtonAnimator.noAnimation,
+          floatingActionButton: serviceRequest != null
+              ? ServiceRequestProviderAction(request: serviceRequest).require(
                   ProviderServiceRequestAuthorizer(serviceRequest).actionRule)
               : null,
           body: ServiceRequestContent(
