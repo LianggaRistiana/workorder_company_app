@@ -47,7 +47,7 @@ class RequesterServiceRequestDetailPage extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(),
           bottomNavigationBar: serviceRequest != null
-              ? _actionWidget(context, serviceRequest)
+              ? SafeArea(child: _actionWidget(context, serviceRequest))
               : null,
           body: ServiceRequestContent(
             onRefresh: () async {

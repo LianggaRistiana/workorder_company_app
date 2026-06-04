@@ -12,18 +12,20 @@ class RegisterPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.all(AppSpacing.lg),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            TextButton(
-              onPressed: () {
-                context.go(AppRoutes.login);
-              },
-              child: const Text("Saya sudah punya akun"),
-            ),
-          ],
+      bottomNavigationBar: SafeArea(
+        child: Container(
+          padding: const EdgeInsets.all(AppSpacing.lg),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              TextButton(
+                onPressed: () {
+                  context.go(AppRoutes.login);
+                },
+                child: const Text("Saya sudah punya akun"),
+              ),
+            ],
+          ),
         ),
       ),
       body: SingleChildScrollView(
