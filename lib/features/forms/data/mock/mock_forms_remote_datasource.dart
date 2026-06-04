@@ -1,4 +1,5 @@
 import 'package:workorder_company_app/core/model/mock_factory.dart';
+import 'package:workorder_company_app/core/services/network/api_response.dart';
 import 'package:workorder_company_app/core/types/future_api.dart';
 import 'package:workorder_company_app/features/forms/data/datasources/forms_remote_datasource.dart';
 import 'package:workorder_company_app/features/forms/data/mock/forms_mock_factory.dart';
@@ -11,8 +12,8 @@ class MockFormsRemoteDatasource implements FormsRemoteDatasource {
   }
 
   @override
-  ApiFuture<FormModel> getFormById(String id) async {
-    return MockApiResponse.success(FormsMockFactory().createModel());
+  ApiFutureWithMeta<FormModel> getFormById(String id) async {
+    throw UnimplementedError();
   }
 
   @override
@@ -22,6 +23,12 @@ class MockFormsRemoteDatasource implements FormsRemoteDatasource {
 
   @override
   ApiFuture<FormModel> updateForm(FormModel form) {
+    throw UnimplementedError();
+  }
+
+  @override
+  ApiFuture<Empty> deleteForm(FormModel form) {
+    // TODO: implement deleteForm
     throw UnimplementedError();
   }
 }

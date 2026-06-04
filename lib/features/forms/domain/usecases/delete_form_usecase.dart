@@ -1,13 +1,14 @@
+import 'package:workorder_company_app/core/services/network/api_response.dart';
 import 'package:workorder_company_app/core/types/future_either.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
 import 'package:workorder_company_app/features/forms/domain/repositories/forms_repository.dart';
 
-class GetFormByIdUsecase {
+class DeleteFormUsecase {
   final FormsRepository _repository;
 
-  GetFormByIdUsecase(this._repository);
+  DeleteFormUsecase(this._repository);
 
-  FutureEitherWithMeta<FormEntity> call(String id) async {
-    return _repository.getForm(id);
+  FutureEither<Empty> call(FormEntity form) {
+    return _repository.deleteForm(form);
   }
 }

@@ -3,10 +3,12 @@ import 'package:workorder_company_app/features/forms/data/datasources/forms_remo
 import 'package:workorder_company_app/features/forms/data/repositories/forms_repository_impl.dart';
 import 'package:workorder_company_app/features/forms/domain/repositories/forms_repository.dart';
 import 'package:workorder_company_app/features/forms/domain/usecases/create_form_usecase.dart';
+import 'package:workorder_company_app/features/forms/domain/usecases/delete_form_usecase.dart';
 import 'package:workorder_company_app/features/forms/domain/usecases/get_form_byid_usecase.dart';
 import 'package:workorder_company_app/features/forms/domain/usecases/get_forms_usecase.dart';
 import 'package:workorder_company_app/features/forms/domain/usecases/update_form_usecase.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/create/form_create_cubit.dart';
+import 'package:workorder_company_app/features/forms/presentation/bloc/delete/form_delete_cubit.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/detail/form_detail_cubit.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/list/forms_list_bloc.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/update/form_update_cubit.dart';
@@ -21,6 +23,7 @@ Future<void> initFormsFeature() async {
   sl.registerLazySingleton<GetFormByIdUsecase>(() => GetFormByIdUsecase(sl()));
   sl.registerLazySingleton<CreateFormUsecase>(() => CreateFormUsecase(sl()));
   sl.registerLazySingleton<UpdateFormUsecase>(() => UpdateFormUsecase(sl()));
+  sl.registerLazySingleton<DeleteFormUsecase>(() => DeleteFormUsecase(sl()));
 
   sl.registerFactory<FormsListBloc>(() => FormsListBloc(
         getFormsUsecase: sl<GetFormsUsecase>(),
@@ -33,4 +36,6 @@ Future<void> initFormsFeature() async {
       () => FormCreateCubit(createFormUsecase: sl()));
   sl.registerFactory<FormUpdateCubit>(
       () => FormUpdateCubit(updateFormUsecase: sl()));
+  sl.registerFactory<FormDeleteCubit>(
+      () => FormDeleteCubit(deleteFormUsecase: sl()));
 }

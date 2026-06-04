@@ -7,6 +7,9 @@ import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/forms/domain/authorizer/form_authorizer.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
+import 'package:workorder_company_app/features/forms/domain/meta/form_detail_meta.dart';
+import 'package:workorder_company_app/features/forms/presentation/bloc/delete/form_delete_cubit.dart';
+import 'package:workorder_company_app/features/forms/presentation/bloc/delete/form_delete_state.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/detail/form_detail_cubit.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/detail/form_detail_state.dart';
 import 'package:workorder_company_app/features/forms/presentation/pages/form_property_view.dart';
@@ -14,12 +17,15 @@ import 'package:workorder_company_app/features/forms/presentation/widgets/form_f
 import 'package:workorder_company_app/features/helps/presentation/widgets/form_type_tips.dart';
 import 'package:workorder_company_app/features/helps/presentation/widgets/help_button.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/utils/confirm_dialog.dart';
+import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/adaptive_split_column.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 import 'package:workorder_company_app/shared/widgets/custom_list.dart';
 import 'package:workorder_company_app/shared/widgets/error_body.dart';
 import 'package:workorder_company_app/shared/widgets/header_of_page.dart';
 import 'package:workorder_company_app/shared/widgets/information_block.dart';
+import 'package:workorder_company_app/shared/widgets/loading_state_inline.dart';
 import 'package:workorder_company_app/shared/widgets/property_display.dart';
 
 // OPTIMIZE : add sliver to support lazy load
@@ -29,10 +35,28 @@ class FormDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => sl<FormDetailCubit>()..getFormById(formId),
-      child: _FormDetailView(
-        formId: formId,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => sl<FormDetailCubit>()..getFormById(formId),
+        ),
+        BlocProvider(
+          create: (context) => sl<FormDeleteCubit>(),
+        ),
+      ],
+      child: BlocListener<FormDeleteCubit, FormDeleteState>(
+        listener: (context, state) {
+          if (state.status == FormDeleteStatus.deleted) {
+            context.showSuccess("Berhasil Menghapus Formulir");
+            context.pop();
+          }
+          if (state.status == FormDeleteStatus.error) {
+            context.showError(state.errorMessage ?? "Gagal Menghapus Formulir");
+          }
+        },
+        child: _FormDetailView(
+          formId: formId,
+        ),
       ),
     );
   }
@@ -69,6 +93,7 @@ class _FormDetailViewState extends State<_FormDetailView> {
                   },
                   icon: const Icon(AppIcon.edit, size: 18),
                 ).require(FormAuthorizer(form: form).updateFormRule),
+              if (form != null) _buildDeleteButton(context, form, state.meta)
             ],
           ),
           body: SafeArea(
@@ -77,6 +102,32 @@ class _FormDetailViewState extends State<_FormDetailView> {
         );
       },
     );
+  }
+
+  Widget _buildDeleteButton(
+      BuildContext context, FormEntity form, FormDetailMeta? meta) {
+    return BlocBuilder<FormDeleteCubit, FormDeleteState>(
+        builder: (context, state) {
+      return IconButton(
+        onPressed: () async {
+          final result = await showConfirmDialog(
+              type: ConfirmDialogType.danger,
+              context: context,
+              title: "Hapus Formulir",
+              message: "Apakah anda yakin ingin menghapus formulir ini?");
+          if (!context.mounted) return;
+          if (result == true) {
+            context.read<FormDeleteCubit>().deleteForm(form);
+          }
+        },
+        icon: Icon(AppIcon.delete,
+            size: 18, color: ColorScheme.of(context).error),
+      )
+          .require(
+            FormAuthorizer(form: form, meta: meta).deleteFormRule,
+          )
+          .withInlineLoading(state.status == FormDeleteStatus.loading);
+    });
   }
 
   Widget _buildBody(BuildContext context, FormDetailState state) {

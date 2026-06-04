@@ -8,9 +8,11 @@ import 'package:workorder_company_app/features/forms/data/model/form_model.dart'
 
 abstract class FormsRemoteDatasource {
   ApiFutureList<FormModel> getForms();
-  ApiFuture<FormModel> getFormById(String id);
+  ApiFutureWithMeta<FormModel> getFormById(String id);
   ApiFuture<FormModel> createForm(FormModel form);
   ApiFuture<FormModel> updateForm(FormModel form);
+  ApiFuture<Empty> deleteForm(
+      FormModel form); // TODO : Test endtoend delete form
 }
 
 class FormsRemoteDatasourceImpl implements FormsRemoteDatasource {
@@ -31,9 +33,9 @@ class FormsRemoteDatasourceImpl implements FormsRemoteDatasource {
   }
 
   @override
-  ApiFuture<FormModel> getFormById(String id) async {
+  ApiFutureWithMeta<FormModel> getFormById(String id) async {
     final response = await _apiClient.get(Endpoints.forms.byId(id));
-    return ApiResponse<FormModel>.fromJson(
+    return ApiResponseWithMeta<FormModel>.fromJson(
       response,
       (data) => FormModel.fromJson(data),
     );
@@ -56,6 +58,15 @@ class FormsRemoteDatasourceImpl implements FormsRemoteDatasource {
     return ApiResponse<FormModel>.fromJson(
       response,
       (data) => FormModel.fromJson(data),
+    );
+  }
+
+  @override
+  ApiFuture<Empty> deleteForm(FormModel form) async {
+    final response = await _apiClient.delete(Endpoints.forms.byId(form.id));
+    return ApiResponse.fromJson(
+      response,
+      (data) => Empty(),
     );
   }
 }

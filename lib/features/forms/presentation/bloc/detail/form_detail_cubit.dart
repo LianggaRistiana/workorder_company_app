@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/features/forms/domain/entities/form_entity.dart';
+import 'package:workorder_company_app/features/forms/domain/meta/form_detail_meta.dart';
 import 'package:workorder_company_app/features/forms/domain/usecases/get_form_byid_usecase.dart';
 import 'package:workorder_company_app/features/forms/presentation/bloc/detail/form_detail_state.dart';
 
@@ -22,10 +23,11 @@ class FormDetailCubit extends Cubit<FormDetailState> {
           errorMessage: failure.message,
         ),
       ),
-      (form) => emit(
+      (result) => emit(
         state.copyWith(
           status: FormDetailStatus.loaded,
-          form: form,
+          form: result.data,
+          meta: result.getMeta<FormDetailMeta>(),
         ),
       ),
     );
