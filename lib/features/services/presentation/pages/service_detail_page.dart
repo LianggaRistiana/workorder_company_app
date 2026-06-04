@@ -25,6 +25,8 @@ import 'package:workorder_company_app/shared/widgets/header_of_page.dart';
 import 'package:workorder_company_app/shared/widgets/loading_state_inline.dart';
 import 'package:workorder_company_app/shared/widgets/property_display.dart';
 
+// OPTIMIZE : Replace the path with new service id after success update data
+// Since updating service is create new version with new id, when refresh page, it will referenced to old version service id
 class ServiceDetailPage extends StatelessWidget {
   final String serviceId;
   const ServiceDetailPage({super.key, required this.serviceId});

@@ -29,6 +29,8 @@ import 'package:workorder_company_app/shared/widgets/loading_state_inline.dart';
 import 'package:workorder_company_app/shared/widgets/property_display.dart';
 
 // OPTIMIZE : add sliver to support lazy load
+// OPTIMIZE : Replace the path with new form id after success update data
+// Since updating form is create new version with new id, when refresh page, it will referenced to old version form id
 class FormDetailPage extends StatelessWidget {
   final String formId;
   const FormDetailPage({super.key, required this.formId});
