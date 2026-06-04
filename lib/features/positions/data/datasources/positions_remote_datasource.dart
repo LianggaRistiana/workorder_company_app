@@ -2,6 +2,7 @@ import 'package:workorder_company_app/core/services/network/api_client.dart';
 import 'package:workorder_company_app/core/services/network/api_response.dart';
 import 'package:workorder_company_app/core/services/network/endpoints.dart';
 import 'package:workorder_company_app/core/services/network/path_helper.dart';
+import 'package:workorder_company_app/core/types/future_api.dart';
 import 'package:workorder_company_app/features/positions/data/models/position_model.dart';
 
 abstract class PositionsRemoteDatasource {
@@ -9,6 +10,7 @@ abstract class PositionsRemoteDatasource {
   Future<ApiResponse<PositionModel>> getPositionById(String id);
   Future<ApiResponse<PositionModel>> createPosition(PositionModel positionData);
   Future<ApiResponse<PositionModel>> updatePosition(PositionModel positionData);
+  ApiFuture<Empty> deletePosition(String id);
 }
 
 class PositionsRemoteDatasourceImpl implements PositionsRemoteDatasource {
@@ -55,6 +57,15 @@ class PositionsRemoteDatasourceImpl implements PositionsRemoteDatasource {
     return ApiResponse<PositionModel>.fromJson(
       response,
       (data) => PositionModel.fromJson(data),
+    );
+  }
+
+  @override
+  ApiFuture<Empty> deletePosition(String id) async {
+    final response = await _apiClient.delete(Endpoints.positions.byId(id));
+    return ApiResponse<Empty>.fromJson(
+      response,
+      (data) => Empty(),
     );
   }
 }

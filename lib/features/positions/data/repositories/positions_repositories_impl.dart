@@ -1,8 +1,9 @@
 import 'dart:async';
-
 import 'package:dartz/dartz.dart';
 import 'package:workorder_company_app/core/services/cache/list_cache_helper.dart';
 import 'package:workorder_company_app/core/error/failures.dart';
+import 'package:workorder_company_app/core/services/network/api_response.dart';
+import 'package:workorder_company_app/core/types/future_either.dart';
 import 'package:workorder_company_app/core/utils/either_helper.dart';
 import 'package:workorder_company_app/core/utils/safe_call.dart';
 import 'package:workorder_company_app/features/positions/data/datasources/positions_remote_datasource.dart';
@@ -87,5 +88,21 @@ class PositionsRepositoryImpl implements PositionsRepository {
   @override
   void clearCache() {
     _cache.clear();
+  }
+
+  @override
+  FutureEither<Empty> deletePosition(PositionEntity position) async {
+    final result = await safeCall(() async {
+      final response = await _remoteDatasource.deletePosition(position.id);
+      return response.data;
+    });
+
+    return result.onSuccess((_) {
+      _cache.removeSingle(
+        position,
+        (a, b) => a.id == b.id,
+      );
+      _notifyChanged();
+    });
   }
 }

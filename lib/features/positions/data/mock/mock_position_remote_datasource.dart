@@ -1,5 +1,6 @@
 import 'package:workorder_company_app/core/model/mock_factory.dart';
 import 'package:workorder_company_app/core/services/network/api_response.dart';
+import 'package:workorder_company_app/core/types/future_api.dart';
 import 'package:workorder_company_app/features/positions/data/datasources/positions_remote_datasource.dart';
 import 'package:workorder_company_app/features/positions/data/mock/position_mock_factory.dart';
 import 'package:workorder_company_app/features/positions/data/models/position_model.dart';
@@ -26,6 +27,12 @@ class MockPositionRemoteDatasource implements PositionsRemoteDatasource {
   @override
   Future<ApiResponse<PositionModel>> updatePosition(
       PositionModel positionData) {
+    throw UnimplementedError();
+  }
+
+  @override
+  ApiFuture<Empty> deletePosition(String id) {
+    // TODO: implement deletePosition
     throw UnimplementedError();
   }
 }
