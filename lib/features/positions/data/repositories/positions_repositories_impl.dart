@@ -9,6 +9,7 @@ import 'package:workorder_company_app/core/utils/safe_call.dart';
 import 'package:workorder_company_app/features/positions/data/datasources/positions_remote_datasource.dart';
 import 'package:workorder_company_app/features/positions/data/models/position_model.dart';
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
+import 'package:workorder_company_app/features/positions/domain/meta/position_detail_meta.dart';
 import 'package:workorder_company_app/features/positions/domain/repositories/positions_repository.dart';
 
 class PositionsRepositoryImpl implements PositionsRepository {
@@ -78,10 +79,11 @@ class PositionsRepositoryImpl implements PositionsRepository {
   }
 
   @override
-  Future<Either<Failure, PositionEntity>> getPositionById(String id) {
+  FutureEitherWithMeta<PositionEntity> getPositionById(String id) {
     return safeCall(() async {
       final payload = await _remoteDatasource.getPositionById(id);
-      return payload.data;
+      return payload.toResultSingleMeta(
+          metaFactory: PositionDetailMeta.fromJson);
     });
   }
 

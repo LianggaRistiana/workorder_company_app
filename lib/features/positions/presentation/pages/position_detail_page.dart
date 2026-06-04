@@ -8,16 +8,21 @@ import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/features/employees/presentation/widget/positioned_employee_list.dart';
+import 'package:workorder_company_app/features/positions/domain/authorizer/position_authorizer.dart';
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
+import 'package:workorder_company_app/features/positions/domain/meta/position_detail_meta.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/detail/position_detail_cubit.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/detail/position_detail_state.dart';
+import 'package:workorder_company_app/features/positions/presentation/bloc/remove/remove_position_cubit.dart';
+import 'package:workorder_company_app/features/positions/presentation/bloc/remove/remove_position_state.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/utils/confirm_dialog.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
-// import 'package:workorder_company_app/shared/widgets/active_status_chip.dart';
 import 'package:workorder_company_app/shared/widgets/adaptive_split_column.dart';
 import 'package:workorder_company_app/shared/widgets/app_loading.dart';
 import 'package:workorder_company_app/shared/widgets/custom_card.dart';
 import 'package:workorder_company_app/shared/widgets/header_of_page.dart';
+import 'package:workorder_company_app/shared/widgets/loading_state_inline.dart';
 import 'package:workorder_company_app/shared/widgets/property_display.dart';
 
 class PositionDetailPage extends StatelessWidget {
@@ -30,9 +35,28 @@ class PositionDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => sl<PositionDetailCubit>()..getPositionById(positionId),
-      child: const PositionDetailView(), // nanti kita ganti const
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) =>
+              sl<PositionDetailCubit>()..getPositionById(positionId),
+        ),
+        BlocProvider(
+          create: (context) => sl<RemovePositionCubit>(),
+        ),
+      ],
+      child: BlocListener<RemovePositionCubit, RemovePositionState>(
+          listener: (context, state) {
+            if (state.status == RemovePositionStatus.deleted) {
+              context.showSuccess("Berhasil menghapus departemen");
+              context.pop();
+            }
+            if (state.status == RemovePositionStatus.error) {
+              context.showError(state.errorMessages ??
+                  "Terjadi kesalahan saat menghapus departemen");
+            }
+          },
+          child: const PositionDetailView()),
     );
   }
 }
@@ -81,7 +105,7 @@ class PositionDetailView extends StatelessWidget {
                 child: Text("Data tidak ditemukan"),
               );
             }
-            return _DetailContent(position: position);
+            return _DetailContent(position: position, meta: state.meta);
           }
 
           // Initial / fallback
@@ -94,8 +118,12 @@ class PositionDetailView extends StatelessWidget {
 
 class _DetailContent extends StatelessWidget {
   final PositionEntity position;
+  final PositionDetailMeta? meta;
 
-  const _DetailContent({required this.position});
+  const _DetailContent({
+    required this.position,
+    this.meta,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -137,23 +165,29 @@ class _DetailContent extends StatelessWidget {
               )),
 
           /// ===== ACTION BUTTON =====
-          SizedBox(
-            width: double.infinity,
-            child: TextButton.icon(
-              onPressed: () async {
-                final result = await context.push<PositionEntity?>(
-                    AppRoutes.positionsUpdate,
-                    extra: position);
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              _buildDeleteButton(context, position, meta),
+              SizedBox(
+                child: TextButton.icon(
+                  onPressed: () async {
+                    final result = await context.push<PositionEntity?>(
+                        AppRoutes.positionsUpdate,
+                        extra: position);
 
-                if (result != null) {
-                  if (!context.mounted) return;
-                  context.read<PositionDetailCubit>().replaceData(result);
-                }
-              },
-              icon: const Icon(AppIcon.edit),
-              label: const Text("Edit Departemen"),
-            ),
-          ).require(roleCan(PositionsPermission.update)),
+                    if (result != null) {
+                      if (!context.mounted) return;
+                      context.read<PositionDetailCubit>().replaceData(result);
+                    }
+                  },
+                  icon: const Icon(AppIcon.edit),
+                  label: const Text("Edit Departemen"),
+                ),
+              ).require(roleCan(PositionsPermission.update)),
+            ],
+          ),
 
           const SizedBox(height: AppSpacing.lg),
         ], rightChildren: [
@@ -166,5 +200,31 @@ class _DetailContent extends StatelessWidget {
         ]),
       ),
     );
+  }
+
+  Widget _buildDeleteButton(
+      BuildContext context, PositionEntity position, PositionDetailMeta? meta) {
+    return BlocBuilder<RemovePositionCubit, RemovePositionState>(
+        builder: (context, state) {
+      return IconButton(
+        onPressed: () async {
+          final result = await showConfirmDialog(
+              type: ConfirmDialogType.danger,
+              context: context,
+              title: "Hapus Departemen",
+              message: "Apakah anda yakin ingin menghapus departemen ini?");
+          if (!context.mounted) return;
+          if (result == true) {
+            context.read<RemovePositionCubit>().removePosition(position);
+          }
+        },
+        icon: Icon(AppIcon.delete,
+            size: 18, color: ColorScheme.of(context).error),
+      )
+          .require(
+            PositionAuthorizer(position: position, meta: meta).deleteRule,
+          )
+          .withInlineLoading(state.status == RemovePositionStatus.loading);
+    });
   }
 }

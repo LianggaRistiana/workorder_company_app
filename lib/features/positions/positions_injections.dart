@@ -3,6 +3,7 @@ import 'package:workorder_company_app/features/positions/data/datasources/positi
 import 'package:workorder_company_app/features/positions/data/repositories/positions_repositories_impl.dart';
 import 'package:workorder_company_app/features/positions/domain/repositories/positions_repository.dart';
 import 'package:workorder_company_app/features/positions/domain/usecase/create_position_usecase.dart';
+import 'package:workorder_company_app/features/positions/domain/usecase/delete_position_usecase.dart';
 import 'package:workorder_company_app/features/positions/domain/usecase/get_current_user_positions_usecase.dart';
 import 'package:workorder_company_app/features/positions/domain/usecase/get_manager_scoped_positions_usecase.dart';
 import 'package:workorder_company_app/features/positions/domain/usecase/get_position_byid_usecase.dart';
@@ -11,6 +12,7 @@ import 'package:workorder_company_app/features/positions/domain/usecase/update_p
 import 'package:workorder_company_app/features/positions/presentation/bloc/create/position_create_cubit.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/detail/position_detail_cubit.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/list/positions_list_bloc.dart';
+import 'package:workorder_company_app/features/positions/presentation/bloc/remove/remove_position_cubit.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/update/position_update_cubit.dart';
 
 Future<void> initPositionsFeature() async {
@@ -32,6 +34,8 @@ Future<void> initPositionsFeature() async {
       () => CreatePositionUsecase(sl()));
   sl.registerLazySingleton<UpdatePositionUsecase>(
       () => UpdatePositionUsecase(sl()));
+  sl.registerLazySingleton<DeletePositionUsecase>(
+      () => DeletePositionUsecase(sl()));
 
   sl.registerFactory<PositionsListBloc>(() => PositionsListBloc(
         getPositionsUseCase: sl<GetPositionsUsecase>(),
@@ -44,4 +48,6 @@ Future<void> initPositionsFeature() async {
       () => PositionUpdateCubit(updatePositionUsecase: sl()));
   sl.registerFactory<PositionDetailCubit>(
       () => PositionDetailCubit(getPositionByidUsecase: sl()));
+  sl.registerFactory<RemovePositionCubit>(
+      () => RemovePositionCubit(deletePositionUsecase: sl()));
 }

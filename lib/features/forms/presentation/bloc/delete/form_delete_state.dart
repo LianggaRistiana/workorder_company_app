@@ -1,3 +1,5 @@
+import 'package:equatable/equatable.dart';
+
 enum FormDeleteStatus {
   initial,
   loading,
@@ -5,7 +7,7 @@ enum FormDeleteStatus {
   error,
 }
 
-class FormDeleteState {
+class FormDeleteState extends Equatable{
   final FormDeleteStatus status;
   final String? errorMessage;
 
@@ -13,4 +15,10 @@ class FormDeleteState {
     this.status = FormDeleteStatus.initial,
     this.errorMessage,
   });
+  
+  @override
+  List<Object?> get props => [
+    status,
+    errorMessage,
+  ];
 }

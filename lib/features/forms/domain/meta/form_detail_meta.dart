@@ -10,8 +10,7 @@ class FormDetailMeta extends ResultMeta {
 
   factory FormDetailMeta.fromJson(Map<String, dynamic> json) {
     return FormDetailMeta(
-      canDelete: json.field("canDelete").optBool() ??
-          true, // HACK : change into false after testing
+      canDelete: json.field("canDelete").optBool() ?? false,
     );
   }
 }

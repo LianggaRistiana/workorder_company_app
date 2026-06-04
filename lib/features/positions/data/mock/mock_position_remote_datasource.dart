@@ -13,8 +13,9 @@ class MockPositionRemoteDatasource implements PositionsRemoteDatasource {
   }
 
   @override
-  Future<ApiResponse<PositionModel>> getPositionById(String id) async {
-    return MockApiResponse.success(PositionModel(id: "1", name: "TES"));
+  ApiFutureWithMeta<PositionModel> getPositionById(String id) async {
+    throw UnimplementedError();
+
     // return MockApiResponse.success(PositionMockFactory().createModel());
   }
 

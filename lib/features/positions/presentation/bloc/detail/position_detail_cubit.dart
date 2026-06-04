@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/features/positions/domain/entities/position_entity.dart';
+import 'package:workorder_company_app/features/positions/domain/meta/position_detail_meta.dart';
 import 'package:workorder_company_app/features/positions/domain/usecase/get_position_byid_usecase.dart';
 import 'package:workorder_company_app/features/positions/presentation/bloc/detail/position_detail_state.dart';
 
@@ -20,10 +21,11 @@ class PositionDetailCubit extends Cubit<PositionDetailState> {
           errorMessages: failure.message,
         ),
       ),
-      (position) => emit(
+      (result) => emit(
         state.copyWith(
           status: PositionDetailStatus.loaded,
-          position: position,
+          position: result.data,
+          meta: result.getMeta<PositionDetailMeta>(),
         ),
       ),
     );
