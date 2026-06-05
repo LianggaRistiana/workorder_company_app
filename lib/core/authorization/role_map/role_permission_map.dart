@@ -121,8 +121,8 @@ extension UserRolePermissions on UserRole {
 
           // Human Resouce Domain
           PositionsPermission.view,
-          EmployeePermission.view,
-          ...InvitationPermission.sender, 
+          ...EmployeePermission.all,
+          ...InvitationPermission.sender,
 
           // Service Domain
           ...FormPermission.all,

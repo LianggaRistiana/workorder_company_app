@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 import 'package:workorder_company_app/features/employees/domain/params/employees_params.dart';
@@ -10,10 +12,18 @@ part 'employees_state.dart';
 class EmployeesBloc extends Bloc<EmployeesEvent, EmployeesState> {
   final GetEmployeesUsecase getEmployeesUsecase;
 
-  EmployeesBloc({required this.getEmployeesUsecase})
+  final Stream<void> cacheChangedStream;
+  late final StreamSubscription _subscription;
+
+  EmployeesBloc(
+      {required this.getEmployeesUsecase, required this.cacheChangedStream})
       : super(const EmployeesState()) {
     on<GetEmployeesRequested>(_onGetEmployeesRequested);
     on<SetEmployeeSearch>(_onSetEmployeeSearch);
+
+    _subscription = cacheChangedStream.listen((_) {
+      add(GetEmployeesRequested(forceRefresh: false));
+    });
   }
 
   Future<void> _onGetEmployeesRequested(
@@ -58,5 +68,11 @@ class EmployeesBloc extends Bloc<EmployeesEvent, EmployeesState> {
         search: event.search,
       ),
     ));
+  }
+
+  @override
+  Future<void> close() {
+    _subscription.cancel();
+    return super.close();
   }
 }

@@ -1,11 +1,15 @@
 import 'package:workorder_company_app/core/services/network/api_client.dart';
 import 'package:workorder_company_app/core/services/network/api_response.dart';
 import 'package:workorder_company_app/core/services/network/endpoints.dart';
+import 'package:workorder_company_app/core/services/network/path_helper.dart';
+import 'package:workorder_company_app/core/types/future_api.dart';
 import 'package:workorder_company_app/core/utils/safe_mapper.dart';
 import 'package:workorder_company_app/features/auth/data/model/user_model.dart';
 
 abstract class EmployeesRemoteDatasource {
   Future<ApiResponse<List<UserModel>>> getEmployees();
+  ApiFutureWithMeta<Empty> getEmployeeByEmail(String email);
+  ApiFuture<Empty> kickEmployee(String email);
 }
 
 class EmployeesRemoteDatasourceImpl implements EmployeesRemoteDatasource {
@@ -23,6 +27,24 @@ class EmployeesRemoteDatasourceImpl implements EmployeesRemoteDatasource {
         data,
         (json) => UserModel.fromJson(json),
       ),
+    );
+  }
+
+  @override
+  ApiFutureWithMeta<Empty> getEmployeeByEmail(String email) async {
+    final response = await _apiClient.get(Endpoints.employees.byId(email));
+    return ApiResponseWithMeta<Empty>.fromJson(
+      response,
+      (data) => Empty(),
+    );
+  }
+
+  @override
+  ApiFuture<Empty> kickEmployee(String email) async {
+    final response = await _apiClient.delete(Endpoints.employees.byId(email));
+    return ApiResponse.fromJson(
+      response,
+      (data) => Empty(),
     );
   }
 }
