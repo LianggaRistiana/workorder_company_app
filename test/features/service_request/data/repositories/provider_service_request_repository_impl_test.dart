@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:dartz/dartz.dart';
 import 'package:workorder_company_app/core/constants/app_enums.dart';
 import 'package:workorder_company_app/core/constants/app_enums/notification_enum.dart';
 import 'package:workorder_company_app/core/error/error.dart';
@@ -10,7 +9,6 @@ import 'package:workorder_company_app/features/auth/data/model/user_model.dart';
 import 'package:workorder_company_app/features/service_request/data/datasources/provider_service_request_remote_datasource.dart';
 import 'package:workorder_company_app/features/service_request/data/model/provider_service_request_model.dart';
 import 'package:workorder_company_app/features/service_request/data/repositories/provider_service_request_repository_impl.dart';
-import 'package:workorder_company_app/features/service_request/domain/entities/service_request_entity.dart';
 import 'package:workorder_company_app/features/service_request/domain/entities/service_request_status_date_entity.dart';
 import 'package:workorder_company_app/features/services/data/model/service_summary_model.dart';
 
