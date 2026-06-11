@@ -12,12 +12,14 @@ class UserEntity extends Equatable implements BaseUserEntity {
 
   final UserRole role;
   final PositionEntity? position;
+  final String? userId;
 
   const UserEntity({
     required this.name,
     required this.email,
     required this.role,
     this.position,
+    this.userId
   });
 
   @override
@@ -26,5 +28,6 @@ class UserEntity extends Equatable implements BaseUserEntity {
         email,
         role,
         position,
+        userId
       ];
 }

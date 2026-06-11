@@ -67,9 +67,9 @@ class EmployeesRepositoryImpl implements EmployeesRepository {
   }
 
   @override
-  FutureEitherWithMeta<Empty> getEmployeeByEmail(String email) async {
+  FutureEitherWithMeta<Empty> getEmployeeByDetail(String id) async {
     return safeCall(() async {
-      final payload = await _remoteDatasource.getEmployeeByEmail(email);
+      final payload = await _remoteDatasource.getEmployeeByDetail(id);
       return payload.toResultSingleMeta(
           metaFactory: EmployeeDetailMeta.fromJson);
     });

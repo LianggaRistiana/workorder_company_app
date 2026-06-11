@@ -106,7 +106,7 @@ class _SheetContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) =>
-          sl<EmployeeDetailActionCubit>()..getEmployeeMeta(employee.email),
+          sl<EmployeeDetailActionCubit>()..getEmployeeMeta(employee.userId),
       child: BlocConsumer<EmployeeDetailActionCubit, EmployeeDetailActionState>(
         listener: (context, state) {
           if (state.status == EmployeeDetailActionStatus.error) {
@@ -119,6 +119,8 @@ class _SheetContent extends StatelessWidget {
           }
         },
         builder: (context, state) {
+          final meta = state.meta;
+
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -148,40 +150,47 @@ class _SheetContent extends StatelessWidget {
                     ),
                 ]),
               ),
-              FilledButton.icon(
-                onPressed: () async {
-                  final result = await showConfirmDialog(
-                      context: context,
-                      icon: Icons.remove_circle,
-                      type: ConfirmDialogType.danger,
-                      title: "Keluarkan Pegawai",
-                      message: "Anda Yakin ingin mengeluarkan pegawai ini");
+              if (state.isLoadingDetailFetch) ...[
+                LoadingStateInline()
+              ] else ...[
+                FilledButton.icon(
+                  onPressed: () async {
+                    final result = await showConfirmDialog(
+                        context: context,
+                        icon: Icons.remove_circle,
+                        type: ConfirmDialogType.danger,
+                        title: "Keluarkan Pegawai",
+                        message: "Anda Yakin ingin mengeluarkan pegawai ini");
 
-                  if (!context.mounted) {
-                    return;
-                  }
+                    if (!context.mounted) {
+                      return;
+                    }
 
-                  if (result == true) {
-                    context
-                        .read<EmployeeDetailActionCubit>()
-                        .kickEmployee(employee);
-                  }
-                },
-                style: FilledButton.styleFrom(
-                    backgroundColor: ColorScheme.of(context).errorContainer,
-                    foregroundColor: ColorScheme.of(context).error,
-                    iconColor: ColorScheme.of(context).error),
-                icon: const Icon(Icons.remove_circle),
-                label: Text(
-                  "Keluarkan Pegawai",
-                ),
-              )
-                  .withInlineLoading(
-                    state.status == EmployeeDetailActionStatus.kickLoading,
-                  )
-                  .require(
-                    EmployeeAuthorizer(staff: employee).removeEmployeeRule,
-                  )
+                    if (result == true) {
+                      context
+                          .read<EmployeeDetailActionCubit>()
+                          .kickEmployee(employee);
+                    }
+                  },
+                  style: FilledButton.styleFrom(
+                      backgroundColor: ColorScheme.of(context).errorContainer,
+                      foregroundColor: ColorScheme.of(context).error,
+                      iconColor: ColorScheme.of(context).error),
+                  icon: const Icon(Icons.remove_circle),
+                  label: Text(
+                    "Keluarkan Pegawai",
+                  ),
+                )
+                    .withInlineLoading(
+                      state.status == EmployeeDetailActionStatus.kickLoading,
+                    )
+                    .require(
+                      EmployeeAuthorizer(
+                        staff: employee,
+                        meta: meta,
+                      ).removeEmployeeRule,
+                    )
+              ],
             ],
           );
         },

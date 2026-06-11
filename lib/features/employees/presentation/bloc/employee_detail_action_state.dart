@@ -21,6 +21,8 @@ class EmployeeDetailActionState extends Equatable {
     this.meta,
   });
 
+  bool get isLoadingDetailFetch => status == EmployeeDetailActionStatus.loading;
+
   EmployeeDetailActionState copyWith({
     EmployeeDetailActionStatus? status,
     String? errorMessage,

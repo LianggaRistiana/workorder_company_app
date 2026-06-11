@@ -9,10 +9,12 @@ class UserModel extends UserEntity {
     required super.email,
     required super.role,
     super.position,
+    super.userId
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
+      userId: json.field("_id").optString(),
       name: safeParse<String>(json, "name"),
       email: safeParse<String>(json, "email"),
       role: UserRole.fromString(safeParse<String>(json, "role")),

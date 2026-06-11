@@ -15,7 +15,7 @@ class MockEmployeeRemoteDatasource implements EmployeesRemoteDatasource {
   }
 
   @override
-  ApiFutureWithMeta<Empty> getEmployeeByEmail(String id) {
+  ApiFutureWithMeta<Empty> getEmployeeByDetail(String id) {
     // TODO: implement getEmployeeById
     throw UnimplementedError();
   }

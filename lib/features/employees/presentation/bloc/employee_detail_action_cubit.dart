@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:workorder_company_app/core/services/logger/app_logger.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 import 'package:workorder_company_app/features/employees/domain/meta/employee_detail_meta.dart';
 import 'package:workorder_company_app/features/employees/domain/usecases/get_employee_detail_meta_usecase.dart';
@@ -16,20 +17,26 @@ class EmployeeDetailActionCubit extends Cubit<EmployeeDetailActionState> {
           status: EmployeeDetailActionStatus.initial,
         ));
 
-  Future<void> getEmployeeMeta(String email) async {
+  Future<void> getEmployeeMeta(String? id) async {
+    if (id == null) {
+      return;
+    }
     emit(state.copyWith(status: EmployeeDetailActionStatus.loading));
 
-    final result = await getEmployeeDetailMetaUsecase(email);
+    final result = await getEmployeeDetailMetaUsecase(id);
 
     result.fold(
       (failure) => emit(state.copyWith(
         status: EmployeeDetailActionStatus.error,
         errorMessage: failure.message,
       )),
-      (success) => emit(state.copyWith(
-        status: EmployeeDetailActionStatus.loaded,
-        meta: success.getMeta<EmployeeDetailMeta>(),
-      )),
+      (success) {
+        appLogger.i(success.getMeta<EmployeeDetailMeta>()?.canKick.toString());
+        emit(state.copyWith(
+          status: EmployeeDetailActionStatus.loaded,
+          meta: success.getMeta<EmployeeDetailMeta>(),
+        ));
+      },
     );
   }
 

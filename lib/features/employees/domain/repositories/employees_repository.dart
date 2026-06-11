@@ -10,6 +10,6 @@ abstract class EmployeesRepository implements Cacheable, StreamableCache {
     EmployeesParams? params,
     bool forceRefresh = false,
   });
-  FutureEitherWithMeta<Empty> getEmployeeByEmail(String email);
+  FutureEitherWithMeta<Empty> getEmployeeByDetail(String id);
   FutureEither<Empty> kickEmployee(UserEntity user);
 }

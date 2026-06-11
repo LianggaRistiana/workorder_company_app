@@ -8,7 +8,7 @@ import 'package:workorder_company_app/features/auth/data/model/user_model.dart';
 
 abstract class EmployeesRemoteDatasource {
   Future<ApiResponse<List<UserModel>>> getEmployees();
-  ApiFutureWithMeta<Empty> getEmployeeByEmail(String email);
+  ApiFutureWithMeta<Empty> getEmployeeByDetail(String id);
   ApiFuture<Empty> kickEmployee(String email);
 }
 
@@ -31,8 +31,9 @@ class EmployeesRemoteDatasourceImpl implements EmployeesRemoteDatasource {
   }
 
   @override
-  ApiFutureWithMeta<Empty> getEmployeeByEmail(String email) async {
-    final response = await _apiClient.get(Endpoints.employees.byId(email));
+  ApiFutureWithMeta<Empty> getEmployeeByDetail(String id) async {
+    final response = await _apiClient
+        .get(Endpoints.employees.byId(id));
     return ApiResponseWithMeta<Empty>.fromJson(
       response,
       (data) => Empty(),
@@ -41,7 +42,8 @@ class EmployeesRemoteDatasourceImpl implements EmployeesRemoteDatasource {
 
   @override
   ApiFuture<Empty> kickEmployee(String email) async {
-    final response = await _apiClient.delete(Endpoints.employees.byId(email));
+    final response =
+        await _apiClient.delete(Endpoints.employees, data: {"email": email});
     return ApiResponse.fromJson(
       response,
       (data) => Empty(),

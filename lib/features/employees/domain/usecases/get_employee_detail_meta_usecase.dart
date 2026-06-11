@@ -8,7 +8,7 @@ class GetEmployeeDetailMetaUsecase {
 
   GetEmployeeDetailMetaUsecase(this._repository);
 
-  FutureEitherWithMeta<Empty> call(String email) {
-    return _repository.getEmployeeByEmail(email);
+  FutureEitherWithMeta<Empty> call(String id) {
+    return _repository.getEmployeeByDetail(id);
   }
 }
