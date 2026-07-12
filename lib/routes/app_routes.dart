@@ -3,6 +3,7 @@ class AppRoutes {
   static const register = '/register';
   static const registerCompany = '/register-company';
   static const registerAccount = '/register-account';
+  static const verifyOtp = '/verify-otp';
   static const home = '/home';
   static const splash = '/splash';
 

@@ -8,6 +8,8 @@ import 'package:workorder_company_app/features/auth/domain/usecases/get_current_
 import 'package:workorder_company_app/features/auth/domain/usecases/login_usecase.dart';
 import 'package:workorder_company_app/features/auth/domain/usecases/logout_usecase.dart';
 import 'package:workorder_company_app/features/auth/domain/usecases/user_registration_usecase.dart';
+import 'package:workorder_company_app/features/auth/domain/usecases/verify_otp_usecase.dart';
+import 'package:workorder_company_app/features/auth/domain/usecases/resend_otp_usecase.dart';
 import 'package:workorder_company_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:workorder_company_app/core/di/injection.dart';
 import 'package:workorder_company_app/features/notification/domain/repositories/notification_repository.dart';
@@ -21,6 +23,8 @@ Future<void> initAuthFeature() async {
       userRegistrationUsecase: sl(),
       companyRegistrationUsecase: sl(),
       initNotificationUseCase: sl(),
+      verifyOtpUsecase: sl(),
+      resendOtpUsecase: sl(),
     ),
   );
 
@@ -40,6 +44,10 @@ Future<void> initAuthFeature() async {
       () => CompanyRegistrationUsecase(sl()));
   sl.registerLazySingleton<UserRegistrationUsecase>(
       () => UserRegistrationUsecase(sl()));
+  sl.registerLazySingleton<VerifyOtpUsecase>(
+      () => VerifyOtpUsecase(sl()));
+  sl.registerLazySingleton<ResendOtpUsecase>(
+      () => ResendOtpUsecase(sl()));
 
   /// Repository
   sl.registerLazySingleton<AuthRepository>(

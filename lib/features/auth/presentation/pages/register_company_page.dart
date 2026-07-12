@@ -111,10 +111,10 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
             }
 
             if (state is CompanyRegistrationSuccess) {
-              context.showSuccess("Perusahaan berhasil terdaftar");
-
               context.go(
-                  "${AppRoutes.login}?email=${_emailController.text.trim()}");
+                AppRoutes.verifyOtp,
+                extra: _emailController.text.trim(),
+              );
             }
           },
           builder: (context, state) {

@@ -25,4 +25,16 @@ class UserRegistrationRequested extends AuthEvent {
   UserRegistrationRequested(this.registrationData);
 }
 
+class OtpVerificationRequested extends AuthEvent {
+  final OtpVerificationEntity data;
+
+  OtpVerificationRequested(this.data);
+}
+
+class OtpResendRequested extends AuthEvent {
+  final String email;
+
+  OtpResendRequested(this.email);
+}
+
 class LogoutRequested extends AuthEvent {}

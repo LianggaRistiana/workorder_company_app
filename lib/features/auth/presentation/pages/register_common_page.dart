@@ -90,11 +90,10 @@ class _RegisterCommonPageState extends State<RegisterCommonPage> {
         }
 
         if (state is UserRegistrationSuccess) {
-          context.showSuccess("Registrasi berhasil. Silakan masuk.");
-
-          // context.go(AppRoutes.login);
-          context
-              .go("${AppRoutes.login}?email=${_emailController.text.trim()}");
+          context.go(
+            AppRoutes.verifyOtp,
+            extra: _emailController.text.trim(),
+          );
         }
       },
       child: PopScope(

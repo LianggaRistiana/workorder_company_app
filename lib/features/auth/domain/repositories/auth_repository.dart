@@ -4,6 +4,7 @@ import 'package:workorder_company_app/core/services/cache/cacheable.dart';
 import 'package:workorder_company_app/features/auth/data/model/login_response.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/company_registration_entity.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
+import 'package:workorder_company_app/features/auth/domain/entities/otp_verification_entity.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_registration_entity.dart';
 
 abstract class AuthRepository implements Cacheable {
@@ -17,4 +18,6 @@ abstract class AuthRepository implements Cacheable {
       UserRegistrationEntity registrationData);
   Future<Either<Failure, void>> companyRegistration(
       CompanyRegistrationEntity registrationData);
+  Future<Either<Failure, void>> verifyOtp(OtpVerificationEntity data);
+  Future<Either<Failure, void>> resendOtp(String email);
 }

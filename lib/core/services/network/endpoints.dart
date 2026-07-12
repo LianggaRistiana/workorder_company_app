@@ -10,6 +10,8 @@ class Endpoints {
   static const String register = "$authPrefix/register";
   static const String logout = "$authPrefix/logout";
   static const String registerCompany = "$authPrefix/register-company";
+  static const String verifyOtp = "$authPrefix/verify-otp";
+  static const String resendOtp = "$authPrefix/resend-otp";
 
   // Company
   static const String company = "/company";

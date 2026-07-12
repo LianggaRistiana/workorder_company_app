@@ -8,6 +8,10 @@ class UserRegistrationSuccess extends AuthState {}
 
 class CompanyRegistrationSuccess extends AuthState {}
 
+class OtpVerificationSuccess extends AuthState {}
+
+class OtpResendSuccess extends AuthState {}
+
 class AuthLoading extends AuthState {}
 
 class Authenticated extends AuthState {

@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workorder_company_app/core/error/error.dart';
 import 'package:workorder_company_app/core/services/logger/app_logger.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/company_registration_entity.dart';
+import 'package:workorder_company_app/features/auth/domain/entities/otp_verification_entity.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_entity.dart';
 import 'package:workorder_company_app/features/auth/domain/entities/user_registration_entity.dart';
 import 'package:workorder_company_app/features/auth/domain/usecases/company_registration_usecase.dart';
@@ -9,6 +10,8 @@ import 'package:workorder_company_app/features/auth/domain/usecases/get_current_
 import 'package:workorder_company_app/features/auth/domain/usecases/login_usecase.dart';
 import 'package:workorder_company_app/features/auth/domain/usecases/logout_usecase.dart';
 import 'package:workorder_company_app/features/auth/domain/usecases/user_registration_usecase.dart';
+import 'package:workorder_company_app/features/auth/domain/usecases/verify_otp_usecase.dart';
+import 'package:workorder_company_app/features/auth/domain/usecases/resend_otp_usecase.dart';
 import 'package:workorder_company_app/features/notification/domain/usecases/init_notification_usecase.dart';
 
 part 'auth_event.dart';
@@ -21,6 +24,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final UserRegistrationUsecase userRegistrationUsecase;
   final CompanyRegistrationUsecase companyRegistrationUsecase;
   final InitNotificationUseCase initNotificationUseCase;
+  final VerifyOtpUsecase verifyOtpUsecase;
+  final ResendOtpUsecase resendOtpUsecase;
 
   bool _initialized = false;
 
@@ -31,6 +36,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required this.userRegistrationUsecase,
     required this.companyRegistrationUsecase,
     required this.initNotificationUseCase,
+    required this.verifyOtpUsecase,
+    required this.resendOtpUsecase,
   }) : super(AuthInitial()) {
     on<LoginRequested>(_onLoginRequested);
     on<AuthCheckStatus>(_onAuthCheckStatus);
@@ -38,6 +45,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<UserRegistrationRequested>(_onUserRegistrationRequested);
     on<CompanyRegistrationRequested>(_onCompanyRegistrationRequested);
     on<GetCurrentUserRequested>(_onGetCurrentUserRequested);
+    on<OtpVerificationRequested>(_onOtpVerificationRequested);
+    on<OtpResendRequested>(_onOtpResendRequested);
   }
 
   Future<void> _onGetCurrentUserRequested(
@@ -142,6 +151,30 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     result.fold(
       (failure) => emit(AuthError(failure.message, failure: failure)),
       (_) => emit(CompanyRegistrationSuccess()),
+    );
+  }
+
+  Future<void> _onOtpVerificationRequested(
+    OtpVerificationRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(AuthLoading());
+    final result = await verifyOtpUsecase(event.data);
+    result.fold(
+      (failure) => emit(AuthError(failure.message, failure: failure)),
+      (_) => emit(OtpVerificationSuccess()),
+    );
+  }
+
+  Future<void> _onOtpResendRequested(
+    OtpResendRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(AuthLoading());
+    final result = await resendOtpUsecase(event.email);
+    result.fold(
+      (failure) => emit(AuthError(failure.message, failure: failure)),
+      (_) => emit(OtpResendSuccess()),
     );
   }
 

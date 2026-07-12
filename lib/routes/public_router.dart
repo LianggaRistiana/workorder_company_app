@@ -4,6 +4,7 @@ import 'package:workorder_company_app/features/auth/presentation/pages/login_pag
 import 'package:workorder_company_app/features/auth/presentation/pages/register_common_page.dart';
 import 'package:workorder_company_app/features/auth/presentation/pages/register_company_page.dart';
 import 'package:workorder_company_app/features/auth/presentation/pages/register_page.dart';
+import 'package:workorder_company_app/features/auth/presentation/pages/verify_otp_page.dart';
 import 'package:workorder_company_app/features/on_boarding/presentation/pages/onboarding_page.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/page/forbidden_page.dart';
@@ -31,6 +32,13 @@ final publicRouter = [
     builder: (_, state) {
       final role = state.extra as UserRole;
       return RegisterCommonPage(role: role);
+    },
+  ),
+  GoRoute(
+    path: AppRoutes.verifyOtp,
+    builder: (_, state) {
+      final email = state.extra as String;
+      return VerifyOtpPage(email: email);
     },
   ),
   GoRoute(

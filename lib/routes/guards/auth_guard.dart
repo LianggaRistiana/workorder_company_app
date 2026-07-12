@@ -14,6 +14,7 @@ class AuthGuard {
       AppRoutes.register,
       AppRoutes.registerCompany,
       AppRoutes.registerAccount,
+      AppRoutes.verifyOtp,
     ];
 
     final isPublic = publicRoutes.contains(location);

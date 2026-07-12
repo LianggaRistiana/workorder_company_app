@@ -14,6 +14,8 @@ abstract class AuthRemoteDatasource {
   ApiFuture<UserModel> getUser();
   Future userRegistration(UserRegistrationModel registrationData);
   Future companyRegistration(CompanyRegistrationModel registrationData);
+  Future verifyOtp(String email, String otp);
+  Future resendOtp(String email);
 }
 
 class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
@@ -76,5 +78,23 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
   ApiFuture<UserModel> getUser() async {
     final data = await _apiClient.get(Endpoints.profile);
     return ApiResponse.fromJson(data, (json) => UserModel.fromJson(json));
+  }
+
+  @override
+  Future verifyOtp(String email, String otp) async {
+    await _apiClient.post(
+      Endpoints.verifyOtp,
+      data: {'email': email, 'otp': otp},
+    );
+    return;
+  }
+
+  @override
+  Future resendOtp(String email) async {
+    await _apiClient.post(
+      Endpoints.resendOtp,
+      data: {'email': email},
+    );
+    return;
   }
 }
