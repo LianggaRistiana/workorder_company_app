@@ -117,7 +117,7 @@ class ServiceRequestContent extends StatelessWidget {
           height: AppSpacing.lg,
         ),
       ],
-      if (serviceRequest.status.isReviewAvailable) ...[
+      if (serviceRequest.status.isReportAvailable) ...[
         ServiceRequestReport(serviceRequestId: serviceRequest.id)
       ],
       const SizedBox(

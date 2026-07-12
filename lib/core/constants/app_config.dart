@@ -1,17 +1,19 @@
 class AppConfig {
   static const String appName = "Work Order Company App";
-  static const String appFlavor = "production.v2";
+  static const String appFlavor = "production.v3";
 
   // network
   static const Map<String, String> baseApiUrls = {
     'development': 'http://10.0.2.2:3000',
     'production.v1': 'https://workorder-portal-production-4d0a.up.railway.app',
     'production.v2': 'https://workorder-production.up.railway.app',
+    'production.v3': 'https://workorder-portal-production-67a9.up.railway.app',
   };
   static const Map<String, String> serverCodeNames = {
     'development': 'Local',
     'production.v1': 'Primary-Server-v1',
     'production.v2': 'Primary-Server-v2',
+    'production.v3': 'Primary-Server-v3',
   };
 
   static String get baseApiUrl => baseApiUrls[appFlavor]!;

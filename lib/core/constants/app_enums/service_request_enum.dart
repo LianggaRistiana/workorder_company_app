@@ -67,9 +67,17 @@ extension ServiceRequestStatusFlowX on ServiceRequestStatus {
     ServiceRequestStatus.unProcessable,
     ServiceRequestStatus.approved,
     ServiceRequestStatus.completed,
+    ServiceRequestStatus.onProgress,
     ServiceRequestStatus.partiallyCompleted,
     ServiceRequestStatus.closed,
   };
+
+  static const reportAvailable = {
+    ServiceRequestStatus.completed,
+    ServiceRequestStatus.onProgress,
+    ServiceRequestStatus.partiallyCompleted,
+    ServiceRequestStatus.closed,
+    };
 
   static const reviewAvailableStates = {
     ServiceRequestStatus.completed,
@@ -79,5 +87,6 @@ extension ServiceRequestStatusFlowX on ServiceRequestStatus {
 
   bool get isReviewAble => reviewAbleStates.contains(this);
   bool get isReviewAvailable => reviewAvailableStates.contains(this);
+  bool get isReportAvailable => reportAvailable.contains(this);
   bool get isWorkOrderAvailable => workOrderAvailable.contains(this);
 }
