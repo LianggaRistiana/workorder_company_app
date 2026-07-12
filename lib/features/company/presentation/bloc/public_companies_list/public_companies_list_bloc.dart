@@ -21,7 +21,7 @@ class PublicCompaniesListBloc
     emit(state.copyWith(
         status: PublicCompaniesListStatus.loading, errorMessage: null));
 
-    final result = await getCompaniesUsecase();
+    final result = await getCompaniesUsecase(params: state.filter);
 
     result.fold(
       (failure) => emit(state.copyWith(
@@ -40,6 +40,24 @@ class PublicCompaniesListBloc
     SetCompaniesFilter event,
     Emitter<PublicCompaniesListState> emit,
   ) async {
-    emit(state.copyWith(filter: event.filter));
+    emit(state.copyWith(
+      filter: event.filter,
+      status: PublicCompaniesListStatus.loading,
+      errorMessage: null,
+    ));
+
+    final result = await getCompaniesUsecase(params: event.filter);
+
+    result.fold(
+      (failure) => emit(state.copyWith(
+        status: PublicCompaniesListStatus.error,
+        errorMessage: failure.message,
+      )),
+      (companies) => emit(state.copyWith(
+        status: PublicCompaniesListStatus.loaded,
+        companies: companies,
+        errorMessage: null,
+      )),
+    );
   }
 }

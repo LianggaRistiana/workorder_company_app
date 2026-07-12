@@ -8,7 +8,7 @@ import 'package:workorder_company_app/features/company/data/models/company_model
 
 abstract class PublicCompaniesRemoteDatasource {
   ApiFutureWithMeta<CompanyModel> getCompanyById(String id);
-  ApiFutureList<CompanyModel> getCompanies();
+  ApiFutureList<CompanyModel> getCompanies({String? keyword});
 }
 
 class PublicCompaniesRemoteDatasourceImpl
@@ -18,8 +18,12 @@ class PublicCompaniesRemoteDatasourceImpl
   PublicCompaniesRemoteDatasourceImpl(this._apiClient);
 
   @override
-  ApiFutureList<CompanyModel> getCompanies() async {
-    final response = await _apiClient.get(Endpoints.publicCompanies);
+  ApiFutureList<CompanyModel> getCompanies({String? keyword}) async {
+    final endpoint = Endpoints.publicCompanies.withQuery({
+      'keyword': keyword,
+    });
+
+    final response = await _apiClient.get(endpoint);
 
     return ApiResponse.fromJson(
       response,

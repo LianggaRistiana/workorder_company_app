@@ -12,9 +12,11 @@ class PublicCompaniesRepositoryImpl implements PublicCompaniesRepository {
   PublicCompaniesRepositoryImpl(this._companyRemoteDatasource);
 
   @override
-  FutureEitherList<CompanyEntity> getCompanies() {
+  FutureEitherList<CompanyEntity> getCompanies({String? keyword}) {
     return safeCall(() async {
-      final payload = await _companyRemoteDatasource.getCompanies();
+      final payload = await _companyRemoteDatasource.getCompanies(
+        keyword: keyword,
+      );
       return payload.data;
     });
   }

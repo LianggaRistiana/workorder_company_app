@@ -28,7 +28,7 @@ class PublicCompaniesListPage extends StatelessWidget {
           },
           builder: (context, state) {
             final isLoading = state.status == PublicCompaniesListStatus.loading;
-            final items = state.filteredCompanies;
+            final items = state.companies;
 
             return ListPageScaffold(
                 title: "Daftar Perusahaan",
@@ -38,15 +38,15 @@ class PublicCompaniesListPage extends StatelessWidget {
                   padding: const EdgeInsets.only(
                       left: 8.0, right: 8.0, top: 4, bottom: 4),
                   child: AppSearchBar(
-                    featureName: "Perusahaan",
+                    featureName: "Perusahaan atau Layanan",
                     onChanged: (value) {
                       context.read<PublicCompaniesListBloc>().add(
                             SetCompaniesFilter(
-                              filter: state.filter.copyWith(search: value),
+                              filter: state.filter.copyWith(keyword: value),
                             ),
                           );
                     },
-                    initialValue: state.filter.search,
+                    initialValue: state.filter.keyword,
                   ),
                 ),
                 items: items,

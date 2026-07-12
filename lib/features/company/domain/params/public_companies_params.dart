@@ -1,26 +1,26 @@
 import 'package:equatable/equatable.dart';
 
 class PublicCompaniesParams extends Equatable {
-  final String? search;
+  final String? keyword;
 
   const PublicCompaniesParams({
-    this.search,
+    this.keyword,
   });
 
   PublicCompaniesParams copyWith({
-    Object? search = _sentinel,
+    Object? keyword = _sentinel,
   }) {
     return PublicCompaniesParams(
-      search: search == _sentinel ? this.search : search as String?,
+      keyword: keyword == _sentinel ? this.keyword : keyword as String?,
     );
   }
 
   static const _sentinel = Object();
 
-  int get filterCount => search != null ? 1 : 0;
+  int get filterCount => keyword != null ? 1 : 0;
 
   @override
   List<Object?> get props => [
-        search,
+        keyword,
       ];
 }

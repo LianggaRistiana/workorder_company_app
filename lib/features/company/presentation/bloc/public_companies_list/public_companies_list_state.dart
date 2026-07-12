@@ -22,20 +22,6 @@ class PublicCompaniesListState extends Equatable {
     this.filter = const PublicCompaniesParams(),
   });
 
-  List<CompanyEntity> get filteredCompanies {
-    if (filter.filterCount == 0) {
-      return companies;
-    }
-
-    return companies.where((company) {
-      final matchSearch = filter.search == null ||
-          filter.search!.trim().isEmpty ||
-          company.name.toLowerCase().contains(filter.search!.toLowerCase());
-
-      return matchSearch;
-    }).toList();
-  }
-
   PublicCompaniesListState copyWith({
     PublicCompaniesListStatus? status,
     List<CompanyEntity>? companies,
@@ -50,7 +36,6 @@ class PublicCompaniesListState extends Equatable {
     );
   }
 
-  
   @override
   List<Object?> get props => [
         status,
