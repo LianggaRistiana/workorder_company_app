@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:workorder_company_app/core/theme/app_icon.dart';
 import 'package:workorder_company_app/core/theme/app_spacing.dart';
 import 'package:workorder_company_app/routes/app_routes.dart';
+import 'package:workorder_company_app/shared/widgets/horizontal_button.dart';
 import 'package:workorder_company_app/shared/widgets/information_block.dart';
 
 class StaffUnassignedContent extends StatelessWidget {
@@ -49,6 +50,16 @@ class StaffUnassignedContent extends StatelessWidget {
                 icon: Icon(AppIcon.next),
               ),
             ],
+          ),
+          SizedBox(
+            height: 24,
+          ),
+          HorizontalButton(
+            leadingIcon: AppIcon.memberCode,
+            title: "Bergabung dengan kode",
+            description:
+                "Anda bisa menggunakan kode yang disediakan oleh provider untuk bergabung ke perusahaan",
+                onTap: () => context.push(AppRoutes.claimInvitationCode),
           )
         ]);
   }
