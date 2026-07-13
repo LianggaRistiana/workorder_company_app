@@ -87,6 +87,12 @@ class ManagerContent extends StatelessWidget {
                 onTap: () {
                   context.push(AppRoutes.invitationsHistory);
                 }),
+            MenuItem(
+                icon: AppIcon.invitation,
+                label: "Kode Undangan Pegawai",
+                onTap: () {
+                  context.push(AppRoutes.invitationCodeList);
+                }),
           ],
         ),
       ],

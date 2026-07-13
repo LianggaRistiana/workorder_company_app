@@ -84,6 +84,12 @@ class Endpoints {
   static const String acceptInvitations = "/invitations/:id/accept";
   static const String cancelInvitations = "/invitations/:id";
 
+  // Invitation Codes (code-based)
+  static const String invitationCodes = "/company/invitation-codes";
+  static const String invitationCodeDetail = "/company/invitation-codes/:id";
+  static const String invitationCodePreview = "/invitation-codes/:id";
+  static const String invitationCodeClaim = "/invitation-codes/claim";
+
   static const String publicCompanies = '$clientPrefix/companies';
   static const String publicServices = '$clientPrefix/services';
   static publicCompanyServices(String id) =>

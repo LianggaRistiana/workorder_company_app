@@ -53,6 +53,10 @@ class AppRoutes {
   static const invitationsHistory = '/invitations/history';
   static const invitationsPending = '/invitations/pending';
 
+  // Invitation Codes
+  static const invitationCodeList = '/invitation-codes';
+  static const claimInvitationCode = '/invitation-codes/claim';
+
   // Membership
   static const memberships = '/memberships';
   static const membershipsCodes = '/memberships/codes';

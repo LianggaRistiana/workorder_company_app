@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:workorder_company_app/core/authorization/feature/invitation_permission.dart';
 import 'package:workorder_company_app/core/authorization/rule/role_permission_rule/role_permission_helper.dart';
 import 'package:workorder_company_app/core/authorization/util/access_gate_on_widget.dart';
@@ -15,6 +16,7 @@ import 'package:workorder_company_app/features/invitations/presentation/widgets/
 import 'package:workorder_company_app/features/invitations/presentation/widgets/sender_invitation_detail.dart';
 import 'package:workorder_company_app/features/invitations/presentation/widgets/user_summary_view.dart';
 import 'package:workorder_company_app/features/notification/presentation/bloc/notification_log_cubit.dart';
+import 'package:workorder_company_app/routes/app_routes.dart';
 import 'package:workorder_company_app/shared/utils/context_snackbar.dart';
 import 'package:workorder_company_app/shared/widgets/app_bottom_sheet.dart';
 import 'package:workorder_company_app/shared/widgets/list_page_scafold.dart';
@@ -88,6 +90,14 @@ class InvitationsHistoryView extends StatelessWidget {
 
       /// REFRESH
       onRefresh: () async => onRefresh(),
+
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          context.push(AppRoutes.employeeInvite);
+        },
+        label: const Text('Buat Undangan'),
+        icon: const Icon(LucideIcons.mail),
+      ).require(roleCan(InvitationPermission.create)),
 
       /// ITEM BUILDER
       itemBuilder: (invitation) {

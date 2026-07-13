@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:workorder_company_app/core/authorization/feature/invitation_permission.dart';
 import 'package:workorder_company_app/core/authorization/rule/role_permission_rule/role_permission_helper.dart';
 import 'package:workorder_company_app/core/authorization/util/access_gate_on_widget.dart';
@@ -37,6 +39,8 @@ class EmployeesPage extends StatelessWidget {
           }
         },
         builder: (context, state) {
+          final theme = Theme.of(context);
+
           return ListPageScaffold<UserEntity>(
             title: "Pegawai",
             isLoading: state.isLoading,
@@ -65,13 +69,53 @@ class EmployeesPage extends StatelessWidget {
               icon: Icons.group_off_outlined,
               text: "Tidak ada Pegawai",
             ),
-            floatingActionButton: FloatingActionButton.extended(
-              onPressed: () {
-                context.push(AppRoutes.employeeInvite);
-              },
-              label: const Text('Tambah Pegawai'),
-              icon: const Icon(Icons.person_add_alt_1),
+            floatingActionButtonLocation: ExpandableFab.location,
+            floatingActionButton: ExpandableFab(
+              distance: 70,
+              childrenAnimation: ExpandableFabAnimation.none,
+              overlayStyle: ExpandableFabOverlayStyle(
+                color: theme.colorScheme.surface.withAlpha(90),
+              ),
+              openButtonBuilder: RotateFloatingActionButtonBuilder(
+                child: const Icon(Icons.person_add_alt_1),
+                fabSize: ExpandableFabSize.regular,
+              ),
+              closeButtonBuilder: DefaultFloatingActionButtonBuilder(
+                child: const Icon(Icons.close),
+                fabSize: ExpandableFabSize.small,
+                foregroundColor: theme.colorScheme.onPrimary,
+                backgroundColor: theme.colorScheme.secondary,
+                shape: const CircleBorder(),
+              ),
+              type: ExpandableFabType.up,
+              children: [
+                FloatingActionButton.extended(
+                  heroTag: null,
+                  onPressed: () => {context.push(AppRoutes.invitationCodeList)},
+                  label: Text('Buat Kode Undangan'),
+                  icon: Icon(AppIcon.memberCode),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                ),
+                FloatingActionButton.extended(
+                  heroTag: null,
+                  onPressed: () => context.push(AppRoutes.employeeInvite),
+                  label: Text('Kirim Undangan'),
+                  icon: Icon(LucideIcons.mail),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                ),
+              ],
             ).require(roleCan(InvitationPermission.create)),
+            // floatingActionButton: FloatingActionButton.extended(
+            //   onPressed: () {
+            //     context.push(AppRoutes.employeeInvite);
+            //   },
+            //   label: const Text('Tambah Pegawai'),
+            //   icon: const Icon(Icons.person_add_alt_1),
+            // ).require(roleCan(InvitationPermission.create)),
             itemBuilder: (item) {
               return EmployeeItem(
                 user: item,

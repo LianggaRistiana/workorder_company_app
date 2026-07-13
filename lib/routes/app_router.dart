@@ -11,6 +11,7 @@ import 'package:workorder_company_app/routes/feature_routes.dart/company_router.
 import 'package:workorder_company_app/routes/feature_routes.dart/employees_router.dart';
 import 'package:workorder_company_app/routes/feature_routes.dart/forms_router.dart';
 import 'package:workorder_company_app/routes/feature_routes.dart/home_router.dart';
+import 'package:workorder_company_app/routes/feature_routes.dart/invitation_codes_router.dart';
 import 'package:workorder_company_app/routes/feature_routes.dart/invitations_router.dart';
 import 'package:workorder_company_app/routes/feature_routes.dart/memberships_router.dart';
 import 'package:workorder_company_app/routes/feature_routes.dart/positions_router.dart';
@@ -45,6 +46,7 @@ final GoRouter appRouter = GoRouter(
           ...serviceRouter,
           ...servicePriceRouter,
           ...invitationsRouter,
+          ...invitationCodesRouter,
           ...membershipsRouter,
           ...publicCompaniesRouter,
           ...serviceRequestRouter,

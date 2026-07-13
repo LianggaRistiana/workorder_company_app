@@ -189,6 +189,12 @@ class _InternalCompanyManageMenuPageState
                 context.push(AppRoutes.invitationsHistory);
               }),
           MenuItem(
+              icon: AppIcon.invitation,
+              label: "Kode Undangan Pegawai",
+              onTap: () {
+                context.push(AppRoutes.invitationCodeList);
+              }),
+          MenuItem(
               icon: AppIcon.membership,
               label: "Pelanggan",
               onTap: () {
