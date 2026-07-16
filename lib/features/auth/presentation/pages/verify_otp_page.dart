@@ -169,7 +169,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
               Expanded(
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.lg,
+                    horizontal: AppSpacing.sm,
                     vertical: AppSpacing.md,
                   ),
                   child: Column(
@@ -253,9 +253,11 @@ class _VerifyOtpPageState extends State<VerifyOtpPage>
         final offsetX = _shakeController.isAnimating
             ? 12.0 * (0.5 - (_shakeAnimation.value % 1.0)).abs() * 2
             : 0.0;
-        return Transform.translate(
-          offset: Offset(offsetX, 0),
-          child: child,
+        return ClipRect(
+          child: Transform.translate(
+            offset: Offset(offsetX, 0),
+            child: child,
+          ),
         );
       },
       child: Row(
